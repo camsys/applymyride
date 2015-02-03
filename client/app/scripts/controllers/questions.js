@@ -1,21 +1,12 @@
 'use strict';
 
 angular.module('clientApp')
-.controller('QuestionsController', function ($scope) {
-  $scope.questions = [
-  [
-  {question: 'Application Type',
-  options: [
-  {text: 'New Applicant', checked: true},
-  {text: 'Recertification', checked: false}
-  ], datatype: 'radio', name: 'applicationtype'},
-  {question: 'First Name', datatype: 'string'},
-  {question: 'Last Name', datatype: 'string'},
-  ],
-  [
-  {question: 'Address', datatype: 'string'},
-  {question: 'City', datatype: 'string'},
-  ],
-
-  ];
-});
+  .controller('QuestionsController', ['$scope', '$routeParams', 'sectionsFactory',
+    function($scope, $routeParams, sectionsFactory) {
+      sectionsFactory.get(function(data) {
+        $scope.sections = data.sections;
+      });
+      $scope.section = $routeParams.section;
+      $scope.nextSection = '#/questions/' + (parseInt($routeParams.section) + 1);
+    }
+  ]);

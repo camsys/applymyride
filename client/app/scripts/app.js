@@ -19,7 +19,7 @@ angular
     'ngSanitize',
     'ngTouch'
   ])
-  .config(function ($routeProvider) {
+  .config(function ($routeProvider, $locationProvider) {
     $routeProvider
       .when('/', {
         templateUrl: 'views/main.html',
@@ -29,11 +29,17 @@ angular
         templateUrl: 'views/about.html',
         controller: 'AboutCtrl'
       })
-      .when('/questions', {
+      .when('/questions/:section', {
         templateUrl: 'views/questions.html',
         controller: 'QuestionsController'
       })
       .otherwise({
         redirectTo: '/'
       });
+
+  // use the HTML5 History API
+  // http://scotch.io/quick-tips/js/angular/pretty-urls-in-angularjs-removing-the-hashtag
+  $locationProvider.html5Mode(true);
+
   });
+

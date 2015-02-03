@@ -1,0 +1,43 @@
+{
+    "sections": [
+        {
+            "questions": [
+                {
+                    "datatype": "radio",
+                    "name": "applicationtype",
+                    "options": [
+                        {
+                            "checked": true,
+                            "text": "New Applicant"
+                        },
+                        {
+                            "checked": false,
+                            "text": "Recertification"
+                        }
+                    ],
+                    "question": "Application Type"
+                },
+                {
+                    "datatype": "string",
+                    "question": "First Name"
+                },
+                {
+                    "datatype": "string",
+                    "question": "Last Name"
+                }
+            ]
+        },
+        {
+            "questions": [
+                {
+                    "datatype": "string",
+                    "question": "Address"
+                },
+                {
+                    "datatype": "string",
+                    "question": "City"
+                }
+            ]
+        }
+    ]
+}
