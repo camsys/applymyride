@@ -12,6 +12,7 @@
     <!-- endbuild -->
     <!-- build:css(.tmp) styles/main.css -->
     <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
     <!-- endbuild -->
   </head>
   <body ng-app="clientApp">
@@ -19,9 +20,25 @@
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
 
+    <div class="navbar navbar-default navbar-static-top" style="box-shadow: 0px 2px 8px rgba(0,0,0,0.4);">
+      <div class="container-fluid">
+<div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">
+        <img ng-src="images/logo-full.png"/>
+      </a>
+    </div>
+          </div>
+    </div>
+
     <!-- Add your site or application content here -->
-    <div class="container">
-      <div class="header">
+    <div class="container-fluid">
+<!--       <div class="header">
         <ul class="nav nav-pills pull-right">
           <li class="active"><a ng-href="#">Home</a></li>
           <li><a ng-href="#/about">About</a></li>
@@ -29,13 +46,13 @@
         </ul>
         <h3 class="text-muted">client</h3>
       </div>
-
+ -->
       <div ng-view=""></div>
 
-      <div class="footer">
+<!--       <div class="footer">
         <p><span class="glyphicon glyphicon-heart"></span> from the Yeoman team</p>
       </div>
-    </div>
+ -->    </div>
 
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
@@ -76,6 +93,7 @@
         <script src="scripts/app.js"></script>
         <script src="scripts/controllers/main.js"></script>
         <script src="scripts/controllers/about.js"></script>
+        <script src="scripts/controllers/questions.js"></script>
         <!-- endbuild -->
 </body>
 </html>

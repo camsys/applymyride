@@ -1,4 +1,21 @@
 $icon-font-path: "../bower_components/bootstrap-sass-official/assets/fonts/bootstrap/";
+
+// KIOSK COLORS
+$white: #fff;
+$black: #000;
+$gray1: #f2f2f2;
+$gray2: #e6e6e6;
+$gray3: #d1cfcd;
+$gray4: #a49f9b;
+$gray5: #7d7874;
+$gray6: #45413d;
+$red: #f34c51;
+$blue: #00b8d0;
+$green: #7ec537;
+$yellow: #fdd73e;
+
+$kioskfonts: "Avenir Next", "Helvetica Neue", Helvetica, sans-serif;
+
 // bower:scss
 @import "bootstrap-sass-official/assets/stylesheets/_bootstrap.scss";
 // endbower
@@ -10,11 +27,28 @@ $icon-font-path: "../bower_components/bootstrap-sass-official/assets/fonts/boots
   padding: 0.2em 0;
 }
 
-/* Space out content a bit */
-body {
-  padding-top: 20px;
-  padding-bottom: 20px;
+* {
+  font-family: 'Avenir Next', Helvetica, sans-serif;
 }
+
+.radio:first-of-type {
+  margin-top: 3px;
+}
+
+.navbar-brand {
+  height: 50px;
+  margin: 0;
+  padding: 3px 0 0 3px;
+  img {
+    height: 47px;
+  }
+}
+
+// /* Space out content a bit */
+// body {
+//   padding-top: 20px;
+//   padding-bottom: 20px;
+// }
 
 /* Everything but the jumbotron gets side spacing for mobile first views */
 .header,
@@ -68,25 +102,25 @@ body {
   }
 }
 
-/* Responsive: Portrait tablets and up */
-@media screen and (min-width: 768px) {
-  .container {
-    max-width: 730px;
-  }
+// /* Responsive: Portrait tablets and up */
+// @media screen and (min-width: 768px) {
+//   .container {
+//     max-width: 730px;
+//   }
 
-  /* Remove the padding we set earlier */
-  .header,
-  .marketing,
-  .footer {
-    padding-left: 0;
-    padding-right: 0;
-  }
-  /* Space out the masthead */
-  .header {
-    margin-bottom: 30px;
-  }
-  /* Remove the bottom border on the jumbotron for visual effect */
-  .jumbotron {
-    border-bottom: 0;
-  }
-}
+//   /* Remove the padding we set earlier */
+//   .header,
+//   .marketing,
+//   .footer {
+//     padding-left: 0;
+//     padding-right: 0;
+//   }
+//   /* Space out the masthead */
+//   .header {
+//     margin-bottom: 30px;
+//   }
+//   /* Remove the bottom border on the jumbotron for visual effect */
+//   .jumbotron {
+//     border-bottom: 0;
+//   }
+// }
