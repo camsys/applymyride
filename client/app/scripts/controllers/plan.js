@@ -28,7 +28,7 @@ angular.module('clientApp').service('Map', function($q) {
         var d = $q.defer();
         this.places.textSearch({query: str,
           location: new google.maps.LatLng(39.9647747,-76.7291728),
-          radius: 10000}, function(results, status) {
+          radius: 5000}, function(results, status) {
             if (status == 'OK') {
                 d.resolve(results);
             }
@@ -49,14 +49,23 @@ angular.module('clientApp').service('Map', function($q) {
         }
         this.infoWindows = [];
         var max = (res.length > 5 ? 5 : res.length);
+        var b = new google.maps.LatLngBounds();
         for (var i = 0; i < max; i++) {
           var r = res[i];
           // if(this.infoWindow) this.infoWindow.close();
-          var contentString = '' + r.name + ' <button class="btn btn-primary btn-xs" ng-click="console.log(\'click\');">Select</button>';
+          var contentString = '' + r.name + ' <button class="btn btn-primary btn-xs" ng-click="console.log(\'click\');"><i class="fa fa-check"></i></button>';
           this.infoWindows[i] = new google.maps.InfoWindow({content: contentString, position: r.geometry.location});
-          this.infoWindows[i].open(this.map);          
+          this.infoWindows[i].open(this.map);
+          if (b.isEmpty()) {
+            b = new google.maps.LatLngBounds(r.geometry.location, r.geometry.location);
+          } else {
+            b = b.union(new google.maps.LatLngBounds(r.geometry.location, r.geometry.location));
+          }
+          console.log(b.toString());
         }
-        this.map.setCenter(res[0].geometry.location);
+        // this.map.setCenter(res[0].geometry.location);
+        console.log(b);
+        this.map.panToBounds(b);
     }
     
 });
