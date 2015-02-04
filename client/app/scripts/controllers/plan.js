@@ -21,6 +21,7 @@ angular.module('clientApp').service('Map', function($q) {
             document.getElementById("map"), options
         );
         this.places = new google.maps.places.PlacesService(this.map);
+        this.infoWindows = [];
     }
     
     this.search = function(str) {
@@ -29,7 +30,7 @@ angular.module('clientApp').service('Map', function($q) {
           location: new google.maps.LatLng(39.9647747,-76.7291728),
           radius: 10000}, function(results, status) {
             if (status == 'OK') {
-                d.resolve(results[0]);
+                d.resolve(results);
             }
             else d.reject(status);
         });
@@ -37,13 +38,25 @@ angular.module('clientApp').service('Map', function($q) {
     }
     
     this.addMarker = function(res) {
-        if(this.marker) this.marker.setMap(null);
-        this.marker = new google.maps.Marker({
-            map: this.map,
-            position: res.geometry.location,
-            animation: google.maps.Animation.DROP
-        });
-        this.map.setCenter(res.geometry.location);
+        // if(this.marker) this.marker.setMap(null);
+        // this.marker = new google.maps.Marker({
+        //     map: this.map,
+        //     position: res.geometry.location,
+        //     animation: google.maps.Animation.DROP
+        // });        
+        for (var i = 0; i < this.infoWindows.length; i++) {
+          this.infoWindows[i].close();
+        }
+        this.infoWindows = [];
+        var max = (res.length > 5 ? 5 : res.length);
+        for (var i = 0; i < max; i++) {
+          var r = res[i];
+          // if(this.infoWindow) this.infoWindow.close();
+          var contentString = '' + r.name + ' <button class="btn btn-primary btn-xs" ng-click="console.log(\'click\');">Select</button>';
+          this.infoWindows[i] = new google.maps.InfoWindow({content: contentString, position: r.geometry.location});
+          this.infoWindows[i].open(this.map);          
+        }
+        this.map.setCenter(res[0].geometry.location);
     }
     
 });
@@ -58,9 +71,9 @@ angular.module('clientApp').controller('newPlaceCtrl', function($scope, Map) {
         .then(
             function(res) { // success
                 Map.addMarker(res);
-                $scope.place.name = res.name;
-                $scope.place.lat = res.geometry.location.lat();
-                $scope.place.lng = res.geometry.location.lng();
+                // $scope.place.name = res.name;
+                // $scope.place.lat = res.geometry.location.lat();
+                // $scope.place.lng = res.geometry.location.lng();
             },
             function(status) { // error
                 $scope.apiError = true;

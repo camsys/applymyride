@@ -8,20 +8,27 @@
       %span.input-group-btn
         %button.btn.btn-primary{"ng-disabled" => "searchForm.$invalid"} Search
   #map
-  %form.form-horizontal{:name => "resForm", "ng-submit" => "send()", :novalidate => ""}
-    .form-group
-      %label.col-xs-2.control-label{:for => "resName"} Name
-      .col-xs-10
-        %input.form-control{:name => "resName", "ng-model" => "place.name", :required => "", :type => "text"}/
-    .form-group
-      %label.col-xs-2.control-label{:for => "resLat"} Latitude
-      .col-xs-10
-        %input.form-control{:name => "resLat", "ng-model" => "place.lat", :required => "", :type => "number"}/
-    .form-group
-      %label.col-xs-2.control-label{:for => "resLng"} Longitude
-      .col-xs-10
-        %input.form-control{:name => "resLng", "ng-model" => "place.lng", :required => "", :type => "number"}/
-    .form-group
-      .col-xs-offset-2.col-xs-10
-        %button.btn.btn-success{"ng-disabled" => "resForm.$invalid"} Confirm
+  .row
+    .col-xs-12
+      %button.pull-right.btn.btn-success{type: 'submit', ng: {click: "save(sections, nextSection)", disabled: false, class: '{disabled: false}'}, style: "font-size: 3em; box-shadow: 0px 2px 8px rgba(0,0,0,0.4)"}
+        Next Step
+        %span.fa-stack
+          %i.fa.fa-circle-thin.fa-stack-2x
+          %i.fa.fa-chevron-right.fa-stack-1x{style: "margin-left: 5px; margin-top: 2px;"}
+  / %form.form-horizontal{:name => "resForm", "ng-submit" => "send()", :novalidate => ""}
+  /   .form-group
+  /     %label.col-xs-2.control-label{:for => "resName"} Name
+  /     .col-xs-10
+  /       %input.form-control{:name => "resName", "ng-model" => "place.name", :required => "", :type => "text"}/
+  /   .form-group
+  /     %label.col-xs-2.control-label{:for => "resLat"} Latitude
+  /     .col-xs-10
+  /       %input.form-control{:name => "resLat", "ng-model" => "place.lat", :required => "", :type => "number"}/
+  /   .form-group
+  /     %label.col-xs-2.control-label{:for => "resLng"} Longitude
+  /     .col-xs-10
+  /       %input.form-control{:name => "resLng", "ng-model" => "place.lng", :required => "", :type => "number"}/
+  /   .form-group
+  /     .col-xs-offset-2.col-xs-10
+  /       %button.btn.btn-success{"ng-disabled" => "resForm.$invalid"} Confirm
         
