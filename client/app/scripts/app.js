@@ -29,17 +29,13 @@ angular
         templateUrl: 'views/about.html',
         controller: 'AboutCtrl'
       })
-      .when('/questions/:section', {
+      .when('/questions/:section_id', {
         templateUrl: 'views/questions.html',
         controller: 'QuestionsController'
       })
       .otherwise({
         redirectTo: '/'
       });
-
-  // use the HTML5 History API
-  // http://scotch.io/quick-tips/js/angular/pretty-urls-in-angularjs-removing-the-hashtag
-  $locationProvider.html5Mode(true);
 
   });
 

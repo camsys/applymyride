@@ -1,13 +1,18 @@
 'use strict';
 
-/**
- * @ngdoc service
- * @name quizModule.quizBasicFactory
- * @description
- * # quizBasicFactory
- * Factory in the quizModule.
- */
 angular.module('clientApp')
   .factory('sectionsFactory', function ($resource) {
     return $resource('./data/sections.json');
   });
+
+angular.module('clientApp')
+    .service('paratransitApplication', function() {
+        var _sections = {};
+        this.set = function(sections) {
+            _sections = sections;
+        }
+        this.get = function() {
+            return _sections;
+        }
+    }
+);

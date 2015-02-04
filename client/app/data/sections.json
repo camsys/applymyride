@@ -15,15 +15,18 @@
                             "text": "Recertification"
                         }
                     ],
-                    "question": "Application Type"
+                    "question": "Application Type",
+                    "required": true
                 },
                 {
                     "datatype": "string",
-                    "question": "First Name"
+                    "question": "First Name",
+                    "required": true
                 },
                 {
                     "datatype": "string",
-                    "question": "Last Name"
+                    "question": "Last Name",
+                    "required": true
                 }
             ]
         },
@@ -31,11 +34,13 @@
             "questions": [
                 {
                     "datatype": "string",
-                    "question": "Address"
+                    "question": "Address",
+                    "required": true
                 },
                 {
                     "datatype": "string",
-                    "question": "City"
+                    "question": "City",
+                    "required": true
                 }
             ]
         }

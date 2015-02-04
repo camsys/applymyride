@@ -1,10 +1,9 @@
-{{ testSections | json }}
-%form
-  .form-group{ng: {repeat: "question in sections[section].questions", switch: "question.datatype"}}
+%form{name: 'questions_form', novalidate: 'novalidate'}
+  .form-group{ng: {repeat: "question in sections[section_id].questions", switch: "question.datatype"}}
     %div{ng: {switch: {when: 'string'}}}
       %label
         {{question.question}}
-      %input.form-control{ng: {model: 'question.answer'}}
+      %input.form-control{ng: {model: 'question.answer', required: 'question.required'}}
     %div{ng: {switch: {when: 'radio'}}}
       %b.checkbox-label
         {{question.question}}
@@ -13,17 +12,17 @@
           %input{ng: {model: 'question.answer', checked: 'option.checked'}, value: "{{option.text}}", type: 'radio', name: "{{question.name}}"}
             {{option.text}}
 
-.row
-  .col-xs-12
-    %a.pull-right.btn.btn-success{ng: {href: "{{nextSection}}"}, disabled: "disabled", style: "font-size: 3em; box-shadow: 0px 2px 8px rgba(0,0,0,0.4)"}
-      Next Step
-      %span.fa-stack
-        %i.fa.fa-circle-thin.fa-stack-2x
-        %i.fa.fa-chevron-right.fa-stack-1x{style: "margin-left: 7px; margin-top: 2px;"}
+  .row
+    .col-xs-12
+      %button.pull-right.btn.btn-success{type: 'submit', ng: {click: "save(sections, nextSection)", disabled: "{{questions_form.$invalid}}", class: '{disabled: questions_form.$invalid}'}, style: "font-size: 3em; box-shadow: 0px 2px 8px rgba(0,0,0,0.4)"}
+        Next Step
+        %span.fa-stack
+          %i.fa.fa-circle-thin.fa-stack-2x
+          %i.fa.fa-chevron-right.fa-stack-1x{style: "margin-left: 5px; margin-top: 2px;"}
 
-.row
-  .col-xs-12
-    %ul
-      %li{ng: {repeat: "question in sections[section].questions"}}
-        {{ question | json }}
-    {{ sections | json }}
+/ .row
+/   .col-xs-12
+/     %ul
+/       %li{ng: {repeat: "question in sections[section_id].questions"}}
+/         {{ question | json }}
+/     {{ sections | json }}
