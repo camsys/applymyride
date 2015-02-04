@@ -2,6 +2,9 @@
 
 angular.module('clientApp')
   .controller('NavbarCtrl', function ($scope, $location) {
-    $scope.hideNavbar = ($location.path() === '/');
+
+    $scope.showNavbar = function() {
+      return !($location.path()==='/');
+    }
 
   });
