@@ -1,0 +1,27 @@
+.container{"ng-app" => "myApp", "ng-controller" => "newPlaceCtrl"}
+  .alert.alert-danger.text-center{"ng-show" => "apiError", :role => "alert"}
+    %b API Error :
+    %span {{ apiStatus }}
+  %form{:name => "searchForm", "ng-submit" => "search()", :novalidate => ""}
+    .input-group
+      %input.form-control{:autofocus => "", :name => "place", "ng-model" => "searchPlace", :required => "", :type => "text"}/
+      %span.input-group-btn
+        %button.btn.btn-primary{"ng-disabled" => "searchForm.$invalid"} Search
+  #map
+  %form.form-horizontal{:name => "resForm", "ng-submit" => "send()", :novalidate => ""}
+    .form-group
+      %label.col-xs-2.control-label{:for => "resName"} Name
+      .col-xs-10
+        %input.form-control{:name => "resName", "ng-model" => "place.name", :required => "", :type => "text"}/
+    .form-group
+      %label.col-xs-2.control-label{:for => "resLat"} Latitude
+      .col-xs-10
+        %input.form-control{:name => "resLat", "ng-model" => "place.lat", :required => "", :type => "number"}/
+    .form-group
+      %label.col-xs-2.control-label{:for => "resLng"} Longitude
+      .col-xs-10
+        %input.form-control{:name => "resLng", "ng-model" => "place.lng", :required => "", :type => "number"}/
+    .form-group
+      .col-xs-offset-2.col-xs-10
+        %button.btn.btn-success{"ng-disabled" => "resForm.$invalid"} Confirm
+        
