@@ -52,8 +52,6 @@ $kioskfonts: "Avenir Next", "Helvetica Neue", Helvetica, sans-serif;
   // background-image: url('../images/CURVY-LINES-1.jpg');
 }
 
-
-
 .slide {
     position: absolute;
     left: 0;
@@ -81,11 +79,75 @@ $kioskfonts: "Avenir Next", "Helvetica Neue", Helvetica, sans-serif;
     left: -100%;
 }
 
+.action-button {
+  margin-top: 1em;
+}
+
 #map { 
     height: 400px;
     margin: 20px 0;
     border-radius: 5px;
     border: 1px solid silver;
+}
+
+/* Main marketing message and sign up button */
+.jumbotron {
+  text-align: center;
+  border-bottom: 1px solid #e5e5e5;
+
+  .btn {
+    // font-size: 21px;
+    padding: 14px 24px;
+  }
+}
+
+.marketing {
+  .logo-image {
+    background-image: url('../images/bus.png');
+    width: 81px;
+    height: 79px;
+  }
+  @media(max-width:$screen-sm-max) {
+    .btn {
+      font-size: 0.8em;
+    }
+    .logo-text {
+      background-image: url('../images/words-200w.png');
+      width: 200px;
+      height: 33px;
+    }
+    // font-size: $font-size-phone;
+    // font-family: $font-family-phone;
+  }
+  @media(min-width:$screen-md-min) {
+    .btn {
+      font-size: 2em;
+    }
+    .logo-text {
+      background-image: url('../images/words.png');
+      width: 393px;
+      height: 65px;
+    }
+    // font-size: $font-size-tablet;
+    // font-family: $font-family-tablet;
+  }  
+  // @media(min-width:$screen-sm-min) and (max-width:$screen-sm-max){
+  //   // font-size: $font-size-tablet;
+  //   // font-family: $font-family-tablet;
+  // }  
+}
+
+.debug {
+  visibility: hidden;
+}
+
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  /* Set the fixed height of the footer here */
+  height: 60px;
+  background-color: #f5f5f5;
 }
 
 // TODO Can probably delete everything after this
@@ -98,7 +160,6 @@ $kioskfonts: "Avenir Next", "Helvetica Neue", Helvetica, sans-serif;
 
 /* Everything but the jumbotron gets side spacing for mobile first views */
 .header,
-.marketing,
 .footer {
   padding-left: 15px;
   padding-right: 15px;
@@ -117,35 +178,8 @@ $kioskfonts: "Avenir Next", "Helvetica Neue", Helvetica, sans-serif;
   }
 }
 
-/* Custom page footer */
-.footer {
-  padding-top: 19px;
-  color: #777;
-  border-top: 1px solid #e5e5e5;
-}
-
 .container-narrow > hr {
   margin: 30px 0;
-}
-
-/* Main marketing message and sign up button */
-.jumbotron {
-  text-align: center;
-  border-bottom: 1px solid #e5e5e5;
-
-  .btn {
-    font-size: 21px;
-    padding: 14px 24px;
-  }
-}
-
-/* Supporting marketing content */
-.marketing {
-  margin: 40px 0;
-
-  p + h4 {
-    margin-top: 28px;
-  }
 }
 
 // /* Responsive: Portrait tablets and up */

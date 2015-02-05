@@ -16,17 +16,26 @@
                         }
                     ],
                     "question": "Application Type",
-                    "required": true
-                },
-                {
-                    "datatype": "string",
-                    "question": "First Name",
-                    "required": true
+                    "required": true,
+                    "class": "col-xs-12"
                 },
                 {
                     "datatype": "string",
                     "question": "Last Name",
-                    "required": true
+                    "required": true,
+                    "class": "col-md-5"
+                },
+                {
+                    "datatype": "string",
+                    "question": "First Name",
+                    "required": true,
+                    "class": "col-md-5"
+                },
+                {
+                    "datatype": "string",
+                    "question": "Middle Initial",
+                    "required": true,
+                    "class": "col-md-2"
                 }
             ]
         },
@@ -35,12 +44,14 @@
                 {
                     "datatype": "string",
                     "question": "Address",
-                    "required": true
+                    "required": true,
+                    "class": "col-md-5"
                 },
                 {
                     "datatype": "string",
                     "question": "City",
-                    "required": true
+                    "required": true,
+                    "class": "col-md-5"
                 }
             ]
         }
