@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('clientApp')
+angular.module('applyMyRideApp')
   .controller('QuestionsController', ['$scope', '$location', '$routeParams', 'sectionsFactory',
     'paratransitApplication',
     function($scope, $location, $routeParams, sectionsFactory, paratransitApplication) {

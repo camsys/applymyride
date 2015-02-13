@@ -2,13 +2,13 @@
 
 /**
  * @ngdoc function
- * @name clientApp.controller:AboutCtrl
+ * @name applyMyRideApp.controller:AboutController
  * @description
- * # AboutCtrl
- * Controller of the clientApp
+ * # AboutController
+ * Controller of the applyMyRideApp
  */
-angular.module('clientApp')
-  .controller('AboutCtrl', ['$scope', function ($scope) {
+angular.module('applyMyRideApp')
+  .controller('AboutController', ['$scope', function ($scope) {
     $scope.awesomeThings = [
       'HTML5 Boilerplate',
       'AngularJS',

@@ -1,14 +1,7 @@
 'use strict';
 
-/**
- * @ngdoc function
- * @name clientApp.controller:MainCtrl
- * @description
- * # MainCtrl
- * Controller of the clientApp
- */
-angular.module('clientApp')
-	.controller('MainCtrl', ['$scope',
+angular.module('applyMyRideApp')
+	.controller('MainController', ['$scope',
 		function($scope) {
 
 		}

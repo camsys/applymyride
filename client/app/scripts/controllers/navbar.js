@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('clientApp')
-  .controller('NavbarCtrl', ['$scope', '$location', function ($scope, $location) {
+angular.module('applyMyRideApp')
+  .controller('NavbarController', ['$scope', '$location', function ($scope, $location) {
 
     $scope.showNavbar = function() {
       return !($location.path()==='/');

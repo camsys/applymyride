@@ -1,14 +1,12 @@
 'use strict';
 
-angular.module('clientApp')
+angular.module('applyMyRideApp')
   .controller('PlanController', ['$scope', '$location', '$routeParams',
     function($scope, $location, $routeParams) {
     }
   ]);
 
-  var app = angular.module('myApp', []);
-
-angular.module('clientApp').service('Map', ['$q', function($q) {
+angular.module('applyMyRideApp').service('Map', ['$q', function($q) {
     
     this.init = function() {
         var options = {
@@ -70,7 +68,7 @@ angular.module('clientApp').service('Map', ['$q', function($q) {
     
 }]);
 
-angular.module('clientApp').controller('newPlaceCtrl', ['$scope', 'Map', function($scope, Map) {
+angular.module('applyMyRideApp').controller('NewPlaceController', ['$scope', 'Map', function($scope, Map) {
     
     $scope.place = {};
     

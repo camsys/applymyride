@@ -1,11 +1,11 @@
 'use strict';
 
-angular.module('clientApp')
+angular.module('applyMyRideApp')
   .factory('sectionsFactory', function ($resource) {
     return $resource('./data/sections.json');
   });
 
-angular.module('clientApp')
+angular.module('applyMyRideApp')
     .service('paratransitApplication', function() {
         var _sections = {};
         this.set = function(sections) {

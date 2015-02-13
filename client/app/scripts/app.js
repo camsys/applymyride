@@ -2,14 +2,14 @@
 
 /**
  * @ngdoc overview
- * @name clientApp
+ * @name applyMyRideApp
  * @description
- * # clientApp
+ * # applyMyRideApp
  *
  * Main module of the application.
  */
 angular
-  .module('clientApp', [
+  .module('applyMyRideApp', [
     'ngAnimate',
     'ngAria',
     'ngCookies',
@@ -23,11 +23,15 @@ angular
     $routeProvider
       .when('/', {
         templateUrl: 'views/main.html',
-        controller: 'MainCtrl'
+        controller: 'MainController'
       })
-      .when('/about', {
-        templateUrl: 'views/about.html',
-        controller: 'AboutCtrl'
+      .when('/login', {
+        templateUrl: 'views/login.html',
+        controller: 'LoginController'
+      })
+      .when('/register', {
+        templateUrl: 'views/register.html',
+        controller: 'RegisterController'
       })
       .when('/questions/:section_id', {
         templateUrl: 'views/questions.html',
@@ -37,9 +41,12 @@ angular
         templateUrl: 'views/plan.html',
         controller: 'PlanController'
       })
+      .when('/about', {
+        templateUrl: 'views/about.html',
+        controller: 'AboutController'
+      })
       .otherwise({
         redirectTo: '/'
       });
 
   });
-
