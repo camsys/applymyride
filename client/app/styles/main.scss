@@ -46,6 +46,7 @@ $kioskfonts: "Avenir Next", "Helvetica Neue", Helvetica, sans-serif;
 
 .jumbotron {
   margin-top: 14px;
+  padding-top: 1em;
 }
 
 .navbar {
@@ -102,6 +103,9 @@ $kioskfonts: "Avenir Next", "Helvetica Neue", Helvetica, sans-serif;
 }
 
 .marketing {
+  .logo-image, .logo-text {
+    margin-bottom: 15px;
+  }
   .logo-image {
     background-image: url('../images/bus.png');
     width: 81px;

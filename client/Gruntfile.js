@@ -31,11 +31,11 @@ module.exports = function (grunt) {
     watch: {
       haml: {
         files: ['<%= yeoman.app %>/views/{,*/}*.haml'],
-        tasks: ['haml:dist']
+        tasks: ['haml:watched']
       },
       coffee: {
         files: ['<%= yeoman.app %>/scripts/{,*/}*.coffee'],
-        tasks: ['coffee:dist']
+        tasks: ['coffee:watched']
       },
       bower: {
         files: ['bower.json'],
@@ -183,13 +183,24 @@ module.exports = function (grunt) {
     },
 
     coffee: {
-      dist: {
+      watched: {
         files: [
           {
             expand: true,
             cwd: '<%= yeoman.app %>/scripts',
             src: '{,*/}*.coffee',
             dest: '.tmp/scripts',
+            ext: '.js'
+          }
+        ]
+      },
+      dist: {
+        files: [
+          {
+            expand: true,
+            cwd: '<%= yeoman.app %>/scripts',
+            src: '{,*/}*.coffee',
+            dest: 'dist/scripts',
             ext: '.js'
           }
         ]
@@ -210,13 +221,24 @@ module.exports = function (grunt) {
       options: {
         language: 'ruby'
       },
-      dist: {
+      watched: {
         files: [
           {
             expand: true,
             cwd: '<%= yeoman.app %>/views',
             src: '{,*/}*.haml',
             dest: '.tmp/views',
+            ext: '.html'
+          }
+        ]
+      },
+      dist: {
+        files: [
+          {
+            expand: true,
+            cwd: '<%= yeoman.app %>/views',
+            src: '{,*/}*.haml',
+            dest: 'dist/views',
             ext: '.html'
           }
         ]
@@ -448,8 +470,8 @@ module.exports = function (grunt) {
       'clean:server',
       'wiredep',
       'concurrent:server',
-      'coffee:dist',
-      'haml:dist',
+      'coffee:watched',
+      'haml:watched',
       'autoprefixer',
       'connect:livereload',
       'watch'

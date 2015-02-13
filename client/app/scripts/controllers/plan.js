@@ -8,7 +8,7 @@ angular.module('clientApp')
 
   var app = angular.module('myApp', []);
 
-angular.module('clientApp').service('Map', function($q) {
+angular.module('clientApp').service('Map', ['$q', function($q) {
     
     this.init = function() {
         var options = {
@@ -68,9 +68,9 @@ angular.module('clientApp').service('Map', function($q) {
         this.map.panToBounds(b);
     }
     
-});
+}]);
 
-angular.module('clientApp').controller('newPlaceCtrl', function($scope, Map) {
+angular.module('clientApp').controller('newPlaceCtrl', ['$scope', 'Map', function($scope, Map) {
     
     $scope.place = {};
     
@@ -96,4 +96,4 @@ angular.module('clientApp').controller('newPlaceCtrl', function($scope, Map) {
     }
     
     Map.init();
-});
+}]);
