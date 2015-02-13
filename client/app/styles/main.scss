@@ -103,6 +103,10 @@ $kioskfonts: "Avenir Next", "Helvetica Neue", Helvetica, sans-serif;
 }
 
 .marketing {
+  .btn {
+    margin-bottom: 15px;
+  }
+
   .logo-image, .logo-text {
     margin-bottom: 15px;
   }
@@ -139,6 +143,10 @@ $kioskfonts: "Avenir Next", "Helvetica Neue", Helvetica, sans-serif;
   //   // font-size: $font-size-tablet;
   //   // font-family: $font-family-tablet;
   // }  
+}
+
+.btn {
+  box-shadow: 0px 2px 8px rgba(0,0,0,0.4);
 }
 
 .debug {
