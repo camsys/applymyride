@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('applyMyRideApp')
-  .controller('LoginController', ['$scope', '$location',
-    function ($scope, $location) {
+  .controller('LoginController', ['$scope', '$location', 'flash',
+    function ($scope, $location, flash) {
       $scope.detectLoginType = function() {
         $scope.isEmail = /@/.test($scope.login.emailOrId);
         $scope.isSharedRideId = !$scope.isEmail && /^\d+$/.test($scope.login.emailOrId);
@@ -17,7 +17,7 @@ angular.module('applyMyRideApp')
       }
 
       $scope.login = function() {
-        console.log('login');
+        flash.setMessage('Welcome, Eric!');
         $location.path('/plan');
       }
     }
