@@ -112,6 +112,10 @@ $kioskfonts: "Avenir Next", "Helvetica Neue", Helvetica, sans-serif;
 }
 
 .marketing {
+  h1 {
+    font-size: 3em;
+  }
+
   .btn {
     margin-bottom: 15px;
   }
@@ -160,6 +164,10 @@ $kioskfonts: "Avenir Next", "Helvetica Neue", Helvetica, sans-serif;
 
 .debug {
   visibility: hidden;
+}
+
+.todo {
+  background-color: yellow;
 }
 
 .footer {
