@@ -8,6 +8,17 @@ angular.module('applyMyRideApp')
       // plan.to = "Someplace else";
       // plan.depart = "2/14/2015 9:00 AM"
 
+      $scope.addresses = [
+        { place: '1230 Roosevelt Avenue, York, PA 17404' },
+        { place: '1 W King St, York, PA 17401' },
+        { place: '159 E Market St, York, PA 17401' },
+        { place: '160 W Market St, York, PA 17401' },
+        { place: '54 W Philadelphia St, York, PA 17401' },
+        { place: '51 E Philadelphia St, York, PA 17401' },
+        { place: '55 W Philadelphia St, York, PA 17401' },
+        { place: '52 E Philadelphia St, York, PA 17401' }
+      ];
+
       $scope.$watch('useCurrentLocation', function(newValue, oldValue) {
         plan.useCurrentLocation = newValue;
         if (newValue===true) {
@@ -17,6 +28,10 @@ angular.module('applyMyRideApp')
         }
       });
 
+      $scope.$watch('fromChoice', function(n, o) {
+        plan.from = n.title;
+        }
+      );
 
 
     }

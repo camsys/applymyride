@@ -49,7 +49,6 @@
   %form.from-location{ng: {show: 'useCurrentLocation==false && plan.from==null'}}
     .form-group
       %label{for: "fromLocation"} Where are you starting from?
-      %angucomplete-alt#ex1{placeholder: 'Address or place name', pause: "100", "selected-object" => "selectedCountry", "local-data" => "countries", "search-fields" => "name", "title-field" => "name", minlength: "1", "input-class" => "form-control"}
-      / %input.form-control#fromLocation{placeholder: 'Address or place name', ng: {model: 'plan.fromChoices'}}
+      %angucomplete-alt#fromLocation{placeholder: 'Address or place name', "selected-object" => "fromChoice", "local-data" => "addresses", "search-fields" => "place", "title-field" => "place", minlength: "1", "input-class" => "form-control"}
 
   {{ plan | json }}
