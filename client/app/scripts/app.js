@@ -16,7 +16,8 @@ var app = angular.module('applyMyRideApp', [
     'ngResource',
     'ngRoute',
     'ngSanitize',
-    'ngTouch'
+    'ngTouch',
+    'angucomplete-alt'
   ]).config(function ($routeProvider, $locationProvider) {
     $routeProvider
       .when('/', {
