@@ -19,6 +19,19 @@ angular.module('applyMyRideApp')
         { place: '52 E Philadelphia St, York, PA 17401' }
       ];
 
+      $scope.readyToPlan = function() {
+        return plan.from && plan.to && plan.depart && (plan.return || $scope.returnTrip==false);
+      }
+
+      $scope.restartPlan = function() {
+        $scope.useCurrentLocation = null;
+        plan.from = null;
+        plan.to = null;
+        plan.depart = null;
+        plan.return = null;
+        $scope.returnTrip = null;
+      }
+
       $scope.$watch('useCurrentLocation', function(newValue, oldValue) {
         plan.useCurrentLocation = newValue;
         if (newValue===true) {
@@ -28,9 +41,21 @@ angular.module('applyMyRideApp')
         }
       });
 
+      // TODO I don't think having these multiple $watches is good angular style.
       $scope.$watch('fromChoice', function(n, o) {
-        plan.from = n.title;
+        console.log(n);
+        if (n) {
+          plan.from = n.title;
         }
+      }
+      );
+
+      $scope.$watch('toChoice', function(n, o) {
+        console.log(n);
+        if (n) {
+          plan.to = n.title;
+        }
+      }
       );
 
 

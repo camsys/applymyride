@@ -27,7 +27,7 @@
     .col-xs-12
       .row
         .col-xs-3.title
-          Depart
+          Depart At
         .col-xs-9
           {{ plan.depart }}
 
@@ -35,7 +35,7 @@
     .col-xs-12
       .row
         .col-xs-3.title
-          Return
+          Return At
         .col-xs-9
           {{ plan.return }}
 
@@ -50,5 +50,36 @@
     .form-group
       %label{for: "fromLocation"} Where are you starting from?
       %angucomplete-alt#fromLocation{placeholder: 'Address or place name', "selected-object" => "fromChoice", "local-data" => "addresses", "search-fields" => "place", "title-field" => "place", minlength: "1", "input-class" => "form-control"}
+
+  %form.to-location{ng: {hide: 'plan.from==null', show: 'plan.to==null'}}
+    .form-group
+      %label{for: "toLocation"} Where are you going to?
+      %angucomplete-alt#toLocation{placeholder: 'Address or place name', "selected-object" => "toChoice", "local-data" => "addresses", "search-fields" => "place", "title-field" => "place", minlength: "1", "input-class" => "form-control"}
+
+  %form.depart{ng: {hide: 'plan.to==null', show: 'plan.depart==null'}}
+    .form-group
+      %label{for: "depart"} When do you want to leave?
+      %input#depart{type: 'datetime-local', ng: {model: 'plan.depart'}}
+
+  .need-return-trip{ng: {hide: 'plan.depart==null', show: 'returnTrip==null'}}
+    Do you need a return trip?
+    %button.btn.btn-primary{ng: {click: 'returnTrip = true'}}
+      Yes
+    %button.btn.btn-primary{ng: {click: 'returnTrip = false'}}
+      No
+
+  %form.return{ng: {show: 'returnTrip==true && plan.return==null'}}
+    .form-group
+      %label{for: "return"} When do you want to return?
+      %input#return{type: 'datetime-local', ng: {model: 'plan.return'}}
+
+  .pull-right
+    .btn.btn-success{ng: {hide: 'plan.from==null', click: 'restartPlan()'}}
+      %i.fa.fa-undo
+    %a.btn.btn-success{ng: {href: "#/plan2", show: 'readyToPlan()'}}
+      Plan My Trip
+      %span{ng: {include: "'views/button-chevron-right.html'"}}
+
+
 
   {{ plan | json }}
