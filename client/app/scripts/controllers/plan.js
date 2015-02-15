@@ -3,6 +3,22 @@
 angular.module('applyMyRideApp')
   .controller('PlanController', ['$scope', '$location', '$routeParams',
     function($scope, $location, $routeParams) {
+      var plan = {};
+      $scope.plan = plan;
+      // plan.to = "Someplace else";
+      // plan.depart = "2/14/2015 9:00 AM"
+
+      $scope.$watch('useCurrentLocation', function(newValue, oldValue) {
+        plan.useCurrentLocation = newValue;
+        if (newValue===true) {
+          plan.from = '1230 Roosevelt Avenue, York, PA 17404';
+        } else {
+          plan.from = null;
+        }
+      });
+
+
+
     }
   ]);
 

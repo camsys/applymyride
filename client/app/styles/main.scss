@@ -60,6 +60,14 @@ $kioskfonts: "Avenir Next", "Helvetica Neue", Helvetica, sans-serif;
 
 .navbar {
   // background-image: url('../images/CURVY-LINES-1.jpg');
+  i {
+    font-size: 3em;
+    color: #03763a;
+  }
+  .navbar-icon {
+    padding-bottom: 0;
+    padding-top: 5px;
+  }
 }
 
 .slide {
@@ -233,3 +241,15 @@ $kioskfonts: "Avenir Next", "Helvetica Neue", Helvetica, sans-serif;
 //     border-bottom: 0;
 //   }
 // }
+
+.plan {
+  .card {
+    border: 1px solid #d8d8d8;
+    margin-bottom: 5px;
+    border-radius: 3px;
+    box-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+    .title {
+      background-color: #d8d8d8;
+    }
+  }
+}
