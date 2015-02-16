@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('applyMyRideApp')
-  .controller('PlanController', ['$scope', '$location', '$routeParams',
-    function($scope, $location, $routeParams) {
+  .controller('PlanController', ['$scope',
+    function($scope) {
       var plan = {};
       $scope.plan = plan;
       // plan.to = "Someplace else";
@@ -20,8 +20,8 @@ angular.module('applyMyRideApp')
       ];
 
       $scope.readyToPlan = function() {
-        return plan.from && plan.to && plan.depart && (plan.return || $scope.returnTrip==false);
-      }
+        return plan.from && plan.to && plan.depart && (plan.return || $scope.returnTrip===false);
+      };
 
       $scope.restartPlan = function() {
         $scope.useCurrentLocation = null;
@@ -30,9 +30,9 @@ angular.module('applyMyRideApp')
         plan.depart = null;
         plan.return = null;
         $scope.returnTrip = null;
-      }
+      };
 
-      $scope.$watch('useCurrentLocation', function(newValue, oldValue) {
+      $scope.$watch('useCurrentLocation', function(newValue) {
         plan.useCurrentLocation = newValue;
         if (newValue===true) {
           plan.from = '1230 Roosevelt Avenue, York, PA 17404';
@@ -42,16 +42,14 @@ angular.module('applyMyRideApp')
       });
 
       // TODO I don't think having these multiple $watches is good angular style.
-      $scope.$watch('fromChoice', function(n, o) {
-        console.log(n);
+      $scope.$watch('fromChoice', function(n) {
         if (n) {
           plan.from = n.title;
         }
       }
       );
 
-      $scope.$watch('toChoice', function(n, o) {
-        console.log(n);
+      $scope.$watch('toChoice', function(n) {
         if (n) {
           plan.to = n.title;
         }
@@ -62,7 +60,9 @@ angular.module('applyMyRideApp')
     }
   ]);
 
-angular.module('applyMyRideApp').service('Map', ['$q', function($q) {
+angular.module('applyMyRideApp').service('Map', ['$q', '$window', function($q, $window) {
+
+    var google = $window.google;
     
     this.init = function() {
         var options = {
@@ -70,26 +70,29 @@ angular.module('applyMyRideApp').service('Map', ['$q', function($q) {
             center: new google.maps.LatLng(39.9647747,-76.7291728),
             zoom: 13,
             disableDefaultUI: false    
-        }
+        };
         this.map = new google.maps.Map(
-            document.getElementById("map"), options
+            document.getElementById('map'), options
         );
         this.places = new google.maps.places.PlacesService(this.map);
         this.infoWindows = [];
-    }
+    };
     
     this.search = function(str) {
         var d = $q.defer();
         this.places.textSearch({query: str,
           location: new google.maps.LatLng(39.9647747,-76.7291728),
           radius: 5000}, function(results, status) {
-            if (status == 'OK') {
+            if (status === 'OK') {
                 d.resolve(results);
             }
-            else d.reject(status);
+            else
+              {
+                d.reject(status);
+              }
         });
         return d.promise;
-    }
+    };
     
     this.addMarker = function(res) {
         // if(this.marker) this.marker.setMap(null);
@@ -104,7 +107,7 @@ angular.module('applyMyRideApp').service('Map', ['$q', function($q) {
         this.infoWindows = [];
         var max = (res.length > 5 ? 5 : res.length);
         var b = new google.maps.LatLngBounds();
-        for (var i = 0; i < max; i++) {
+        for (i = 0; i < max; i++) {
           var r = res[i];
           // if(this.infoWindow) this.infoWindow.close();
           var contentString = '' + r.name + ' <button class="btn btn-primary btn-xs" ng-click="console.log(\'click\');"><i class="fa fa-check"></i></button>';
@@ -120,11 +123,11 @@ angular.module('applyMyRideApp').service('Map', ['$q', function($q) {
         // this.map.setCenter(res[0].geometry.location);
         console.log(b);
         this.map.panToBounds(b);
-    }
+    };
     
 }]);
 
-angular.module('applyMyRideApp').controller('NewPlaceController', ['$scope', 'Map', function($scope, Map) {
+angular.module('applyMyRideApp').controller('NewPlaceController', ['$scope', '$window', 'Map', function($scope, $window, Map) {
     
     $scope.place = {};
     
@@ -143,11 +146,11 @@ angular.module('applyMyRideApp').controller('NewPlaceController', ['$scope', 'Ma
                 $scope.apiStatus = status;
             }
         );
-    }
+    };
     
     $scope.send = function() {
-        alert($scope.place.name + ' : ' + $scope.place.lat + ', ' + $scope.place.lng);    
-    }
+        $window.alert($scope.place.name + ' : ' + $scope.place.lat + ', ' + $scope.place.lng);    
+    };
     
     Map.init();
 }]);

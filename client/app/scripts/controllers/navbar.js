@@ -9,18 +9,18 @@ angular.module('applyMyRideApp')
     $scope.flash = flash;
 
     $scope.showNavbar = function() {
-      return !($location.path()==='/');
-    }
+      return ($location.path()!=='/');
+    };
 
   }]);
 
-angular.module('applyMyRideApp').factory("flash", function($rootScope) {
+angular.module('applyMyRideApp').factory('flash', function($rootScope) {
   // See http://fdietz.github.io/recipes-with-angular-js/common-user-interface-patterns/displaying-a-flash-notice-failure-message.html
   var queue = [];
-  var currentMessage = "";
+  var currentMessage = '';
 
-  $rootScope.$on("$routeChangeSuccess", function() {
-    currentMessage = queue.shift() || "";
+  $rootScope.$on('$routeChangeSuccess', function() {
+    currentMessage = queue.shift() || '';
   });
 
   return {
@@ -36,7 +36,7 @@ angular.module('applyMyRideApp').factory("flash", function($rootScope) {
 app.directive('back', ['$window', function($window) {
   return {
       restrict: 'A',
-      link: function (scope, elem, attrs) {
+      link: function (scope, elem) {
           elem.bind('click', function () {
               $window.history.back();
           });

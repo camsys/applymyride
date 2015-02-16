@@ -8,7 +8,7 @@
  *
  * Main module of the application.
  */
-var app = angular.module('applyMyRideApp', [
+angular.module('applyMyRideApp', [
     'ngAnimate',
     'ngAria',
     'ngCookies',
@@ -18,7 +18,7 @@ var app = angular.module('applyMyRideApp', [
     'ngSanitize',
     'ngTouch',
     'angucomplete-alt'
-  ]).config(function ($routeProvider, $locationProvider) {
+  ]).config(function ($routeProvider) {
     $routeProvider
       .when('/', {
         templateUrl: 'views/main.html',
@@ -32,7 +32,7 @@ var app = angular.module('applyMyRideApp', [
         templateUrl: 'views/register.html',
         controller: 'RegisterController'
       })
-      .when('/questions/:section_id', {
+      .when('/questions/:sectionId', {
         templateUrl: 'views/questions.html',
         controller: 'QuestionsController'
       })

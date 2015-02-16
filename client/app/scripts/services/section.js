@@ -10,9 +10,9 @@ angular.module('applyMyRideApp')
         var _sections = {};
         this.set = function(sections) {
             _sections = sections;
-        }
+        };
         this.get = function() {
             return _sections;
-        }
+        };
     }
 );
