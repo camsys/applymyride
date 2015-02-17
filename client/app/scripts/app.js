@@ -36,6 +36,10 @@ angular.module('applyMyRideApp', [
         templateUrl: 'views/questions.html',
         controller: 'QuestionsController'
       })
+      .when('/try-it-out', {
+        templateUrl: 'views/try-it-out.html',
+        controller: 'PlanController'
+      })
       .when('/plan', {
         templateUrl: 'views/plan.html',
         controller: 'PlanController'
