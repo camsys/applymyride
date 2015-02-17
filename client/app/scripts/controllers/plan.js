@@ -1,10 +1,15 @@
 'use strict';
 
-angular.module('applyMyRideApp')
-  .controller('PlanController', ['$scope',
+var app = angular.module('applyMyRideApp');
+
+app.controller('PlanController', ['$scope',
     function($scope) {
       var plan = {};
       $scope.plan = plan;
+      // $scope.useCurrentLocation=true;
+      // plan.useCurrentLocation=true;
+      // plan.from = 'From place';
+      // plan.to = 'To place';
       // plan.to = "Someplace else";
       // plan.depart = "2/14/2015 9:00 AM"
 
@@ -59,6 +64,23 @@ angular.module('applyMyRideApp')
 
     }
   ]);
+
+
+app.directive('date', function() {
+    return {
+        require: 'ngModel',
+        link: function(scope, element, attrs, ngModelController) {
+            
+            ngModelController.$parsers.push(function(value) {
+                return new Date(value).getTime();
+            });
+            
+            ngModelController.$formatters.push(function(value) {
+                return moment(value).format("MM/DD/YYYY");
+            });
+        }
+    };
+})
 
 angular.module('applyMyRideApp').service('Map', ['$q', '$window', function($q, $window) {
 

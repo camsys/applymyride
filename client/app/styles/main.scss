@@ -97,6 +97,21 @@ $kioskfonts: "Avenir Next", "Helvetica Neue", Helvetica, sans-serif;
     left: -100%;
 }
 
+
+
+.from-card.ng-hide-add, .from-card.ng-hide-remove {
+  /* this is required as of 1.3x to properly
+     apply all styling in a show/hide animation */
+  transition: 0s linear all;
+}
+
+.from-card.ng-hide-add-active,
+.from-card.ng-hide-remove-active {
+  /* the transition is defined in the active class */
+  transition: 0.1s linear all;
+}
+
+
 .action-button {
   margin-top: 1em;
 }
