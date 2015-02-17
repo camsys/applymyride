@@ -4,12 +4,8 @@
       .center-block.logo-image
       .center-block.logo-text
       %a.center-block.btn.btn-success{"ng-href" => "#/login"}
-        Sign In
+        Sign In/Plan A Trip
         / TODO This should be a directive methinks
-        %span{ng: {include: "'views/button-chevron-right.html'"}}
-
-      %a.center-block.btn.btn-success{"ng-href" => "#/register"}
-        Sign Up
         %span{ng: {include: "'views/button-chevron-right.html'"}}
 
       %a.center-block.btn.btn-success{"ng-href" => "#/try-it-out"}
@@ -18,4 +14,8 @@
 
       %a.center-block.btn.btn-success{"ng-href" => "#/about"}
         Learn More
+        %span{ng: {include: "'views/button-chevron-right.html'"}}
+
+      %a.center-block.btn.btn-success{"ng-href" => "#/register"}
+        Sign Up
         %span{ng: {include: "'views/button-chevron-right.html'"}}
