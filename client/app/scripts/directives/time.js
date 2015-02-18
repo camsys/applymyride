@@ -35,12 +35,12 @@ app.directive('csTime', function() {
                 {display: '11:30', isSelected: false},
                 {display: '12:00', isSelected: false},
                 {display: '12:30', isSelected: false}
-            ]
+            ];
 
             scope.meridians = [
                 {display: 'am', isSelected: false},
                 {display: 'pm', isSelected: true},
-            ]
+            ];
 
             scope.timeSelected = scope.times[1];
             scope.merSelected = scope.meridians[1];

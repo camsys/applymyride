@@ -72,7 +72,7 @@ app.controller('PlanController', ['$scope', '$routeParams', '$location', 'planSe
             $location.path('/plan/departTime');
             break;
           case 'departTime':
-            var t = moment(plan.departTime, "h:mm a");
+            var t = moment(plan.departTime, 'h:mm a');
             planService.departDate.hour(t.hour()).minute(t.minute()).second(0).millisecond(0);
             $location.path('/plan/needReturnTrip');
             break;
@@ -88,10 +88,10 @@ app.controller('PlanController', ['$scope', '$routeParams', '$location', 'planSe
             planService.returnDate = plan.returnDate;
             $location.path('/plan2');
             break;
-        };
+        }
       };
 
-      $scope.fromLocationChanged = function(n) {
+      $scope.fromLocationChanged = function() {
       };
 
       $scope.restartPlan = function() {

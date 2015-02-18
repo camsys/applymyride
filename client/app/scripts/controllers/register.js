@@ -9,7 +9,7 @@ angular.module('applyMyRideApp')
       };
 
       $scope.submittable = function() {
-        var f = $scope.loginForm;
+        // var f = $scope.loginForm;
       };
 
       $scope.register = function() {
