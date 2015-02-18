@@ -10,10 +10,6 @@ angular.module('applyMyRideApp')
 
       $scope.submittable = function() {
         var f = $scope.loginForm;
-        console.log(f.email);
-        console.log(f.email.$valid);
-        console.log(f.email.$viewValue);
-        console.log(f.sharedRideId.$viewValue);
       };
 
       $scope.register = function() {

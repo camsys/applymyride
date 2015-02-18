@@ -1,0 +1,9 @@
+.row
+  %div{ng: {repeat: 'time in times'}}
+    .col-xs-1.time.text-center{ng: {click: 'select(time)', class: '{ selected: time.isSelected }'}}
+      {{ time.display }}
+
+.row
+  %div{ng: {repeat: 'mer in meridians'}}
+    .col-xs-1.time.text-center{ng: {click: 'selectMeridian(mer)', class: '{ selected: mer.isSelected }'}}
+      {{ mer.display }}

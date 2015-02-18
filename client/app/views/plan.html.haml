@@ -32,6 +32,15 @@
       
       %cs-calendar{selected: "plan.departDate"}
 
+    .depart-time{ng: {show: 'step==="departTime"'}}
+      %form
+        .form-group
+          %label{for: "departTime"}
+            %h2 When are you leaving?
+          %input#departTIme{time: 'time', ng: {model: 'plan.departTime'}}
+      
+      %cs-time{selected: "plan.departTime"}
+
     .need-return-trip{ng: {show: 'step==="needReturnTrip"'}}
       %h2 Do you need a return trip?
       %a.btn.btn-success{ng: {href: '#/plan/returnDate'}}
@@ -76,17 +85,15 @@
             .col-xs-3.title
               Depart At
             .col-xs-9
-              {{ planService.departDate }}
+              {{ planService.departDate.format('M/D/YYYY h:mm a') }}
 
-      .row.card
+      .row.card{ng: {show: 'planService.returnDate'}}
         .col-xs-12
           .row
             .col-xs-3.title
               Return At
             .col-xs-9
               {{ planService.returnDate }}
-
-
 
   .container
     .pull-right
@@ -98,4 +105,3 @@
       %a.btn.btn-success{ng: {href: "#/plan2", show: 'readyToPlan()'}}
         Plan My Trip
         %span{ng: {include: "'views/button-chevron-right.html'"}}
-

@@ -7,8 +7,6 @@ app.controller('PlanController', ['$scope', '$routeParams', '$location', 'planSe
 
       $scope.step = $routeParams.step;
 
-      console.log('starting planController, step: ' + $routeParams.step);
-
       $scope.notYet = function() {
         return plan.from;
       };
@@ -29,10 +27,8 @@ app.controller('PlanController', ['$scope', '$routeParams', '$location', 'planSe
 
       if ($scope.step==='to') {
         if (!planService.from) {
-          console.log('setting planservice.from');
           planService.from = '1230 Roosevelt Avenue, York, PA 17404';
         } else {
-          console.log('NOT setting planservice.from');
         }
       }
 
@@ -59,7 +55,6 @@ app.controller('PlanController', ['$scope', '$routeParams', '$location', 'planSe
       };
 
       $scope.next = function() {
-        console.log('next, step is ' + $scope.step);
         switch($scope.step) {
           case 'start':
             $location.path('/plan/from');
@@ -74,6 +69,11 @@ app.controller('PlanController', ['$scope', '$routeParams', '$location', 'planSe
             break;
           case 'departDate':
             planService.departDate = plan.departDate;
+            $location.path('/plan/departTime');
+            break;
+          case 'departTime':
+            var t = moment(plan.departTime, "h:mm a");
+            planService.departDate.hour(t.hour()).minute(t.minute()).second(0).millisecond(0);
             $location.path('/plan/needReturnTrip');
             break;
           case 'needReturnTrip':
@@ -92,7 +92,6 @@ app.controller('PlanController', ['$scope', '$routeParams', '$location', 'planSe
       };
 
       $scope.fromLocationChanged = function(n) {
-        console.log('fromLocationChanged:' + n);
       };
 
       $scope.restartPlan = function() {
@@ -121,7 +120,6 @@ app.controller('PlanController', ['$scope', '$routeParams', '$location', 'planSe
 
       $scope.$watch('plan.from', function(n) {
         if (n) {
-          console.log('seeting scope.notYet to false');
           $scope.notYet = false;
         }
       }
