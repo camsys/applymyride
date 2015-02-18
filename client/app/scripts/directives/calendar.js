@@ -37,6 +37,7 @@ app.directive('csCalendar', function() {
 
     return {
         templateUrl: '/templates/calendar.html',
+        restrict: 'E',
         scope: {
             selected: '='
         },

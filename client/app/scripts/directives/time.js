@@ -6,6 +6,7 @@ app.directive('csTime', function() {
 
     return {
         templateUrl: '/views/time-grid.html',
+        restrict: 'E',
         scope: {
             selected: '='
         },
