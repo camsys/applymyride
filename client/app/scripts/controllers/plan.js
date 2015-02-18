@@ -40,6 +40,16 @@ app.controller('PlanController', ['$scope', '$routeParams', '$location', 'planSe
       // plan.to = "Someplace else";
       // plan.depart = "2/14/2015 9:00 AM"
 
+      plan.purpose = 'Medical';
+      $scope.purposes = [
+        'General Purpose',
+        'After School Program', 
+        'Grocery',
+        'Medical',
+        'Work',
+        'Other'
+      ];
+
       $scope.addresses = [
         { place: '1230 Roosevelt Avenue, York, PA 17404' },
         { place: '1 W King St, York, PA 17401' },
@@ -88,6 +98,10 @@ app.controller('PlanController', ['$scope', '$routeParams', '$location', 'planSe
           case 'returnTime':
             var t = moment(plan.returnTime, 'h:mm a');
             planService.returnDate.hour(t.hour()).minute(t.minute()).second(0).millisecond(0);
+            $location.path('/plan/purpose');
+            break;
+          case 'purpose':
+            planService.purpose = plan.purpose;
             $location.path('/plan/confirm');
             break;
           case 'confirm':

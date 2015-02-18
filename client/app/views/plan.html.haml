@@ -45,7 +45,7 @@
       %h2 Do you need a return trip?
       %a.btn.btn-success{ng: {href: '#/plan/returnDate'}}
         Yes
-      %a.btn.btn-success{ng: {href: '#/plan/confirm'}}
+      %a.btn.btn-success{ng: {href: '#/plan/purpose'}}
         No
 
     .return-date{ng: {show: 'step==="returnDate"'}}
@@ -66,6 +66,14 @@
       
       %cs-time{selected: "plan.returnTime"}
 
+    .purpose{ng: {show: 'step==="purpose"'}}
+      %h2 What is your trip purpose?
+      %form
+        .radio{ng: {repeat: 'purpose in purposes'}}
+          %label
+            %input#optionsRadios1{name: "purposes", type: "radio", value: "{{purpose}}", ng: {checked: 'purpose==="Medical"', model: 'plan.purpose'}}
+            {{ purpose }}
+      
     .confirm{ng: {show: 'step==="confirm"'}}
       %h2 This is what you told us
       .row.card
@@ -104,6 +112,14 @@
             .col-xs-9
               {{ planService.returnDate.format('M/D/YYYY h:mm a') }}
 
+      .row.card
+        .col-xs-12
+          .row
+            .col-xs-3.title
+              Purpose
+            .col-xs-9
+              {{ planService.purpose }}
+
   .container
     .pull-right
       .btn.btn-success{ng: {hide: 'plan.from==null', click: 'restartPlan()'}}
@@ -114,3 +130,4 @@
       %a.btn.btn-success{ng: {href: "#/plan2", show: 'readyToPlan()'}}
         Plan My Trip
         %span{ng: {include: "'views/button-chevron-right.html'"}}
+
