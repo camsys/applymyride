@@ -4,43 +4,7 @@
       %b API Error :
       %span {{ apiStatus }}
 
-    / .row.card{ng: {show: 'plan.from'}}
-    /   .col-xs-12
-    /     .row
-    /       .col-xs-3.title
-    /         From
-    /       .col-xs-9
-    /         {{ plan.from }}
-    /         .pull-right
-    /           %i.fa.fa-map-marker
-
-    / .row.card{ng: {show: 'plan.to'}}
-    /   .col-xs-12
-    /     .row
-    /       .col-xs-3.title
-    /         To
-    /       .col-xs-9
-    /         {{ plan.to }}
-    /         .pull-right
-    /           %i.fa.fa-map-marker
-
-    / .row.card{ng: {show: 'plan.depart'}}
-    /   .col-xs-12
-    /     .row
-    /       .col-xs-3.title
-    /         Depart At
-    /       .col-xs-9
-    /         {{ plan.depart }}
-
-    / .row.card{ng: {show: 'plan.return'}}
-    /   .col-xs-12
-    /     .row
-    /       .col-xs-3.title
-    /         Return At
-    /       .col-xs-9
-    /         {{ plan.return }}
-
-    .use-current-location{ng: {show: 'step==null'}}
+    .use-current-location{ng: {show: 'step==="start"'}}
       %h2 Start at your current location?
       %a.btn.btn-success{ng: {href: '#/plan/to'}}
         Yes
@@ -49,46 +13,90 @@
 
     %form.from-location{name: 'from_location', ng: {show: 'step==="from"'}}
       .form-group
-        %label{for: "fromLocation"} Where are you starting from?
+        %label{for: "fromLocation"}
+          %h2 Where are you starting from?
         %angucomplete-alt#fromLocation{placeholder: 'Enter address or place name', "selected-object" => "fromChoice", "local-data" => "addresses", "search-fields" => "place", "title-field" => "place", minlength: "1", "input-class" => "form-control", "input-changed" => "fromLocationChanged"}
 
     %form.to-location{ng: {show: 'step==="to"'}}
       .form-group
-        %label{for: "toLocation"} Where are you going?
+        %label{for: "toLocation"}
+          %h2 Where are you going?
         %angucomplete-alt#toLocation{placeholder: 'Enter address or place name', "selected-object" => "toChoice", "local-data" => "addresses", "search-fields" => "place", "title-field" => "place", minlength: "1", "input-class" => "form-control"}
 
     .depart-date{ng: {show: 'step==="departDate"'}}
       %form
         .form-group
-          %label{for: "departDate"} What day are you leaving?
+          %label{for: "departDate"}
+            %h2 What day are you leaving?
           %input#departDate{date: 'date', ng: {model: 'plan.departDate'}}
       
       %cs-calendar{selected: "plan.departDate"}
 
     .need-return-trip{ng: {show: 'step==="needReturnTrip"'}}
-      Do you need a return trip?
-      %button.btn.btn-primary{ng: {click: 'returnTrip = true'}}
+      %h2 Do you need a return trip?
+      %a.btn.btn-success{ng: {href: '#/plan/returnDate'}}
         Yes
-      %button.btn.btn-primary{ng: {click: 'returnTrip = false'}}
+      %a.btn.btn-success{ng: {href: '#/plan/confirm'}}
         No
 
-    %form.return{ng: {show: 'step==="returnDate"'}}
-      .form-group
-        %label{for: "return"} When do you want to return?
-        %input#return{type: 'datetime-local', ng: {model: 'plan.return'}}
+    .return-date{ng: {show: 'step==="returnDate"'}}
+      %form
+        .form-group
+          %label{for: "departDate"}
+            %h2 When do yuo want to return?
+          %input#departDate{date: 'date', ng: {model: 'plan.returnDate'}}
+      
+      %cs-calendar{selected: "plan.returnDate"}
+
+    .confirm{ng: {show: 'step==="confirm"'}}
+      %h2 This is what you told us
+      .row.card
+        .col-xs-12
+          .row
+            .col-xs-3.title
+              From
+            .col-xs-9
+              {{ planService.from }}
+              .pull-right
+                %i.fa.fa-map-marker
+
+      .row.card
+        .col-xs-12
+          .row
+            .col-xs-3.title
+              To
+            .col-xs-9
+              {{ planService.to }}
+              .pull-right
+                %i.fa.fa-map-marker
+
+      .row.card
+        .col-xs-12
+          .row
+            .col-xs-3.title
+              Depart At
+            .col-xs-9
+              {{ planService.departDate }}
+
+      .row.card
+        .col-xs-12
+          .row
+            .col-xs-3.title
+              Return At
+            .col-xs-9
+              {{ planService.returnDate }}
+
+
 
   .container
     .pull-right
       .btn.btn-success{ng: {hide: 'plan.from==null', click: 'restartPlan()'}}
         %i.fa.fa-undo
-      %a.btn.btn-success{ng: {click: 'next()', disabled: '{{notYet()}}', class: '{disabled: notYet()}'}}
+      %a.btn.btn-success{ng: {show: 'showNext', click: 'next()', disabled: '{{notYet()}}', class: '{disabled: notYet()}'}}
         Next
         %span{ng: {include: "'views/button-chevron-right.html'"}}
       %a.btn.btn-success{ng: {href: "#/plan2", show: 'readyToPlan()'}}
         Plan My Trip
         %span{ng: {include: "'views/button-chevron-right.html'"}}
 
-  {{ plan | json }}
   {{ planService | json }}
-  {{ planService.from | json }}
-  {{ planService.to | json }}

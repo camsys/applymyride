@@ -18,7 +18,7 @@ angular.module('applyMyRideApp')
 
       $scope.register = function() {
         flash.setMessage('Welcome, Eric!');
-        $location.path('/plan');
+        $location.path('/plan/start');
       };
     }
   ]);

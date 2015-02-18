@@ -17,6 +17,25 @@ app.controller('PlanController', ['$scope', '$routeParams', '$location', 'planSe
       $scope.plan = plan;
       $scope.planService = planService;
 
+      switch($routeParams.step) {
+        case undefined:
+        case 'needReturnTrip':
+          $scope.showNext = false;
+          break;
+        default:
+          $scope.showNext = true;
+          break;        
+      }
+
+      if ($scope.step==='to') {
+        if (!planService.from) {
+          console.log('setting planservice.from');
+          planService.from = '1230 Roosevelt Avenue, York, PA 17404';
+        } else {
+          console.log('NOT setting planservice.from');
+        }
+      }
+
       // $scope.useCurrentLocation=true;
       // plan.useCurrentLocation=true;
       // plan.from = 'From place';
@@ -40,17 +59,34 @@ app.controller('PlanController', ['$scope', '$routeParams', '$location', 'planSe
       };
 
       $scope.next = function() {
-        console.log('next');
+        console.log('next, step is ' + $scope.step);
         switch($scope.step) {
+          case 'start':
+            $location.path('/plan/from');
+            break;
           case 'from':
             planService.from = plan.from;
-            console.log('going to to');
             $location.path('/plan/to');
             break;
           case 'to':
             planService.to = plan.to;
-            console.log('going to departDate');
             $location.path('/plan/departDate');
+            break;
+          case 'departDate':
+            planService.departDate = plan.departDate;
+            $location.path('/plan/needReturnTrip');
+            break;
+          case 'needReturnTrip':
+            planService.needReturnTrip = plan.needReturnTrip;
+            $location.path('/plan/returnDate');
+            break;
+          case 'returnDate':
+            planService.returnDate = plan.returnDate;
+            $location.path('/plan/confirm');
+            break;
+          case 'confirm':
+            planService.returnDate = plan.returnDate;
+            $location.path('/plan2');
             break;
         };
       };
