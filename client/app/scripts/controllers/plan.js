@@ -18,6 +18,7 @@ app.controller('PlanController', ['$scope', '$routeParams', '$location', 'planSe
       switch($routeParams.step) {
         case undefined:
         case 'needReturnTrip':
+        case 'start':
           $scope.showNext = false;
           break;
         default:
@@ -82,6 +83,11 @@ app.controller('PlanController', ['$scope', '$routeParams', '$location', 'planSe
             break;
           case 'returnDate':
             planService.returnDate = plan.returnDate;
+            $location.path('/plan/returnTime');
+            break;
+          case 'returnTime':
+            var t = moment(plan.returnTime, 'h:mm a');
+            planService.returnDate.hour(t.hour()).minute(t.minute()).second(0).millisecond(0);
             $location.path('/plan/confirm');
             break;
           case 'confirm':

@@ -37,7 +37,7 @@
         .form-group
           %label{for: "departTime"}
             %h2 When are you leaving?
-          %input#departTIme{time: 'time', ng: {model: 'plan.departTime'}}
+          %input#departTime{time: 'time', ng: {model: 'plan.departTime'}}
       
       %cs-time{selected: "plan.departTime"}
 
@@ -52,10 +52,19 @@
       %form
         .form-group
           %label{for: "departDate"}
-            %h2 When do yuo want to return?
+            %h2 When do you want to return?
           %input#departDate{date: 'date', ng: {model: 'plan.returnDate'}}
       
       %cs-calendar{selected: "plan.returnDate"}
+
+    .return-time{ng: {show: 'step==="returnTime"'}}
+      %form
+        .form-group
+          %label{for: "returnTime"}
+            %h2 What time are you returning?
+          %input#returnTime{time: 'time', ng: {model: 'plan.returnTime'}}
+      
+      %cs-time{selected: "plan.returnTime"}
 
     .confirm{ng: {show: 'step==="confirm"'}}
       %h2 This is what you told us
@@ -93,7 +102,7 @@
             .col-xs-3.title
               Return At
             .col-xs-9
-              {{ planService.returnDate }}
+              {{ planService.returnDate.format('M/D/YYYY h:mm a') }}
 
   .container
     .pull-right

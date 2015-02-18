@@ -57,7 +57,7 @@ app.directive('csTime', function() {
             };
 
             scope.selectMeridian = function(mer) {
-                scope.merSelected = mer.display;
+                scope.merSelected = mer;
                 scope.selected = scope.timeSelected.display + ' ' + scope.merSelected.display;
                 scope.meridians.forEach(function(entry) {
                     entry.isSelected = false;
