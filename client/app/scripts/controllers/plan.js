@@ -2,10 +2,21 @@
 
 var app = angular.module('applyMyRideApp');
 
-app.controller('PlanController', ['$scope',
-    function($scope) {
+app.controller('PlanController', ['$scope', '$routeParams', '$location', 'planService',
+    function($scope, $routeParams, $location, planService) {
+
+      $scope.step = $routeParams.step;
+
+      console.log('starting planController, step: ' + $routeParams.step);
+
+      $scope.notYet = function() {
+        return plan.from;
+      };
+
       var plan = {};
       $scope.plan = plan;
+      $scope.planService = planService;
+
       // $scope.useCurrentLocation=true;
       // plan.useCurrentLocation=true;
       // plan.from = 'From place';
@@ -28,6 +39,26 @@ app.controller('PlanController', ['$scope',
         return plan.from && plan.to && plan.depart && (plan.return || $scope.returnTrip===false);
       };
 
+      $scope.next = function() {
+        console.log('next');
+        switch($scope.step) {
+          case 'from':
+            planService.from = plan.from;
+            console.log('going to to');
+            $location.path('/plan/to');
+            break;
+          case 'to':
+            planService.to = plan.to;
+            console.log('going to departDate');
+            $location.path('/plan/departDate');
+            break;
+        };
+      };
+
+      $scope.fromLocationChanged = function(n) {
+        console.log('fromLocationChanged:' + n);
+      };
+
       $scope.restartPlan = function() {
         $scope.useCurrentLocation = null;
         plan.from = null;
@@ -41,8 +72,6 @@ app.controller('PlanController', ['$scope',
         plan.useCurrentLocation = newValue;
         if (newValue===true) {
           plan.from = '1230 Roosevelt Avenue, York, PA 17404';
-        } else {
-          plan.from = null;
         }
       });
 
@@ -50,6 +79,14 @@ app.controller('PlanController', ['$scope',
       $scope.$watch('fromChoice', function(n) {
         if (n) {
           plan.from = n.title;
+        }
+      }
+      );
+
+      $scope.$watch('plan.from', function(n) {
+        if (n) {
+          console.log('seeting scope.notYet to false');
+          $scope.notYet = false;
         }
       }
       );
@@ -76,11 +113,11 @@ app.directive('date', function() {
             });
             
             ngModelController.$formatters.push(function(value) {
-                return moment(value).format("MM/DD/YYYY");
+                return moment(value).format('MM/DD/YYYY');
             });
         }
     };
-})
+});
 
 angular.module('applyMyRideApp').service('Map', ['$q', '$window', function($q, $window) {
 

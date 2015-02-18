@@ -1,88 +1,94 @@
-.container.plan{ng: {controller: "PlanController"}}
-  .alert.alert-danger.text-center{"ng-show" => "apiError", :role => "alert"}
-    %b API Error :
-    %span {{ apiStatus }}
+.plan{ng: {controller: "PlanController"}}
+  .container
+    .alert.alert-danger.text-center{"ng-show" => "apiError", :role => "alert"}
+      %b API Error :
+      %span {{ apiStatus }}
 
-  .row.card{ng: {show: 'plan.from'}}
-    .col-xs-12
-      .row
-        .col-xs-3.title
-          From
-        .col-xs-9
-          {{ plan.from }}
-          .pull-right
-            %i.fa.fa-map-marker
+    / .row.card{ng: {show: 'plan.from'}}
+    /   .col-xs-12
+    /     .row
+    /       .col-xs-3.title
+    /         From
+    /       .col-xs-9
+    /         {{ plan.from }}
+    /         .pull-right
+    /           %i.fa.fa-map-marker
 
-  .row.card{ng: {show: 'plan.to'}}
-    .col-xs-12
-      .row
-        .col-xs-3.title
-          To
-        .col-xs-9
-          {{ plan.to }}
-          .pull-right
-            %i.fa.fa-map-marker
+    / .row.card{ng: {show: 'plan.to'}}
+    /   .col-xs-12
+    /     .row
+    /       .col-xs-3.title
+    /         To
+    /       .col-xs-9
+    /         {{ plan.to }}
+    /         .pull-right
+    /           %i.fa.fa-map-marker
 
-  .row.card{ng: {show: 'plan.depart'}}
-    .col-xs-12
-      .row
-        .col-xs-3.title
-          Depart At
-        .col-xs-9
-          {{ plan.depart }}
+    / .row.card{ng: {show: 'plan.depart'}}
+    /   .col-xs-12
+    /     .row
+    /       .col-xs-3.title
+    /         Depart At
+    /       .col-xs-9
+    /         {{ plan.depart }}
 
-  .row.card{ng: {show: 'plan.return'}}
-    .col-xs-12
-      .row
-        .col-xs-3.title
-          Return At
-        .col-xs-9
-          {{ plan.return }}
+    / .row.card{ng: {show: 'plan.return'}}
+    /   .col-xs-12
+    /     .row
+    /       .col-xs-3.title
+    /         Return At
+    /       .col-xs-9
+    /         {{ plan.return }}
 
-  .use-current-location{ng: {show: 'useCurrentLocation==null'}}
-    %h2 Start at your current location?
-    %button.btn.btn-success{ng: {click: 'useCurrentLocation = true'}}
-      Yes
-    %button.btn.btn-success{ng: {click: 'useCurrentLocation = false'}}
-      No
+    .use-current-location{ng: {show: 'step==null'}}
+      %h2 Start at your current location?
+      %a.btn.btn-success{ng: {href: '#/plan/to'}}
+        Yes
+      %a.btn.btn-success{ng: {href: '#/plan/from'}}
+        No
 
-  %form.from-location{ng: {show: 'useCurrentLocation==false && plan.from==null'}}
-    .form-group
-      %label{for: "fromLocation"} Where are you starting from?
-      %angucomplete-alt#fromLocation{placeholder: 'Enter address or place name', "selected-object" => "fromChoice", "local-data" => "addresses", "search-fields" => "place", "title-field" => "place", minlength: "1", "input-class" => "form-control"}
-
-  %form.to-location{ng: {show: '!plan.to && plan.from'}}
-    .form-group
-      %label{for: "toLocation"} Where are you going?
-      %angucomplete-alt#toLocation{placeholder: 'Enter address or place name', "selected-object" => "toChoice", "local-data" => "addresses", "search-fields" => "place", "title-field" => "place", minlength: "1", "input-class" => "form-control"}
-
-  .depart-date{ng: {hide: 'plan.to==null'}}
-    %form
+    %form.from-location{name: 'from_location', ng: {show: 'step==="from"'}}
       .form-group
-        %label{for: "departDate"} What day are you leaving?
-        %input#departDate{date: 'date', ng: {model: 'plan.departDate'}}
-    
-    %cs-calendar{selected: "plan.departDate"}
+        %label{for: "fromLocation"} Where are you starting from?
+        %angucomplete-alt#fromLocation{placeholder: 'Enter address or place name', "selected-object" => "fromChoice", "local-data" => "addresses", "search-fields" => "place", "title-field" => "place", minlength: "1", "input-class" => "form-control", "input-changed" => "fromLocationChanged"}
 
-  .need-return-trip{ng: {hide: 'plan.depart==null', show: 'returnTrip==null'}}
-    Do you need a return trip?
-    %button.btn.btn-primary{ng: {click: 'returnTrip = true'}}
-      Yes
-    %button.btn.btn-primary{ng: {click: 'returnTrip = false'}}
-      No
+    %form.to-location{ng: {show: 'step==="to"'}}
+      .form-group
+        %label{for: "toLocation"} Where are you going?
+        %angucomplete-alt#toLocation{placeholder: 'Enter address or place name', "selected-object" => "toChoice", "local-data" => "addresses", "search-fields" => "place", "title-field" => "place", minlength: "1", "input-class" => "form-control"}
 
-  %form.return{ng: {show: 'returnTrip==true && plan.return==null'}}
-    .form-group
-      %label{for: "return"} When do you want to return?
-      %input#return{type: 'datetime-local', ng: {model: 'plan.return'}}
+    .depart-date{ng: {show: 'step==="departDate"'}}
+      %form
+        .form-group
+          %label{for: "departDate"} What day are you leaving?
+          %input#departDate{date: 'date', ng: {model: 'plan.departDate'}}
+      
+      %cs-calendar{selected: "plan.departDate"}
 
-.container
-  .pull-right
-    .btn.btn-success{ng: {hide: 'plan.from==null', click: 'restartPlan()'}}
-      %i.fa.fa-undo
-    %a.btn.btn-success{ng: {click: 'next()'}}
-      Next
-      %span{ng: {include: "'views/button-chevron-right.html'"}}
-    %a.btn.btn-success{ng: {href: "#/plan2", show: 'readyToPlan()'}}
-      Plan My Trip
-      %span{ng: {include: "'views/button-chevron-right.html'"}}
+    .need-return-trip{ng: {show: 'step==="needReturnTrip"'}}
+      Do you need a return trip?
+      %button.btn.btn-primary{ng: {click: 'returnTrip = true'}}
+        Yes
+      %button.btn.btn-primary{ng: {click: 'returnTrip = false'}}
+        No
+
+    %form.return{ng: {show: 'step==="returnDate"'}}
+      .form-group
+        %label{for: "return"} When do you want to return?
+        %input#return{type: 'datetime-local', ng: {model: 'plan.return'}}
+
+  .container
+    .pull-right
+      .btn.btn-success{ng: {hide: 'plan.from==null', click: 'restartPlan()'}}
+        %i.fa.fa-undo
+      %a.btn.btn-success{ng: {click: 'next()', disabled: '{{notYet()}}', class: '{disabled: notYet()}'}}
+        Next
+        %span{ng: {include: "'views/button-chevron-right.html'"}}
+      %a.btn.btn-success{ng: {href: "#/plan2", show: 'readyToPlan()'}}
+        Plan My Trip
+        %span{ng: {include: "'views/button-chevron-right.html'"}}
+
+  {{ plan | json }}
+  {{ planService | json }}
+  {{ planService.from | json }}
+  {{ planService.to | json }}
