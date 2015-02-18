@@ -1,28 +1,27 @@
 .container.plan{ng: {controller: "PlanController"}}
   .row
     .col-sm-6.col-sm-offset-3
-      %button.btn.btn-success.btn-block{type: 'submit', ng: {click: "bus()"}, style: "font-size: 2em; box-shadow: 0px 2px 8px rgba(0,0,0,0.4); margin-bottom: 10px;"}
-        Ride the Bus
-        $1.60
-        %span.fa-stack{style: 'margin-top: 17px;'}
+      %button.btn.btn-success.btn-block.plan2-button{type: 'submit', ng: {click: "bus()"}}
+        %span{style: "white-space:normal; display: inline-block;"}
+          Ride the Bus
+          $1.60
+        %span.fa-stack.pull-right
           %i.fa.fa-circle-thin.fa-stack-2x
-          %i.fa.fa-chevron-right.fa-stack-1x{style: "margin-left: 5px; margin-top: 2px;"}
+          %i.fa.fa-chevron-right.fa-stack-1x
 
-    .col-sm-4.col-sm-offset-4
-      %button.btn.btn-success.btn-block{type: 'submit', ng: {click: "sharedRide()"}, style: "font-size: 2em; box-shadow: 0px 2px 8px rgba(0,0,0,0.4); margin-bottom: 10px;"}
-        .pull-left{style: 'width: 5em; display: inline-block; word-wrap: break-word;'}
-          Use Shared Ride
-          %br
-          $4.35
-        %span.fa-stack.pull-right{style: 'margin-top: 17px;'}
+  .row
+    .col-sm-6.col-sm-offset-3
+      %button.btn.btn-success.btn-block.plan2-button{type: 'submit', ng: {click: "sharedride()"}}
+        Use Shared Ride
+        $4.35
+        %span.fa-stack.pull-right
           %i.fa.fa-circle-thin.fa-stack-2x
-          %i.fa.fa-chevron-right.fa-stack-1x{style: "margin-left: 5px; margin-top: 2px;"}
+          %i.fa.fa-chevron-right.fa-stack-1x
 
-    .col-sm-4.col-sm-offset-4
-      %button.center-block.btn.btn-success.btn-block{type: 'submit', ng: {click: "more()"}, style: "font-size: 2em; box-shadow: 0px 2px 8px rgba(0,0,0,0.4); margin-bottom: 10px;"}
-        .pull-left
-          More Options
-          %br ...
-        %span.fa-stack.pull-right{style: 'margin-top: 17px;'}
+  .row
+    .col-sm-6.col-sm-offset-3
+      %button.btn.btn-success.btn-block.plan2-button{type: 'submit', ng: {click: "moreoptions()"}}
+        More Options
+        %span.fa-stack.pull-right
           %i.fa.fa-circle-thin.fa-stack-2x
-          %i.fa.fa-chevron-right.fa-stack-1x{style: "margin-left: 5px; margin-top: 2px;"}
+          %i.fa.fa-chevron-right.fa-stack-1x
