@@ -30,7 +30,7 @@
             %h2 What day are you leaving?
           %input#departDate{date: 'date', ng: {model: 'plan.departDate'}}
       
-      %cs-calendar{selected: "plan.departDate"}
+      %cs-calendar{sdate: "plan.departDate"}
 
     .depart-time{ng: {show: 'step==="departTime"'}}
       %form
@@ -39,7 +39,7 @@
             %h2 When are you leaving?
           %input#departTime{time: 'time', ng: {model: 'plan.departTime'}}
       
-      %cs-time{selected: "plan.departTime"}
+      %cs-time{stime: "plan.departTime"}
 
     .need-return-trip{ng: {show: 'step==="needReturnTrip"'}}
       %h2 Do you need a return trip?
@@ -55,7 +55,7 @@
             %h2 When do you want to return?
           %input#departDate{date: 'date', ng: {model: 'plan.returnDate'}}
       
-      %cs-calendar{selected: "plan.returnDate"}
+      %cs-calendar{sdate: "plan.returnDate"}
 
     .return-time{ng: {show: 'step==="returnTime"'}}
       %form
@@ -64,7 +64,7 @@
             %h2 What time are you returning?
           %input#returnTime{time: 'time', ng: {model: 'plan.returnTime'}}
       
-      %cs-time{selected: "plan.returnTime"}
+      %cs-time{stime: "plan.returnTime"}
 
     .purpose{ng: {show: 'step==="purpose"'}}
       %h2 What is your trip purpose?

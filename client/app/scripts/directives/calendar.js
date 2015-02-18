@@ -39,20 +39,20 @@ app.directive('csCalendar', function() {
         templateUrl: '/templates/calendar.html',
         restrict: 'E',
         scope: {
-            selected: '='
+            date: '=sdate'
         },
         link: function(scope) {
-            scope.selected = _removeTime(scope.selected || moment());
-            scope.month = scope.selected.clone();
+            scope.date = _removeTime(scope.date || moment());
+            scope.month = scope.date.clone();
 
-            var start = scope.selected.clone();
+            var start = scope.date.clone();
             start.date(1);
             _removeTime(start.day(0));
 
             _buildMonth(scope, start, scope.month);
 
             scope.select = function(day) {
-                scope.selected = day.date;  
+                scope.date = day.date;  
             };
 
             scope.next = function() {

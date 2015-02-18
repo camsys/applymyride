@@ -8,7 +8,7 @@ app.directive('csTime', function() {
         templateUrl: '/views/time-grid.html',
         restrict: 'E',
         scope: {
-            selected: '='
+            selected: '=stime'
         },
         link: function(scope) {
             scope.times = [
