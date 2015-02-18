@@ -1,6 +1,6 @@
 .row
   %form{name: 'questions_form', novalidate: 'novalidate'}
-    .form-group{ng: {repeat: "question in sections[section_id].questions", switch: "question.datatype"}}
+    .form-group{ng: {repeat: "question in sections[sectionId].questions", switch: "question.datatype"}}
       %div{class: "{{question.class}}"}
         %div{ng: {switch: {when: 'string'}}}
           %label
@@ -25,6 +25,6 @@
 / .row
 /   .col-xs-12
 /     %ul
-/       %li{ng: {repeat: "question in sections[section_id].questions"}}
+/       %li{ng: {repeat: "question in sections[sectionId].questions"}}
 /         {{ question | json }}
 /     {{ sections | json }}
