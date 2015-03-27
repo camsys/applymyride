@@ -29,7 +29,7 @@
           %label{for: "departDate"}
             %h2 What day are you leaving?
           %input#departDate{date: 'date', ng: {model: 'plan.departDate'}}
-      
+
       %cs-calendar{sdate: "plan.departDate"}
 
     .depart-time{ng: {show: 'step==="departTime"'}}
@@ -38,7 +38,7 @@
           %label{for: "departTime"}
             %h2 When are you leaving?
           %input#departTime{time: 'time', ng: {model: 'plan.departTime'}}
-      
+
       %cs-time{stime: "plan.departTime"}
 
     .need-return-trip{ng: {show: 'step==="needReturnTrip"'}}
@@ -54,7 +54,7 @@
           %label{for: "departDate"}
             %h2 When do you want to return?
           %input#departDate{date: 'date', ng: {model: 'plan.returnDate'}}
-      
+
       %cs-calendar{sdate: "plan.returnDate"}
 
     .return-time{ng: {show: 'step==="returnTime"'}}
@@ -63,7 +63,7 @@
           %label{for: "returnTime"}
             %h2 What time are you returning?
           %input#returnTime{time: 'time', ng: {model: 'plan.returnTime'}}
-      
+
       %cs-time{stime: "plan.returnTime"}
 
     .purpose{ng: {show: 'step==="purpose"'}}
@@ -73,7 +73,7 @@
           %label
             %input#optionsRadios1{name: "purposes", type: "radio", value: "{{purpose}}", ng: {checked: 'purpose==="Medical"', model: 'plan.purpose'}}
             {{ purpose }}
-      
+
     .confirm{ng: {show: 'step==="confirm"'}}
       %h2 This is what you told us
       .row.card
