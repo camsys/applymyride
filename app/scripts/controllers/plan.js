@@ -11,7 +11,6 @@ function($scope, $routeParams, $location, planService, flash, usSpinnerService, 
   $scope.placeIds = [];
   $scope.showConfirmLocationMap = false;
   $scope.mapOptions = {
-    center: new google.maps.LatLng(35.784, -78.670),
     zoom: 17,
     mapTypeId: google.maps.MapTypeId.ROADMAP
   };
@@ -161,6 +160,7 @@ function($scope, $routeParams, $location, planService, flash, usSpinnerService, 
   }
 
   $scope.selectPlace = function(place){
+    console.log(place);
     var map;
     if($routeParams.step == 'from'){
       map = $scope.fromLocationMap;

@@ -1,36 +1,85 @@
+/* AUTOCOMPLETE */
+
+.autocomplete{
+  width: 100%;
+  position: relative;
+}
+
+.autocomplete input{
+  font-size: 1.2em;
+  width: 100%;
+  padding:0.4em;
+}
+
+.autocomplete ul{
+  position: absolute;
+  left: 0;
+  width: 100%;
+  border-left: 1px solid #888;
+  border-right: 1px solid #888;
+  border-bottom: 1px solid #888;
+  z-index: 1;
+}
+
+.autocomplete li{
+  text-align: left;
+  list-style:none;
+  width: 100%;
+  padding:0.4em;
+  background-color: #fff;
+}
+
+.autocomplete li.selectable{
+  padding-left:2em;
+}
+
+.autocomplete li.active{
+  width: 100%;
+  background-color: #4bf;
+}
+
+.autocomplete .highlight {
+  background-color: #E2E2E2;
+}
+
+.autocomplete li.active .highlight {
+  background: #666;
+  color: #fff;
+}
+
 @CHARSET "UTF-8";
 
 @font-face { /* Entypo pictograms by Daniel Bruce — www.entypo.com */
-	font-family: 'Entypo';
-	src: url('../assets/entypo.ttf') format('truetype'),
-		url('../assets/entypo.eot') format('eot');
+  font-family: 'Entypo';
+  src: url('../assets/entypo.ttf') format('truetype'),
+  url('../assets/entypo.eot') format('eot');
 }
 
 * {
-	margin: 0px;
-	padding: 0px;
-	box-sizing: border-box;
-	-moz-box-sizing: border-box;
+  margin: 0px;
+  padding: 0px;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
 }
 
 a{
-	text-decoration: none;
-	color: #2b7;
+  text-decoration: none;
+  color: #2b7;
   font-weight: bold;
 }
 
 a:hover{
-	color: #b15;
+  color: #b15;
   transition: 0.1s all ease-in-out;
 }
 
 body{
-	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-	min-height:100%;
-	height: 100%;
-	line-height: 1.5em;
-	color: #333333;
-	background-color: #ffffff;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  min-height:100%;
+  height: 100%;
+  line-height: 1.5em;
+  color: #333333;
+  background-color: #ffffff;
 }
 
 h1,
@@ -132,26 +181,26 @@ img {
 }
 
 ul>li{
-	list-style:none;
+  list-style:none;
 }
 
 /* Generic classes */
 .hide { /* Hide stuff without resorting to display:none; */
-	visibility: hidden !important;
-	width: 0 !important;
-	height: 0 !important;
-	line-height: 0 !important;
-	padding: 0 !important;
-	margin: 0 !important;
+  visibility: hidden !important;
+  width: 0 !important;
+  height: 0 !important;
+  line-height: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
 }
 
 .hide:after { /* Hide stuff without resorting to display:none; */
-	visibility: hidden !important;
-	width: 0 !important;
-	height: 0 !important;
-	line-height: 0 !important;
-	padding: 0 !important;
-	margin: 0 !important;
+  visibility: hidden !important;
+  width: 0 !important;
+  height: 0 !important;
+  line-height: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
 }
 
 div{
