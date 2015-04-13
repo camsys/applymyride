@@ -31,7 +31,7 @@
           %h2 Where are you starting from?
         %autocomplete{ 'disable-filter' => 'true', 'data' => 'locations', 'on-type'=> 'getLocations', 'on-select' => 'selectPlace', :ng => {:model => 'fromChoice'}}
         /%div.map-canvas{'ui-map' => 'fromLocationMap', 'ui-options' => 'mapOptions', ng: {show: 'showMap'}}
-        xx%div.map-canvas{'ui-map' => 'fromLocationMap', 'ui-options' => 'mapOptions'}yy
+        %div.map-canvas{'ui-map' => 'fromLocationMap', 'ui-options' => 'mapOptions'}
 
     %form.to-location{ng: {show: 'step==="to"'}}
       .form-group
