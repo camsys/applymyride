@@ -1,0 +1,59 @@
+{
+    "sections": [
+        {
+            "questions": [
+                {
+                    "datatype": "radio",
+                    "name": "applicationtype",
+                    "options": [
+                        {
+                            "checked": true,
+                            "text": "New Applicant"
+                        },
+                        {
+                            "checked": false,
+                            "text": "Recertification"
+                        }
+                    ],
+                    "question": "Application Type",
+                    "required": true,
+                    "class": "col-xs-12"
+                },
+                {
+                    "datatype": "string",
+                    "question": "Last Name",
+                    "required": true,
+                    "class": "col-md-5"
+                },
+                {
+                    "datatype": "string",
+                    "question": "First Name",
+                    "required": true,
+                    "class": "col-md-5"
+                },
+                {
+                    "datatype": "string",
+                    "question": "Middle Initial",
+                    "required": true,
+                    "class": "col-md-2"
+                }
+            ]
+        },
+        {
+            "questions": [
+                {
+                    "datatype": "string",
+                    "question": "Address",
+                    "required": true,
+                    "class": "col-md-5"
+                },
+                {
+                    "datatype": "string",
+                    "question": "City",
+                    "required": true,
+                    "class": "col-md-5"
+                }
+            ]
+        }
+    ]
+}

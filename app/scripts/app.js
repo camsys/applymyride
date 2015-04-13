@@ -17,7 +17,9 @@ angular.module('applyMyRideApp', [
     'ngRoute',
     'ngSanitize',
     'ngTouch',
-    'angucomplete-alt'
+    'angularSpinner',
+    'ui.map',
+    'autocomplete',
   ]).config(function ($routeProvider) {
     $routeProvider
       .when('/', {
@@ -55,6 +57,14 @@ angular.module('applyMyRideApp', [
       .when('/about', {
         templateUrl: 'views/about.html',
         controller: 'AboutController'
+      })
+      .when('/questions/:sectionId', {
+        templateUrl: 'views/questions.html',
+        controller: 'QuestionsController'
+      })
+      .when('/eligibility', {
+        templateUrl: 'views/eligibility.html',
+        controller: 'EligibilityController'
       })
       .otherwise({
         redirectTo: '/'

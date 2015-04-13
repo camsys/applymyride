@@ -6,40 +6,57 @@
 
     .use-current-location{ng: {show: 'step==="start"'}}
       %h2 Start at your current location?
-      %a.btn.btn-success{ng: {href: '#/plan/to'}}
+      %a.btn.btn-success{ng: {click: 'getCurrentLocation()'}}
         Yes
       %a.btn.btn-success{ng: {href: '#/plan/from'}}
         No
+      %span{'us-spinner' => '', 'spinner-key' => "spinner-1"}
+
+    %div{ng: {show: 'showConfirmLocationMap'}}
+      %form.from-location{name: 'from_location_confirm', ng: {show: 'step==="from_confirm"'}}
+        %h2 Here's the address we found for your location:
+        %h3 {{ planService.from }}
+        %div.map-canvas{'ui-map' => 'confirmFromLocationMap', 'ui-options' => 'mapOptions', 'style' => 'margin-bottom: 10px'}
+        %a.btn.btn-success{ng: {click: 'next()'}}
+          Yes, use this address
+        %a.btn.btn-success{ng: {click: 'overrideCurrentLocation()'}}
+          No, I'll enter the address myself
+
+      %p
+        {{greeting}}
 
     %form.from-location{name: 'from_location', ng: {show: 'step==="from"'}}
       .form-group
         %label{for: "fromLocation"}
           %h2 Where are you starting from?
-        %angucomplete-alt#fromLocation{placeholder: 'Enter address or place name', "selected-object" => "fromChoice", "local-data" => "addresses", "search-fields" => "place", "title-field" => "place", minlength: "1", "input-class" => "form-control", "input-changed" => "fromLocationChanged"}
+        %autocomplete{ 'disable-filter' => 'true', 'data' => 'locations', 'on-type'=> 'getLocations', 'on-select' => 'selectPlace', :ng => {:model => 'fromChoice'}}
+        /%div.map-canvas{'ui-map' => 'fromLocationMap', 'ui-options' => 'mapOptions', ng: {show: 'showMap'}}
+        xx%div.map-canvas{'ui-map' => 'fromLocationMap', 'ui-options' => 'mapOptions'}yy
 
     %form.to-location{ng: {show: 'step==="to"'}}
       .form-group
         %label{for: "toLocation"}
           %h2 Where are you going?
-        %angucomplete-alt#toLocation{placeholder: 'Enter address or place name', "selected-object" => "toChoice", "local-data" => "addresses", "search-fields" => "place", "title-field" => "place", minlength: "1", "input-class" => "form-control"}
+        %autocomplete{ 'disable-filter' => 'true', 'data' => 'locations', 'on-type'=> 'getLocations', 'on-select' => 'selectPlace', :ng => {:model => 'toChoice'}}
+        %div.map-canvas{'ui-map' => 'toLocationMap', 'ui-options' => 'mapOptions', ng: {show: 'showMap'}}
 
     .depart-date{ng: {show: 'step==="departDate"'}}
       %form
         .form-group
           %label{for: "departDate"}
             %h2 What day are you leaving?
-          %input#departDate{date: 'date', ng: {model: 'plan.departDate'}}
+          %input#departDate{date: 'date', ng: {model: 'planService.departDate'}}
 
-      %cs-calendar{sdate: "plan.departDate"}
+      %cs-calendar{sdate: "planService.departDate"}
 
     .depart-time{ng: {show: 'step==="departTime"'}}
       %form
         .form-group
           %label{for: "departTime"}
             %h2 When are you leaving?
-          %input#departTime{time: 'time', ng: {model: 'plan.departTime'}}
+          %input#departTime{time: 'time', ng: {model: 'planService.departTime'}}
 
-      %cs-time{stime: "plan.departTime"}
+      %cs-time{stime: "planService.departTime"}
 
     .need-return-trip{ng: {show: 'step==="needReturnTrip"'}}
       %h2 Do you need a return trip?
@@ -53,25 +70,25 @@
         .form-group
           %label{for: "departDate"}
             %h2 When do you want to return?
-          %input#departDate{date: 'date', ng: {model: 'plan.returnDate'}}
+          %input#departDate{date: 'date', ng: {model: 'planService.returnDate'}}
 
-      %cs-calendar{sdate: "plan.returnDate"}
+      %cs-calendar{sdate: "planService.returnDate"}
 
     .return-time{ng: {show: 'step==="returnTime"'}}
       %form
         .form-group
           %label{for: "returnTime"}
             %h2 What time are you returning?
-          %input#returnTime{time: 'time', ng: {model: 'plan.returnTime'}}
+          %input#returnTime{time: 'time', ng: {model: 'planService.returnTime'}}
 
-      %cs-time{stime: "plan.returnTime"}
+      %cs-time{stime: "planService.returnTime"}
 
     .purpose{ng: {show: 'step==="purpose"'}}
       %h2 What is your trip purpose?
       %form
         .radio{ng: {repeat: 'purpose in purposes'}}
           %label
-            %input#optionsRadios1{name: "purposes", type: "radio", value: "{{purpose}}", ng: {checked: 'purpose==="Medical"', model: 'plan.purpose'}}
+            %input#optionsRadios1{name: "purposes", type: "radio", value: "{{purpose}}", ng: {checked: 'purpose==="Medical"', model: 'planService.purpose'}}
             {{ purpose }}
 
     .confirm{ng: {show: 'step==="confirm"'}}
@@ -122,9 +139,9 @@
 
   .container
     .pull-right
-      .btn.btn-success{ng: {hide: 'plan.from==null', click: 'restartPlan()'}}
+      .btn.btn-success{ng: {show: 'showUndo', click: 'undo()'}}
         %i.fa.fa-undo
-      %a.btn.btn-success{ng: {show: 'showNext', click: 'next()', disabled: '{{notYet()}}', class: '{disabled: notYet()}'}}
+      %a.btn.btn-success{ng: {show: 'showNext', click: 'next()', disabled: 'ready == false'}}
         Next
         %span{ng: {include: "'views/button-chevron-right.html'"}}
       %a.btn.btn-success{ng: {href: "#/plan2", show: 'readyToPlan()'}}

@@ -1,6 +1,11 @@
 'use strict';
 
 angular.module('applyMyRideApp')
+  .factory('eligibilityQuestionsFactory', function ($http) {
+    return $http.get('data/eligibility.json');
+  });
+
+angular.module('applyMyRideApp')
   .factory('sectionsFactory', function ($resource) {
     return $resource('./data/sections.json');
   });

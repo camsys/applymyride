@@ -8,12 +8,15 @@
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
     <!-- build:css(.) styles/vendor.css -->
     <!-- bower:css -->
-    <link rel="stylesheet" href="bower_components/angucomplete-alt/angucomplete-alt.css" />
+    <link rel="stylesheet" href="bower_components/allmighty-autocomplete/style/autocomplete.css" />
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css(.tmp) styles/main.css -->
     <link rel="stylesheet" href="styles/main.css">
     <link rel="stylesheet" href="styles/calendar.css">
+    <link rel="stylesheet" href="styles/autocomplete/style.css">
+    <link rel="stylesheet" href="styles/autocomplete/autocomplete.css">
+    <link rel="stylesheet" href="styles/maps/maps.css">
     <!-- endbuild -->
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
     <base href="/">
@@ -66,7 +69,7 @@
 <!--       <div class="footer">
         <p><span class="glyphicon glyphicon-heart"></span> from the Yeoman team</p>
       </div>
- -->    
+ -->
     </div>
 
     <div class="debug footer">
@@ -122,8 +125,12 @@
     <script src="bower_components/angular-route/angular-route.js"></script>
     <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
     <script src="bower_components/angular-touch/angular-touch.js"></script>
-    <script src="bower_components/angucomplete-alt/angucomplete-alt.js"></script>
     <script src="bower_components/moment/moment.js"></script>
+    <script src="bower_components/spin.js/spin.js"></script>
+    <script src="bower_components/angular-spinner/angular-spinner.js"></script>
+    <script src="bower_components/angular-ui-utils/ui-utils.js"></script>
+    <script src="bower_components/angular-ui-map/ui-map.js"></script>
+    <script src="bower_components/allmighty-autocomplete/script/autocomplete.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
@@ -136,13 +143,15 @@
         <script src="scripts/controllers/plan.js"></script>
         <script src="scripts/controllers/login.js"></script>
         <script src="scripts/controllers/register.js"></script>
+        <script src="scripts/controllers/eligibility.js"></script>
         <script src="scripts/services/section.js"></script>
         <script src="scripts/services/plan.js"></script>
         <script src="scripts/directives/calendar.js"></script>
         <script src="scripts/directives/time.js"></script>
+        <script src="scripts/directives/autocomplete.js"></script>
         <!-- endbuild -->
 
-        <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyAd1xMYT1bt99qtFWQEzXiRBvORDWHgPtk&amp;libraries=places"></script>
+        <script src="http://maps.googleapis.com/maps/api/js?libraries=places"></script>
 
 </body>
 </html>

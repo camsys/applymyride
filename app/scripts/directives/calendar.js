@@ -36,7 +36,7 @@ app.directive('csCalendar', function() {
     }
 
     return {
-        templateUrl: '/templates/calendar.html',
+        templateUrl: '/views/calendar.html',
         restrict: 'E',
         scope: {
             date: '=sdate'
@@ -52,7 +52,7 @@ app.directive('csCalendar', function() {
             _buildMonth(scope, start, scope.month);
 
             scope.select = function(day) {
-                scope.date = day.date;  
+                scope.date = day.date;
             };
 
             scope.next = function() {
@@ -70,5 +70,5 @@ app.directive('csCalendar', function() {
             };
         }
     };
-    
+
 });

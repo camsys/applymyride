@@ -1,0 +1,30 @@
+.row
+  %form{name: 'questions_form', novalidate: 'novalidate'}
+    .form-group{ng: {repeat: "question in sections[sectionId].questions", switch: "question.datatype"}}
+      %div{class: "{{question.class}}"}
+        %div{ng: {switch: {when: 'string'}}}
+          %label
+            {{question.question}}
+          %input.form-control{ng: {model: 'question.answer', required: 'question.required'}}
+        %div{ng: {switch: {when: 'radio'}}}
+          %b.checkbox-label
+            {{question.question}}
+          .radio{ng: {repeat: "option in question.options"}}
+            %label
+              %input{ng: {model: 'question.answer', checked: 'option.checked'}, value: "{{option.text}}", type: 'radio', name: "{{question.name}}"}
+                {{option.text}}
+
+.row.action-button
+  .col-xs-12
+    %button.pull-right.btn.btn-success{type: 'submit', ng: {click: "save(sections, nextSection)", disabled: "{{questions_form.$invalid}}", class: '{disabled: questions_form.$invalid}'}}
+      Next Step
+      %span.fa-stack
+        %i.fa.fa-circle-thin.fa-stack-2x
+        %i.fa.fa-chevron-right.fa-stack-1x{style: "margin-left: 5px; margin-top: 2px;"}
+
+/ .row
+/   .col-xs-12
+/     %ul
+/       %li{ng: {repeat: "question in sections[sectionId].questions"}}
+/         {{ question | json }}
+/     {{ sections | json }}

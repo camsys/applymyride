@@ -31,10 +31,10 @@ $kioskfonts: "Avenir Next", "Helvetica Neue", Helvetica, sans-serif;
   font-family: 'Avenir Next', Helvetica, sans-serif;
 }
 
-/* 
-  Allow angular.js to be loaded in body, hiding cloaked elements until 
-  templates compile.  The !important is important given that there may be 
-  other selectors that are more specific or come later and might alter display.  
+/*
+  Allow angular.js to be loaded in body, hiding cloaked elements until
+  templates compile.  The !important is important given that there may be
+  other selectors that are more specific or come later and might alter display.
  */
 [ng\:cloak], [ng-cloak], .ng-cloak {
   display: none !important;
@@ -128,7 +128,7 @@ $kioskfonts: "Avenir Next", "Helvetica Neue", Helvetica, sans-serif;
 
 }
 
-#map { 
+#map {
     height: 400px;
     margin: 20px 0;
     border-radius: 5px;
@@ -192,11 +192,11 @@ $kioskfonts: "Avenir Next", "Helvetica Neue", Helvetica, sans-serif;
     }
     // font-size: $font-size-tablet;
     // font-family: $font-family-tablet;
-  }  
+  }
   // @media(min-width:$screen-sm-min) and (max-width:$screen-sm-max){
   //   // font-size: $font-size-tablet;
   //   // font-family: $font-family-tablet;
-  // }  
+  // }
 }
 
 .btn {
@@ -323,6 +323,8 @@ $kioskfonts: "Avenir Next", "Helvetica Neue", Helvetica, sans-serif;
   margin-bottom: 10px;
 }
 
+.spinner{margin-top: 10em;}
+.angular-google-map-container { height: 400px; }
 
   // @media(max-width:$screen-sm-max) {
   // @media(min-width:$screen-md-min) {
