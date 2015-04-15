@@ -20,6 +20,7 @@ angular.module('applyMyRideApp', [
     'angularSpinner',
     'ui.map',
     'autocomplete',
+    'ui.bootstrap'
   ]).config(function ($routeProvider) {
     $routeProvider
       .when('/', {
@@ -27,6 +28,14 @@ angular.module('applyMyRideApp', [
         controller: 'MainController'
       })
       .when('/login', {
+        templateUrl: 'views/login.html',
+        controller: 'LoginController'
+      })
+      .when('/authenticateEmail', {
+        templateUrl: 'views/login.html',
+        controller: 'LoginController'
+      })
+      .when('/authenticateSharedRideId', {
         templateUrl: 'views/login.html',
         controller: 'LoginController'
       })

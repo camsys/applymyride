@@ -1,21 +1,56 @@
-.plan{ng: {controller: "PlanController"}}
+.plan
   .container
     .alert.alert-danger.text-center{"ng-show" => "apiError", :role => "alert"}
       %b API Error :
       %span {{ apiStatus }}
 
-    .use-current-location{ng: {show: 'step==="start"'}}
-      %h2 Start at your current location?
+    .depart-date{ng: {show: 'step==="fromDate"'}}
+      %form
+        .form-group
+          %label{for: "departDate"}
+            %h4 Hi {{ planService.username }}!
+            %h4 What day you want to leave?
+          %p.input-group
+            %input.form-control{'type' => 'text', 'datepicker-popup' => "dd-MMMM-yyyy", 'min-date' => 'minDate', 'is-open' => 'opened', 'datepicker-options' => 'dateOptions', 'close-text' => 'Close', 'ng-model' => 'fromDate',}
+              %span.input-group-btn
+                %button.btn.btn-default{'type' => 'button', 'ng-click' => 'openCalendar($event)'}
+                  %i.glyphicon.glyphicon-calendar
+
+    .depart-time{ng: {show: 'step==="fromTimeType"'}}
+      %form
+        .form-group
+          %label{for: "departTime"}
+            %h4 What time are you leaving?
+        .row
+          .col-md-2.col-md-offset-5
+            %a.btn.btn-success.btn-block{ng: {click: 'specifyFromTimeType("asap")'}}
+              As soon as possible
+            %a.btn.btn-success.btn-block{ng: {click: 'specifyFromTimeType("depart")'}}
+              Enter departure time
+            %a.btn.btn-success.btn-block{ng: {click: 'specifyFromTimeType("arrive")'}}
+              Enter arrival time
+
+    .depart-time{ng: {show: 'step==="fromTime"'}}
+      %form
+        .form-group
+          %label{for: "departTime"}
+            %h4 What time would you like to {{ planService.fromTimeType }}?
+        .row
+          .col-md-2.col-md-offset-5
+            %timepicker{ng: {model: 'fromTime'}}
+
+    .use-current-location{ng: {show: 'step==="start_current"'}}
+      %h4 Start at your current location?
       %a.btn.btn-success{ng: {click: 'getCurrentLocation()'}}
         Yes
       %a.btn.btn-success{ng: {href: '#/plan/from'}}
         No
       %span{'us-spinner' => '', 'spinner-key' => "spinner-1"}
 
-    %div{ng: {show: 'showConfirmLocationMap'}}
-      %form.from-location{name: 'from_location_confirm', ng: {show: 'step==="from_confirm"'}}
-        %h2 Here's the address we found for your location:
-        %h3 {{ planService.from }}
+    .map-wrapper{ng: {show: 'step==="from_confirm" && showConfirmLocationMap'}}
+      %form.from-location{name: 'from_location_confirm'}
+        %h5 Here's the address we found for your location:
+        %h5 {{ planService.from }}
         %div.map-canvas{'ui-map' => 'confirmFromLocationMap', 'ui-options' => 'mapOptions', 'style' => 'margin-bottom: 10px'}
         %a.btn.btn-success{ng: {click: 'next()'}}
           Yes, use this address
@@ -28,70 +63,67 @@
     %form.from-location{name: 'from_location', ng: {show: 'step==="from"'}}
       .form-group
         %label{for: "fromLocation"}
-          %h2 Where are you starting from?
+          %h4 Where are you starting from?
         %autocomplete{ 'disable-filter' => 'true', 'data' => 'locations', 'on-type'=> 'getLocations', 'on-select' => 'selectPlace', :ng => {:model => 'fromChoice'}}
         %div.map-canvas{'ui-map' => 'fromLocationMap', 'ui-options' => 'mapOptions', ng: {show: 'showMap'}}
 
     %form.to-location{ng: {show: 'step==="to"'}}
       .form-group
         %label{for: "toLocation"}
-          %h2 Where are you going?
+          %h4 Where are you going?
         %autocomplete{ 'disable-filter' => 'true', 'data' => 'locations', 'on-type'=> 'getLocations', 'on-select' => 'selectPlace', :ng => {:model => 'toChoice'}}
         %div.map-canvas{'ui-map' => 'toLocationMap', 'ui-options' => 'mapOptions', ng: {show: 'showMap'}}
 
-    .depart-date{ng: {show: 'step==="departDate"'}}
-      %form
-        .form-group
-          %label{for: "departDate"}
-            %h2 What day are you leaving?
-          %input#departDate{date: 'date', ng: {model: 'planService.departDate'}}
-
-      %cs-calendar{sdate: "planService.departDate"}
-
-    .depart-time{ng: {show: 'step==="departTime"'}}
-      %form
-        .form-group
-          %label{for: "departTime"}
-            %h2 When are you leaving?
-          %input#departTime{time: 'time', ng: {model: 'planService.departTime'}}
-
-      %cs-time{stime: "planService.departTime"}
-
     .need-return-trip{ng: {show: 'step==="needReturnTrip"'}}
-      %h2 Do you need a return trip?
+      %h4 Do you need a return trip?
       %a.btn.btn-success{ng: {href: '#/plan/returnDate'}}
         Yes
-      %a.btn.btn-success{ng: {href: '#/plan/purpose'}}
+      %a.btn.btn-success{ng: {href: '#/plan/confirm'}}
         No
 
     .return-date{ng: {show: 'step==="returnDate"'}}
       %form
         .form-group
-          %label{for: "departDate"}
-            %h2 When do you want to return?
-          %input#departDate{date: 'date', ng: {model: 'planService.returnDate'}}
+          %label{for: "returnDate"}
+            %h4 When do you want to return?
+          %p.input-group
+            %input.form-control{'type' => 'text', 'datepicker-popup' => "dd-MMMM-yyyy", 'min-date' => 'fromDate', 'is-open' => 'opened', 'datepicker-options' => 'dateOptions', 'close-text' => 'Close', 'ng-model' => 'returnDate',}
+              %span.input-group-btn
+                %button.btn.btn-default{'type' => 'button', 'ng-click' => 'openCalendar($event)'}
+                  %i.glyphicon.glyphicon-calendar
 
-      %cs-calendar{sdate: "planService.returnDate"}
+    .depart-time{ng: {show: 'step==="returnTimeType"'}}
+      %form
+        .form-group
+          %label{for: "returnTime"}
+            %h4 What time are you returning?
+        .row
+          .col-md-2.col-md-offset-5
+            %a.btn.btn-success.btn-block{ng: {click: 'specifyReturnTimeType("asap")'}}
+              As soon as possible
+            %a.btn.btn-success.btn-block{ng: {click: 'specifyReturnTimeType("depart")'}}
+              Enter departure time
+            %a.btn.btn-success.btn-block{ng: {click: 'specifyReturnTimeType("arrive")'}}
+              Enter arrival time
 
     .return-time{ng: {show: 'step==="returnTime"'}}
       %form
         .form-group
           %label{for: "returnTime"}
-            %h2 What time are you returning?
-          %input#returnTime{time: 'time', ng: {model: 'planService.returnTime'}}
-
-      %cs-time{stime: "planService.returnTime"}
+            %h4 What time would you like to {{ planService.returnTimeType }} on your return trip?
+        .row
+          .col-md-2.col-md-offset-5
+            %timepicker{ng: {model: 'returnTime'}}
 
     .purpose{ng: {show: 'step==="purpose"'}}
-      %h2 What is your trip purpose?
-      %form
-        .radio{ng: {repeat: 'purpose in purposes'}}
-          %label
-            %input#optionsRadios1{name: "purposes", type: "radio", value: "{{purpose}}", ng: {checked: 'purpose==="Medical"', model: 'planService.purpose'}}
+      %h4 What is your trip purpose?
+      .row
+        .col-md-2.col-md-offset-5
+          %a.btn.btn-success.btn-block{ng: {repeat: 'purpose in purposes', click: 'specifyTripPurpose("{{ purpose }}")'}}
             {{ purpose }}
 
     .confirm{ng: {show: 'step==="confirm"'}}
-      %h2 This is what you told us
+      %h2 My ride request
       .row.card
         .col-xs-12
           .row
@@ -118,15 +150,15 @@
             .col-xs-3.title
               Depart At
             .col-xs-9
-              {{ planService.departDate.format('M/D/YYYY h:mm a') }}
+              {{ getFromDateString() }}
 
-      .row.card{ng: {show: 'planService.returnDate'}}
+      .row.card{ng: {show: 'planService.returnTimeType'}}
         .col-xs-12
           .row
             .col-xs-3.title
               Return At
             .col-xs-9
-              {{ planService.returnDate.format('M/D/YYYY h:mm a') }}
+              {{ getReturnDateString() }}
 
       .row.card
         .col-xs-12
@@ -136,11 +168,18 @@
             .col-xs-9
               {{ planService.purpose }}
 
+      .row
+        .col-md-2.col-md-offset-5
+          %a.btn.btn-success.btn-block{ng: {click: 'next()'}}
+            Search for ride!
+          %a.btn.btn-success.btn-block{ng: {click: ''}}
+            No, change my request
+
   .container
     .pull-right
       .btn.btn-success{ng: {show: 'showUndo', click: 'undo()'}}
         %i.fa.fa-undo
-      %a.btn.btn-success{ng: {show: 'showNext', click: 'next()', disabled: 'ready == false'}}
+      %a.btn.btn-success{ng: {show: 'showNext', click: 'next()', disabled: 'disableNext'}}
         Next
         %span{ng: {include: "'views/button-chevron-right.html'"}}
       %a.btn.btn-success{ng: {href: "#/plan2", show: 'readyToPlan()'}}

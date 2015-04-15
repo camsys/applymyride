@@ -6,7 +6,6 @@ angular.module('applyMyRideApp')
       this.submitPlanRequest = function() {
         return that.from;
       };
-
     }
 );
 
@@ -22,7 +21,6 @@ angular.module('applyMyRideApp')
       var compositePromise = $q.defer();
 
       $q.all([LocationSearch.getGooglePlaces(text), LocationSearch.getSavedPlaces(text), LocationSearch.getRecentSearches(text)]).then(function(results){
-        console.log('All asynch operations are now completed');
         compositePromise.resolve(results);
       });
 

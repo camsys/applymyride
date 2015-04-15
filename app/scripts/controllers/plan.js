@@ -14,43 +14,121 @@ function($scope, $routeParams, $location, planService, flash, usSpinnerService, 
     zoom: 17,
     mapTypeId: google.maps.MapTypeId.ROADMAP
   };
-
-
   $scope.step = $routeParams.step;
-
-  $scope.ready = false;
+  $scope.disableNext = true;
   $scope.showUndo = false;
   $scope.showNext = true;
   $scope.planService = planService;
+  $scope.fromDate = new Date();
+  $scope.returnDate = new Date();
+
+  $scope.openCalendar = function($event) {
+    $event.preventDefault();
+    $event.stopPropagation();
+    $scope.opened = true;
+  };
+
+  $scope.dateOptions = {
+    formatYear: 'yy',
+    startingDay: 1,
+    showWeeks: false,
+    showButtonBar: false
+  };
+
+  $scope.minDate = new Date();
+
+
+
+  $scope.getFromDateString = function(){
+    return $scope.getDateString(planService.fromDate, planService.fromTime, planService.fromTimeType)
+  }
+
+  $scope.getReturnDateString = function(){
+    return $scope.getDateString(planService.returnDate, planService.returnTime, planService.returnTimeType )
+  }
+
+  $scope.getDateString = function(date, time, type){
+    var fromDateString = null
+    if(date){
+      fromDateString = moment(date).format('M/D/YYYY');
+      if(type == 'asap'){
+        fromDateString += " - As soon as possible"
+      }else if(type == 'depart'){
+        fromDateString += " - Depart at " + moment(time).format('h:mm a');
+      }else if(type == 'arrive'){
+        fromDateString += " - Arrive at " + moment(time).format('h:mm a');
+      }
+    }
+    return fromDateString;
+  }
 
   switch($routeParams.step) {
     case undefined:
+    case 'start_current':
+      $scope.showNext = false;
+      break;
     case 'from':
       if(planService.from != null){
+        $scope.from = planService.from;
+        $scope.disableNext = false;
         $scope.$apply();
       }
+      break;
+    case 'fromDate':
+      if(planService.fromDate != null){
+        $scope.fromDate = planService.fromDate;
+      }
+      $scope.disableNext = false;
+      break;
+    case 'fromTime':
+      if(planService.fromTime != null){
+        $scope.fromTime = planService.fromTime;
+      }else{
+        $scope.fromTime = new Date();
+      }
+      $scope.disableNext = false;
       break;
     case 'to':
       if(planService.to != null){
-        $scope.$apply();
+        $scope.to = planService.to;
+        $scope.disableNext = false;
       }
       break;
-    case 'departDate':
-    case 'departTime':
+      break;
     case 'returnDate':
+      if(planService.returnDate != null){
+        $scope.returnDate = planService.returnDate;
+      }else if(planService.fromDate != null){
+        $scope.returnDate = planService.fromDate;
+      }
+      $scope.fromDate = planService.fromDate
+      $scope.disableNext = false;
+      break;
     case 'returnTime':
+      if(planService.returnTime != null){
+        $scope.returnTime = planService.returnTime;
+      }else{
+        $scope.returnTime = new Date();
+      }
+      $scope.disableNext = false;
+      break;
     case 'purpose':
+      $scope.showNext = false;
+      break;
     case 'confirm':
-      $scope.ready = true;
+      $scope.showNext = false;
       break;
     case 'needReturnTrip':
-    case 'start':
+    case 'fromTimeType':
+      $scope.showNext = false;
+      break;
+    case 'returnTimeType':
       $scope.showNext = false;
       break;
     case 'from_confirm':
       if(planService.from == null){
-        $location.path("/plan/start");
-        $scope.step = 'start';
+        $location.path("/plan/fromDate");
+        $scope.step = 'fromDate';
       }
       $scope.showNext = false;
       break;
@@ -61,38 +139,34 @@ function($scope, $routeParams, $location, planService, flash, usSpinnerService, 
 
   $scope.next = function() {
     switch($scope.step) {
-      case 'start':
-        $location.path('/plan/from');
+      case 'fromDate':
+        planService.fromDate = $scope.fromDate;
+        $location.path('/plan/fromTimeType');
+        break;
+      case 'fromTime':
+        console.log($scope.fromTime);
+        planService.fromTime = $scope.fromTime;
+        $location.path('/plan/start_current');
         break;
       case 'from':
+        planService.fromDate = $scope.fromDate;
         $location.path('/plan/to');
         break;
       case 'from_confirm':
         $location.path('/plan/to');
         break;
       case 'to':
-        $location.path('/plan/departDate');
-        break;
-      case 'departDate':
-        $location.path('/plan/departTime');
-        break;
-      case 'departTime':
-        var t = moment(planService.departTime, 'h:mm a');
-        planService.departDate.hour(t.hour()).minute(t.minute()).second(0).millisecond(0);
-        $location.path('/plan/needReturnTrip');
+        $location.path('/plan/purpose');
         break;
       case 'needReturnTrip':
         $location.path('/plan/returnDate');
         break;
       case 'returnDate':
-        $location.path('/plan/returnTime');
+        planService.returnDate = $scope.returnDate;
+        $location.path('/plan/returnTimeType');
         break;
       case 'returnTime':
-        var t = moment(planService.returnTime, 'h:mm a');
-        planService.returnDate.hour(t.hour()).minute(t.minute()).second(0).millisecond(0);
-        $location.path('/plan/purpose');
-        break;
-      case 'purpose':
+        planService.returnTime = $scope.returnTime;
         $location.path('/plan/confirm');
         break;
       case 'confirm':
@@ -107,16 +181,44 @@ function($scope, $routeParams, $location, planService, flash, usSpinnerService, 
         $scope.fromChoice = null;
         $scope.showMap = false;
         $scope.showUndo = false;
-        $scope.ready = false;
+        $scope.disableNext = true;
         break;
       case 'to':
         $scope.toChoice = null;
         $scope.showMap = false;
         $scope.showUndo = false;
-        $scope.ready = false;
+        $scope.disableNext = true;
         break;
       default:
         break;
+    }
+  }
+
+  $scope.specifyTripPurpose = function(purpose){
+    planService.purpose = purpose;
+    $location.path("/plan/needReturnTrip");
+    $scope.step = 'needReturnTrip';
+  }
+
+  $scope.specifyFromTimeType = function(type){
+    planService.fromTimeType = type;
+    if(type == 'asap'){
+      $location.path("/plan/start_current");
+      $scope.step = 'from';
+    }else{
+      $location.path("/plan/fromTime");
+      $scope.step = 'fromTime';
+    }
+  }
+
+  $scope.specifyReturnTimeType = function(type){
+    planService.returnTimeType = type;
+    if(type == 'asap'){
+      $location.path("/plan/confirm");
+      $scope.step = 'confirm';
+    }else{
+      $location.path("/plan/returnTime");
+      $scope.step = 'fromTime';
     }
   }
 
@@ -160,7 +262,6 @@ function($scope, $routeParams, $location, planService, flash, usSpinnerService, 
   }
 
   $scope.selectPlace = function(place){
-    console.log(place);
     var map;
     if($routeParams.step == 'from'){
       map = $scope.fromLocationMap;
@@ -185,7 +286,7 @@ function($scope, $routeParams, $location, planService, flash, usSpinnerService, 
 
         $scope.showMap = true;
         $scope.showUndo = true;
-        $scope.ready = true;
+        $scope.disableNext = false;
         $scope.showNext = true;
         $scope.$apply();
 
@@ -208,8 +309,6 @@ function($scope, $routeParams, $location, planService, flash, usSpinnerService, 
     });
   }
 
-
-  planService.purpose = 'Medical';
   $scope.purposes = [
     'General Purpose',
     'After School Program',
@@ -221,6 +320,15 @@ function($scope, $routeParams, $location, planService, flash, usSpinnerService, 
 
   $scope.readyToPlan = function() {
     return planService.from && planService.to && planService.depart && (planService.return || $scope.returnTrip===false);
+  };
+
+  $scope.getCurrentLocation = function() {
+    usSpinnerService.spin('spinner-1');
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition($scope.setOriginLocation, $scope.showError);
+    } else {
+      $scope.error = "Geolocation is not supported by this browser.";
+    }
   };
 
   $scope.showError = function (error) {
@@ -240,15 +348,6 @@ function($scope, $routeParams, $location, planService, flash, usSpinnerService, 
     }
     $scope.$apply();
   }
-
-  $scope.getCurrentLocation = function() {
-    usSpinnerService.spin('spinner-1');
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition($scope.setOriginLocation, $scope.showError);
-    } else {
-      $scope.error = "Geolocation is not supported by this browser.";
-    }
-  };
 
   $scope.setOriginLocation = function (position) {
     var latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
@@ -278,10 +377,34 @@ function($scope, $routeParams, $location, planService, flash, usSpinnerService, 
     planService.fromDetails = null;
   };
 
+  $scope.$watch('fromDate', function(n) {
+      if($scope.step == 'fromDate'){
+        if (n) {
+          $scope.fromDate = n;
+          $scope.disableNext = false;
+        }else{
+          $scope.disableNext = true;
+        }
+      }
+    }
+  );
+
+  $scope.$watch('returnDate', function(n) {
+      if($scope.step == 'returnDate'){
+        if (n) {
+          $scope.returnDate = n;
+          $scope.disableNext = false;
+        }else{
+          $scope.disableNext = true;
+        }
+      }
+    }
+  );
+
   $scope.$watch('fromChoice', function(n) {
       if (n) {
         planService.from = n;
-        $scope.ready = false;
+        $scope.disableNext = true;
       }
     }
   );
@@ -289,7 +412,7 @@ function($scope, $routeParams, $location, planService, flash, usSpinnerService, 
   $scope.$watch('toChoice', function(n) {
       if (n) {
         planService.to = n;
-        $scope.ready = false;
+        $scope.disableNext = false;
       }
     }
   );
@@ -308,7 +431,7 @@ function($scope, $routeParams, $location, planService, flash, usSpinnerService, 
           animation: google.maps.Animation.DROP
         });
         $scope.showMap = true;
-        $scope.ready = true;
+        $scope.disableNext = false;
         $scope.showNext = true;
         $scope.showUndo = true;
     }
@@ -328,7 +451,7 @@ function($scope, $routeParams, $location, planService, flash, usSpinnerService, 
         animation: google.maps.Animation.DROP
       });
       $scope.showMap = true;
-      $scope.ready = true;
+      $scope.disableNext = false;
       $scope.showNext = true;
       $scope.showUndo = true;
     }
@@ -365,113 +488,3 @@ function($scope, $routeParams, $location, planService, flash, usSpinnerService, 
 }
 ]);
 
-app.directive('date', function() {
-    return {
-        require: 'ngModel',
-        link: function(scope, element, attrs, ngModelController) {
-
-            ngModelController.$parsers.push(function(value) {
-                return new Date(value).getTime();
-            });
-
-            ngModelController.$formatters.push(function(value) {
-                return moment(value).format('MM/DD/YYYY');
-            });
-        }
-    };
-});
-
-angular.module('applyMyRideApp').service('Map', ['$q', '$window', function($q, $window) {
-
-    var google = $window.google;
-
-    this.init = function() {
-        var options = {
-            // center: new google.maps.LatLng(40.7127837, -74.00594130000002),
-            center: new google.maps.LatLng(39.9647747,-76.7291728),
-            zoom: 13,
-            disableDefaultUI: false
-        };
-        this.map = new google.maps.Map(
-            document.getElementById('map'), options
-        );
-        this.places = new google.maps.places.PlacesService(this.map);
-        this.infoWindows = [];
-    };
-
-    this.search = function(str) {
-        var d = $q.defer();
-        this.places.textSearch({query: str,
-          location: new google.maps.LatLng(39.9647747,-76.7291728),
-          radius: 5000}, function(results, status) {
-            if (status === 'OK') {
-                d.resolve(results);
-            }
-            else
-              {
-                d.reject(status);
-              }
-        });
-        return d.promise;
-    };
-
-    this.addMarker = function(res) {
-        // if(this.marker) this.marker.setMap(null);
-        // this.marker = new google.maps.Marker({
-        //     map: this.map,
-        //     position: res.geometry.location,
-        //     animation: google.maps.Animation.DROP
-        // });
-        for (var i = 0; i < this.infoWindows.length; i++) {
-          this.infoWindows[i].close();
-        }
-        this.infoWindows = [];
-        var max = (res.length > 5 ? 5 : res.length);
-        var b = new google.maps.LatLngBounds();
-        for (i = 0; i < max; i++) {
-          var r = res[i];
-          // if(this.infoWindow) this.infoWindow.close();
-          var contentString = '' + r.name + ' <button class="btn btn-primary btn-xs" ng-click="console.log(\'click\');"><i class="fa fa-check"></i></button>';
-          this.infoWindows[i] = new google.maps.InfoWindow({content: contentString, position: r.geometry.location});
-          this.infoWindows[i].open(this.map);
-          if (b.isEmpty()) {
-            b = new google.maps.LatLngBounds(r.geometry.location, r.geometry.location);
-          } else {
-            b = b.union(new google.maps.LatLngBounds(r.geometry.location, r.geometry.location));
-          }
-          console.log(b.toString());
-        }
-        // this.map.setCenter(res[0].geometry.location);
-        console.log(b);
-        this.map.panToBounds(b);
-    };
-
-}]);
-
-angular.module('applyMyRideApp').controller('NewPlaceController', ['$scope', '$window', 'Map', function($scope, $window, Map) {
-
-    $scope.place = {};
-
-    $scope.search = function() {
-        $scope.apiError = false;
-        Map.search($scope.searchPlace)
-        .then(
-            function(res) { // success
-                Map.addMarker(res);
-                // $scope.place.name = res.name;
-                // $scope.place.lat = res.geometry.location.lat();
-                // $scope.place.lng = res.geometry.location.lng();
-            },
-            function(status) { // error
-                $scope.apiError = true;
-                $scope.apiStatus = status;
-            }
-        );
-    };
-
-    $scope.send = function() {
-        $window.alert($scope.place.name + ' : ' + $scope.place.lat + ', ' + $scope.place.lng);
-    };
-
-    Map.init();
-}]);

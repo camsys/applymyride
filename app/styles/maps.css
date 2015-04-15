@@ -1,2 +1,6 @@
-.map-canvas { height: 400px; margin-top:1em; position: relative}
+.map-canvas {
+  min-height: 200px;
+  height: auto !important;
+  margin-top:1em;
+}
 
