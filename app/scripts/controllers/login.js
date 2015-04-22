@@ -33,6 +33,17 @@ angular.module('applyMyRideApp')
         }
       }
 
+      $scope.back = function(){
+        var path = $location.path();
+        if(path == '/login'){
+          $location.path('/');
+        }else if(path == '/authenticateSharedRideId'){
+          $location.path('/login');
+        }else if(path == '/authenticateEmail'){
+          $location.path('/login');
+        }
+      }
+
       $scope.disableNext = function(){
         var path = $location.path();
         if(path == '/login'){
@@ -40,7 +51,7 @@ angular.module('applyMyRideApp')
             return false;
           }
         }else if(path == '/authenticateSharedRideId'){
-          if($scope.birthday){
+          if($scope.dateofbirth){
             return false;
           }
         }else if(path == '/authenticateEmail'){
@@ -50,6 +61,11 @@ angular.module('applyMyRideApp')
         }
         return true;
       }
+
+      $scope.$watch('dateofbirth', function() {
+          $scope.disableNext();
+        }
+      );
 
     }
   ]);

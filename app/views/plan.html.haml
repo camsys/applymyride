@@ -8,8 +8,8 @@
       %form
         .form-group
           %label{for: "departDate"}
-            %h4 Hi {{ planService.username }}!
-            %h4 What day you want to leave?
+            %h4{ng: {show: 'planService.username'}} Hi {{ planService.username }}!
+            %h4 What day do you want to leave?
           %p.input-group
             %input.form-control{'type' => 'text', 'datepicker-popup' => "dd-MMMM-yyyy", 'min-date' => 'minDate', 'is-open' => 'opened', 'datepicker-options' => 'dateOptions', 'close-text' => 'Close', 'ng-model' => 'fromDate',}
               %span.input-group-btn
@@ -23,7 +23,7 @@
             %h4 What time are you leaving?
         .row
           .col-md-2.col-md-offset-5
-            %a.btn.btn-success.btn-block{ng: {click: 'specifyFromTimeType("asap")'}}
+            %a.btn.btn-success.btn-block{ng: {click: 'specifyFromTimeType("asap")', show: 'showAsap'}}
               As soon as possible
             %a.btn.btn-success.btn-block{ng: {click: 'specifyFromTimeType("depart")'}}
               Enter departure time
@@ -64,14 +64,26 @@
       .form-group
         %label{for: "fromLocation"}
           %h4 Where are you starting from?
-        %autocomplete{ 'disable-filter' => 'true', 'data' => 'locations', 'on-type'=> 'getLocations', 'on-select' => 'selectPlace', :ng => {:model => 'fromChoice'}}
+        .row
+          .col-xs-12
+            .col-xs-10
+              %autocomplete{ 'disable-filter' => 'true', 'data' => 'locations', 'on-type'=> 'getLocations', 'on-select' => 'selectPlace', :ng => {:model => 'fromChoice'}}
+            .col-xs-2
+              .btn.btn-success{ng: {disabled: '!showUndo', click: 'undo()'}}
+                %i.fa.fa-undo
         %div.map-canvas{'ui-map' => 'fromLocationMap', 'ui-options' => 'mapOptions', ng: {show: 'showMap'}}
 
     %form.to-location{ng: {show: 'step==="to"'}}
       .form-group
         %label{for: "toLocation"}
           %h4 Where are you going?
-        %autocomplete{ 'disable-filter' => 'true', 'data' => 'locations', 'on-type'=> 'getLocations', 'on-select' => 'selectPlace', :ng => {:model => 'toChoice'}}
+        .row
+          .col-xs-12
+            .col-xs-10
+              %autocomplete{ 'disable-filter' => 'true', 'data' => 'locations', 'on-type'=> 'getLocations', 'on-select' => 'selectPlace', :ng => {:model => 'toChoice'}}
+            .col-xs-2
+              .btn.btn-success{ng: {disabled: '!showUndo', click: 'undo()'}}
+                %i.fa.fa-undo
         %div.map-canvas{'ui-map' => 'toLocationMap', 'ui-options' => 'mapOptions', ng: {show: 'showMap'}}
 
     .need-return-trip{ng: {show: 'step==="needReturnTrip"'}}
@@ -85,7 +97,7 @@
       %form
         .form-group
           %label{for: "returnDate"}
-            %h4 When do you want to return?
+            %h4 What day do you want to return?
           %p.input-group
             %input.form-control{'type' => 'text', 'datepicker-popup' => "dd-MMMM-yyyy", 'min-date' => 'fromDate', 'is-open' => 'opened', 'datepicker-options' => 'dateOptions', 'close-text' => 'Close', 'ng-model' => 'returnDate',}
               %span.input-group-btn
@@ -99,8 +111,6 @@
             %h4 What time are you returning?
         .row
           .col-md-2.col-md-offset-5
-            %a.btn.btn-success.btn-block{ng: {click: 'specifyReturnTimeType("asap")'}}
-              As soon as possible
             %a.btn.btn-success.btn-block{ng: {click: 'specifyReturnTimeType("depart")'}}
               Enter departure time
             %a.btn.btn-success.btn-block{ng: {click: 'specifyReturnTimeType("arrive")'}}
@@ -118,9 +128,10 @@
     .purpose{ng: {show: 'step==="purpose"'}}
       %h4 What is your trip purpose?
       .row
-        .col-md-2.col-md-offset-5
-          %a.btn.btn-success.btn-block{ng: {repeat: 'purpose in purposes', click: 'specifyTripPurpose("{{ purpose }}")'}}
-            {{ purpose }}
+        .col-xs-12
+          .col-xs-6{ng: {repeat: 'purpose in purposes'}}
+            %a.btn.btn-success.btn-block{style: 'white-space: normal; margin-bottom:4px;', ng: {click: 'specifyTripPurpose("{{ purpose.name }}")'}}
+              {{ purpose.name }}
 
     .confirm{ng: {show: 'step==="confirm"'}}
       %h2 My ride request
@@ -175,11 +186,99 @@
           %a.btn.btn-success.btn-block{ng: {click: ''}}
             No, change my request
 
+    .purpose{ng: {show: 'step==="list_itineraries"'}}
+      %h2 Here are your trip options:
+      .row
+        .col-xs-12.well.text-left{ng: {click: 'selectTransit()'}}
+          %img.col-xs-1{ng: {src: 'images/modes/transit.png'}}
+          %h3.col-xs-2
+            Bus
+          %h3.col-xs-5
+            Fare: $1.20 - $5.40
+          .col-xs-3
+          %span.col-xs-1.fa-stack.fa-lg
+            %i.fa.fa-circle-thin.fa-stack-2x
+            %i.fa.fa-chevron-right.fa-stack-1x
+      .row
+        .col-xs-12.well.text-left{ng: {click: 'selectSharedRide()'}}
+          %img.col-xs-1{ng: {src: 'images/modes/paratransit.png'}}
+          %h3.col-xs-2
+            Shared Ride
+          %h3.col-xs-5
+            Fare: $4.35
+          .col-xs-4
+            .col-xs-12
+              Leave: 4:05PM
+            .col-xs-12
+              Arrive: 5:36PM
+            .col-xs-12
+              Travel Time: 1 hour, 31 minutes
+      .row
+        .col-md-2.col-md-offset-5
+          %a.btn.btn-lg.btn-success.btn-block{ng: {click: ''}}
+            More options
+
+    .purpose{ng: {show: 'step==="bus_options"'}}
+      %h2 Bus options:
+      .row
+        .col-xs-12.well.text-left{ng: {click: 'selectTransit()'}}
+          %img.col-xs-1{ng: {src: 'images/modes/transit.png'}}
+          %h3.col-xs-4
+            Rabbit Transit - Line 2N
+          %h3.col-xs-3
+            Fare: $1.20
+          .col-xs-4
+            .col-xs-12
+              Leave: 4:05PM
+            .col-xs-12
+              Arrive: 5:36PM
+            .col-xs-12
+              Travel Time: 1 hour, 31 minutes
+      .row
+        .col-xs-12.well.text-left{ng: {click: 'selectTransit()'}}
+          %img.col-xs-1{ng: {src: 'images/modes/transit.png'}}
+          %h3.col-xs-4
+            Rabbit Transit - Line 4E
+          %h3.col-xs-3
+            Fare: $5.40
+          .col-xs-4
+            .col-xs-12
+              Leave: 4:15PM
+            .col-xs-12
+              Arrive: 4:40PM
+            .col-xs-12
+              Travel Time: 25 minutes
+      .row
+        .col-md-2.col-md-offset-5
+          %a.btn.btn-lg.btn-success.btn-block{ng: {click: ''}}
+            More options
+
+    .depart-time{ng: {show: 'step==="sharedride_options_1"'}}
+      %form
+        .form-group
+          %h2 Will anyone be riding with you today?
+        .row
+          .col-md-2.col-md-offset-5
+            %a.btn.btn-success.btn-block{ng: {click: 'specifySharedRideCompanion("true")'}, style: 'white-space: normal; margin-bottom:4px;'}
+              Yes, I have a companion or escort with me
+            %a.btn.btn-success.btn-block{ng: {click: 'specifySharedRideCompanion("false")'}, style: 'white-space: normal; margin-bottom:4px;'}
+              No, I'm on my own
+
+    .depart-time{ng: {show: 'step==="sharedride_options_2"'}}
+      %form
+        .form-group
+          %h2 If you have any special instructions for the driver, please enter them below:
+        .row
+          .col-md-2.col-md-offset-5
+            %textarea.form-control{rows: '5'}
+
   .container
+    .pull-left
+      %a.btn.btn-success{type: 'submit', ng: {click: "back()"}}
+        %span{ng: {include: "'views/button-chevron-left.html'"}}
+        Back
     .pull-right
-      .btn.btn-success{ng: {show: 'showUndo', click: 'undo()'}}
-        %i.fa.fa-undo
-      %a.btn.btn-success{ng: {show: 'showNext', click: 'next()', disabled: 'disableNext'}}
+      %a.btn.btn-success{ng: {show: 'showNext', click: 'next()', hide: 'disableNext'}}
         Next
         %span{ng: {include: "'views/button-chevron-right.html'"}}
       %a.btn.btn-success{ng: {href: "#/plan2", show: 'readyToPlan()'}}

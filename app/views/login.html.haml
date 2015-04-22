@@ -29,14 +29,14 @@
         .form-group
           %label
             %h4 What is your date of birth?
-          %input.form-control{name: 'birthDate', placeholder: 'YYYY-mm-dd', ng: {model: 'birthday', change: 'disableNext()'}}
+          %birthdaypicker
           %h4 This will help us prevent other people from using your account.
 
 .row.action-button
   .col-xs-12
-    %a.pull-left.btn.btn-success{"ng-href" => "#/main"}
+    %a.pull-left.btn.btn-success{type: 'submit', ng: {click: "back()"}}
       %span{ng: {include: "'views/button-chevron-left.html'"}}
       Back
-    %a.pull-right.btn.btn-success{type: 'submit', ng: {click: "next()", disabled: "disableNext()"}}
+    %a.pull-right.btn.btn-success{type: 'submit', ng: {click: "next()", hide: "disableNext()"}}
       Next
       %span{ng: {include: "'views/button-chevron-right.html'"}}

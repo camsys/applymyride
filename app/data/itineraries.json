@@ -1,0 +1,1491 @@
+{
+  "trip_id": 1451,
+  "trip_token": "",
+  "itineraries": [
+    {
+      "id": 11930,
+      "trip_part_id": 2948,
+      "mode_id": 1,
+      "service_id": 3,
+      "server_status": 200,
+      "server_message": null,
+      "duration": 3521,
+      "walk_time": 2739,
+      "transit_time": 780,
+      "wait_time": 2,
+      "walk_distance": 3607.64138496741,
+      "transfers": 0,
+      "count": null,
+      "legs": "---\n- startTime: 1430436318000\n  endTime: 1430436599000\n  departureDelay: 0\n  arrivalDelay: 0\n  realTime: false\n  isNonExactFrequency: \n  headway: \n  distance: 362.5438227720875\n  from:\n    name: West Market Street\n    stopId: \n    stopCode: \n    platformCode: \n    lon: -76.73002171142686\n    lat: 39.9617395205611\n    arrival: \n    departure: 1430436318000\n    orig: ''\n    zoneId: \n    stopIndex: \n  to:\n    name: Transfer Center\n    stopId:\n      agencyId: '210'\n      id: '765237'\n    stopCode: \n    platformCode: \n    lon: -76.73144552366078\n    lat: 39.95969730580617\n    arrival: 1430436599000\n    departure: 1430436600000\n    orig: \n    zoneId: \n    stopIndex: \n  legGeometry:\n    points: y_|rFtiisMzAvHt@[vAm@hCcAZ|AFR\n    levels: \n    length: 7\n  transitLeg: false\n  mode: WALK\n  route: ''\n  agencyName: \n  agencyUrl: \n  agencyTimeZoneOffset: -14400000\n  routeColor: \n  routeType: \n  routeId: \n  routeTextColor: \n  interlineWithPreviousLeg: false\n  tripShortName: \n  tripBlockId: \n  headsign: \n  agencyId: \n  tripId: \n  serviceDate: \n  intermediateStops: \n  steps:\n  - distance: 142.72028736032635\n    relativeDirection: DEPART\n    streetName: West Market Street\n    absoluteDirection: WEST\n    exit: \n    stayOn: false\n    area: false\n    bogusName: false\n    lon: -76.73002171142686\n    lat: 39.9617395205611\n    alerts:\n    - alertHeaderText:\n        translations:\n          en: no longer a state highway by 1987\n        someTranslation: no longer a state highway by 1987\n      alertDescriptionText: \n      alertUrl: \n      effectiveStartDate: \n    elevation: []\n  - distance: 166.93284818935845\n    relativeDirection: LEFT\n    streetName: South Pershing Avenue\n    absoluteDirection: SOUTH\n    exit: \n    stayOn: false\n    area: false\n    bogusName: false\n    lon: -76.7315821\n    lat: 39.9612737\n    alerts: \n    elevation: []\n  - distance: 52.890687222402654\n    relativeDirection: RIGHT\n    streetName: West King Street\n    absoluteDirection: WEST\n    exit: \n    stayOn: false\n    area: false\n    bogusName: false\n    lon: -76.7308703\n    lat: 39.9598751\n    alerts: \n    elevation: []\n  notes:\n  - text: no longer a state highway by 1987\n  alerts:\n  - alertHeaderText:\n      translations:\n        en: no longer a state highway by 1987\n      someTranslation: no longer a state highway by 1987\n    alertDescriptionText: \n    alertUrl: \n    effectiveStartDate: \n  routeShortName: \n  routeLongName: \n  boardRule: \n  alightRule: \n  rentedBike: false\n  duration: 281.0\n- startTime: 1430436600000\n  endTime: 1430437380000\n  departureDelay: 0\n  arrivalDelay: 0\n  realTime: false\n  isNonExactFrequency: \n  headway: \n  distance: 3682.9978978697877\n  from:\n    name: Transfer Center\n    stopId:\n      agencyId: '210'\n      id: '765237'\n    stopCode: \n    platformCode: \n    lon: -76.731524\n    lat: 39.959945\n    arrival: 1430436599000\n    departure: 1430436600000\n    orig: \n    zoneId: '0'\n    stopIndex: 0\n  to:\n    name: W Market St At Diamond St Ob\n    stopId:\n      agencyId: '210'\n      id: '765416'\n    stopCode: \n    platformCode: \n    lon: -76.768876\n    lat: 39.952899\n    arrival: 1430437380000\n    departure: 1430437381000\n    orig: \n    zoneId: \n    stopIndex: 17\n  legGeometry:\n    points: qt{rFxsisMz@@o@{CvGkCtDnQA@BJZjBtApGPp@Nh@p@vCrA|FXvAl@nCDZFf@r@hDP~@xAtGJd@nBfJDTlBlIhAvFFXh@|Bx@`EKD}@\\cA`@zArHaA^{@^OFbAxEDPjBdJ?BfCxLHZfAjFjAlFHZgAb@o@X_@LkCRgDRDzARtHDvAPhHBf@TdIZjKBX?Ax@zJ\n    levels: \n    length: 59\n  transitLeg: true\n  mode: BUS\n  route: 5W\n  agencyName: \n  agencyUrl: \n  agencyTimeZoneOffset: -14400000\n  routeColor: '800080'\n  routeType: 3\n  routeId: '1270'\n  routeTextColor: FFFFFF\n  interlineWithPreviousLeg: false\n  tripShortName: \n  tripBlockId: \n  headsign: West York\n  agencyId: '210'\n  tripId: 53985A1024B1797\n  serviceDate: '20150430'\n  intermediateStops: \n  steps: []\n  notes: \n  alerts: \n  routeShortName: 5W\n  routeLongName: West York  West York Ind Park\n  boardRule: \n  alightRule: \n  rentedBike: false\n  duration: 780.0\n- startTime: 1430437381000\n  endTime: 1430439839000\n  departureDelay: 0\n  arrivalDelay: 0\n  realTime: false\n  isNonExactFrequency: \n  headway: \n  distance: 3244.855227431193\n  from:\n    name: W Market St At Diamond St Ob\n    stopId:\n      agencyId: '210'\n      id: '765416'\n    stopCode: \n    platformCode: \n    lon: -76.76878162327236\n    lat: 39.95292397337582\n    arrival: 1430437380000\n    departure: 1430437381000\n    orig: \n    zoneId: \n    stopIndex: \n  to:\n    name: service road\n    stopId: \n    stopCode: \n    platformCode: \n    lon: -76.78924503660173\n    lat: 39.95520284199648\n    arrival: 1430439839000\n    departure: \n    orig: ''\n    zoneId: \n    stopIndex: \n  legGeometry:\n    points: whzrF|{psMPEn@tHPnBDb@n@lGz@bEH^pA~F|ArHl@fBaBhJoAhIc@tCaC|NU`BEpB^zAfFjLdAbC|IzVd@zAoCpAe@r@o@nBEV@f@]xCE|@Y^iAw@Wo@kAkD?CsEoH_IeKiFuD\n    levels: \n    length: 37\n  transitLeg: false\n  mode: WALK\n  route: ''\n  agencyName: \n  agencyUrl: \n  agencyTimeZoneOffset: -14400000\n  routeColor: \n  routeType: \n  routeId: \n  routeTextColor: \n  interlineWithPreviousLeg: false\n  tripShortName: \n  tripBlockId: \n  headsign: \n  agencyId: \n  tripId: \n  serviceDate: \n  intermediateStops: \n  steps:\n  - distance: 9.743163778469134\n    relativeDirection: DEPART\n    streetName: North Diamond Street\n    absoluteDirection: SOUTH\n    exit: \n    stayOn: false\n    area: false\n    bogusName: false\n    lon: -76.76878162327236\n    lat: 39.95292397337582\n    alerts: \n    elevation: []\n  - distance: 731.9200597364695\n    relativeDirection: RIGHT\n    streetName: West Market Street\n    absoluteDirection: WEST\n    exit: \n    stayOn: false\n    area: false\n    bogusName: false\n    lon: -76.7687589\n    lat: 39.9528381\n    alerts: \n    elevation: []\n  - distance: 163.9910218156762\n    relativeDirection: RIGHT\n    streetName: E Berlin Rd\n    absoluteDirection: WEST\n    exit: \n    stayOn: false\n    area: false\n    bogusName: false\n    lon: -76.7768701\n    lat: 39.9507792\n    alerts: \n    elevation: []\n  - distance: 1294.9847598593692\n    relativeDirection: CONTINUE\n    streetName: East Berlin Road\n    absoluteDirection: WEST\n    exit: \n    stayOn: false\n    area: false\n    bogusName: false\n    lon: -76.7786887\n    lat: 39.9512603\n    alerts: \n    elevation: []\n  - distance: 1044.216222241209\n    relativeDirection: RIGHT\n    streetName: service road\n    absoluteDirection: NORTHWEST\n    exit: \n    stayOn: false\n    area: false\n    bogusName: true\n    lon: -76.7922391\n    lat: 39.9490229\n    alerts: \n    elevation: []\n  notes: \n  alerts: \n  routeShortName: \n  routeLongName: \n  boardRule: \n  alightRule: \n  rentedBike: false\n  duration: 2458.0\n",
+      "cost": "1.55",
+      "hidden": false,
+      "created_at": "2015-04-20T15:33:38.726-04:00",
+      "updated_at": "2015-04-20T15:33:38.821-04:00",
+      "ride_count": null,
+      "external_info": null,
+      "match_score": -0.3,
+      "missing_information": false,
+      "accommodation_mismatch": false,
+      "missing_information_text": null,
+      "date_mismatch": false,
+      "time_mismatch": false,
+      "too_late": false,
+      "missing_accommodations": "",
+      "cost_comments": "",
+      "selected": null,
+      "start_time": "2015-04-30T19:25:18.000-04:00",
+      "end_time": "2015-04-30T20:23:59.000-04:00",
+      "is_bookable": false,
+      "booking_confirmation": null,
+      "duration_estimated": false,
+      "map_image": {
+        "url": null
+      },
+      "too_early": false,
+      "returned_mode_code": "mode_transit",
+      "order_xml": null,
+      "segment_index": 0,
+      "start_location": {
+        "address_components": [
+          {
+            "long_name": "100 West Market Street",
+            "short_name": "100 West Market Street",
+            "types": [
+              "street_address"
+            ]
+          },
+          {
+            "long_name": "York",
+            "short_name": "York",
+            "types": [
+              "locality",
+              "political"
+            ]
+          },
+          {
+            "long_name": "PA",
+            "short_name": "PA",
+            "types": [
+              "administrative_area_level_1",
+              "political"
+            ]
+          },
+          {
+            "long_name": "17406",
+            "short_name": "17406",
+            "types": [
+              "postal_code"
+            ]
+          }
+        ],
+        "formatted_address": "100 West Market Street, York, PA 17406",
+        "geometry": {
+          "location": {
+            "lat": 39.9615,
+            "lng": -76.7299
+          }
+        },
+        "id": 3541,
+        "name": "Fenway Park",
+        "scope": "user"
+      },
+      "end_location": {
+        "address_components": [
+          {
+            "long_name": "2000 West Market Street",
+            "short_name": "2000 West Market Street",
+            "types": [
+              "street_address"
+            ]
+          },
+          {
+            "long_name": "York",
+            "short_name": "York",
+            "types": [
+              "locality",
+              "political"
+            ]
+          },
+          {
+            "long_name": "PA",
+            "short_name": "PA",
+            "types": [
+              "administrative_area_level_1",
+              "political"
+            ]
+          },
+          {
+            "long_name": "17404",
+            "short_name": "17404",
+            "types": [
+              "postal_code"
+            ]
+          }
+        ],
+        "formatted_address": "2000 West Market Street, York, PA 17404",
+        "geometry": {
+          "location": {
+            "lat": 39.955,
+            "lng": -76.7888
+          }
+        },
+        "id": 3542,
+        "name": "2000 West Market Street, York, PA 17404",
+        "scope": "user"
+      },
+      "bookable": false,
+      "json_legs": [
+        {
+          "startTime": 1430436318000,
+          "endTime": 1430436599000,
+          "departureDelay": 0,
+          "arrivalDelay": 0,
+          "realTime": false,
+          "isNonExactFrequency": null,
+          "headway": null,
+          "distance": 362.5438227720875,
+          "from": {
+            "name": "West Market Street",
+            "stopId": null,
+            "stopCode": null,
+            "platformCode": null,
+            "lon": -76.73002171142686,
+            "lat": 39.9617395205611,
+            "arrival": null,
+            "departure": 1430436318000,
+            "orig": "",
+            "zoneId": null,
+            "stopIndex": null
+          },
+          "to": {
+            "name": "Transfer Center",
+            "stopId": {
+              "agencyId": "210",
+              "id": "765237"
+            },
+            "stopCode": null,
+            "platformCode": null,
+            "lon": -76.73144552366078,
+            "lat": 39.95969730580617,
+            "arrival": 1430436599000,
+            "departure": 1430436600000,
+            "orig": null,
+            "zoneId": null,
+            "stopIndex": null
+          },
+          "legGeometry": {
+            "points": "y_|rFtiisMzAvHt@[vAm@hCcAZ|AFR",
+            "levels": null,
+            "length": 7
+          },
+          "transitLeg": false,
+          "mode": "WALK",
+          "route": "",
+          "agencyName": null,
+          "agencyUrl": null,
+          "agencyTimeZoneOffset": -14400000,
+          "routeColor": null,
+          "routeType": null,
+          "routeId": null,
+          "routeTextColor": null,
+          "interlineWithPreviousLeg": false,
+          "tripShortName": null,
+          "tripBlockId": null,
+          "headsign": null,
+          "agencyId": null,
+          "tripId": null,
+          "serviceDate": null,
+          "intermediateStops": null,
+          "steps": [
+            {
+              "distance": 142.72028736032635,
+              "relativeDirection": "DEPART",
+              "streetName": "West Market Street",
+              "absoluteDirection": "WEST",
+              "exit": null,
+              "stayOn": false,
+              "area": false,
+              "bogusName": false,
+              "lon": -76.73002171142686,
+              "lat": 39.9617395205611,
+              "alerts": [
+                {
+                  "alertHeaderText": {
+                    "translations": {
+                      "en": "no longer a state highway by 1987"
+                    },
+                    "someTranslation": "no longer a state highway by 1987"
+                  },
+                  "alertDescriptionText": null,
+                  "alertUrl": null,
+                  "effectiveStartDate": null
+                }
+              ],
+              "elevation": [
+
+              ]
+            },
+            {
+              "distance": 166.93284818935845,
+              "relativeDirection": "LEFT",
+              "streetName": "South Pershing Avenue",
+              "absoluteDirection": "SOUTH",
+              "exit": null,
+              "stayOn": false,
+              "area": false,
+              "bogusName": false,
+              "lon": -76.7315821,
+              "lat": 39.9612737,
+              "alerts": null,
+              "elevation": [
+
+              ]
+            },
+            {
+              "distance": 52.890687222402654,
+              "relativeDirection": "RIGHT",
+              "streetName": "West King Street",
+              "absoluteDirection": "WEST",
+              "exit": null,
+              "stayOn": false,
+              "area": false,
+              "bogusName": false,
+              "lon": -76.7308703,
+              "lat": 39.9598751,
+              "alerts": null,
+              "elevation": [
+
+              ]
+            }
+          ],
+          "notes": [
+            {
+              "text": "no longer a state highway by 1987"
+            }
+          ],
+          "alerts": [
+            {
+              "alertHeaderText": {
+                "translations": {
+                  "en": "no longer a state highway by 1987"
+                },
+                "someTranslation": "no longer a state highway by 1987"
+              },
+              "alertDescriptionText": null,
+              "alertUrl": null,
+              "effectiveStartDate": null
+            }
+          ],
+          "routeShortName": null,
+          "routeLongName": null,
+          "boardRule": null,
+          "alightRule": null,
+          "rentedBike": false,
+          "duration": 281.0
+        },
+        {
+          "startTime": 1430436600000,
+          "endTime": 1430437380000,
+          "departureDelay": 0,
+          "arrivalDelay": 0,
+          "realTime": false,
+          "isNonExactFrequency": null,
+          "headway": null,
+          "distance": 3682.9978978697877,
+          "from": {
+            "name": "Transfer Center",
+            "stopId": {
+              "agencyId": "210",
+              "id": "765237"
+            },
+            "stopCode": null,
+            "platformCode": null,
+            "lon": -76.731524,
+            "lat": 39.959945,
+            "arrival": 1430436599000,
+            "departure": 1430436600000,
+            "orig": null,
+            "zoneId": "0",
+            "stopIndex": 0
+          },
+          "to": {
+            "name": "W Market St At Diamond St Ob",
+            "stopId": {
+              "agencyId": "210",
+              "id": "765416"
+            },
+            "stopCode": null,
+            "platformCode": null,
+            "lon": -76.768876,
+            "lat": 39.952899,
+            "arrival": 1430437380000,
+            "departure": 1430437381000,
+            "orig": null,
+            "zoneId": null,
+            "stopIndex": 17
+          },
+          "legGeometry": {
+            "points": "qt{rFxsisMz@@o@{CvGkCtDnQA@BJZjBtApGPp@Nh@p@vCrA|FXvAl@nCDZFf@r@hDP~@xAtGJd@nBfJDTlBlIhAvFFXh@|Bx@`EKD}@\\cA`@zArHaA^{@^OFbAxEDPjBdJ?BfCxLHZfAjFjAlFHZgAb@o@X_@LkCRgDRDzARtHDvAPhHBf@TdIZjKBX?Ax@zJ",
+            "levels": null,
+            "length": 59
+          },
+          "transitLeg": true,
+          "mode": "BUS",
+          "route": "5W",
+          "agencyName": null,
+          "agencyUrl": null,
+          "agencyTimeZoneOffset": -14400000,
+          "routeColor": "800080",
+          "routeType": 3,
+          "routeId": "1270",
+          "routeTextColor": "FFFFFF",
+          "interlineWithPreviousLeg": false,
+          "tripShortName": null,
+          "tripBlockId": null,
+          "headsign": "West York",
+          "agencyId": "210",
+          "tripId": "53985A1024B1797",
+          "serviceDate": "20150430",
+          "intermediateStops": null,
+          "steps": [
+
+          ],
+          "notes": null,
+          "alerts": null,
+          "routeShortName": "5W",
+          "routeLongName": "West York  West York Ind Park",
+          "boardRule": null,
+          "alightRule": null,
+          "rentedBike": false,
+          "duration": 780.0
+        },
+        {
+          "startTime": 1430437381000,
+          "endTime": 1430439839000,
+          "departureDelay": 0,
+          "arrivalDelay": 0,
+          "realTime": false,
+          "isNonExactFrequency": null,
+          "headway": null,
+          "distance": 3244.855227431193,
+          "from": {
+            "name": "W Market St At Diamond St Ob",
+            "stopId": {
+              "agencyId": "210",
+              "id": "765416"
+            },
+            "stopCode": null,
+            "platformCode": null,
+            "lon": -76.76878162327236,
+            "lat": 39.95292397337582,
+            "arrival": 1430437380000,
+            "departure": 1430437381000,
+            "orig": null,
+            "zoneId": null,
+            "stopIndex": null
+          },
+          "to": {
+            "name": "service road",
+            "stopId": null,
+            "stopCode": null,
+            "platformCode": null,
+            "lon": -76.78924503660173,
+            "lat": 39.95520284199648,
+            "arrival": 1430439839000,
+            "departure": null,
+            "orig": "",
+            "zoneId": null,
+            "stopIndex": null
+          },
+          "legGeometry": {
+            "points": "whzrF|{psMPEn@tHPnBDb@n@lGz@bEH^pA~F|ArHl@fBaBhJoAhIc@tCaC|NU`BEpB^zAfFjLdAbC|IzVd@zAoCpAe@r@o@nBEV@f@]xCE|@Y^iAw@Wo@kAkD?CsEoH_IeKiFuD",
+            "levels": null,
+            "length": 37
+          },
+          "transitLeg": false,
+          "mode": "WALK",
+          "route": "",
+          "agencyName": null,
+          "agencyUrl": null,
+          "agencyTimeZoneOffset": -14400000,
+          "routeColor": null,
+          "routeType": null,
+          "routeId": null,
+          "routeTextColor": null,
+          "interlineWithPreviousLeg": false,
+          "tripShortName": null,
+          "tripBlockId": null,
+          "headsign": null,
+          "agencyId": null,
+          "tripId": null,
+          "serviceDate": null,
+          "intermediateStops": null,
+          "steps": [
+            {
+              "distance": 9.743163778469134,
+              "relativeDirection": "DEPART",
+              "streetName": "North Diamond Street",
+              "absoluteDirection": "SOUTH",
+              "exit": null,
+              "stayOn": false,
+              "area": false,
+              "bogusName": false,
+              "lon": -76.76878162327236,
+              "lat": 39.95292397337582,
+              "alerts": null,
+              "elevation": [
+
+              ]
+            },
+            {
+              "distance": 731.9200597364695,
+              "relativeDirection": "RIGHT",
+              "streetName": "West Market Street",
+              "absoluteDirection": "WEST",
+              "exit": null,
+              "stayOn": false,
+              "area": false,
+              "bogusName": false,
+              "lon": -76.7687589,
+              "lat": 39.9528381,
+              "alerts": null,
+              "elevation": [
+
+              ]
+            },
+            {
+              "distance": 163.9910218156762,
+              "relativeDirection": "RIGHT",
+              "streetName": "E Berlin Rd",
+              "absoluteDirection": "WEST",
+              "exit": null,
+              "stayOn": false,
+              "area": false,
+              "bogusName": false,
+              "lon": -76.7768701,
+              "lat": 39.9507792,
+              "alerts": null,
+              "elevation": [
+
+              ]
+            },
+            {
+              "distance": 1294.9847598593692,
+              "relativeDirection": "CONTINUE",
+              "streetName": "East Berlin Road",
+              "absoluteDirection": "WEST",
+              "exit": null,
+              "stayOn": false,
+              "area": false,
+              "bogusName": false,
+              "lon": -76.7786887,
+              "lat": 39.9512603,
+              "alerts": null,
+              "elevation": [
+
+              ]
+            },
+            {
+              "distance": 1044.216222241209,
+              "relativeDirection": "RIGHT",
+              "streetName": "service road",
+              "absoluteDirection": "NORTHWEST",
+              "exit": null,
+              "stayOn": false,
+              "area": false,
+              "bogusName": true,
+              "lon": -76.7922391,
+              "lat": 39.9490229,
+              "alerts": null,
+              "elevation": [
+
+              ]
+            }
+          ],
+          "notes": null,
+          "alerts": null,
+          "routeShortName": null,
+          "routeLongName": null,
+          "boardRule": null,
+          "alightRule": null,
+          "rentedBike": false,
+          "duration": 2458.0
+        }
+      ]
+    },
+    {
+      "id": 11931,
+      "trip_part_id": 2948,
+      "mode_id": 1,
+      "service_id": 3,
+      "server_status": 200,
+      "server_message": null,
+      "duration": 3335,
+      "walk_time": 2489,
+      "transit_time": 844,
+      "wait_time": 2,
+      "walk_distance": 3275.36499469273,
+      "transfers": 0,
+      "count": null,
+      "legs": "---\n- startTime: 1430434824000\n  endTime: 1430434866000\n  departureDelay: 0\n  arrivalDelay: 0\n  realTime: false\n  isNonExactFrequency: \n  headway: \n  distance: 50.17704922883016\n  from:\n    name: West Market Street\n    stopId: \n    stopCode: \n    platformCode: \n    lon: -76.73002171142686\n    lat: 39.9617395205611\n    arrival: \n    departure: 1430434824000\n    orig: ''\n    zoneId: \n    stopIndex: \n  to:\n    name: N Beaver At Market Ob\n    stopId:\n      agencyId: '210'\n      id: '765224'\n    stopCode: \n    platformCode: \n    lon: -76.72974434557355\n    lat: 39.96199816924926\n    arrival: 1430434866000\n    departure: 1430434867000\n    orig: \n    zoneId: \n    stopIndex: \n  legGeometry:\n    points: y_|rFtiisMUeA]L\n    levels: \n    length: 3\n  transitLeg: false\n  mode: WALK\n  route: ''\n  agencyName: \n  agencyUrl: \n  agencyTimeZoneOffset: -14400000\n  routeColor: \n  routeType: \n  routeId: \n  routeTextColor: \n  interlineWithPreviousLeg: false\n  tripShortName: \n  tripBlockId: \n  headsign: \n  agencyId: \n  tripId: \n  serviceDate: \n  intermediateStops: \n  steps:\n  - distance: 31.949623368105165\n    relativeDirection: DEPART\n    streetName: West Market Street\n    absoluteDirection: EAST\n    exit: \n    stayOn: false\n    area: false\n    bogusName: false\n    lon: -76.73002171142686\n    lat: 39.9617395205611\n    alerts:\n    - alertHeaderText:\n        translations:\n          en: no longer a state highway by 1987\n        someTranslation: no longer a state highway by 1987\n      alertDescriptionText: \n      alertUrl: \n      effectiveStartDate: \n    elevation: []\n  - distance: 18.227425860724992\n    relativeDirection: LEFT\n    streetName: North Beaver Street\n    absoluteDirection: NORTH\n    exit: \n    stayOn: false\n    area: false\n    bogusName: false\n    lon: -76.7296724\n    lat: 39.9618438\n    alerts: \n    elevation: []\n  notes:\n  - text: no longer a state highway by 1987\n  alerts:\n  - alertHeaderText:\n      translations:\n        en: no longer a state highway by 1987\n      someTranslation: no longer a state highway by 1987\n    alertDescriptionText: \n    alertUrl: \n    effectiveStartDate: \n  routeShortName: \n  routeLongName: \n  boardRule: \n  alightRule: \n  rentedBike: false\n  duration: 42.0\n- startTime: 1430434867000\n  endTime: 1430435711000\n  departureDelay: 0\n  arrivalDelay: 0\n  realTime: false\n  isNonExactFrequency: \n  headway: \n  distance: 4058.385175844381\n  from:\n    name: N Beaver At Market Ob\n    stopId:\n      agencyId: '210'\n      id: '765224'\n    stopCode: \n    platformCode: \n    lon: -76.729749\n    lat: 39.961996\n    arrival: 1430434866000\n    departure: 1430434867000\n    orig: \n    zoneId: '0'\n    stopIndex: 1\n  to:\n    name: White At Bannister Ob\n    stopId:\n      agencyId: '210'\n      id: '765409'\n    stopCode: \n    platformCode: \n    lon: -76.774157\n    lat: 39.961193\n    arrival: 1430435711000\n    departure: 1430435712000\n    orig: \n    zoneId: '0'\n    stopIndex: 15\n  legGeometry:\n    points: ma|rF~gisM?A{Bx@cC`ALf@n@vCv@fEFVTfAb@tBx@pDBL`AlEFZrC~Lf@dCBNnCxMH`@hAtF`B~HP|@jB~IHZdC|KC@TrA_ApDwBvI@AEL]zAk@~Bi@pBs@nCo@lCm@|BIb@_@`Bk@dCEL}BrKRhHRfKTbK@VRlIX`K?LZpKPjJVfLiDdBc@RO?\n    levels: \n    length: 55\n  transitLeg: true\n  mode: BUS\n  route: 1W\n  agencyName: \n  agencyUrl: \n  agencyTimeZoneOffset: -14400000\n  routeColor: FF0000\n  routeType: 3\n  routeId: '1264'\n  routeTextColor: '000000'\n  interlineWithPreviousLeg: false\n  tripShortName: \n  tripBlockId: \n  headsign: W Manch Mall\n  agencyId: '210'\n  tripId: 53754A1024B1797\n  serviceDate: '20150430'\n  intermediateStops: \n  steps: []\n  notes: \n  alerts: \n  routeShortName: 1W\n  routeLongName: West Manchester Mall\n  boardRule: \n  alightRule: \n  rentedBike: false\n  duration: 844.0\n- startTime: 1430435712000\n  endTime: 1430438159000\n  departureDelay: 0\n  arrivalDelay: 0\n  realTime: false\n  isNonExactFrequency: \n  headway: \n  distance: 3224.9821473257425\n  from:\n    name: White At Bannister Ob\n    stopId:\n      agencyId: '210'\n      id: '765409'\n    stopCode: \n    platformCode: \n    lon: -76.77416504377801\n    lat: 39.961193418620745\n    arrival: 1430435711000\n    departure: 1430435712000\n    orig: \n    zoneId: \n    stopIndex: \n  to:\n    name: service road\n    stopId: \n    stopCode: \n    platformCode: \n    lon: -76.78924503660173\n    lat: 39.95520284199648\n    arrival: 1430438159000\n    departure: \n    orig: ''\n    zoneId: \n    stopIndex: \n  legGeometry:\n    points: m|{rFp}qsMN?b@Sh@Y~BiAV~CTtA^dAbAbBfCtFl@~@hD~FrClGfCpGDFxAdDlArBbAbBVb@hAlAnDdC~ExCfFjLdAbC|IzVd@zAoCpAe@r@o@nBEV@f@]xCE|@Y^iAw@Wo@kAkD?CsEoH_IeKiFuD\n    levels: \n    length: 41\n  transitLeg: false\n  mode: WALK\n  route: ''\n  agencyName: \n  agencyUrl: \n  agencyTimeZoneOffset: -14400000\n  routeColor: \n  routeType: \n  routeId: \n  routeTextColor: \n  interlineWithPreviousLeg: false\n  tripShortName: \n  tripBlockId: \n  headsign: \n  agencyId: \n  tripId: \n  serviceDate: \n  intermediateStops: \n  steps:\n  - distance: 131.60513574343616\n    relativeDirection: DEPART\n    streetName: White Street\n    absoluteDirection: SOUTH\n    exit: \n    stayOn: false\n    area: false\n    bogusName: false\n    lon: -76.77416504377801\n    lat: 39.961193418620745\n    alerts: \n    elevation: []\n  - distance: 1333.1198561591198\n    relativeDirection: RIGHT\n    streetName: Bannister Street\n    absoluteDirection: WEST\n    exit: \n    stayOn: false\n    area: false\n    bogusName: false\n    lon: -76.7735629\n    lat: 39.9600857\n    alerts: \n    elevation: []\n  - distance: 716.0409331819776\n    relativeDirection: SLIGHTLY_RIGHT\n    streetName: East Berlin Road\n    absoluteDirection: SOUTHWEST\n    exit: \n    stayOn: false\n    area: false\n    bogusName: false\n    lon: -76.7851554\n    lat: 39.952474\n    alerts: \n    elevation: []\n  - distance: 1044.216222241209\n    relativeDirection: RIGHT\n    streetName: service road\n    absoluteDirection: NORTHWEST\n    exit: \n    stayOn: false\n    area: false\n    bogusName: true\n    lon: -76.7922391\n    lat: 39.9490229\n    alerts: \n    elevation: []\n  notes: \n  alerts: \n  routeShortName: \n  routeLongName: \n  boardRule: \n  alightRule: \n  rentedBike: false\n  duration: 2447.0\n",
+      "cost": "1.55",
+      "hidden": false,
+      "created_at": "2015-04-20T15:33:38.760-04:00",
+      "updated_at": "2015-04-20T15:33:38.824-04:00",
+      "ride_count": null,
+      "external_info": null,
+      "match_score": -0.2,
+      "missing_information": false,
+      "accommodation_mismatch": false,
+      "missing_information_text": null,
+      "date_mismatch": false,
+      "time_mismatch": false,
+      "too_late": false,
+      "missing_accommodations": "",
+      "cost_comments": "",
+      "selected": null,
+      "start_time": "2015-04-30T19:00:24.000-04:00",
+      "end_time": "2015-04-30T19:55:59.000-04:00",
+      "is_bookable": false,
+      "booking_confirmation": null,
+      "duration_estimated": false,
+      "map_image": {
+        "url": null
+      },
+      "too_early": false,
+      "returned_mode_code": "mode_transit",
+      "order_xml": null,
+      "segment_index": 0,
+      "start_location": {
+        "address_components": [
+          {
+            "long_name": "100 West Market Street",
+            "short_name": "100 West Market Street",
+            "types": [
+              "street_address"
+            ]
+          },
+          {
+            "long_name": "York",
+            "short_name": "York",
+            "types": [
+              "locality",
+              "political"
+            ]
+          },
+          {
+            "long_name": "PA",
+            "short_name": "PA",
+            "types": [
+              "administrative_area_level_1",
+              "political"
+            ]
+          },
+          {
+            "long_name": "17406",
+            "short_name": "17406",
+            "types": [
+              "postal_code"
+            ]
+          }
+        ],
+        "formatted_address": "100 West Market Street, York, PA 17406",
+        "geometry": {
+          "location": {
+            "lat": 39.9615,
+            "lng": -76.7299
+          }
+        },
+        "id": 3541,
+        "name": "Fenway Park",
+        "scope": "user"
+      },
+      "end_location": {
+        "address_components": [
+          {
+            "long_name": "2000 West Market Street",
+            "short_name": "2000 West Market Street",
+            "types": [
+              "street_address"
+            ]
+          },
+          {
+            "long_name": "York",
+            "short_name": "York",
+            "types": [
+              "locality",
+              "political"
+            ]
+          },
+          {
+            "long_name": "PA",
+            "short_name": "PA",
+            "types": [
+              "administrative_area_level_1",
+              "political"
+            ]
+          },
+          {
+            "long_name": "17404",
+            "short_name": "17404",
+            "types": [
+              "postal_code"
+            ]
+          }
+        ],
+        "formatted_address": "2000 West Market Street, York, PA 17404",
+        "geometry": {
+          "location": {
+            "lat": 39.955,
+            "lng": -76.7888
+          }
+        },
+        "id": 3542,
+        "name": "2000 West Market Street, York, PA 17404",
+        "scope": "user"
+      },
+      "bookable": false,
+      "json_legs": [
+        {
+          "startTime": 1430434824000,
+          "endTime": 1430434866000,
+          "departureDelay": 0,
+          "arrivalDelay": 0,
+          "realTime": false,
+          "isNonExactFrequency": null,
+          "headway": null,
+          "distance": 50.17704922883016,
+          "from": {
+            "name": "West Market Street",
+            "stopId": null,
+            "stopCode": null,
+            "platformCode": null,
+            "lon": -76.73002171142686,
+            "lat": 39.9617395205611,
+            "arrival": null,
+            "departure": 1430434824000,
+            "orig": "",
+            "zoneId": null,
+            "stopIndex": null
+          },
+          "to": {
+            "name": "N Beaver At Market Ob",
+            "stopId": {
+              "agencyId": "210",
+              "id": "765224"
+            },
+            "stopCode": null,
+            "platformCode": null,
+            "lon": -76.72974434557355,
+            "lat": 39.96199816924926,
+            "arrival": 1430434866000,
+            "departure": 1430434867000,
+            "orig": null,
+            "zoneId": null,
+            "stopIndex": null
+          },
+          "legGeometry": {
+            "points": "y_|rFtiisMUeA]L",
+            "levels": null,
+            "length": 3
+          },
+          "transitLeg": false,
+          "mode": "WALK",
+          "route": "",
+          "agencyName": null,
+          "agencyUrl": null,
+          "agencyTimeZoneOffset": -14400000,
+          "routeColor": null,
+          "routeType": null,
+          "routeId": null,
+          "routeTextColor": null,
+          "interlineWithPreviousLeg": false,
+          "tripShortName": null,
+          "tripBlockId": null,
+          "headsign": null,
+          "agencyId": null,
+          "tripId": null,
+          "serviceDate": null,
+          "intermediateStops": null,
+          "steps": [
+            {
+              "distance": 31.949623368105165,
+              "relativeDirection": "DEPART",
+              "streetName": "West Market Street",
+              "absoluteDirection": "EAST",
+              "exit": null,
+              "stayOn": false,
+              "area": false,
+              "bogusName": false,
+              "lon": -76.73002171142686,
+              "lat": 39.9617395205611,
+              "alerts": [
+                {
+                  "alertHeaderText": {
+                    "translations": {
+                      "en": "no longer a state highway by 1987"
+                    },
+                    "someTranslation": "no longer a state highway by 1987"
+                  },
+                  "alertDescriptionText": null,
+                  "alertUrl": null,
+                  "effectiveStartDate": null
+                }
+              ],
+              "elevation": [
+
+              ]
+            },
+            {
+              "distance": 18.227425860724992,
+              "relativeDirection": "LEFT",
+              "streetName": "North Beaver Street",
+              "absoluteDirection": "NORTH",
+              "exit": null,
+              "stayOn": false,
+              "area": false,
+              "bogusName": false,
+              "lon": -76.7296724,
+              "lat": 39.9618438,
+              "alerts": null,
+              "elevation": [
+
+              ]
+            }
+          ],
+          "notes": [
+            {
+              "text": "no longer a state highway by 1987"
+            }
+          ],
+          "alerts": [
+            {
+              "alertHeaderText": {
+                "translations": {
+                  "en": "no longer a state highway by 1987"
+                },
+                "someTranslation": "no longer a state highway by 1987"
+              },
+              "alertDescriptionText": null,
+              "alertUrl": null,
+              "effectiveStartDate": null
+            }
+          ],
+          "routeShortName": null,
+          "routeLongName": null,
+          "boardRule": null,
+          "alightRule": null,
+          "rentedBike": false,
+          "duration": 42.0
+        },
+        {
+          "startTime": 1430434867000,
+          "endTime": 1430435711000,
+          "departureDelay": 0,
+          "arrivalDelay": 0,
+          "realTime": false,
+          "isNonExactFrequency": null,
+          "headway": null,
+          "distance": 4058.385175844381,
+          "from": {
+            "name": "N Beaver At Market Ob",
+            "stopId": {
+              "agencyId": "210",
+              "id": "765224"
+            },
+            "stopCode": null,
+            "platformCode": null,
+            "lon": -76.729749,
+            "lat": 39.961996,
+            "arrival": 1430434866000,
+            "departure": 1430434867000,
+            "orig": null,
+            "zoneId": "0",
+            "stopIndex": 1
+          },
+          "to": {
+            "name": "White At Bannister Ob",
+            "stopId": {
+              "agencyId": "210",
+              "id": "765409"
+            },
+            "stopCode": null,
+            "platformCode": null,
+            "lon": -76.774157,
+            "lat": 39.961193,
+            "arrival": 1430435711000,
+            "departure": 1430435712000,
+            "orig": null,
+            "zoneId": "0",
+            "stopIndex": 15
+          },
+          "legGeometry": {
+            "points": "ma|rF~gisM?A{Bx@cC`ALf@n@vCv@fEFVTfAb@tBx@pDBL`AlEFZrC~Lf@dCBNnCxMH`@hAtF`B~HP|@jB~IHZdC|KC@TrA_ApDwBvI@AEL]zAk@~Bi@pBs@nCo@lCm@|BIb@_@`Bk@dCEL}BrKRhHRfKTbK@VRlIX`K?LZpKPjJVfLiDdBc@RO?",
+            "levels": null,
+            "length": 55
+          },
+          "transitLeg": true,
+          "mode": "BUS",
+          "route": "1W",
+          "agencyName": null,
+          "agencyUrl": null,
+          "agencyTimeZoneOffset": -14400000,
+          "routeColor": "FF0000",
+          "routeType": 3,
+          "routeId": "1264",
+          "routeTextColor": "000000",
+          "interlineWithPreviousLeg": false,
+          "tripShortName": null,
+          "tripBlockId": null,
+          "headsign": "W Manch Mall",
+          "agencyId": "210",
+          "tripId": "53754A1024B1797",
+          "serviceDate": "20150430",
+          "intermediateStops": null,
+          "steps": [
+
+          ],
+          "notes": null,
+          "alerts": null,
+          "routeShortName": "1W",
+          "routeLongName": "West Manchester Mall",
+          "boardRule": null,
+          "alightRule": null,
+          "rentedBike": false,
+          "duration": 844.0
+        },
+        {
+          "startTime": 1430435712000,
+          "endTime": 1430438159000,
+          "departureDelay": 0,
+          "arrivalDelay": 0,
+          "realTime": false,
+          "isNonExactFrequency": null,
+          "headway": null,
+          "distance": 3224.9821473257425,
+          "from": {
+            "name": "White At Bannister Ob",
+            "stopId": {
+              "agencyId": "210",
+              "id": "765409"
+            },
+            "stopCode": null,
+            "platformCode": null,
+            "lon": -76.77416504377801,
+            "lat": 39.961193418620745,
+            "arrival": 1430435711000,
+            "departure": 1430435712000,
+            "orig": null,
+            "zoneId": null,
+            "stopIndex": null
+          },
+          "to": {
+            "name": "service road",
+            "stopId": null,
+            "stopCode": null,
+            "platformCode": null,
+            "lon": -76.78924503660173,
+            "lat": 39.95520284199648,
+            "arrival": 1430438159000,
+            "departure": null,
+            "orig": "",
+            "zoneId": null,
+            "stopIndex": null
+          },
+          "legGeometry": {
+            "points": "m|{rFp}qsMN?b@Sh@Y~BiAV~CTtA^dAbAbBfCtFl@~@hD~FrClGfCpGDFxAdDlArBbAbBVb@hAlAnDdC~ExCfFjLdAbC|IzVd@zAoCpAe@r@o@nBEV@f@]xCE|@Y^iAw@Wo@kAkD?CsEoH_IeKiFuD",
+            "levels": null,
+            "length": 41
+          },
+          "transitLeg": false,
+          "mode": "WALK",
+          "route": "",
+          "agencyName": null,
+          "agencyUrl": null,
+          "agencyTimeZoneOffset": -14400000,
+          "routeColor": null,
+          "routeType": null,
+          "routeId": null,
+          "routeTextColor": null,
+          "interlineWithPreviousLeg": false,
+          "tripShortName": null,
+          "tripBlockId": null,
+          "headsign": null,
+          "agencyId": null,
+          "tripId": null,
+          "serviceDate": null,
+          "intermediateStops": null,
+          "steps": [
+            {
+              "distance": 131.60513574343616,
+              "relativeDirection": "DEPART",
+              "streetName": "White Street",
+              "absoluteDirection": "SOUTH",
+              "exit": null,
+              "stayOn": false,
+              "area": false,
+              "bogusName": false,
+              "lon": -76.77416504377801,
+              "lat": 39.961193418620745,
+              "alerts": null,
+              "elevation": [
+
+              ]
+            },
+            {
+              "distance": 1333.1198561591198,
+              "relativeDirection": "RIGHT",
+              "streetName": "Bannister Street",
+              "absoluteDirection": "WEST",
+              "exit": null,
+              "stayOn": false,
+              "area": false,
+              "bogusName": false,
+              "lon": -76.7735629,
+              "lat": 39.9600857,
+              "alerts": null,
+              "elevation": [
+
+              ]
+            },
+            {
+              "distance": 716.0409331819776,
+              "relativeDirection": "SLIGHTLY_RIGHT",
+              "streetName": "East Berlin Road",
+              "absoluteDirection": "SOUTHWEST",
+              "exit": null,
+              "stayOn": false,
+              "area": false,
+              "bogusName": false,
+              "lon": -76.7851554,
+              "lat": 39.952474,
+              "alerts": null,
+              "elevation": [
+
+              ]
+            },
+            {
+              "distance": 1044.216222241209,
+              "relativeDirection": "RIGHT",
+              "streetName": "service road",
+              "absoluteDirection": "NORTHWEST",
+              "exit": null,
+              "stayOn": false,
+              "area": false,
+              "bogusName": true,
+              "lon": -76.7922391,
+              "lat": 39.9490229,
+              "alerts": null,
+              "elevation": [
+
+              ]
+            }
+          ],
+          "notes": null,
+          "alerts": null,
+          "routeShortName": null,
+          "routeLongName": null,
+          "boardRule": null,
+          "alightRule": null,
+          "rentedBike": false,
+          "duration": 2447.0
+        }
+      ]
+    },
+    {
+      "id": 11932,
+      "trip_part_id": 2948,
+      "mode_id": 1,
+      "service_id": 3,
+      "server_status": 200,
+      "server_message": null,
+      "duration": 2799,
+      "walk_time": 2167,
+      "transit_time": 630,
+      "wait_time": 2,
+      "walk_distance": 2854.95500379554,
+      "transfers": 0,
+      "count": null,
+      "legs": "---\n- startTime: 1430427318000\n  endTime: 1430427599000\n  departureDelay: 0\n  arrivalDelay: 0\n  realTime: false\n  isNonExactFrequency: \n  headway: \n  distance: 362.5438227720875\n  from:\n    name: West Market Street\n    stopId: \n    stopCode: \n    platformCode: \n    lon: -76.73002171142686\n    lat: 39.9617395205611\n    arrival: \n    departure: 1430427318000\n    orig: ''\n    zoneId: \n    stopIndex: \n  to:\n    name: Transfer Center\n    stopId:\n      agencyId: '210'\n      id: '765237'\n    stopCode: \n    platformCode: \n    lon: -76.73144552366078\n    lat: 39.95969730580617\n    arrival: 1430427599000\n    departure: 1430427600000\n    orig: \n    zoneId: \n    stopIndex: \n  legGeometry:\n    points: y_|rFtiisMzAvHt@[vAm@hCcAZ|AFR\n    levels: \n    length: 7\n  transitLeg: false\n  mode: WALK\n  route: ''\n  agencyName: \n  agencyUrl: \n  agencyTimeZoneOffset: -14400000\n  routeColor: \n  routeType: \n  routeId: \n  routeTextColor: \n  interlineWithPreviousLeg: false\n  tripShortName: \n  tripBlockId: \n  headsign: \n  agencyId: \n  tripId: \n  serviceDate: \n  intermediateStops: \n  steps:\n  - distance: 142.72028736032635\n    relativeDirection: DEPART\n    streetName: West Market Street\n    absoluteDirection: WEST\n    exit: \n    stayOn: false\n    area: false\n    bogusName: false\n    lon: -76.73002171142686\n    lat: 39.9617395205611\n    alerts:\n    - alertHeaderText:\n        translations:\n          en: no longer a state highway by 1987\n        someTranslation: no longer a state highway by 1987\n      alertDescriptionText: \n      alertUrl: \n      effectiveStartDate: \n    elevation: []\n  - distance: 166.93284818935845\n    relativeDirection: LEFT\n    streetName: South Pershing Avenue\n    absoluteDirection: SOUTH\n    exit: \n    stayOn: false\n    area: false\n    bogusName: false\n    lon: -76.7315821\n    lat: 39.9612737\n    alerts: \n    elevation: []\n  - distance: 52.890687222402654\n    relativeDirection: RIGHT\n    streetName: West King Street\n    absoluteDirection: WEST\n    exit: \n    stayOn: false\n    area: false\n    bogusName: false\n    lon: -76.7308703\n    lat: 39.9598751\n    alerts: \n    elevation: []\n  notes:\n  - text: no longer a state highway by 1987\n  alerts:\n  - alertHeaderText:\n      translations:\n        en: no longer a state highway by 1987\n      someTranslation: no longer a state highway by 1987\n    alertDescriptionText: \n    alertUrl: \n    effectiveStartDate: \n  routeShortName: \n  routeLongName: \n  boardRule: \n  alightRule: \n  rentedBike: false\n  duration: 281.0\n- startTime: 1430427600000\n  endTime: 1430428230000\n  departureDelay: 0\n  arrivalDelay: 0\n  realTime: false\n  isNonExactFrequency: \n  headway: \n  distance: 4100.53185479869\n  from:\n    name: Transfer Center\n    stopId:\n      agencyId: '210'\n      id: '765237'\n    stopCode: \n    platformCode: \n    lon: -76.731524\n    lat: 39.959945\n    arrival: 1430427599000\n    departure: 1430427600000\n    orig: \n    zoneId: '0'\n    stopIndex: 0\n  to:\n    name: W Market At Hoffman Ln Ob\n    stopId:\n      agencyId: '210'\n      id: '765415'\n    stopCode: \n    platformCode: \n    lon: -76.777712\n    lat: 39.950307\n    arrival: 1430428230000\n    departure: 1430428231000\n    orig: \n    zoneId: '0'\n    stopIndex: 7\n  legGeometry:\n    points: as{rFprisMc@qBiCbAwAj@u@\\h@fCBN\\bBb@rBpApFlCxM`EdSxD~PbCfLn@~C\\zAH\\fEbS`BtHhA`F\\vBfAzFfAtFTlHVbKDzARtHDvAPhHBf@TdIZjKBXr@dJn@tHPnBDb@n@lG|@bEF\\rA`GzArHl@dBrAjCNV\n    levels: \n    length: 45\n  transitLeg: true\n  mode: BUS\n  route: '16'\n  agencyName: \n  agencyUrl: \n  agencyTimeZoneOffset: -14400000\n  routeColor: D3D3D3\n  routeType: 3\n  routeId: '1273'\n  routeTextColor: '000000'\n  interlineWithPreviousLeg: false\n  tripShortName: \n  tripBlockId: \n  headsign: Hanover Spring Grove\n  agencyId: '210'\n  tripId: 54128A1024B1797\n  serviceDate: '20150430'\n  intermediateStops: \n  steps: []\n  notes: \n  alerts: \n  routeShortName: '16'\n  routeLongName: York To Hanover\n  boardRule: \n  alightRule: \n  rentedBike: false\n  duration: 630.0\n- startTime: 1430428231000\n  endTime: 1430430117000\n  departureDelay: 0\n  arrivalDelay: 0\n  realTime: false\n  isNonExactFrequency: \n  headway: \n  distance: 2492.183759167887\n  from:\n    name: W Market At Hoffman Ln Ob\n    stopId:\n      agencyId: '210'\n      id: '765415'\n    stopCode: \n    platformCode: \n    lon: -76.77768782304571\n    lat: 39.95027125595188\n    arrival: 1430428230000\n    departure: 1430428231000\n    orig: \n    zoneId: \n    stopIndex: \n  to:\n    name: service road\n    stopId: \n    stopCode: \n    platformCode: \n    lon: -76.78924503660173\n    lat: 39.95520284199648\n    arrival: 1430430117000\n    departure: \n    orig: ''\n    zoneId: \n    stopIndex: \n  legGeometry:\n    points: exyrFpsrsMOWuD~EoAhIc@tCaC|NU`BEpB^zAfFjLdAbC|IzVd@zAoCpAe@r@o@nBEV@f@]xCE|@Y^iAw@Wo@kAkD?CsEoH_IeKiFuD\n    levels: \n    length: 28\n  transitLeg: false\n  mode: WALK\n  route: ''\n  agencyName: \n  agencyUrl: \n  agencyTimeZoneOffset: -14400000\n  routeColor: \n  routeType: \n  routeId: \n  routeTextColor: \n  interlineWithPreviousLeg: false\n  tripShortName: \n  tripBlockId: \n  headsign: \n  agencyId: \n  tripId: \n  serviceDate: \n  intermediateStops: \n  steps:\n  - distance: 13.973861273454594\n    relativeDirection: DEPART\n    streetName: West Market Street\n    absoluteDirection: NORTHEAST\n    exit: \n    stayOn: false\n    area: false\n    bogusName: false\n    lon: -76.77768782304571\n    lat: 39.95027125595188\n    alerts: \n    elevation: []\n  - distance: 139.00891579385396\n    relativeDirection: LEFT\n    streetName: Hoffman Lane\n    absoluteDirection: NORTHWEST\n    exit: \n    stayOn: false\n    area: false\n    bogusName: false\n    lon: -76.7775649\n    lat: 39.9503544\n    alerts: \n    elevation: []\n  - distance: 1294.9847598593692\n    relativeDirection: SLIGHTLY_LEFT\n    streetName: East Berlin Road\n    absoluteDirection: WEST\n    exit: \n    stayOn: false\n    area: false\n    bogusName: false\n    lon: -76.7786887\n    lat: 39.9512603\n    alerts: \n    elevation: []\n  - distance: 1044.216222241209\n    relativeDirection: RIGHT\n    streetName: service road\n    absoluteDirection: NORTHWEST\n    exit: \n    stayOn: false\n    area: false\n    bogusName: true\n    lon: -76.7922391\n    lat: 39.9490229\n    alerts: \n    elevation: []\n  notes: \n  alerts: \n  routeShortName: \n  routeLongName: \n  boardRule: \n  alightRule: \n  rentedBike: false\n  duration: 1886.0\n",
+      "cost": "1.55",
+      "hidden": false,
+      "created_at": "2015-04-20T15:33:38.787-04:00",
+      "updated_at": "2015-04-20T15:33:38.828-04:00",
+      "ride_count": null,
+      "external_info": null,
+      "match_score": -0.1,
+      "missing_information": false,
+      "accommodation_mismatch": false,
+      "missing_information_text": null,
+      "date_mismatch": false,
+      "time_mismatch": false,
+      "too_late": false,
+      "missing_accommodations": "",
+      "cost_comments": "",
+      "selected": null,
+      "start_time": "2015-04-30T16:55:18.000-04:00",
+      "end_time": "2015-04-30T17:41:57.000-04:00",
+      "is_bookable": false,
+      "booking_confirmation": null,
+      "duration_estimated": false,
+      "map_image": {
+        "url": null
+      },
+      "too_early": false,
+      "returned_mode_code": "mode_transit",
+      "order_xml": null,
+      "segment_index": 0,
+      "start_location": {
+        "address_components": [
+          {
+            "long_name": "100 West Market Street",
+            "short_name": "100 West Market Street",
+            "types": [
+              "street_address"
+            ]
+          },
+          {
+            "long_name": "York",
+            "short_name": "York",
+            "types": [
+              "locality",
+              "political"
+            ]
+          },
+          {
+            "long_name": "PA",
+            "short_name": "PA",
+            "types": [
+              "administrative_area_level_1",
+              "political"
+            ]
+          },
+          {
+            "long_name": "17406",
+            "short_name": "17406",
+            "types": [
+              "postal_code"
+            ]
+          }
+        ],
+        "formatted_address": "100 West Market Street, York, PA 17406",
+        "geometry": {
+          "location": {
+            "lat": 39.9615,
+            "lng": -76.7299
+          }
+        },
+        "id": 3541,
+        "name": "Fenway Park",
+        "scope": "user"
+      },
+      "end_location": {
+        "address_components": [
+          {
+            "long_name": "2000 West Market Street",
+            "short_name": "2000 West Market Street",
+            "types": [
+              "street_address"
+            ]
+          },
+          {
+            "long_name": "York",
+            "short_name": "York",
+            "types": [
+              "locality",
+              "political"
+            ]
+          },
+          {
+            "long_name": "PA",
+            "short_name": "PA",
+            "types": [
+              "administrative_area_level_1",
+              "political"
+            ]
+          },
+          {
+            "long_name": "17404",
+            "short_name": "17404",
+            "types": [
+              "postal_code"
+            ]
+          }
+        ],
+        "formatted_address": "2000 West Market Street, York, PA 17404",
+        "geometry": {
+          "location": {
+            "lat": 39.955,
+            "lng": -76.7888
+          }
+        },
+        "id": 3542,
+        "name": "2000 West Market Street, York, PA 17404",
+        "scope": "user"
+      },
+      "bookable": false,
+      "json_legs": [
+        {
+          "startTime": 1430427318000,
+          "endTime": 1430427599000,
+          "departureDelay": 0,
+          "arrivalDelay": 0,
+          "realTime": false,
+          "isNonExactFrequency": null,
+          "headway": null,
+          "distance": 362.5438227720875,
+          "from": {
+            "name": "West Market Street",
+            "stopId": null,
+            "stopCode": null,
+            "platformCode": null,
+            "lon": -76.73002171142686,
+            "lat": 39.9617395205611,
+            "arrival": null,
+            "departure": 1430427318000,
+            "orig": "",
+            "zoneId": null,
+            "stopIndex": null
+          },
+          "to": {
+            "name": "Transfer Center",
+            "stopId": {
+              "agencyId": "210",
+              "id": "765237"
+            },
+            "stopCode": null,
+            "platformCode": null,
+            "lon": -76.73144552366078,
+            "lat": 39.95969730580617,
+            "arrival": 1430427599000,
+            "departure": 1430427600000,
+            "orig": null,
+            "zoneId": null,
+            "stopIndex": null
+          },
+          "legGeometry": {
+            "points": "y_|rFtiisMzAvHt@[vAm@hCcAZ|AFR",
+            "levels": null,
+            "length": 7
+          },
+          "transitLeg": false,
+          "mode": "WALK",
+          "route": "",
+          "agencyName": null,
+          "agencyUrl": null,
+          "agencyTimeZoneOffset": -14400000,
+          "routeColor": null,
+          "routeType": null,
+          "routeId": null,
+          "routeTextColor": null,
+          "interlineWithPreviousLeg": false,
+          "tripShortName": null,
+          "tripBlockId": null,
+          "headsign": null,
+          "agencyId": null,
+          "tripId": null,
+          "serviceDate": null,
+          "intermediateStops": null,
+          "steps": [
+            {
+              "distance": 142.72028736032635,
+              "relativeDirection": "DEPART",
+              "streetName": "West Market Street",
+              "absoluteDirection": "WEST",
+              "exit": null,
+              "stayOn": false,
+              "area": false,
+              "bogusName": false,
+              "lon": -76.73002171142686,
+              "lat": 39.9617395205611,
+              "alerts": [
+                {
+                  "alertHeaderText": {
+                    "translations": {
+                      "en": "no longer a state highway by 1987"
+                    },
+                    "someTranslation": "no longer a state highway by 1987"
+                  },
+                  "alertDescriptionText": null,
+                  "alertUrl": null,
+                  "effectiveStartDate": null
+                }
+              ],
+              "elevation": [
+
+              ]
+            },
+            {
+              "distance": 166.93284818935845,
+              "relativeDirection": "LEFT",
+              "streetName": "South Pershing Avenue",
+              "absoluteDirection": "SOUTH",
+              "exit": null,
+              "stayOn": false,
+              "area": false,
+              "bogusName": false,
+              "lon": -76.7315821,
+              "lat": 39.9612737,
+              "alerts": null,
+              "elevation": [
+
+              ]
+            },
+            {
+              "distance": 52.890687222402654,
+              "relativeDirection": "RIGHT",
+              "streetName": "West King Street",
+              "absoluteDirection": "WEST",
+              "exit": null,
+              "stayOn": false,
+              "area": false,
+              "bogusName": false,
+              "lon": -76.7308703,
+              "lat": 39.9598751,
+              "alerts": null,
+              "elevation": [
+
+              ]
+            }
+          ],
+          "notes": [
+            {
+              "text": "no longer a state highway by 1987"
+            }
+          ],
+          "alerts": [
+            {
+              "alertHeaderText": {
+                "translations": {
+                  "en": "no longer a state highway by 1987"
+                },
+                "someTranslation": "no longer a state highway by 1987"
+              },
+              "alertDescriptionText": null,
+              "alertUrl": null,
+              "effectiveStartDate": null
+            }
+          ],
+          "routeShortName": null,
+          "routeLongName": null,
+          "boardRule": null,
+          "alightRule": null,
+          "rentedBike": false,
+          "duration": 281.0
+        },
+        {
+          "startTime": 1430427600000,
+          "endTime": 1430428230000,
+          "departureDelay": 0,
+          "arrivalDelay": 0,
+          "realTime": false,
+          "isNonExactFrequency": null,
+          "headway": null,
+          "distance": 4100.53185479869,
+          "from": {
+            "name": "Transfer Center",
+            "stopId": {
+              "agencyId": "210",
+              "id": "765237"
+            },
+            "stopCode": null,
+            "platformCode": null,
+            "lon": -76.731524,
+            "lat": 39.959945,
+            "arrival": 1430427599000,
+            "departure": 1430427600000,
+            "orig": null,
+            "zoneId": "0",
+            "stopIndex": 0
+          },
+          "to": {
+            "name": "W Market At Hoffman Ln Ob",
+            "stopId": {
+              "agencyId": "210",
+              "id": "765415"
+            },
+            "stopCode": null,
+            "platformCode": null,
+            "lon": -76.777712,
+            "lat": 39.950307,
+            "arrival": 1430428230000,
+            "departure": 1430428231000,
+            "orig": null,
+            "zoneId": "0",
+            "stopIndex": 7
+          },
+          "legGeometry": {
+            "points": "as{rFprisMc@qBiCbAwAj@u@\\h@fCBN\\bBb@rBpApFlCxM`EdSxD~PbCfLn@~C\\zAH\\fEbS`BtHhA`F\\vBfAzFfAtFTlHVbKDzARtHDvAPhHBf@TdIZjKBXr@dJn@tHPnBDb@n@lG|@bEF\\rA`GzArHl@dBrAjCNV",
+            "levels": null,
+            "length": 45
+          },
+          "transitLeg": true,
+          "mode": "BUS",
+          "route": "16",
+          "agencyName": null,
+          "agencyUrl": null,
+          "agencyTimeZoneOffset": -14400000,
+          "routeColor": "D3D3D3",
+          "routeType": 3,
+          "routeId": "1273",
+          "routeTextColor": "000000",
+          "interlineWithPreviousLeg": false,
+          "tripShortName": null,
+          "tripBlockId": null,
+          "headsign": "Hanover Spring Grove",
+          "agencyId": "210",
+          "tripId": "54128A1024B1797",
+          "serviceDate": "20150430",
+          "intermediateStops": null,
+          "steps": [
+
+          ],
+          "notes": null,
+          "alerts": null,
+          "routeShortName": "16",
+          "routeLongName": "York To Hanover",
+          "boardRule": null,
+          "alightRule": null,
+          "rentedBike": false,
+          "duration": 630.0
+        },
+        {
+          "startTime": 1430428231000,
+          "endTime": 1430430117000,
+          "departureDelay": 0,
+          "arrivalDelay": 0,
+          "realTime": false,
+          "isNonExactFrequency": null,
+          "headway": null,
+          "distance": 2492.183759167887,
+          "from": {
+            "name": "W Market At Hoffman Ln Ob",
+            "stopId": {
+              "agencyId": "210",
+              "id": "765415"
+            },
+            "stopCode": null,
+            "platformCode": null,
+            "lon": -76.77768782304571,
+            "lat": 39.95027125595188,
+            "arrival": 1430428230000,
+            "departure": 1430428231000,
+            "orig": null,
+            "zoneId": null,
+            "stopIndex": null
+          },
+          "to": {
+            "name": "service road",
+            "stopId": null,
+            "stopCode": null,
+            "platformCode": null,
+            "lon": -76.78924503660173,
+            "lat": 39.95520284199648,
+            "arrival": 1430430117000,
+            "departure": null,
+            "orig": "",
+            "zoneId": null,
+            "stopIndex": null
+          },
+          "legGeometry": {
+            "points": "exyrFpsrsMOWuD~EoAhIc@tCaC|NU`BEpB^zAfFjLdAbC|IzVd@zAoCpAe@r@o@nBEV@f@]xCE|@Y^iAw@Wo@kAkD?CsEoH_IeKiFuD",
+            "levels": null,
+            "length": 28
+          },
+          "transitLeg": false,
+          "mode": "WALK",
+          "route": "",
+          "agencyName": null,
+          "agencyUrl": null,
+          "agencyTimeZoneOffset": -14400000,
+          "routeColor": null,
+          "routeType": null,
+          "routeId": null,
+          "routeTextColor": null,
+          "interlineWithPreviousLeg": false,
+          "tripShortName": null,
+          "tripBlockId": null,
+          "headsign": null,
+          "agencyId": null,
+          "tripId": null,
+          "serviceDate": null,
+          "intermediateStops": null,
+          "steps": [
+            {
+              "distance": 13.973861273454594,
+              "relativeDirection": "DEPART",
+              "streetName": "West Market Street",
+              "absoluteDirection": "NORTHEAST",
+              "exit": null,
+              "stayOn": false,
+              "area": false,
+              "bogusName": false,
+              "lon": -76.77768782304571,
+              "lat": 39.95027125595188,
+              "alerts": null,
+              "elevation": [
+
+              ]
+            },
+            {
+              "distance": 139.00891579385396,
+              "relativeDirection": "LEFT",
+              "streetName": "Hoffman Lane",
+              "absoluteDirection": "NORTHWEST",
+              "exit": null,
+              "stayOn": false,
+              "area": false,
+              "bogusName": false,
+              "lon": -76.7775649,
+              "lat": 39.9503544,
+              "alerts": null,
+              "elevation": [
+
+              ]
+            },
+            {
+              "distance": 1294.9847598593692,
+              "relativeDirection": "SLIGHTLY_LEFT",
+              "streetName": "East Berlin Road",
+              "absoluteDirection": "WEST",
+              "exit": null,
+              "stayOn": false,
+              "area": false,
+              "bogusName": false,
+              "lon": -76.7786887,
+              "lat": 39.9512603,
+              "alerts": null,
+              "elevation": [
+
+              ]
+            },
+            {
+              "distance": 1044.216222241209,
+              "relativeDirection": "RIGHT",
+              "streetName": "service road",
+              "absoluteDirection": "NORTHWEST",
+              "exit": null,
+              "stayOn": false,
+              "area": false,
+              "bogusName": true,
+              "lon": -76.7922391,
+              "lat": 39.9490229,
+              "alerts": null,
+              "elevation": [
+
+              ]
+            }
+          ],
+          "notes": null,
+          "alerts": null,
+          "routeShortName": null,
+          "routeLongName": null,
+          "boardRule": null,
+          "alightRule": null,
+          "rentedBike": false,
+          "duration": 1886.0
+        }
+      ]
+    }
+  ]
+}

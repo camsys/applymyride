@@ -20,7 +20,7 @@ angular.module('applyMyRideApp', [
     'angularSpinner',
     'ui.map',
     'autocomplete',
-    'ui.bootstrap'
+    'ui.bootstrap',
   ]).config(function ($routeProvider) {
     $routeProvider
       .when('/', {

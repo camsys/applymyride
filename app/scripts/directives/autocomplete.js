@@ -265,7 +265,7 @@ app.directive('autocomplete', function() {
               index="{{ $index }}"\
               val="{{ suggestion.label }}"\
               ng-class="{ active: ($index === selectedIndex && suggestion.option), selectable: (suggestion.option) }"\
-              ng-click="select(suggestion.label)"\
+              ng-click="!suggestion.option || select(suggestion.label)"\
               ng-bind-html="suggestion.label"></li>\
           </ul>\
         </div>'

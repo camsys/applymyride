@@ -19,7 +19,6 @@
     "angular-ui-map": "~0.5.0",
     "angular-ui-utils": "bower-event",
     "angular-ui": "~0.4.0",
-    "allmighty-autocomplete": "1.0.140706",
     "angular-bootstrap": "0.12.1"
   },
   "devDependencies": {
