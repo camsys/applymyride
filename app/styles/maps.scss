@@ -1,0 +1,31 @@
+.map-canvas {
+  min-height: 200px;
+  /* fallback if vh not supported? 
+  height: auto !important; */
+  height: 35vh;
+  margin-top:1em;
+}
+ 
+/* Small devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+  .map-canvas {
+  /*height: 300px;*/
+    height: 50vh;
+  }
+}
+
+/* Medium devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+  .map-canvas {
+  /*height: 300px;*/
+    height: 55vh;
+  }
+}
+
+/* Large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+  .map-canvas {
+  /*height: 300px;*/
+    height: 65vh;
+  }
+}
