@@ -1,19 +1,71 @@
-.row.marketing
-  .col-xs-12
-    .jumbotron
-      %h1 Try Out FindMyRide PA
+.confirm
+  %h3.text-center.nomargin
+    My ride request
+  .row.truncate
+    .col-xs-12.col-md-6.col-md-offset-3
+      .row.row-eq-height
+        .col-xs-3.col-md-2
+          %p.text-left.text-muted
+            From
+        .col-xs-9.col-md-10
+          %h4.text-left
+            {{request.fromLine1}}
+          %h5.text-muted.text-left
+            {{request.fromLine2}}
 
-      %p Plan a trip to see how FindMyRidePA works. To see all your options and get the best possible price, fill out an application.
+      .row.row-eq-height
+        .col-xs-3.col-md-2
+          %p.text-left.text-muted
+            To
+        .col-xs-9.col-md-10
+          %h4.text-left
+            {{request.toLine1}}
+          %h5.text-muted.text-left
+            {{request.toLine2}}
 
-      %a.center-block.btn.btn-success{"ng-href" => "#/plan/start"}
-        Try It Out Now
-        %span{ng: {include: "'views/button-chevron-right.html'"}}
+      .row.row-eq-height{ng: {show: '!request.roundtrip || request.sameday'}}
+        .col-xs-3.col-md-2
+          %p.text-left.text-muted
+            When
+        .col-xs-9.col-md-10
+          %h4.text-left
+            {{request.when1}}
+            %h5.text-muted.text-left
+              {{request.when2}}
+            %h5.text-muted.text-left{ng: {show: 'request.when3'}}
+              {{request.when3}}
 
-      %a.center-block.btn.btn-success{"ng-href" => "#/register"}
-        Sign Up Now
-        %span{ng: {include: "'views/button-chevron-right.html'"}}
+      %div{style: "border-radius: 5px; border: 1px solid grey; margin-left: 10px; margin-right: 10px;", ng: {show: 'request.roundtrip && !request.sameday'}}
+        .row.row-eq-height{style: "border:none; margin-left: 0px; margin-right: 0px;"}
+          .col-xs-3.col-md-2
+            %p.text-left.text-muted
+              Depart
+          .col-xs-9.col-md-10
+            %h4.text-left
+              {{request.when1}}
+            %h5.text-muted.text-left
+              {{request.when2}}
+        .row.row-eq-height{style: "border:none; margin-left: 0px; margin-right: 0px;"}
+          .col-xs-3.col-md-2
+            %p.text-left.text-muted
+              Return
+          .col-xs-9.col-md-10
+            %h4.text-left
+              {{request.when3}}
+            %h5.text-muted.text-left
+              {{request.when4}}
 
-      %a.center-block.btn.btn-success{"ng-href" => "#/"}
-        I'm All Set
-        %span{ng: {include: "'views/button-chevron-right.html'"}}
+      .row.row-eq-height
+        .col-xs-3.col-md-2
+          %p.text-left.text-muted
+            Purpose
+        .col-xs-9.col-md-10
+          %h4.text-left
+            {{request.trip_purpose}}
+  .row
+    .col-xs-8.col-xs-offset-2.col-md-4.col-md-offset-4.text-center
+      %a.btn.btn-success.btn-block{ng: {click: 'next()'}}
+        Search for ride!
+      %a.btn-block{"ng-href" => "#/plan/from"}
+        No, change my request
 

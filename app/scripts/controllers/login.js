@@ -8,6 +8,12 @@ angular.module('applyMyRideApp')
       $scope.sharedRideId = planService.sharedRideId;
       $scope.email = planService.email;
 
+      var input = document.createElement('input');
+      input.setAttribute('type','date');
+      var notADateValue = 'not-a-date';
+      input.setAttribute('value', notADateValue);
+      $scope.html5 = !(input.value === notADateValue);
+
       $scope.detectLoginType = function() {
         $scope.isEmail = /@/.test($scope.emailOrId);
         $scope.isSharedRideId = !$scope.isEmail && /^\d+$/.test($scope.emailOrId);
@@ -62,7 +68,7 @@ angular.module('applyMyRideApp')
         return true;
       }
 
-      $scope.$watch('dateofbirth', function() {
+      $scope.$watch('dateofbirth', function(n) {
           $scope.disableNext();
         }
       );

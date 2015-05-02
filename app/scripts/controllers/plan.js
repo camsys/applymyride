@@ -15,9 +15,10 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
     mapTypeId: google.maps.MapTypeId.ROADMAP
   };
   $scope.step = $routeParams.step;
-  $scope.disableNext = true;
+  $scope.disableNext = false;
   $scope.showUndo = false;
   $scope.showNext = true;
+  $scope.showBack = false;
   $scope.planService = planService;
   $scope.fromDate = new Date();
   $scope.returnDate = new Date();
@@ -67,9 +68,9 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
       break;
     case 'from':
       if(planService.from != null){
-        $scope.from = planService.from;
-        $scope.disableNext = false;
-        $scope.$apply();
+        $scope.fromDetails = planService.fromDetails;
+        $scope.fromChoice = planService.from;
+        //$scope.$apply();
       }
       break;
     case 'fromDate':
@@ -88,9 +89,8 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
       break;
     case 'to':
       if(planService.to != null){
-        $scope.to = planService.to;
-        $scope.disableNext = false;
-        $scope.$apply();
+        $scope.toChoice = planService.to;
+        $scope.toDetails = planService.toDetails;
       }
       break;
     case 'returnDate':
@@ -116,7 +116,7 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
       $scope.showNext = false;
       break;
     case 'confirm':
-      planService.createItineraryRequest();
+      planService.prepareConfirmationPage($scope);
       $scope.showNext = false;
       break;
     case 'needReturnTrip':
@@ -145,8 +145,30 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
       $scope.showNext = false;
       break;
     case 'list_itineraries':
-      planService.getItineraries($scope, $http);
+      var itineraries = planService.itineraries;
+      var itinerariesByMode = {};
+
+      angular.forEach(itineraries, function(itinerary, index) {
+        var mode = itinerary.returned_mode_code;
+        if (itinerariesByMode[mode] == undefined){
+          itinerariesByMode[mode] = [];
+        }
+        itinerariesByMode[mode].push(itinerary)
+      }, itinerariesByMode);
+
+      angular.forEach(Object.keys(itinerariesByMode), function(mode_code, index) {
+        $scope[mode_code] = itinerariesByMode[mode_code];
+      }, $scope);
+
+      console.log(itinerariesByMode);
       $scope.showNext = false;
+      break;
+    case 'sharedride_options_1':
+      $scope.showNext = false;
+      break;
+    case 'sharedride_options_2':
+      $scope.showNext = true;
+      $scope.disableNext = false;
       break;
     default:
 
@@ -164,7 +186,6 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
         $location.path('/plan/start_current');
         break;
       case 'from':
-        planService.fromDate = $scope.fromDate;
         $location.path('/plan/to');
         break;
       case 'from_confirm':
@@ -185,7 +206,25 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
         $location.path('/plan/confirm');
         break;
       case 'confirm':
-        $location.path('/plan/list_itineraries');
+        usSpinnerService.spin('spinner-1');
+
+        /*var promise = $http.get('data/itineraries.json');
+        promise.then(function(result) {
+          planService.itineraries = result.data.itineraries;
+          $location.path('/plan/list_itineraries');
+        });*/
+
+        var promise = planService.postItineraryRequest($http);
+        promise.then(function(result) {
+          planService.itineraries = result;
+          $location.path('/plan/list_itineraries');
+        })
+        break;
+      case 'sharedride_options_2':
+        $location.path('/plan/book_shared_ride');
+        break;
+      case 'book_shared_ride':
+        $location.path('/plan/confirm_shared_ride');
         break;
     }
   };
@@ -372,19 +411,16 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
     planService.hasCompanion = hasCompanion;
     $location.path("/plan/sharedride_options_2");
     $scope.step = 'sharedride_options_2';
-    $scope.$apply();
   }
 
   $scope.selectTransit = function() {
     $location.path("/plan/bus_options");
     $scope.step = 'bus_options';
-    $scope.$apply();
   }
 
   $scope.selectSharedRide = function() {
     $location.path("/plan/sharedride_options_1");
     $scope.step = 'sharedride_options_1';
-    $scope.$apply();
   }
 
   $scope.overrideCurrentLocation = function() {
@@ -401,10 +437,18 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
   $scope.$watch('fromDate', function(n) {
       if($scope.step == 'fromDate'){
         if (n) {
-          $scope.fromDate = n;
-          $scope.disableNext = false;
+          var now = moment().startOf('day');
+          var datediff = now.diff(n, 'days');
+          if(datediff < 1){
+            $scope.fromDate = n;
+            $scope.disableNext = false;
+          }else{
+            $scope.disableNext = true;
+            planService.fromDate = null;
+          }
         }else{
           $scope.disableNext = true;
+          planService.fromDate = null;
         }
       }
     }
@@ -413,9 +457,17 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
   $scope.$watch('returnDate', function(n) {
       if($scope.step == 'returnDate'){
         if (n) {
-          $scope.returnDate = n;
-          $scope.disableNext = false;
+          var now = moment().startOf('day');
+          var datediff = now.diff(n, 'days');
+          if(datediff < 1){
+            $scope.returnDate = n;
+            $scope.disableNext = false;
+          }else{
+            planService.returnDate = null;
+            $scope.disableNext = true;
+          }
         }else{
+          planService.returnDate = null;
           $scope.disableNext = true;
         }
       }
@@ -424,10 +476,9 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
 
   $scope.$watch('fromChoice', function(n) {
       if($scope.step == 'from'){
-        if (n) {
-          planService.from = n;
-          $scope.disableNext = true;
-        }
+        planService.from = n;
+        $scope.disableNext = true;
+        $scope.showMap = false;
       }
     }
   );
@@ -445,10 +496,9 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
 
   $scope.$watch('toChoice', function(n) {
       if($scope.step == 'to'){
-        if (n) {
-          planService.to = n;
-          $scope.disableNext = true;
-        }
+        planService.to = n;
+        $scope.disableNext = true;
+        $scope.showMap = false;
       }
     }
   );
@@ -464,10 +514,73 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
     }
   );
 
+  $scope.$watch('fromTime', function(n) {
+      if($scope.step == 'fromTime'){
+        if (n) {
+          var fromDate = planService.fromDate;
+          var now = moment().startOf('day'); ;
+          var dayDiff = now.diff(fromDate, 'days');
+          if(Math.abs(dayDiff) < 1){
+            //departing same day, is the time in the future?
+            var fromTime = $scope.fromTime;
+            fromTime.setYear(fromDate.getFullYear());
+            fromTime.setMonth(fromDate.getMonth());
+            fromTime.setDate(fromDate.getDate());
+            if((fromTime - new Date()) / 1000 / 60 < -1){
+              $scope.disableNext = true;
+            } else {
+              $scope.disableNext = false;
+            }
+          }
+        }else{
+          $scope.disableNext = true;  //not a valid time
+        }
+      }
+    }
+  );
+
+  $scope.$watch('returnTime', function(n) {
+      if($scope.step == 'returnTime'){
+        if (n) {
+
+          var fromDate = planService.fromDate;
+          var fromTime = planService.fromTime;
+          if(fromTime == null){
+            fromTime = new Date();
+          }
+          fromTime.setYear(fromDate.getFullYear());
+          fromTime.setMonth(fromDate.getMonth());
+          fromTime.setDate(fromDate.getDate());
+          var returnTime = $scope.returnTime;
+          var returnDate = planService.returnDate;
+
+          var now = moment(returnDate).startOf('day'); ;
+          var dayDiff = now.diff(fromDate, 'days');
+          if(Math.abs(dayDiff) < 1){
+            //departing and returning on the same day, is the return time after departure?
+            returnTime.setYear(returnDate.getFullYear());
+            returnTime.setMonth(returnDate.getMonth());
+            returnTime.setDate(returnDate.getDate());
+
+            if((returnTime - fromTime) / 1000 / 60 < -1){
+              $scope.disableNext = true;
+            } else {
+              $scope.disableNext = false;
+            }
+          }
+        }else{
+          $scope.disableNext = true;  //not a valid time
+        }
+      }
+    }
+  );
+
   $scope.$watch('fromLocationMap', function(map) {
     if(map && $routeParams.step == 'from' && planService.from){
         $scope.fromChoice = planService.from;
         var result = planService.fromDetails;
+        delete result.geometry.location.lat;
+        delete result.geometry.location.lng;
         if($scope.marker){
           $scope.marker.setMap(null);
         }
@@ -488,6 +601,8 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
     if(map && $routeParams.step == 'to' && planService.to){
       $scope.toChoice = planService.to;
       var result = planService.toDetails;
+      delete result.geometry.location.lat;
+      delete result.geometry.location.lng;
       if($scope.marker){
         $scope.marker.setMap(null);
       }
@@ -509,6 +624,8 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
       if (n) {
         if(planService.fromDetails && $scope.step == 'from_confirm'){
           var result = planService.fromDetails;
+          delete result.geometry.location.lat;
+          delete result.geometry.location.lng;
           n.setCenter(result.geometry.location);
           if($scope.marker){
             $scope.marker.setMap(null);

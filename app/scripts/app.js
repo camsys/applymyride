@@ -21,7 +21,8 @@ angular.module('applyMyRideApp', [
     'ui.map',
     'autocomplete',
     'ui.bootstrap',
-  ]).config(function ($routeProvider) {
+    'dcbClearInput',
+  ]).config(function ($routeProvider, $locationProvider) {
     $routeProvider
       .when('/', {
         templateUrl: 'views/main.html',

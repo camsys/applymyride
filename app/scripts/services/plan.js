@@ -3,13 +3,76 @@
 angular.module('applyMyRideApp')
     .service('planService', function() {
 
-      this.getItineraries =  function($scope, $http) {
-        $http.get('data/itineraries.json').
-          success(function(data) {
-            $scope.itineraries = data.itineraries;
-          });
+      this.prepareConfirmationPage = function($scope) {
+        var itineraryRequestObject = this.createItineraryRequest();
+        this.itineraryRequestObject = itineraryRequestObject;
+        var request = {};
+
+        var fromLocationDescription = this.getAddressDescriptionFromLocation(itineraryRequestObject.itinerary_request[0].start_location);
+        request.fromLine1 = fromLocationDescription.line1;
+        request.fromLine2 = fromLocationDescription.line2;
+
+        var toLocationDescription = this.getAddressDescriptionFromLocation(itineraryRequestObject.itinerary_request[0].end_location);
+        request.toLine1 = toLocationDescription.line1;
+        request.toLine2 = toLocationDescription.line2;
+
+        var outboundTime = itineraryRequestObject.itinerary_request[0].trip_time;
+        var now = moment().startOf('day');
+        var dayDiff = moment(outboundTime).startOf('day').diff(moment().startOf('day'), 'days');
+        if(dayDiff == 0) {
+          request.when1 = "Today";
+        } else if (dayDiff == 1) {
+          request.when1 = "Tomorrow";
+        }else{
+          request.when1 = moment(outboundTime).format('MMM DD, YYYY');
+        }
+        request.when2 = "Leaving: " + moment(outboundTime).format('h:mm a') + " " + (itineraryRequestObject.itinerary_request[0].departure_type == 'depart' ? "departure" : "arrival");
+
+        if(itineraryRequestObject.itinerary_request.length > 1){
+          request.roundtrip = true;
+          //round trip
+          var returnTime = itineraryRequestObject.itinerary_request[1].trip_time;
+          if(moment(returnTime).startOf('day').diff(moment(outboundTime).startOf('day'), 'days')== 0){
+            request.sameday = true;
+            request.when3 = "Returning: " + moment(returnTime).format('h:mm a') + " " + (itineraryRequestObject.itinerary_request[1].departure_type == 'depart' ? "departure" : "arrival");
+          }else{
+            var dayDiff = moment(returnTime).startOf('day').diff(moment().startOf('day'), 'days');
+            if(dayDiff == 0) {
+              request.when3 = "Today";
+            } else if (dayDiff == 1) {
+              request.when3 = "Tomorrow";
+            }else{
+              request.when3 = moment(returnTime).format('MMM DD, YYYY');
+            }
+            request.when4 = "Returning: " + moment(returnTime).format('h:mm a') + " " + (itineraryRequestObject.itinerary_request[1].departure_type == 'depart' ? "departure" : "arrival");
+          }
+        }
+        request.purpose = this.purpose;
+        $scope.request = request;
+
       }
 
+      this.getAddressDescriptionFromLocation = function(location){
+        var description = {};
+        if(location.name){
+          description.line1 = location.name;
+          description.line2 = location.formatted_address;
+          if(description.line2.indexOf(description.line1) > -1){
+            description.line2 = description.line2.substr(description.line1.length + 2);
+          }
+        }else{
+          angular.forEach(location.address_components, function(address_component, index) {
+            if(address_component.types.indexOf("street_address") > -1){
+              description.line1 = address_component.long_name;
+            }
+          }, description.line1);
+          description.line2 = location.formatted_address;
+          if(description.line2.indexOf(description.line1) > -1){
+            description.line2 = description.line2.substr(description.line1.length + 2);
+          }
+        }
+        return description;
+      }
 
       this.getTripPurposes = function($scope, $http) {
         /*$http.get('/api/v1/trip_purposes/list').
@@ -20,6 +83,14 @@ angular.module('applyMyRideApp')
           success(function(data) {
             $scope.purposes = data.trip_purposes;
           });
+      }
+
+      this.postItineraryRequest = function($http) {
+        var promise2 = $http.post('api/v1/itineraries/plan', this.itineraryRequestObject);
+        var promise3 = promise2.then(function(result) {
+          return result.data;
+        });
+        return promise3;
       }
 
       this.createItineraryRequest = function() {
@@ -37,9 +108,11 @@ angular.module('applyMyRideApp')
         var fromTime = this.fromTime;
         if(fromTime == null){
           fromTime = new Date();
+        }else{
+          fromTime = moment(this.fromTime).toDate();
         }
-        var fromDate = this.fromDate;
-        fromTime.setYear(fromDate.getYear());
+        var fromDate = moment(this.fromDate).toDate();
+        fromTime.setYear(fromDate.getFullYear());
         fromTime.setMonth(fromDate.getMonth());
         fromTime.setDate(fromDate.getDate());
         var fromTimeString = moment.utc(fromTime).format();
@@ -60,11 +133,15 @@ angular.module('applyMyRideApp')
           var returnTime = this.returnTime;
           if(returnTime == null){
             returnTime = new Date();
+          }else{
+            returnTime = moment(this.returnTime).toDate()
           }
-          var returnDate = this.returnDate;
-          returnTime.setYear(returnDate.getYear());
+          var returnDate = moment(this.returnDate).toDate();
+          returnTime.setYear(returnDate.getFullYear());
           returnTime.setMonth(returnDate.getMonth());
           returnTime.setDate(returnDate.getDate());
+          var returnTimeString = moment.utc(returnTime).format();
+          returnTrip.trip_time = returnTimeString;
           request.itinerary_request.push(returnTrip);
         }
         console.log(JSON.stringify(request));
@@ -131,7 +208,8 @@ angular.module('applyMyRideApp')
       autocompleteService.getPlacePredictions(
         {
           input: text,
-          offset: 0
+          offset: 0,
+          componentRestrictions: {country: 'us'}
         }, function(list, status) {
           angular.forEach(list, function(value, index) {
             var terms = []

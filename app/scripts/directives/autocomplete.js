@@ -44,6 +44,11 @@ app.directive('autocomplete', function() {
       // starts autocompleting on typing in something
       $scope.$watch('searchParam', function(newValue, oldValue){
 
+        if(newValue == ''){
+          $scope.select();
+          $scope.setIndex(-1);
+        }
+
         if (oldValue === newValue || (!oldValue && $scope.initLock)) {
           return;
         }
@@ -139,7 +144,6 @@ app.directive('autocomplete', function() {
 
       document.addEventListener("keydown", function(e){
         var keycode = e.keyCode || e.which;
-
         switch (keycode){
           case key.esc:
             // disable suggestions on escape
@@ -148,7 +152,7 @@ app.directive('autocomplete', function() {
             scope.$apply();
             e.preventDefault();
         }
-      }, true);
+      }, true)
 
       document.addEventListener("blur", function(e){
         // disable suggestions on blur
@@ -162,7 +166,6 @@ app.directive('autocomplete', function() {
 
       element[0].addEventListener("keydown",function (e){
         var keycode = e.keyCode || e.which;
-
         var l = angular.element(this).find('li').length;
 
         // this allows submitting forms by pressing Enter in the autocompleted field
@@ -255,7 +258,7 @@ app.directive('autocomplete', function() {
             type="text"\
             ng-model="searchParam"\
             placeholder="{{ attrs.placeholder }}"\
-            class="{{ attrs.inputclass }}"\
+            class="clearable {{ attrs.inputclass }}"\
             id="{{ attrs.inputid }}"\
             ng-required="{{ autocompleteRequired }}" />\
           <ul ng-show="completing && (suggestions | filter:searchFilter).length > 0">\
