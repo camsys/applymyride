@@ -49,7 +49,7 @@
           %a.btn.btn-success{ng: {href: '#/plan/from'}}
             No
 
-    .map-wrapper{ng: {show: 'step==="from_confirm" && showConfirmLocationMap'}}
+    .map-wrapper.text-center{ng: {show: 'step==="from_confirm" && showConfirmLocationMap'}}
       %h5 Here's the address we found for your location:
       %h5 {{ planService.from }}
       %div.map-canvas{'ui-map' => 'confirmFromLocationMap', 'ui-options' => 'mapOptions', 'style' => 'margin-bottom: 10px'}
