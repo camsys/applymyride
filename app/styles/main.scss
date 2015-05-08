@@ -332,7 +332,24 @@ $kioskfonts: "Avenir Next", "Helvetica Neue", Helvetica, sans-serif;
     margin-right: 5em;
     font-size: 1.8em;
   }
+
+  .map-canvas {
+    min-height: 500px;
+    height: auto !important;
+    margin-top:1em;
+    margin-right: 14em;
+    margin-left: 14em;
+  }
 }
+
+@media(max-width:$screen-sm-max) {
+  .map-canvas {
+    min-height: 350px;
+    height: auto !important;
+    margin-top:1em;
+  }
+}
+
   // @media(min-width:$screen-md-min) {
 
 

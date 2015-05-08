@@ -164,7 +164,7 @@ angular.module('applyMyRideApp')
     }
 
       this.getTripPurposes = function($scope, $http) {
-        $http.get('/api/v1/trip_purposes/list').
+        $http.get('api/v1/trip_purposes/list').
           success(function(data) {
             $scope.purposes = data.trip_purposes;
           });
@@ -321,7 +321,7 @@ angular.module('applyMyRideApp')
       this.savedPlaceAddresses = [];
       this.savedPlaceResults = [];
       var that = this;
-      $http.get('/api/v1/places/search?traveler_id=3&include_user_pois=true&search_string=%25' + text + '%25').
+      $http.get('api/v1/places/search?traveler_id=3&include_user_pois=true&search_string=%25' + text + '%25').
         success(function(data) {
           var locations = data.places_search_results.locations;
           angular.forEach(locations, function(value, index) {
