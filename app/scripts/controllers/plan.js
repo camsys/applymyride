@@ -274,22 +274,31 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
       $scope.suggestions.then(function(data){
 
         var choices = [];
+        $scope.placeLabels = [];
+        $scope.placeIds = [];
+        $scope.placeAddresses = [];
 
-        var savedPlaceData = data[2];
+        var savedPlaceData = data[1].savedplaces;
         if(savedPlaceData && savedPlaceData.length > 0){
           choices.push({label:'Saved Places', option: false});
           angular.forEach(savedPlaceData, function(savedPlace, index) {
             choices.push({label:savedPlace, option: true});
           }, choices);
+          $scope.placeLabels = $scope.placeLabels.concat(savedPlaceData);
+          $scope.placeIds = $scope.placeIds.concat(data[1].placeIds);
+          $scope.placeAddresses = $scope.placeAddresses.concat(data[1].savedplaceaddresses);
         }
 
 
-        var recentSearchData = data[1];
+        var recentSearchData = data[2].recentsearches;
         if(recentSearchData && recentSearchData.length > 0){
           choices.push({label:'Recently Searched', option: false});
           angular.forEach(recentSearchData, function(recentSearch, index) {
             choices.push({label:recentSearch, option: true});
           }, choices);
+          $scope.placeLabels = $scope.placeLabels.concat(recentSearchData);
+          $scope.placeIds = $scope.placeIds.concat(data[2].placeIds);
+          $scope.placeAddresses = $scope.placeAddresses.concat(recentSearchData);
         }
 
         var googlePlaceData = data[0].googleplaces;
@@ -298,11 +307,12 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
           angular.forEach(googlePlaceData, function(googleplace, index) {
             choices.push({label:googleplace, option: true});
           }, choices);
+          $scope.placeLabels = $scope.placeLabels.concat(googlePlaceData);
+          $scope.placeIds = $scope.placeIds.concat(data[0].placeIds);
+          $scope.placeAddresses = $scope.placeAddresses.concat(googlePlaceData);
         }
 
         $scope.locations = choices;
-        $scope.placeLabels = googlePlaceData;
-        $scope.placeIds = data[0].placeIds;
       });
     }
   }
@@ -314,45 +324,65 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
     }else if($routeParams.step == 'to'){
       map = $scope.toLocationMap;
     }
-    var placeId = $scope.placeIds[$scope.placeLabels.indexOf(place)]
-    var placesService = new google.maps.places.PlacesService(map);
-    placesService.getDetails( { 'placeId': placeId}, function(result, status) {
-      if (status == google.maps.GeocoderStatus.OK) {
-
-        if($routeParams.step == 'from'){
-          planService.fromDetails = result;
-        }else if($routeParams.step == 'to'){
-          planService.toDetails = result;
-        }
-
-        var bounds = new google.maps.LatLngBounds(result.geometry.location, result.geometry.location);
-        if($scope.marker){
-          $scope.marker.setMap(null);
-        }
-
-        $scope.showMap = true;
-        $scope.showUndo = true;
-        $scope.disableNext = false;
-        $scope.showNext = true;
-        $scope.$apply();
-
-        google.maps.event.trigger(map, 'resize');
-
-
-        map.setCenter(result.geometry.location);
-        $scope.marker = new google.maps.Marker({
-          map: map,
-          position: result.geometry.location,
-          animation: google.maps.Animation.DROP
+    var placeIdPromise = $q.defer();
+    var placeId = $scope.placeIds[$scope.placeLabels.indexOf(place)];
+    if(placeId) {
+      placeIdPromise.resolve(placeId);
+    }else{
+      var labelIndex = $scope.placeLabels.indexOf(place);
+      var address = $scope.placeAddresses[labelIndex];
+      var autocompleteService = new google.maps.places.AutocompleteService();
+      autocompleteService.getPlacePredictions(
+        {
+          input: address,
+          offset: 0,
+          componentRestrictions: {country: 'us'}
+        }, function(list, status) {
+          var placeId = list[0].place_id;
+          placeIdPromise.resolve(placeId);
         });
-        //var bounds = new google.maps.LatLngBounds(result.geometry.location, result.geometry.location);
-        var contentString = '' + result.name;
-        var infoWindow = new google.maps.InfoWindow({content: contentString, position: result.geometry.location});
+    }
 
-      } else {
-        alert('Geocode was not successful for the following reason: ' + status);
-      }
-    });
+    placeIdPromise.promise.then(function(placeId) {
+      var placesService = new google.maps.places.PlacesService(map);
+      placesService.getDetails( { 'placeId': placeId}, function(result, status) {
+        if (status == google.maps.GeocoderStatus.OK) {
+
+          if($routeParams.step == 'from'){
+            planService.fromDetails = result;
+          }else if($routeParams.step == 'to'){
+            planService.toDetails = result;
+          }
+
+          var bounds = new google.maps.LatLngBounds(result.geometry.location, result.geometry.location);
+          if($scope.marker){
+            $scope.marker.setMap(null);
+          }
+
+          $scope.showMap = true;
+          $scope.showUndo = true;
+          $scope.disableNext = false;
+          $scope.showNext = true;
+          $scope.$apply();
+
+          google.maps.event.trigger(map, 'resize');
+
+
+          map.setCenter(result.geometry.location);
+          $scope.marker = new google.maps.Marker({
+            map: map,
+            position: result.geometry.location,
+            animation: google.maps.Animation.DROP
+          });
+          //var bounds = new google.maps.LatLngBounds(result.geometry.location, result.geometry.location);
+          var contentString = '' + result.name;
+          var infoWindow = new google.maps.InfoWindow({content: contentString, position: result.geometry.location});
+
+        } else {
+          alert('Geocode was not successful for the following reason: ' + status);
+        }
+      });
+    })
   }
 
   $scope.getCurrentLocation = function() {

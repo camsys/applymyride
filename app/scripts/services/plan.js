@@ -164,11 +164,7 @@ angular.module('applyMyRideApp')
     }
 
       this.getTripPurposes = function($scope, $http) {
-        /*$http.get('/api/v1/trip_purposes/list').
-          success(function(data) {
-            $scope.purposes = data.trip_purposes;
-          });*/
-        $http.get('data/purposes.json').
+        $http.get('/api/v1/trip_purposes/list').
           success(function(data) {
             $scope.purposes = data.trip_purposes;
           });
@@ -315,13 +311,26 @@ angular.module('applyMyRideApp')
 
     LocationSearch.getRecentSearches = function(text) {
       var savedPlaceData = $q.defer();
-      savedPlaceData.resolve(['My fake recent search', 'not selectable yet']);
+      savedPlaceData.resolve({recentsearches: ['My fake recent search', 'not selectable yet'], placeIds: [null, null]});
       return savedPlaceData.promise;
     }
 
     LocationSearch.getSavedPlaces = function(text) {
       var savedPlaceData = $q.defer();
-      savedPlaceData.resolve(['My fake saved place', 'not selectable yet']);
+      this.savedPlaceIds = [];
+      this.savedPlaceAddresses = [];
+      this.savedPlaceResults = [];
+      var that = this;
+      $http.get('/api/v1/places/search?traveler_id=3&include_user_pois=true&search_string=%25' + text + '%25').
+        success(function(data) {
+          var locations = data.places_search_results.locations;
+          angular.forEach(locations, function(value, index) {
+            that.savedPlaceResults.push(value.name + " " + value.formatted_address);
+            that.savedPlaceAddresses.push(value.formatted_address);
+            that.savedPlaceIds.push(value.place_id);
+          });
+          savedPlaceData.resolve({savedplaces:that.savedPlaceResults, placeIds: that.savedPlaceIds, savedplaceaddresses: that.savedPlaceAddresses});
+        });
       return savedPlaceData.promise;
     }
 
