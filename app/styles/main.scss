@@ -326,5 +326,13 @@ $kioskfonts: "Avenir Next", "Helvetica Neue", Helvetica, sans-serif;
 .spinner{margin-top: 10em;}
 .angular-google-map-container { height: 400px; }
 
-  // @media(max-width:$screen-sm-max) {
+@media(min-width:$screen-md-min) {
+  .bus_options{
+    margin-left: 5em;
+    margin-right: 5em;
+    font-size: 1.8em;
+  }
+}
   // @media(min-width:$screen-md-min) {
+
+

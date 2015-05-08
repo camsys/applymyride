@@ -6,6 +6,13 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
 
 function($scope, $http, $routeParams, $location, planService, flash, usSpinnerService, $q, LocationSearch) {
 
+  var promise = $http.get('data/itineraries.json');
+  promise.then(function(result) {
+    planService.searchResults = result.data;
+    planService.prepareTransitOptionsPage($scope);
+  });
+
+
   $scope.marker = null;
   $scope.locations = [];
   $scope.placeIds = [];
@@ -37,6 +44,10 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
   };
 
   $scope.minDate = new Date();
+
+  $scope.handleEnter = function(){
+    alert('enter');
+  }
 
   $scope.getFromDateString = function(){
     return $scope.getDateString(planService.fromDate, planService.fromTime, planService.fromTimeType)
@@ -145,22 +156,10 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
       $scope.showNext = false;
       break;
     case 'list_itineraries':
-      var itineraries = planService.itineraries;
-      var itinerariesByMode = {};
-
-      angular.forEach(itineraries, function(itinerary, index) {
-        var mode = itinerary.returned_mode_code;
-        if (itinerariesByMode[mode] == undefined){
-          itinerariesByMode[mode] = [];
-        }
-        itinerariesByMode[mode].push(itinerary)
-      }, itinerariesByMode);
-
-      angular.forEach(Object.keys(itinerariesByMode), function(mode_code, index) {
-        $scope[mode_code] = itinerariesByMode[mode_code];
-      }, $scope);
-
-      console.log(itinerariesByMode);
+      planService.prepareTripSearchResultsPage($scope);
+      $scope.showNext = false;
+      break;
+    case 'bus_options':
       $scope.showNext = false;
       break;
     case 'sharedride_options_1':
@@ -207,16 +206,9 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
         break;
       case 'confirm':
         usSpinnerService.spin('spinner-1');
-
-        /*var promise = $http.get('data/itineraries.json');
-        promise.then(function(result) {
-          planService.itineraries = result.data.itineraries;
-          $location.path('/plan/list_itineraries');
-        });*/
-
         var promise = planService.postItineraryRequest($http);
         promise.then(function(result) {
-          planService.itineraries = result;
+          planService.searchResults = result;
           $location.path('/plan/list_itineraries');
         })
         break;

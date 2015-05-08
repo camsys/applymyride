@@ -5,7 +5,7 @@
         .form-group
           %label
             Enter your ID
-          %input.form-control{name: 'emailOrId', placeholder: 'Shared Ride ID or email', ng: {model: 'emailOrId', required: 'true', change: 'detectLoginType()'}}
+          %input.form-control{name: 'emailOrId', placeholder: 'Shared Ride ID or email', ng: {keypress: 'myFunct($event)', model: 'emailOrId', required: 'true', change: 'detectLoginType()'}}
 
 %div{ng: {show: "location == '/authenticateEmail'"}}
   .row
@@ -23,10 +23,11 @@
 %div{ng: {show: "location == '/authenticateSharedRideId'"}}
   .row
     %form{name: 'sharedRideForm'}
-      %h4 Your Shared Ride ID is
-      %h3 {{ sharedRideId }}
+
       .col-md-4.col-md-offset-4.col-xs-12
         .form-group
+          %h2 Your Shared Ride ID is
+          %h3 {{ sharedRideId }}
           %label
             %h4 What is your date of birth?
           %birthdaypicker{ng: {show: "!html5"}}

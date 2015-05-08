@@ -83,15 +83,26 @@
   -webkit-align-items: center;
   -webkit-box-align: center;
   align-items: center;
+
+}
+
+.rounded-border {
   border-radius: 5px;
   border: 1px solid grey;
   margin-top: 10px;
   margin-bottom: 10px;
 }
 
+.list_itineraries .row-eq-height{
+  padding: 10px;
+}
 
 .row-eq-height [class*=col] {
   padding: 0px;
+}
+
+.list_itineraries [class*=col] {
+  margin-right: 10px;
 }
 
 .truncate h1,
@@ -105,8 +116,6 @@
   text-overflow: ellipsis;
 }
 
-
-
 .confirm p,
 h1,
 h2,
@@ -115,4 +124,9 @@ h4,
 h5,
 h6 {
   margin: 5px;
+}
+
+.bus_options .row {
+  margin-left: -1em;
+  margin-right: -1em;
 }

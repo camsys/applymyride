@@ -17,39 +17,114 @@ angular.module('applyMyRideApp')
         request.toLine2 = toLocationDescription.line2;
 
         var outboundTime = itineraryRequestObject.itinerary_request[0].trip_time;
-        var now = moment().startOf('day');
-        var dayDiff = moment(outboundTime).startOf('day').diff(moment().startOf('day'), 'days');
-        if(dayDiff == 0) {
-          request.when1 = "Today";
-        } else if (dayDiff == 1) {
-          request.when1 = "Tomorrow";
-        }else{
-          request.when1 = moment(outboundTime).format('MMM DD, YYYY');
-        }
-        request.when2 = "Leaving: " + moment(outboundTime).format('h:mm a') + " " + (itineraryRequestObject.itinerary_request[0].departure_type == 'depart' ? "departure" : "arrival");
+        request.when1 = this.getDateDescription(outboundTime);
+        request.when2 = moment(outboundTime).format('h:mm a') + " " + (itineraryRequestObject.itinerary_request[0].departure_type == 'depart' ? "departure" : "arrival");
 
         if(itineraryRequestObject.itinerary_request.length > 1){
           request.roundtrip = true;
           //round trip
           var returnTime = itineraryRequestObject.itinerary_request[1].trip_time;
-          if(moment(returnTime).startOf('day').diff(moment(outboundTime).startOf('day'), 'days')== 0){
+          request.when3 = this.getDateDescription(returnTime);
+          if(request.when1 == request.when3){
             request.sameday = true;
-            request.when3 = "Returning: " + moment(returnTime).format('h:mm a') + " " + (itineraryRequestObject.itinerary_request[1].departure_type == 'depart' ? "departure" : "arrival");
-          }else{
-            var dayDiff = moment(returnTime).startOf('day').diff(moment().startOf('day'), 'days');
-            if(dayDiff == 0) {
-              request.when3 = "Today";
-            } else if (dayDiff == 1) {
-              request.when3 = "Tomorrow";
-            }else{
-              request.when3 = moment(returnTime).format('MMM DD, YYYY');
-            }
-            request.when4 = "Returning: " + moment(returnTime).format('h:mm a') + " " + (itineraryRequestObject.itinerary_request[1].departure_type == 'depart' ? "departure" : "arrival");
           }
+          request.when4 = moment(returnTime).format('h:mm a') + " " + (itineraryRequestObject.itinerary_request[1].departure_type == 'depart' ? "departure" : "arrival");
         }
         request.purpose = this.purpose;
         $scope.request = request;
+      }
 
+      this.prepareTripSearchResultsPage = function($scope){
+        var itineraries = this.searchResults.itineraries;
+        var itinerariesByMode = {};
+        var fare_info = {};
+
+        angular.forEach(itineraries, function(itinerary, index) {
+          var mode = itinerary.returned_mode_code;
+          if (itinerariesByMode[mode] == undefined){
+            itinerariesByMode[mode] = [];
+          }
+          itinerariesByMode[mode].push(itinerary);
+        }, itinerariesByMode);
+
+        angular.forEach(Object.keys(itinerariesByMode), function(mode_code, index) {
+          var fares = [];
+          angular.forEach(itinerariesByMode[mode_code], function(itinerary, index) {
+            fares.push(itinerary.cost);
+          }, $scope);
+
+          var lowestFare = Math.min.apply(null, fares);
+          var highestFare = Math.max.apply(null, fares);
+          if(lowestFare == highestFare){
+            fare_info[[mode_code]] = "$" + lowestFare;
+          }else{
+            fare_info[[mode_code]] = "$" + lowestFare + "-$" + highestFare;
+          }
+          $scope[mode_code] = itinerariesByMode[mode_code];
+        }, $scope);
+        $scope.fare_info = fare_info;
+      }
+
+      this.prepareTransitOptionsPage = function($scope){
+
+        var itineraries = this.searchResults.itineraries;
+        var transitItineraries = [];
+
+        angular.forEach(itineraries, function(itinerary, index) {
+          var mode = itinerary.returned_mode_code;
+          if (mode == 'mode_transit'){
+            transitItineraries.push(itinerary);
+          }
+        }, transitItineraries);
+
+        var transitInfos = []
+        var that = this;
+        angular.forEach(transitItineraries, function(itinerary, index) {
+          var transitInfo = {};
+          transitInfo.cost = itinerary.cost;
+          transitInfo.startTime = itinerary.start_time;
+          transitInfo.startDesc = that.getDateDescription(itinerary.start_time);
+          transitInfo.startDesc += " at " + moment(itinerary.start_time).format('h:mm a')
+          transitInfo.endDesc = that.getDateDescription(itinerary.end_time);
+          transitInfo.endDesc += " at " + moment(itinerary.end_time).format('h:mm a');
+          transitInfo.travelTime = humanizeDuration(itinerary.duration * 1000,  { units: ["hours", "minutes"], round: true });
+          var found = false;
+          angular.forEach(itinerary.json_legs, function(leg, index) {
+            if(!found && leg.mode == 'BUS'){
+              transitInfo.route = leg.routeShortName;
+              found = true;
+            }
+          });
+          transitInfo.walkTime = itinerary.walk_time;
+          transitInfos.push(transitInfo);
+        }, transitInfos);
+
+        angular.forEach(transitInfos, function(transitInfo, index) {
+          if(index == 0){
+            transitInfo.label = "Recommended"
+            return;
+          }
+
+          var best = transitInfos[0];
+          if(transitInfo.cost < best.cost){
+            transitInfo.label = "Cheaper"
+          } else if (transitInfo.travelTime < best.travelTime){
+            transitInfo.label = "Faster"
+          } else if (transitInfo.walkTime < best.walkTime){
+            transitInfo.label = "Less Walking"
+          } else if (transitInfo.travelTime < best.travelTime){
+            transitInfo.label = "Faster"
+          }else if(transitInfo.cost > best.cost){
+            transitInfo.label = "More Expensive"
+          } else if (transitInfo.startTime < best.startTime){
+            transitInfo.label = "Earlier"
+          } else if (transitInfo.startTime > best.startTime){
+            transitInfo.label = "Later"
+          }else{
+            transitInfo.label = "Similar"
+          }
+        });
+        $scope.transitInfos = transitInfos;
       }
 
       this.getAddressDescriptionFromLocation = function(location){
@@ -73,6 +148,20 @@ angular.module('applyMyRideApp')
         }
         return description;
       }
+
+    this.getDateDescription = function(date){
+      var description;
+      var now = moment().startOf('day');
+      var dayDiff = moment(date).startOf('day').diff(moment().startOf('day'), 'days');
+      if(dayDiff == 0) {
+        description = "Today";
+      } else if (dayDiff == 1) {
+        description = "Tomorrow";
+      }else{
+        description = moment(date).format('dddd MMM DD');
+      }
+      return description;
+    }
 
       this.getTripPurposes = function($scope, $http) {
         /*$http.get('/api/v1/trip_purposes/list').
