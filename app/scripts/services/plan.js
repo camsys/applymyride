@@ -259,8 +259,11 @@ angular.module('applyMyRideApp')
       }
 
       this.fixLatLon = function(location) {
-        location.geometry.location.lat = location.geometry.location.k;
-        location.geometry.location.lng = location.geometry.location.D;
+        //1click wants the json formatted differently than google places serves the data.  Replace lat() and lng() functions with numbers
+        if(typeof location.geometry.location.lat != 'number'){
+          location.geometry.location.lat = location.geometry.location.lat();
+          location.geometry.location.lng = location.geometry.location.lng();
+        }
       }
     }
 );

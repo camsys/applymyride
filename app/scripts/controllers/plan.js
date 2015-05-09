@@ -6,13 +6,6 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
 
 function($scope, $http, $routeParams, $location, planService, flash, usSpinnerService, $q, LocationSearch) {
 
-  var promise = $http.get('data/itineraries.json');
-  promise.then(function(result) {
-    planService.searchResults = result.data;
-    planService.prepareTransitOptionsPage($scope);
-  });
-
-
   $scope.marker = null;
   $scope.locations = [];
   $scope.placeIds = [];
@@ -160,6 +153,7 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
       $scope.showNext = false;
       break;
     case 'bus_options':
+      planService.prepareTransitOptionsPage($scope);
       $scope.showNext = false;
       break;
     case 'sharedride_options_1':
@@ -211,6 +205,9 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
           planService.searchResults = result;
           $location.path('/plan/list_itineraries');
         })
+        break;
+      case 'bus_options':
+        $location.path('/plan/book_shared_ride');
         break;
       case 'sharedride_options_2':
         $location.path('/plan/book_shared_ride');

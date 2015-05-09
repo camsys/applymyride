@@ -201,16 +201,12 @@
         .col-xs-8.col-xs-offset-2.col-md-4.col-md-offset-4.text-center
           %a.btn.btn-success.btn-block{ng: {click: 'next()'}}
             Search for ride!
-          %a.btn-block{"ng-href" => "#/plan/from"}
+          %a.btn-block{"ng-href" => "#/plan/fromDate"}
             No, change my request
-
-
-
-
 
     .list_itineraries{ng: {show: 'step==="list_itineraries"'}}
       %h2 Here are your trip options:
-      .row.row-eq-height.rounded-border{ng: {click: 'selectTransit()', show: 'fare_info["mode_transit"]'}}
+      %a.no_underline.row.row-eq-height.rounded-border{ng: {href: '#/plan/bus_options', show: 'fare_info["mode_transit"]'}}
         .col-xs-2
           %img.img-responsive{ng: {src: 'images/modes/transit.png'}}
         .col-xs-4{style: "font-size: large"}
@@ -220,7 +216,7 @@
         .col-xs-1
           %span.fa-lg.pull-right
             %i.fa.fa-chevron-circle-right.fa-lg
-      .row.row-eq-height.rounded-border{ng: {click: 'selectSharedRide()'}}
+      %a.no_underline.row.row-eq-height.rounded-border{ng: {href: '#/plan/sharedride_options_1', show: 'fare_info["mode_paratransit"]'}}
         .col-xs-2
           %img.img-responsive{ng: {src: 'images/modes/paratransit.png'}}
         .col-xs-10
@@ -228,7 +224,7 @@
             .col-xs-9{style: "font-size: large"}
               Shared Ride
             .col-xs-2{style: "font-size: large"}
-              $4.35
+              {{fare_info["mode_paratransit"]}}
           .row{style: "border: 0px; margin: 0px; padding: 0px"}
             .col-xs-12
               %p.text-left.text-muted{style: "border: 0px; margin: 0px; padding: 0px"}
@@ -270,7 +266,7 @@
 
     .depart-time{ng: {show: 'step==="sharedride_options_1"'}}
       %form
-        .form-group
+        .form-group.text-center
           %h2 Will anyone be riding with you today?
         .row
           .col-md-6.col-md-offset-3.col-xs-12
@@ -281,7 +277,7 @@
 
 
     .depart-time{ng: {show: 'step==="sharedride_options_2"'}}
-      %form
+      .col-md-8.col-md-offset-2.col-xs-12
         .form-group
           %h4 If you have any special instructions for the driver, please enter them below
           %h4.text-muted This is optional
