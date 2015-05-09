@@ -269,7 +269,7 @@ angular.module('applyMyRideApp')
 );
 
 angular.module('applyMyRideApp')
-  .service('LocationSearch', function($http, $q, $timeout){
+  .service('LocationSearch', function($http, $q, localStorageService){
 
     var autocompleteService = new google.maps.places.AutocompleteService();
 
@@ -315,9 +315,25 @@ angular.module('applyMyRideApp')
     }
 
     LocationSearch.getRecentSearches = function(text) {
-      var savedPlaceData = $q.defer();
-      savedPlaceData.resolve({recentsearches: ['My fake recent search', 'not selectable yet'], placeIds: [null, null]});
-      return savedPlaceData.promise;
+
+      var recentSearchData = $q.defer();
+      var recentSearches = localStorageService.get('recentSearches');
+      if(!recentSearches){
+        recentSearchData.resolve({recentsearches: [], placeIds: []});
+      }else{
+        this.recentSearchResults = [];
+        this.recentSearchPlaceIds = [];
+        var that = this;
+        angular.forEach(Object.keys(recentSearches), function(key, index) {
+          if(index < 10 && key.toLowerCase().indexOf(text.toLowerCase()) > -1){
+            var location = recentSearches[key];
+            that.recentSearchResults.push(key);
+            that.recentSearchPlaceIds.push(location.place_id)
+          }
+        });
+        recentSearchData.resolve({recentsearches: that.recentSearchResults, placeIds: that.recentSearchPlaceIds});
+      }
+      return recentSearchData.promise;
     }
 
     LocationSearch.getSavedPlaces = function(text) {

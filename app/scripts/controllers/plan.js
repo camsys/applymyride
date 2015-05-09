@@ -2,9 +2,9 @@
 
 var app = angular.module('applyMyRideApp');
 
-app.controller('PlanController', ['$scope', '$http','$routeParams', '$location', 'planService', 'flash', 'usSpinnerService', '$q', 'LocationSearch',
+app.controller('PlanController', ['$scope', '$http','$routeParams', '$location', 'planService', 'flash', 'usSpinnerService', '$q', 'LocationSearch', 'localStorageService',
 
-function($scope, $http, $routeParams, $location, planService, flash, usSpinnerService, $q, LocationSearch) {
+function($scope, $http, $routeParams, $location, planService, flash, usSpinnerService, $q, LocationSearch, localStorageService) {
 
   $scope.marker = null;
   $scope.locations = [];
@@ -344,6 +344,14 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
       var placesService = new google.maps.places.PlacesService(map);
       placesService.getDetails( { 'placeId': placeId}, function(result, status) {
         if (status == google.maps.GeocoderStatus.OK) {
+          var recentSearches = localStorageService.get('recentSearches');
+          if(!recentSearches){
+            recentSearches = {};
+          }
+          if (typeof(recentSearches[place]) == 'undefined'){
+            recentSearches[place] = result;
+          }
+          localStorageService.set('recentSearches', JSON.stringify(recentSearches));
 
           if($routeParams.step == 'from'){
             planService.fromDetails = result;
@@ -351,7 +359,6 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
             planService.toDetails = result;
           }
 
-          var bounds = new google.maps.LatLngBounds(result.geometry.location, result.geometry.location);
           if($scope.marker){
             $scope.marker.setMap(null);
           }

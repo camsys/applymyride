@@ -22,6 +22,7 @@ angular.module('applyMyRideApp', [
     'autocomplete',
     'ui.bootstrap',
     'dcbClearInput',
+    'LocalStorageModule',
   ]).config(function ($routeProvider, $locationProvider) {
     $routeProvider
       .when('/', {
