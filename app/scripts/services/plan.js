@@ -298,8 +298,11 @@ angular.module('applyMyRideApp')
           input: text,
           offset: 0,
           componentRestrictions: {country: 'us'},
-          location: new google.maps.LatLng(39.9625, -76.7280556),  //york, PA
-          radius: 50000
+          bounds: new google.maps.LatLngBounds(
+            new google.maps.LatLng(39.887200, -76.856635),
+            new google.maps.LatLng(40.013158, -76.572930)
+          )
+
         }, function(list, status) {
           angular.forEach(list, function(value, index) {
             var terms = []
