@@ -3,8 +3,17 @@
 var app = angular.module('applyMyRideApp');
 
 angular.module('applyMyRideApp')
-  .controller('NavbarController', ['$scope', '$location', 'flash',
-    function ($scope, $location, flash) {
+  .controller('NavbarController', ['$scope', '$location', 'flash', 'planService', 'deviceDetector',
+    function ($scope, $location, flash, planService, deviceDetector) {
+
+    var input = document.createElement('input');
+    input.setAttribute('type','date');
+    var notADateValue = 'not-a-date';
+    input.setAttribute('value', notADateValue);
+    $scope.html5 = !(input.value === notADateValue);
+    planService.html5 = $scope.html5;
+    $scope.mobile = deviceDetector.isMobile();
+    planService.mobile = $scope.mobile;
 
     $scope.flash = flash;
 

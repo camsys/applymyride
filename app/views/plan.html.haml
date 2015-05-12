@@ -12,7 +12,9 @@
             .col-md-4.col-md-offset-4.col-xs-12
               %h4{ng: {show: 'planService.username'}} Hi {{ planService.username }}!
               %h4 What day do you want to leave?
-              %p.input-group
+              %p.input-group{'ng-show' => 'html5', 'style' => 'width: 100%;'}
+                %input#fromDate.form-control{type: 'date', ng: {model: 'fromDate', required: 'true'}}
+              %p.input-group{'ng-show' => '!html5', }
                 %input.form-control{'type' => 'text', 'datepicker-popup' => "MMMM-dd-yyyy", 'min-date' => 'minDate', 'is-open' => 'opened', 'datepicker-options' => 'dateOptions', 'close-text' => 'Close', 'ng-model' => 'fromDate',}
                   %span.input-group-btn
                     %button.btn.btn-default{'type' => 'button', 'ng-click' => 'openCalendar($event)'}
@@ -31,12 +33,12 @@
 
     .depart-time{ng: {show: 'step==="fromTime"'}}
       %form
-        .row
-          .text-center
+        .col-md-4.col-md-offset-4.col-xs-12.text-center
+          .row
             %h4 What time would you like to {{ planService.fromTimeType }}?
-        .row
-          .text-center
-            %timepicker.timepicker{ng: {model: 'fromTime'}}
+          .row
+            %timepicker.timepicker{ng: {model: 'fromTime', show: '!mobile'}}
+            %input#fromTime.form-control{type: 'time', ng: {model: 'fromTime', required: 'true', show: 'mobile && html5'}}
             %h4.btn-danger{ng: {show: 'disableNext'}} You must select a time in the future!
 
 
@@ -96,7 +98,9 @@
             %h4 What day do you want to return?
         .row
           .col-md-4.col-md-offset-4.col-xs-12
-            %p.input-group
+            %p.input-group{'ng-show' => 'html5', 'style' => 'width: 100%;'}
+              %input#returnDate.form-control{type: 'date', ng: {model: 'returnDate', required: 'true'}}
+            %p.input-group{'ng-show' => '!html5', }
               %input.form-control{'type' => 'text', 'datepicker-popup' => "MMMM-dd-yyyy", 'min-date' => 'fromDate', 'is-open' => 'opened', 'datepicker-options' => 'dateOptions', 'close-text' => 'Close', 'ng-model' => 'returnDate',}
                 %span.input-group-btn
                   %button.btn.btn-default{'type' => 'button', 'ng-click' => 'openCalendar($event)'}
@@ -113,12 +117,13 @@
               Enter arrival time
 
     .return-time{ng: {show: 'step==="returnTime"'}}
-      .text-center
-        %h4 What time would you like to {{ planService.returnTimeType }} on your return trip?
+      .col-md-4.col-md-offset-4.col-xs-12.text-center
         .row
-          .col-md-4.col-md-offset-4.col-xs-6.col-xs-offset-3
-            %timepicker.timepicker{ng: {model: 'returnTime'}}
-            %h4.btn-danger{ng: {show: 'disableNext'}} You must select a time after your outbound trip!
+          %h4 What time would you like to {{ planService.returnTimeType }} on your return trip?
+        .row
+          %timepicker.timepicker{ng: {model: 'returnTime', show: '!mobile'}}
+          %input#fromTime.form-control{type: 'time', ng: {model: 'returnTime', required: 'true', show: 'mobile && html5'}}
+          %h4.btn-danger{ng: {show: 'disableNext'}} You must select a time after your outbound trip!
 
     .purpose{ng: {show: 'step==="purpose"'}}
       .text-center

@@ -23,6 +23,7 @@ angular.module('applyMyRideApp', [
     'ui.bootstrap',
     'dcbClearInput',
     'LocalStorageModule',
+    'ng.deviceDetector',
   ]).config(function ($routeProvider, $locationProvider) {
     $routeProvider
       .when('/', {

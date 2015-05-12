@@ -296,8 +296,6 @@ angular.module('applyMyRideApp')
       autocompleteService.getPlacePredictions(
         {
           input: text,
-          offset: 0,
-          componentRestrictions: {country: 'us'},
           bounds: new google.maps.LatLngBounds(
             new google.maps.LatLng(39.887200, -76.856635),
             new google.maps.LatLng(40.013158, -76.572930)

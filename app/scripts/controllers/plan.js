@@ -78,6 +78,7 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
       }
       break;
     case 'fromDate':
+      $('#fromDate').attr('min', moment($scope.minDate).format('YYYY-MM-DD'))
       if(planService.fromDate != null){
         $scope.fromDate = planService.fromDate;
       }
@@ -98,6 +99,7 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
       }
       break;
     case 'returnDate':
+      $('#returnDate').attr('min', moment($scope.minDate).format('YYYY-MM-DD'))
       if(planService.returnDate != null){
         $scope.returnDate = planService.returnDate;
       }else if(planService.fromDate != null){
