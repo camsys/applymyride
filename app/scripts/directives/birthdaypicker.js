@@ -17,7 +17,7 @@ app.directive('birthdaypicker', function() {
           var selectedDay = parseInt(this.birthday, 10);
           var maxDay = (new Date(selectedYear, selectedMonth, 0)).getDate();
           if(selectedDay <= maxDay){
-            $scope.$parent.dateofbirth = (new Date(selectedYear, selectedMonth, selectedDay))
+            $scope.$parent.dateofbirth = (new Date(selectedYear, selectedMonth - 1, selectedDay))
           }else{
             $scope.$parent.dateofbirth = null;
           }
@@ -31,7 +31,7 @@ app.directive('birthdaypicker', function() {
               "long": ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"] };
           scope.todayDate = new Date();
           scope.todayYear = scope.todayDate.getFullYear();
-          scope.todayMonth = scope.todayDate.getMonth() + 1;
+          scope.todayMonth = scope.todayDate.getMonth();
           scope.todayDay = scope.todayDate.getDate();
           scope.years = [];
           for(var i = 0; i < 120; i++){
@@ -112,7 +112,6 @@ app.directive('birthdaypicker', function() {
               ng-repeat="year in years"\
               val="{{ year }}"\
               ng-class="{ active: ($index === selectedIndex && suggestion.option), selectable: (suggestion.option) }"\
-              ng-click="!suggestion.option || select(suggestion.label)"\
               >{{ year }}</li>\
         </select>\
         <input type="hidden" name="birthdate" id="birthdate" value="">\

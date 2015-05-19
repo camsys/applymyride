@@ -36,25 +36,59 @@ angular.module('applyMyRideApp')
 
       this.prepareTripSearchResultsPage = function($scope){
         var itineraries = this.searchResults.itineraries;
-        var itinerariesByMode = {};
+        var itinerariesBySegmentThenMode = {};
         var fare_info = {};
 
         angular.forEach(itineraries, function(itinerary, index) {
           var mode = itinerary.returned_mode_code;
-          if (itinerariesByMode[mode] == undefined){
-            itinerariesByMode[mode] = [];
+          var segment_index = itinerary.segment_index;
+          console.log('adding itineraries for segment: ' + segment_index + ' mode: ' + mode);
+          if (itinerariesBySegmentThenMode[segment_index] == undefined){
+            itinerariesBySegmentThenMode[segment_index] = {};
           }
-          itinerariesByMode[mode].push(itinerary);
-        }, itinerariesByMode);
+          if (itinerariesBySegmentThenMode[segment_index][mode] == undefined){
+            itinerariesBySegmentThenMode[segment_index][mode] = [];
+          }
+          itinerariesBySegmentThenMode[segment_index][mode].push(itinerary);
+        }, itinerariesBySegmentThenMode);
 
+
+        var itinerariesByMode = itinerariesBySegmentThenMode['0'];
+        var paratransitTrips = itinerariesByMode.mode_paratransit;
+        if(paratransitTrips){
+          var lowestPricedParatransitTrip;
+          angular.forEach(paratransitTrips, function(paratransitTrip, index) {
+            if(paratransitTrip.duration && paratransitTrip.start_time){
+              paratransitTrip.travelTime = humanizeDuration(paratransitTrip.duration * 1000,  { units: ["hours", "minutes"], round: true });
+              paratransitTrip.startTime = moment(paratransitTrip.start_time).format('h:mm a')
+              if(!lowestPricedParatransitTrip){
+                lowestPricedParatransitTrip = paratransitTrip;
+              }else{
+                if(Number(paratransitTrip.cost) < Number(lowestPricedParatransitTrip.cost)){
+                  lowestPricedParatransitTrip = paratransitTrip;
+                }
+              }
+            }
+          });
+          if(lowestPricedParatransitTrip){
+            itinerariesByMode.mode_paratransit = [lowestPricedParatransitTrip];
+            this.paratransitItinerary = lowestPricedParatransitTrip;
+          }else{
+            delete itinerariesByMode.mode_paratransit;
+          }
+        }
         angular.forEach(Object.keys(itinerariesByMode), function(mode_code, index) {
           var fares = [];
           angular.forEach(itinerariesByMode[mode_code], function(itinerary, index) {
-            fares.push(itinerary.cost);
+            if(itinerary.cost){
+              var fare = parseFloat(Math.round(itinerary.cost * 100) / 100).toFixed(2);
+              itinerary.cost = fare;
+              fares.push(fare);
+            }
           }, $scope);
 
-          var lowestFare = Math.min.apply(null, fares);
-          var highestFare = Math.max.apply(null, fares);
+          var lowestFare = Math.min.apply(null, fares).toFixed(2);
+          var highestFare = Math.max.apply(null, fares).toFixed(2);
           if(lowestFare == highestFare){
             fare_info[[mode_code]] = "$" + lowestFare;
           }else{
@@ -62,6 +96,20 @@ angular.module('applyMyRideApp')
           }
           $scope[mode_code] = itinerariesByMode[mode_code];
         }, $scope);
+        var modes = Object.keys(fare_info);
+        var index = $.inArray("mode_transit", modes);
+        if (index>=0) modes.splice(index, 1);
+        index = $.inArray("mode_paratransit", modes);
+        if (index>=0){
+          modes.splice(index, 1);
+          fare_info.paratransitTravelTime = itinerariesByMode.mode_paratransit[0].travelTime;
+          fare_info.paratransitStartTime = itinerariesByMode.mode_paratransit[0].startTime;
+        }
+        if(modes.length > 0){
+          fare_info.other = true;
+        }else{
+          fare_info.other = false;
+        }
         $scope.fare_info = fare_info;
       }
 
@@ -88,6 +136,7 @@ angular.module('applyMyRideApp')
           transitInfo.endDesc = that.getDateDescription(itinerary.end_time);
           transitInfo.endDesc += " at " + moment(itinerary.end_time).format('h:mm a');
           transitInfo.travelTime = humanizeDuration(itinerary.duration * 1000,  { units: ["hours", "minutes"], round: true });
+          transitInfo.duration = itinerary.duration;
           var found = false;
           angular.forEach(itinerary.json_legs, function(leg, index) {
             if(!found && leg.mode == 'BUS'){
@@ -108,7 +157,7 @@ angular.module('applyMyRideApp')
           var best = transitInfos[0];
           if(transitInfo.cost < best.cost){
             transitInfo.label = "Cheaper"
-          } else if (transitInfo.travelTime < best.travelTime){
+          } else if (transitInfo.duration < best.duration){
             transitInfo.label = "Faster"
           } else if (transitInfo.walkTime < best.walkTime){
             transitInfo.label = "Less Walking"
@@ -164,18 +213,48 @@ angular.module('applyMyRideApp')
     }
 
       this.getTripPurposes = function($scope, $http) {
-        $http.get('api/v1/trip_purposes/list').
+        $http.get('api/v1/trip_purposes/list', this.getHeaders()).
           success(function(data) {
             $scope.purposes = data.trip_purposes;
+          }).
+          error(function(data) {
+            alert(data);
           });
       }
 
       this.postItineraryRequest = function($http) {
+        //var promise2 = $http.post('api/v1/itineraries/plan', this.itineraryRequestObject, this.getHeaders());
         var promise2 = $http.post('api/v1/itineraries/plan', this.itineraryRequestObject);
         var promise3 = promise2.then(function(result) {
           return result.data;
         });
         return promise3;
+      }
+
+      this.bookSharedRide = function($http) {
+        var requestHolder = {};
+        requestHolder.booking_request = [];
+        var bookingRequest = {};
+        requestHolder.booking_request.push(bookingRequest);
+        bookingRequest.itinerary_id = this.paratransitItinerary.id;
+
+        if(this.hasEscort){
+          bookingRequest.escort = this.hasEscort;
+        }
+
+        if(this.numberOfFamily){
+          bookingRequest.family = this.numberOfFamily;
+        }
+
+        if(this.numberOfCompanions){
+          bookingRequest.companions = this.numberOfCompanions;
+        }
+
+        if(this.driverInstructions){
+          bookingRequest.note = this.driverInstructions;
+        }
+        return $http.post('api/v1/itineraries/book', bookingRequest, this.getHeaders());
+
       }
 
       this.createItineraryRequest = function() {
@@ -265,6 +344,14 @@ angular.module('applyMyRideApp')
           location.geometry.location.lng = location.geometry.location.lng();
         }
       }
+
+      this.getHeaders = function(){
+        var headers = {headers:  {
+          "X-User-Email" : this.email,
+          "X-User-Token" : this.authentication_token}
+        };
+        return headers;
+      }
     }
 );
 
@@ -275,11 +362,11 @@ angular.module('applyMyRideApp')
 
     var LocationSearch = new Object();
 
-    LocationSearch.getLocations = function(text) {
+    LocationSearch.getLocations = function(text, config) {
 
       var compositePromise = $q.defer();
 
-      $q.all([LocationSearch.getGooglePlaces(text), LocationSearch.getSavedPlaces(text), LocationSearch.getRecentSearches(text)]).then(function(results){
+      $q.all([LocationSearch.getGooglePlaces(text), LocationSearch.getSavedPlaces(text, config), LocationSearch.getRecentSearches(text)]).then(function(results){
         compositePromise.resolve(results);
       });
 
@@ -297,18 +384,21 @@ angular.module('applyMyRideApp')
         {
           input: text,
           bounds: new google.maps.LatLngBounds(
-            new google.maps.LatLng(39.887200, -76.856635),
-            new google.maps.LatLng(40.013158, -76.572930)
+            //PA 7 county region
+            new google.maps.LatLng(39.719635, -79.061985),
+            new google.maps.LatLng(40.730426, -76.153193)
           )
 
         }, function(list, status) {
           angular.forEach(list, function(value, index) {
-            var terms = []
-            angular.forEach(value.terms, function(term, index) {
-              terms.push(term.value)
-            }, terms);
-            that.results.push(terms.join(" "));
-            that.placeIds.push(value.place_id);
+            if(that.results.length < 10){
+              var terms = [];
+              angular.forEach(value.terms, function(term, index) {
+                terms.push(term.value)
+              }, terms);
+              that.results.push(terms.join(" "));
+              that.placeIds.push(value.place_id);
+            }
           });
           googlePlaceData.resolve({googleplaces:that.results, placeIds: that.placeIds});
         });
@@ -326,7 +416,7 @@ angular.module('applyMyRideApp')
         this.recentSearchPlaceIds = [];
         var that = this;
         angular.forEach(Object.keys(recentSearches), function(key, index) {
-          if(index < 10 && key.toLowerCase().indexOf(text.toLowerCase()) > -1){
+          if(that.recentSearchResults.length < 10 && key.toLowerCase().indexOf(text.toLowerCase()) > -1){
             var location = recentSearches[key];
             that.recentSearchResults.push(key);
             that.recentSearchPlaceIds.push(location.place_id)
@@ -337,19 +427,21 @@ angular.module('applyMyRideApp')
       return recentSearchData.promise;
     }
 
-    LocationSearch.getSavedPlaces = function(text) {
+    LocationSearch.getSavedPlaces = function(text, config) {
       var savedPlaceData = $q.defer();
       this.savedPlaceIds = [];
       this.savedPlaceAddresses = [];
       this.savedPlaceResults = [];
       var that = this;
-      $http.get('api/v1/places/search?traveler_id=3&include_user_pois=true&search_string=%25' + text + '%25').
+      $http.get('api/v1/places/search?include_user_pois=true&search_string=%25' + text + '%25', config).
         success(function(data) {
           var locations = data.places_search_results.locations;
           angular.forEach(locations, function(value, index) {
-            that.savedPlaceResults.push(value.name + " " + value.formatted_address);
-            that.savedPlaceAddresses.push(value.formatted_address);
-            that.savedPlaceIds.push(value.place_id);
+            if(that.savedPlaceResults.length < 10){
+              that.savedPlaceResults.push(value.name + " " + value.formatted_address);
+              that.savedPlaceAddresses.push(value.formatted_address);
+              that.savedPlaceIds.push(value.place_id);
+            }
           });
           savedPlaceData.resolve({savedplaces:that.savedPlaceResults, placeIds: that.savedPlaceIds, savedplaceaddresses: that.savedPlaceAddresses});
         });

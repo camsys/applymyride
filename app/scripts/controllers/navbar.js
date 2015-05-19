@@ -18,7 +18,7 @@ angular.module('applyMyRideApp')
     $scope.flash = flash;
 
     $scope.showNavbar = function() {
-      return ($location.path()!=='/');
+      return true;
     };
 
   }]);

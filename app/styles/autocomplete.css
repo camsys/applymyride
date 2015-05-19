@@ -8,7 +8,6 @@
 .autocomplete input{
   font-size: 1.2em;
   width: 100%;
-  padding:0.4em;
 }
 
 .autocomplete ul{
@@ -19,6 +18,7 @@
   border-right: 1px solid #888;
   border-bottom: 1px solid #888;
   z-index: 1;
+  -webkit-padding-start: 0px;
 }
 
 .autocomplete li{
@@ -27,6 +27,7 @@
   width: 100%;
   padding:0.4em;
   background-color: #fff;
+
 }
 
 .autocomplete li.selectable{
@@ -65,8 +66,8 @@
 
 .clear-btn {
   position: absolute;
-  top: 12px;
-  right: 25px;
+  top: .5em;
+  right: 1.5em;
   cursor: pointer;
 }
 
@@ -134,4 +135,5 @@ h6 {
 .no_underline{
   text-decoration: none !important;
   color: inherit !important;
-}
+
+  padding:0.4em;}

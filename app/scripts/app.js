@@ -19,6 +19,7 @@ angular.module('applyMyRideApp', [
     'ngTouch',
     'angularSpinner',
     'ui.map',
+    'ui.utils',
     'autocomplete',
     'ui.bootstrap',
     'dcbClearInput',
@@ -27,10 +28,6 @@ angular.module('applyMyRideApp', [
   ]).config(function ($routeProvider, $locationProvider) {
     $routeProvider
       .when('/', {
-        templateUrl: 'views/main.html',
-        controller: 'MainController'
-      })
-      .when('/login', {
         templateUrl: 'views/login.html',
         controller: 'LoginController'
       })
@@ -82,4 +79,18 @@ angular.module('applyMyRideApp', [
         redirectTo: '/'
       });
 
-  });
+  })  //global event handler
+  .run(function($rootScope, $window) {
+    $rootScope.slide = '';
+    $rootScope.$on('$routeChangeStart', function() {
+      //event button to move backward
+      $rootScope.back = function() {
+        $rootScope.slide = 'slide-left';
+        $window.history.back();
+      }
+      //event button item list to move forward
+      $rootScope.next = function() {
+        $rootScope.slide = 'slide-left';
+      }
+    });
+  });;

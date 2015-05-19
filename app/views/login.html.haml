@@ -1,24 +1,28 @@
-%div{ng: {show: "location == '/login'"}}
-  .row
-    %form{name: 'loginForm', novalidate: 'novalidate'}
-      .col-md-4.col-md-offset-4.col-xs-12
-        .form-group
-          %label
-            Enter your ID
-          %input.form-control{name: 'emailOrId', placeholder: 'Shared Ride ID or email', ng: {keypress: 'myFunct($event)', model: 'emailOrId', required: 'true', change: 'detectLoginType()'}}
+.row{ng: {show: "location == '/'"}}
+  .jumbotron.marketing.col-md-8.col-md-offset-2
+    .col-md-8.col-md-offset-2
+      .center-block.logo-image
+      .center-block.logo-text
+      %h1 Let's get started
+      .row
+        %h3 Enter your Shared Ride ID
+      .row
+        .col-md-8.col-md-offset-2
+          %input.form-control{name: 'sharedRideId', placeholder: 'Shared Ride ID', ng: {model: 'sharedRideId', required: 'true', change: 'checkId()', enter: 'next()'}}
+      .row{style: 'margin-top: 10px'}
+        %select{ng: {model: 'county', change: 'checkId()', options: 'county for county in counties', enter: 'next()'}}
+          %option{value: '', disabled: '', selected: ''}
+            Select your county
+      .row{style: 'margin-top: 10px'}
+        .col-md-8.col-md-offset-2.col-xs-12
+          .pull-right
+            %a.btn.btn-success{style: 'font-size: 1em', ng: {click: 'next()', disabled: 'disableNext'}}
+              Next
+              %span{ng: {include: "'views/button-chevron-right.html'"}}
+      .row
+        %a.btn-block{"ng-href" => "#/plan/fromDate"}
+          Or, continue as a guest
 
-%div{ng: {show: "location == '/authenticateEmail'"}}
-  .row
-    %form{name: 'sharedRideForm'}
-      %h4 Your email address is
-      %h3 {{ email }}
-      .col-xs-12
-        .form-group
-          %label
-            %h4 What is your password?
-          %input.form-control{name: 'birthDate', type: 'password', placeholder: 'Enter your password', ng: {model: 'password', change: 'disableNext()'}}
-          %a.btn.btn-success{style: 'margin-top: 0.5em;', ng: {click: 'recoverPassword()'}}
-            I forgot my password
 
 %div{ng: {show: "location == '/authenticateSharedRideId'"}}
   .row
@@ -31,14 +35,14 @@
           %label
             %h4 What is your date of birth?
           %birthdaypicker{ng: {show: "!html5"}}
-          %input.form-control{type: 'date', ng: {show: "html5", model: 'dateofbirth', required: 'true', change: 'setBirthdate()'}}
+          %input.form-control{type: 'date', ng: {show: "html5", model: 'dateofbirth', required: 'true', change: 'checkId()'}}
           %h4 This will help us prevent other people from using your account.
 
-.row.action-button
-  .col-md-4.col-md-offset-4.col-xs-12
-    %a.pull-left.btn.btn-success{type: 'submit', ng: {click: "back()"}}
-      %span{ng: {include: "'views/button-chevron-left.html'"}}
-      Back
-    %a.pull-right.btn.btn-success{type: 'submit', ng: {click: "next()", hide: "disableNext()"}}
-      Next
-      %span{ng: {include: "'views/button-chevron-right.html'"}}
+  .row.action-button
+    .col-md-4.col-md-offset-4.col-xs-12
+      %a.pull-left.btn.btn-success{type: 'submit', ng: {click: "back()"}}
+        %span{ng: {include: "'views/button-chevron-left.html'"}}
+        No, change my ID
+      %a.pull-right.btn.btn-success{type: 'submit', ng: {click: "authenticate()", disabled: 'disableNext'}}
+        Next
+        %span{ng: {include: "'views/button-chevron-right.html'"}}

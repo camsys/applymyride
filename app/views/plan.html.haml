@@ -1,4 +1,4 @@
-.plan
+.plan{"ng-controller" => "PlanController"}
   .container
     %span{'us-spinner' => '', 'spinner-key' => "spinner-1"}
     .alert.alert-danger.text-center{"ng-show" => "apiError", :role => "alert"}
@@ -13,23 +13,40 @@
               %h4{ng: {show: 'planService.username'}} Hi {{ planService.username }}!
               %h4 What day do you want to leave?
               %p.input-group{'ng-show' => 'html5', 'style' => 'width: 100%;'}
-                %input#fromDate.form-control{type: 'date', ng: {model: 'fromDate', required: 'true'}}
+                %input#fromDate.form-control{min: "{{minDate | date:'yyyy-MM-dd'}}", focus: '', type: 'date', ng: {model: 'fromDate', required: 'true', enter: 'next()'}}
               %p.input-group{'ng-show' => '!html5', }
-                %input.form-control{'type' => 'text', 'datepicker-popup' => "MMMM-dd-yyyy", 'min-date' => 'minDate', 'is-open' => 'opened', 'datepicker-options' => 'dateOptions', 'close-text' => 'Close', 'ng-model' => 'fromDate',}
+                %input.form-control{'focus' => '', 'type' => 'text', 'datepicker-popup' => "MMMM-dd-yyyy", 'min-date' => 'minDate', 'is-open' => 'opened', 'datepicker-options' => 'dateOptions', 'close-text' => 'Close', 'ng-model' => 'fromDate',}
                   %span.input-group-btn
                     %button.btn.btn-default{'type' => 'button', 'ng-click' => 'openCalendar($event)'}
                       %i.glyphicon.glyphicon-calendar
 
     .depart-time{ng: {show: 'step==="fromTimeType"'}}
-      .row
-        .col-md-4.col-md-offset-4.col-xs-12.text-center
-          %h4 What time are you leaving?
-          %a.btn.btn-success.btn-block{ng: {click: 'specifyFromTimeType("asap")', show: 'showAsap'}}
-            As soon as possible
-          %a.btn.btn-success.btn-block{ng: {click: 'specifyFromTimeType("depart")'}}
-            Enter departure time
-          %a.btn.btn-success.btn-block{ng: {click: 'specifyFromTimeType("arrive")'}}
-            Enter arrival time
+      .col-md-8.col-md-offset-2.col-xs-12
+        .row
+          .col-xs-12.pull-left
+            %h3
+              What time would you like to travel?
+        .row
+          .col-xs-12.pull-left
+            %h4
+              %span.timeTypeSelection{ng: {show: 'showAsap && fromTimeType == "asap"'}} As soon as possible!
+              %span.timeTypeSelection{ng: {show: 'fromTimeType == "depart"'}} I want to leave at...
+              %span.timeTypeSelection{ng: {show: 'fromTimeType == "arrive"'}} I want to arrive by...
+              %span.dropdown{dropdown: '', style: 'cursor: pointer;'}
+                %i.fa.fa-lg.fa-sort-desc{dropdown_toggle: '', style: 'vertical-align: 15%; color: darkblue;'}
+                %ul.dropdown-menu.pull-right{dropdown_menu: ''}
+                  %li{ng: {show: 'showAsap && fromTimeType != "asap"'}}
+                    %a{ng: {click: 'specifyFromTimeType("asap")'}}
+                      As soon as possible!
+                  %li{ng: {show: 'fromTimeType != "depart"'}}
+                    %a{ng: {click: 'specifyFromTimeType("depart")'}}
+                      I want to leave at...
+                  %li{ng: {show: 'fromTimeType != "arrive"'}}
+                    %a{ng: {click: 'specifyFromTimeType("arrive")'}}
+                      I want to arrive by...
+        .row{ng: {show: 'fromTimeType != "asap"'}}
+          %timepicker.timepicker{ng: {model: 'fromTime', show: '!mobile'}}
+          %input#fromTime.form-control{type: 'time', ng: {model: 'fromTime', required: 'true', show: 'mobile && html5'}}
 
     .depart-time{ng: {show: 'step==="fromTime"'}}
       %form
@@ -39,8 +56,6 @@
           .row
             %timepicker.timepicker{ng: {model: 'fromTime', show: '!mobile'}}
             %input#fromTime.form-control{type: 'time', ng: {model: 'fromTime', required: 'true', show: 'mobile && html5'}}
-            %h4.btn-danger{ng: {show: 'disableNext'}} You must select a time in the future!
-
 
     .use-current-location{ng: {show: 'step==="start_current"'}}
       .row
@@ -71,8 +86,10 @@
       .row
         .col-md-8.col-md-offset-2.col-xs-12
           %div#overlayWrapper
-            %autocomplete{'clear-input' => '', 'inputclass' => 'clearable', 'disable-filter' => 'true', 'data' => 'locations', 'on-type'=> 'getLocations', 'on-select' => 'selectPlace', :ng => {:model => 'fromChoice'}}
-      %div.map-canvas{'ui-map' => 'fromLocationMap', 'ui-options' => 'mapOptions', ng: {show: 'showMap'}}
+            %autocomplete{'clear-input' => '', 'inputclass' => 'clearable', 'disable-filter' => 'true', 'data' => 'locations', 'on-type'=> 'getLocations', 'on-select' => 'selectPlace', :ng => {:model => 'fromChoice', enter: 'next()'}}
+      .row
+        .col-md-8.col-md-offset-2.col-xs-12
+          %div.map-canvas{'ui-map' => 'fromLocationMap', 'ui-options' => 'mapOptions', ng: {show: 'showMap'}}
 
     %form.to-location{ng: {show: 'step==="to"'}}
       .row
@@ -80,8 +97,10 @@
           %h4 Where are you going?
       .row
         .col-md-8.col-md-offset-2.col-xs-12
-          %autocomplete{'clear-input' => '', 'disable-filter' => 'true', 'data' => 'locations', 'on-type'=> 'getLocations', 'on-select' => 'selectPlace', :ng => {:model => 'toChoice'}}
-      %div.map-canvas{'ui-map' => 'toLocationMap', 'ui-options' => 'mapOptions', ng: {show: 'showMap'}}
+          %autocomplete{'clear-input' => '', 'disable-filter' => 'true', 'data' => 'locations', 'on-type'=> 'getLocations', 'on-select' => 'selectPlace', :ng => {:model => 'toChoice', enter: 'next()'}}
+      .row
+        .col-md-8.col-md-offset-2.col-xs-12
+          %div.map-canvas{'ui-map' => 'toLocationMap', 'ui-options' => 'mapOptions', ng: {show: 'showMap'}}
 
     .need-return-trip{ng: {show: 'step==="needReturnTrip"'}}
       .text-center
@@ -99,7 +118,7 @@
         .row
           .col-md-4.col-md-offset-4.col-xs-12
             %p.input-group{'ng-show' => 'html5', 'style' => 'width: 100%;'}
-              %input#returnDate.form-control{type: 'date', ng: {model: 'returnDate', required: 'true'}}
+              %input#returnDate.form-control{min: "{{minReturnDate | date:'yyyy-MM-dd'}}", focus: '', type: 'date', ng: {model: 'returnDate', required: 'true', enter: 'next()'}}
             %p.input-group{'ng-show' => '!html5', }
               %input.form-control{'type' => 'text', 'datepicker-popup' => "MMMM-dd-yyyy", 'min-date' => 'fromDate', 'is-open' => 'opened', 'datepicker-options' => 'dateOptions', 'close-text' => 'Close', 'ng-model' => 'returnDate',}
                 %span.input-group-btn
@@ -107,19 +126,25 @@
                     %i.glyphicon.glyphicon-calendar
 
     .depart-time{ng: {show: 'step==="returnTimeType"'}}
-      .text-center
-        %h4 What time are you returning?
+      .col-md-8.col-md-offset-2.col-xs-12
         .row
-          .col-md-4.col-md-offset-4.col-xs-12
-            %a.btn.btn-success.btn-block{ng: {click: 'specifyReturnTimeType("depart")'}}
-              Enter departure time
-            %a.btn.btn-success.btn-block{ng: {click: 'specifyReturnTimeType("arrive")'}}
-              Enter arrival time
-
-    .return-time{ng: {show: 'step==="returnTime"'}}
-      .col-md-4.col-md-offset-4.col-xs-12.text-center
+          .col-xs-12.pull-left
+            %h3
+              What time would you like to return?
         .row
-          %h4 What time would you like to {{ planService.returnTimeType }} on your return trip?
+          .col-xs-12.pull-left
+            %h4
+              %span.timeTypeSelection{ng: {show: 'returnTimeType == "depart"'}} I want to leave at...
+              %span.timeTypeSelection{ng: {show: 'returnTimeType == "arrive"'}} I want to arrive by...
+              %span.dropdown{dropdown: '', style: 'cursor: pointer;'}
+                %i.fa.fa-lg.fa-sort-desc{dropdown_toggle: '', style: 'vertical-align: 15%; color: darkblue;'}
+                %ul.dropdown-menu.pull-right{dropdown_menu: ''}
+                  %li{ng: {show: 'returnTimeType != "depart"'}}
+                    %a{ng: {click: 'specifyReturnTimeType("depart")'}}
+                      I want to leave at...
+                  %li{ng: {show: 'returnTimeType != "arrive"'}}
+                    %a{ng: {click: 'specifyReturnTimeType("arrive")'}}
+                      I want to arrive by...
         .row
           %timepicker.timepicker{ng: {model: 'returnTime', show: '!mobile'}}
           %input#fromTime.form-control{type: 'time', ng: {model: 'returnTime', required: 'true', show: 'mobile && html5'}}
@@ -133,8 +158,6 @@
           .col-xs-12.col-md-6{ng: {repeat: 'purpose in purposes'}}
             %a.btn.btn-success.btn-block{style: 'white-space: normal; margin-bottom:4px;', ng: {click: 'specifyTripPurpose("{{ purpose.name }}")'}}
               {{ purpose.name }}
-
-
 
     .confirm{ng: {show: 'step==="confirm"'}}
       .row.row-eq-height.rounded-border{style: "border: 0px;"}
@@ -171,9 +194,9 @@
               %h4.text-left
                 {{request.when1}}
                 %h5.text-muted.text-left
-                  {{request.when2}}
-                %h5.text-muted.text-left{ng: {show: 'request.when3'}}
-                  {{request.when3}}
+                  Leaving: {{request.when2}}
+                %h5.text-muted.text-left{ng: {show: 'request.when4'}}
+                  Returning: {{request.when4}}
 
           %div.rounded-border{style: "margin-left: -15px; margin-right: -15px;", ng: {show: 'request.roundtrip && !request.sameday'}}
             .row.row-eq-height{style: "margin-left: 0px; margin-right: 0px;"}
@@ -209,7 +232,7 @@
           %a.btn-block{"ng-href" => "#/plan/fromDate"}
             No, change my request
 
-    .list_itineraries{ng: {show: 'step==="list_itineraries"'}}
+    .list_itineraries.col-xs-12.col-sm-8.col-sm-offset-2{ng: {show: 'step==="list_itineraries"'}}
       %h2 Here are your trip options:
       %a.no_underline.row.row-eq-height.rounded-border{ng: {href: '#/plan/bus_options', show: 'fare_info["mode_transit"]'}}
         .col-xs-2
@@ -218,7 +241,7 @@
           Bus
         .col-xs-3{style: "font-size: large"}
           {{fare_info["mode_transit"]}}
-        .col-xs-1
+        .col-xs-1.col-lg-3
           %span.fa-lg.pull-right
             %i.fa.fa-chevron-circle-right.fa-lg
       %a.no_underline.row.row-eq-height.rounded-border{ng: {href: '#/plan/sharedride_options_1', show: 'fare_info["mode_paratransit"]'}}
@@ -233,10 +256,13 @@
           .row{style: "border: 0px; margin: 0px; padding: 0px"}
             .col-xs-12
               %p.text-left.text-muted{style: "border: 0px; margin: 0px; padding: 0px"}
-                Travel time: 22 minutes
+                Travel time: {{fare_info.paratransitTravelTime}}
             .col-xs-12
               %p.text-left.text-muted{style: "border: 0px; margin: 0px; padding: 0px"}
-                Wait time 1 hour
+                Start time: {{fare_info.paratransitStartTime}}
+      %a.text-center.btn-block{ng: {href: '#/plan/alternative_options', show: 'fare_info.other'}}
+        Alternative options
+
     .bus_options{ng: {show: 'step==="bus_options"'}}
       .row{style: "margin: 0px; padding: 0px"}
         .col-xs-2.col-lg-1
@@ -257,7 +283,9 @@
             .pull-right.blah{style: 'height: 2em;'}
               %img{style: 'max-height:100%; ', ng: {src: 'images/modes/transit.png'}}
               %span{style: "font-size: large; vertical-align: bottom;"} {{transitInfo.route}}
-
+        .row{style: "margin-top: .5em"}
+          .col-xs-12.text-muted
+            Fare ${{transitInfo.cost}}
         .row{style: "margin-top: .5em"}
           .col-xs-12.text-muted
             Leave {{transitInfo.startDesc}}
@@ -272,23 +300,52 @@
     .depart-time{ng: {show: 'step==="sharedride_options_1"'}}
       %form
         .form-group.text-center
-          %h2 Will anyone be riding with you today?
+          %h2 Who will be riding with you?
         .row
-          .col-md-6.col-md-offset-3.col-xs-12
+          .col-md-4.col-md-offset-4.col-xs-12
             %a.btn.btn-success.btn-block{ng: {click: 'specifySharedRideCompanion("false")'}, style: 'white-space: normal; margin-bottom:4px;'}
               No, I'm on my own
-            %a.text-center.btn-block{ng: {click: 'specifySharedRideCompanion("true")'}, style: 'white-space: normal; margin-bottom:4px;'}
+            %a.text-center.btn-block{ng: {click: 'specifySharedRideCompanion("true")'}, style: 'white-space: normal; margin-bottom:4px; cursor:pointer;'}
               Yes, I have a companion or escort with me
 
-
     .depart-time{ng: {show: 'step==="sharedride_options_2"'}}
+      .col-md-8.col-md-offset-2.col-xs-12
+        .form-group{ng: {show: "questionCodes.indexOf('assistant') > -1"}}
+          %h4 Who will be riding with you?
+        .row{ng: {show: "questionCodes.indexOf('assistant') > -1"}}
+          .col-md-6.col-md-offset-3.col-xs-12
+            %input{type: 'checkbox', ng: {model: 'hasEscort'}}
+              I'll have an escort
+        .row{ng: {show: "questionCodes.indexOf('companions') > -1"}}
+          .col-md-6.col-md-offset-3.col-xs-12
+            %input{type: 'checkbox', ng: {model: 'hasCompanion'}}
+              I'll have companions with me
+        .row{ng: {show: 'hasCompanion'}}
+          .col-md-6.col-md-offset-3.col-xs-12
+            .row
+              .col-xs-10.col-xs-offset-1
+                How many?
+                %input{type: 'number',min: '0', max: '10', ng: {model: 'numberOfCompanions'}}
+        .row{ng: {show: "questionCodes.indexOf('children') > -1"}}
+          .col-md-6.col-md-offset-3.col-xs-12
+            %input{type: 'checkbox', ng: {model: 'hasFamily'}}
+              I'll have family members with me
+        .row{ng: {show: 'hasFamily'}}
+          .col-md-6.col-md-offset-3.col-xs-12
+            .row
+              .col-xs-10.col-xs-offset-1
+                How many?
+                %input{type: 'number',min: '0', max: '10', ng: {model: 'numberOfFamily'}}
+
+
+    .depart-time{ng: {show: 'step==="sharedride_options_3"'}}
       .col-md-8.col-md-offset-2.col-xs-12
         .form-group
           %h4 If you have any special instructions for the driver, please enter them below
           %h4.text-muted This is optional
         .row
           .form-group
-            %textarea.form-control{placeholder: 'Dear Driver, please...', rows: '5'}
+            %textarea.form-control{placeholder: 'Dear Driver, please...', rows: '5', ng: {model: 'driverInstructions'}}
 
     .depart-time{ng: {show: 'step==="book_shared_ride"'}}
       %h2 Are you ready to book this ride?
@@ -334,10 +391,24 @@
             .col-xs-3.title
               Fare
             .col-xs-9
-              $4.35
+              ${{planService.paratransitItinerary.cost}}
 
+      .row.card{ng: {show: 'getOtherRidersString().length > 10'}}
+        .col-xs-12
+          .row
+            .col-xs-3.title
+              Other riders
+            .col-xs-9
+              {{ getOtherRidersString() }}
+      .row.card{ng: {show: 'planService.driverInstructions'}}
+        .col-xs-12
+          .row
+            .col-xs-3.title
+              Driver Instr.
+            .col-xs-9
+              {{ planService.driverInstructions }}
       .row
-        .col-md-2.col-md-offset-5
+        .col-md-4.col-md-offset-4
           %a.btn.btn-success.btn-block{ng: {click: 'next()'}}
             Yes, book it!
           %a.btn.btn-warning.btn-block{"ng-href" => "#/plan/fromDate"}
@@ -404,7 +475,7 @@
     .row{style: 'margin-top: 10px'}
       .col-md-8.col-md-offset-2.col-xs-12
         .pull-left
-          %a.btn.btn-success{ ng: {show: 'showBack',click: "back()"}}
+          %a.btn.btn-success{back: '', ng: {click: "back()"}}
             %span{ng: {include: "'views/button-chevron-left.html'"}}
             Back
         .pull-right

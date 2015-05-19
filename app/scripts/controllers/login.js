@@ -1,71 +1,74 @@
 'use strict';
 
 angular.module('applyMyRideApp')
-  .controller('LoginController', ['$scope', '$location', 'flash', 'planService',
-    function ($scope, $location, flash, planService) {
+  .controller('LoginController', ['$scope', '$location', 'flash', 'planService', '$http',
+    function ($scope, $location, flash, planService, $http) {
 
       $scope.location = $location.path();
+      $scope.disableNext = true;
+      $scope.counties = ['Adams', 'Cambria', 'Cumberland', 'Dauphin', 'Franklin', 'Lebanon', 'York'];
       $scope.sharedRideId = planService.sharedRideId;
-      $scope.email = planService.email;
 
-      $scope.detectLoginType = function() {
-        $scope.isEmail = /@/.test($scope.emailOrId);
-        $scope.isSharedRideId = !$scope.isEmail && /^\d+$/.test($scope.emailOrId);
-        $scope.isValidUserId = $scope.isEmail == true || $scope.isSharedRideId == true;
+      $scope.checkId = function() {
+        $scope.disableNext = true;
+        var path = $location.path();
+        if(path == '/'){
+          if($scope.sharedRideId && $scope.county){
+            var sharedRideId = $scope.sharedRideId;
+            if(sharedRideId.length > 3){
+              if(!isNaN(sharedRideId)){
+                $scope.disableNext = false;
+              }
+            }
+          }
+        }else{
+          if($scope.dateofbirth){
+            $scope.disableNext = false;
+          }
+        }
       };
 
       $scope.next = function(){
+        if($scope.disableNext)
+          return;
         var path = $location.path();
-        if(path == '/login'){
-          if($scope.isEmail){
-            $location.path('/authenticateEmail');
-            planService.email = $scope.emailOrId;
-          }else if($scope.isSharedRideId){
-            $location.path('/authenticateSharedRideId');
-            planService.sharedRideId = $scope.emailOrId;
-          }
+        if(path == '/'){
+          planService.sharedRideId = $scope.sharedRideId;
+          planService.county = $scope.county;
+          $location.path('/authenticateSharedRideId');
+          $scope.$apply();
         }else if(path == '/authenticateSharedRideId'){
-          planService.username = 'Eric';
-          $location.path('/plan/fromDate');
-        }else if(path == '/authenticateEmail'){
-          planService.username = 'Eric';
-          $location.path('/plan/fromDate');
+          $scope.authenticate();
         }
       }
 
       $scope.back = function(){
-        var path = $location.path();
-        if(path == '/login'){
-          $location.path('/');
-        }else if(path == '/authenticateSharedRideId'){
-          $location.path('/login');
-        }else if(path == '/authenticateEmail'){
-          $location.path('/login');
-        }
-      }
-
-      $scope.disableNext = function(){
-        var path = $location.path();
-        if(path == '/login'){
-          if($scope.isValidUserId == true){
-            return false;
-          }
-        }else if(path == '/authenticateSharedRideId'){
-          if($scope.dateofbirth){
-            return false;
-          }
-        }else if(path == '/authenticateEmail'){
-          if($scope.password){
-            return false;
-          }
-        }
-        return true;
+        $location.path('/');
       }
 
       $scope.$watch('dateofbirth', function(n) {
-          $scope.disableNext();
+          $scope.checkId();
         }
       );
 
+      $scope.authenticate = function(){
+        planService.dateofbirth = $scope.dateofbirth;
+        var login = {};
+        login.session = {};
+        login.session.ecolane_id = planService.sharedRideId;
+        login.session.county = planService.county;
+        login.session.dob = moment($scope.dateofbirth).format('M/D/YYYY');
+
+        var promise = $http.post('api/v1/sign_in', login);
+        promise.error(function(result) {
+          flash.setMessage(result.message)
+          $location.path('/');
+        });
+        promise.then(function(result) {
+          planService.authentication_token = result.data.authentication_token;
+          planService.email = result.data.email;
+          $location.path('/plan/fromDate');
+        });
+      }
     }
   ]);

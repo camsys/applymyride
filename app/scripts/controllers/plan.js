@@ -6,6 +6,15 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
 
 function($scope, $http, $routeParams, $location, planService, flash, usSpinnerService, $q, LocationSearch, localStorageService) {
 
+
+  /*$http.get('data/itineraries.json').
+    success(function(data) {
+      planService.searchResults = data;
+      planService.prepareTripSearchResultsPage($scope);
+    });*/
+
+  $scope.minReturnDate = new Date();
+
   $scope.marker = null;
   $scope.locations = [];
   $scope.placeIds = [];
@@ -31,19 +40,39 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
 
   $scope.dateOptions = {
     formatYear: 'yy',
-    startingDay: 1,
+    startingDay: 0,
     showWeeks: false,
     showButtonBar: false
   };
 
-  $scope.minDate = new Date();
-
-  $scope.handleEnter = function(){
-    alert('enter');
-  }
-
   $scope.getFromDateString = function(){
     return $scope.getDateString(planService.fromDate, planService.fromTime, planService.fromTimeType)
+  }
+
+  $scope.getOtherRidersString = function(){
+    var otherRidersString = '';
+    if(planService.hasEscort){
+      otherRidersString += '1 escort';
+    }
+    if(planService.numberOfCompanions){
+      if(otherRidersString.length > 0){
+        otherRidersString += ', ';
+      }
+      otherRidersString += planService.numberOfCompanions + ' companion';
+      if(planService.numberOfCompanions > 1){
+        otherRidersString += 's';
+      }
+    }
+    if(planService.numberOfFamily){
+      if(otherRidersString.length > 0){
+        otherRidersString += ', ';
+      }
+      otherRidersString += planService.numberOfFamily + ' family member';
+      if(planService.numberOfFamily > 1){
+        otherRidersString += 's';
+      }
+    }
+    return otherRidersString;
   }
 
   $scope.getReturnDateString = function(){
@@ -78,7 +107,7 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
       }
       break;
     case 'fromDate':
-      $('#fromDate').attr('min', moment($scope.minDate).format('YYYY-MM-DD'))
+      $scope.minDate = new Date();
       if(planService.fromDate != null){
         $scope.fromDate = planService.fromDate;
       }
@@ -99,13 +128,13 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
       }
       break;
     case 'returnDate':
-      $('#returnDate').attr('min', moment($scope.minDate).format('YYYY-MM-DD'))
+
       if(planService.returnDate != null){
         $scope.returnDate = planService.returnDate;
-      }else if(planService.fromDate != null){
+      }else{
         $scope.returnDate = planService.fromDate;
       }
-      $scope.fromDate = planService.fromDate
+      $scope.minReturnDate = planService.fromDate
       $scope.disableNext = false;
       break;
     case 'returnTime':
@@ -133,15 +162,41 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
       var now = moment().startOf('day'); ;
       var dayDiff = now.diff(fromDate, 'days');
       if(Math.abs(dayDiff) < 1){
+        $scope.fromTimeType = 'asap';
+        planService.fromTimeType = 'asap';
         $scope.showAsap = true;
       }else{
-        $scope.showAsap = false;
+        $scope.fromTimeType = 'depart';
       }
-      $scope.showNext = false;
+      $scope.fromTime = new Date();
+      $scope.showNext = true;
       break;
     case 'returnTimeType':
+      var fromDate = planService.fromDate;
       var returnDate = planService.returnDate;
-      $scope.showNext = false;
+      if(planService.returnTime != null){
+        $scope.returnTime = planService.returnTime;
+      }else{
+        if(moment(fromDate).format('M/D/YYYY') == moment(returnDate).format('M/D/YYYY')) {
+          var fromTimeType = planService.fromTimeType;
+          var fromTime = planService.fromTime
+          if(fromTimeType == 'asap'){
+            $scope.returnTime = new Date();
+            $scope.returnTime.setHours($scope.returnTime.getHours() + 4);
+          } else if(fromTimeType == 'depart'){
+            $scope.returnTime = new Date(fromTime);
+            $scope.returnTime.setHours($scope.returnTime.getHours() + 4);
+          } else if(fromTimeType == 'arrive'){
+            $scope.returnTime = new Date(fromTime);
+            $scope.returnTime.setHours($scope.returnTime.getHours() + 2);
+          }
+        }else{
+          $scope.returnTime = new Date();
+        }
+      }
+      $scope.disableNext = false;
+      $scope.returnTimeType = 'depart';
+      $scope.showNext = true;
       break;
     case 'from_confirm':
       if(planService.from == null){
@@ -162,6 +217,9 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
       $scope.showNext = false;
       break;
     case 'sharedride_options_2':
+      $scope.questionCodes = $.map(planService.paratransitItinerary.prebooking_questions, function(value, key) {
+        return value.code;
+      });
       $scope.showNext = true;
       $scope.disableNext = false;
       break;
@@ -171,13 +229,16 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
   }
 
   $scope.next = function() {
+    if($scope.disableNext)
+      return;
     switch($scope.step) {
       case 'fromDate':
         planService.fromDate = $scope.fromDate;
         $location.path('/plan/fromTimeType');
         break;
-      case 'fromTime':
+      case 'fromTimeType':
         planService.fromTime = $scope.fromTime;
+        planService.fromTimeType = $scope.fromTimeType;
         $location.path('/plan/start_current');
         break;
       case 'from':
@@ -196,7 +257,7 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
         planService.returnDate = $scope.returnDate;
         $location.path('/plan/returnTimeType');
         break;
-      case 'returnTime':
+      case 'returnTimeType':
         planService.returnTime = $scope.returnTime;
         $location.path('/plan/confirm');
         break;
@@ -212,32 +273,23 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
         $location.path('/plan/book_shared_ride');
         break;
       case 'sharedride_options_2':
+        planService.hasEscort = $scope.hasEscort;
+        planService.numberOfCompanions = $scope.numberOfCompanions;
+        planService.numberOfFamily = $scope.numberOfFamily;
+        $location.path('/plan/sharedride_options_3');
+        break;
+      case 'sharedride_options_3':
+        planService.driverInstructions = $scope.driverInstructions;
         $location.path('/plan/book_shared_ride');
         break;
       case 'book_shared_ride':
-        $location.path('/plan/confirm_shared_ride');
+        /*var promise = planService.bookSharedRide($http);
+        promise.then(function(result) {
+          $location.path('/plan/confirm_shared_ride');
+        });*/
         break;
     }
   };
-
-  $scope.undo = function() {
-    switch($routeParams.step) {
-      case 'from':
-        $scope.fromChoice = null;
-        $scope.showMap = false;
-        $scope.showUndo = false;
-        $scope.disableNext = true;
-        break;
-      case 'to':
-        $scope.toChoice = null;
-        $scope.showMap = false;
-        $scope.showUndo = false;
-        $scope.disableNext = true;
-        break;
-      default:
-        break;
-    }
-  }
 
   $scope.specifyTripPurpose = function(purpose){
     planService.purpose = purpose;
@@ -246,30 +298,19 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
   }
 
   $scope.specifyFromTimeType = function(type){
+    $scope.fromTimeType = type;
     planService.fromTimeType = type;
-    if(type == 'asap'){
-      $location.path("/plan/start_current");
-      $scope.step = 'from';
-    }else{
-      $location.path("/plan/fromTime");
-      $scope.step = 'fromTime';
-    }
   }
 
   $scope.specifyReturnTimeType = function(type){
+    $scope.returnTimeType = type;
     planService.returnTimeType = type;
-    if(type == 'asap'){
-      $location.path("/plan/confirm");
-      $scope.step = 'confirm';
-    }else{
-      $location.path("/plan/returnTime");
-      $scope.step = 'returnTime';
-    }
   }
 
   $scope.getLocations = function(typed){
     if(typed){
-      $scope.suggestions = LocationSearch.getLocations(typed);
+      var config = planService.getHeaders();
+      $scope.suggestions = LocationSearch.getLocations(typed, config);
       $scope.suggestions.then(function(data){
 
         var choices = [];
@@ -352,8 +393,8 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
           }
           if (typeof(recentSearches[place]) == 'undefined'){
             recentSearches[place] = result;
+            localStorageService.set('recentSearches', JSON.stringify(recentSearches));
           }
-          localStorageService.set('recentSearches', JSON.stringify(recentSearches));
 
           if($routeParams.step == 'from'){
             planService.fromDetails = result;
@@ -436,9 +477,13 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
   }
 
   $scope.specifySharedRideCompanion = function(hasCompanion) {
-    planService.hasCompanion = hasCompanion;
-    $location.path("/plan/sharedride_options_2");
-    $scope.step = 'sharedride_options_2';
+    if(hasCompanion == 'true'){
+      $location.path("/plan/sharedride_options_2");
+      $scope.step = 'sharedride_options_2';
+    }else{
+      $location.path("/plan/sharedride_options_3");
+      $scope.step = 'sharedride_options_3';
+    }
   }
 
   $scope.selectTransit = function() {
@@ -543,23 +588,9 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
   );
 
   $scope.$watch('fromTime', function(n) {
-      if($scope.step == 'fromTime'){
+      if($scope.step == 'fromTimeType'){
         if (n) {
-          var fromDate = planService.fromDate;
-          var now = moment().startOf('day'); ;
-          var dayDiff = now.diff(fromDate, 'days');
-          if(Math.abs(dayDiff) < 1){
-            //departing same day, is the time in the future?
-            var fromTime = $scope.fromTime;
-            fromTime.setYear(fromDate.getFullYear());
-            fromTime.setMonth(fromDate.getMonth());
-            fromTime.setDate(fromDate.getDate());
-            if((fromTime - new Date()) / 1000 / 60 < -1){
-              $scope.disableNext = true;
-            } else {
-              $scope.disableNext = false;
-            }
-          }
+          $scope.disableNext = false;
         }else{
           $scope.disableNext = true;  //not a valid time
         }
