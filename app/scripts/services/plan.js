@@ -111,6 +111,13 @@ angular.module('applyMyRideApp')
           fare_info.other = false;
         }
         $scope.fare_info = fare_info;
+
+        itinerariesByMode.mode_transit = [itinerariesByMode.mode_transit[0]];
+
+        if(itinerariesByMode.mode_transit && itinerariesByMode.mode_transit.length == 1){
+          this.prepareTransitOptionsPage($scope);
+        }
+        $scope.transitInfos = [$scope.transitInfos[0]];
       }
 
       this.prepareTransitOptionsPage = function($scope){

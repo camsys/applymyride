@@ -137,3 +137,87 @@ h6 {
   color: inherit !important;
 
   padding:0.4em;}
+
+
+@charset "utf-8";
+/* CSS Document */
+/* Smartphones (portrait and landscape) ----------- */
+@media only screen
+and (min-device-width : 320px)
+and (max-device-width : 480px) {
+  .fonts
+  {
+    font-size: 75%;
+  }
+}
+/* Smartphones (landscape) ----------- */
+@media only screen
+and (min-width : 321px) {
+  .fonts
+  {
+    font-size: 120%;
+  }
+}
+/* Smartphones (portrait) ----------- */
+@media only screen
+and (max-width : 320px) {
+  .fonts
+  {
+    font-size: 120%;
+  }
+}
+/* iPads (portrait and landscape) ----------- */
+@media only screen
+and (min-device-width : 768px)
+and (max-device-width : 1024px) {
+  .fonts
+  {
+    font-size: 120%;
+  }
+}
+/* iPads (landscape) ----------- */
+@media only screen
+and (min-device-width : 768px)
+and (max-device-width : 1024px)
+and (orientation : landscape) {
+  .fonts
+  {
+    font-size: 150%;
+  }
+}
+/* iPads (portrait) ----------- */
+@media only screen
+and (min-device-width : 768px)
+and (max-device-width : 1024px)
+and (orientation : portrait) {
+
+  .fonts
+  {
+    font-size: 120%;
+  }
+}
+/* Desktops and laptops ----------- */
+@media only screen
+and (min-width : 1224px) {
+  .fonts
+  {
+    font-size: 156%;
+  }
+}
+/* Large screens ----------- */
+@media only screen
+and (min-width : 1824px) {
+  .fonts
+  {
+    font-size: 200%;
+  }
+}
+/* iPhone 4 ----------- */
+@media
+only screen and (-webkit-min-device-pixel-ratio : 1.5),
+only screen and (min-device-pixel-ratio : 1.5) {
+  .fonts
+  {
+    font-size: 190%;
+  }
+}

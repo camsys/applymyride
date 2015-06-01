@@ -25,25 +25,20 @@
         .row
           .col-xs-12.pull-left
             %h3
-              What time would you like to travel?
-        .row
-          .col-xs-12.pull-left
-            %h4
-              %span.timeTypeSelection{ng: {show: 'showAsap && fromTimeType == "asap"'}} As soon as possible!
-              %span.timeTypeSelection{ng: {show: 'fromTimeType == "depart"'}} I want to leave at...
-              %span.timeTypeSelection{ng: {show: 'fromTimeType == "arrive"'}} I want to arrive by...
+              %span.timeTypeSelection{ng: {show: 'fromTimeType == "depart"'}} When do you want to get there?
+              %span.timeTypeSelection{ng: {show: 'fromTimeType == "arrive"'}} When do you want to arrive by?
               %span.dropdown{dropdown: '', style: 'cursor: pointer;'}
-                %i.fa.fa-lg.fa-sort-desc{dropdown_toggle: '', style: 'vertical-align: 15%; color: darkblue;'}
+                %i.fa.fa-lg.fa-sort-desc{dropdown_toggle: '', style: 'vertical-align: 15%; color: #2781FF;'}
                 %ul.dropdown-menu.pull-right{dropdown_menu: ''}
-                  %li{ng: {show: 'showAsap && fromTimeType != "asap"'}}
-                    %a{ng: {click: 'specifyFromTimeType("asap")'}}
-                      As soon as possible!
                   %li{ng: {show: 'fromTimeType != "depart"'}}
                     %a{ng: {click: 'specifyFromTimeType("depart")'}}
-                      I want to leave at...
+                      When do you want to get there?
                   %li{ng: {show: 'fromTimeType != "arrive"'}}
                     %a{ng: {click: 'specifyFromTimeType("arrive")'}}
-                      I want to arrive by...
+                      When do you want to arrive by?
+        .row{ng: {show: 'showAsap'}}
+          .col-xs-12.pull-left{style: 'color: #2781FF'}
+            %h5{ng: {click: 'specifyFromTimeType("asap")'}} As soon as possible
         .row{ng: {show: 'fromTimeType != "asap"'}}
           %timepicker.timepicker{ng: {model: 'fromTime', show: '!mobile'}}
           %input#fromTime.form-control{type: 'time', ng: {model: 'fromTime', required: 'true', show: 'mobile && html5'}}
@@ -130,21 +125,17 @@
         .row
           .col-xs-12.pull-left
             %h3
-              What time would you like to return?
-        .row
-          .col-xs-12.pull-left
-            %h4
-              %span.timeTypeSelection{ng: {show: 'returnTimeType == "depart"'}} I want to leave at...
-              %span.timeTypeSelection{ng: {show: 'returnTimeType == "arrive"'}} I want to arrive by...
+              %span.timeTypeSelection{ng: {show: 'returnTimeType == "depart"'}} When do you want to get there?
+              %span.timeTypeSelection{ng: {show: 'returnTimeType == "arrive"'}} When do you want to arrive by?
               %span.dropdown{dropdown: '', style: 'cursor: pointer;'}
-                %i.fa.fa-lg.fa-sort-desc{dropdown_toggle: '', style: 'vertical-align: 15%; color: darkblue;'}
+                %i.fa.fa-lg.fa-sort-desc{dropdown_toggle: '', style: 'vertical-align: 15%; color: #2781FF;'}
                 %ul.dropdown-menu.pull-right{dropdown_menu: ''}
                   %li{ng: {show: 'returnTimeType != "depart"'}}
                     %a{ng: {click: 'specifyReturnTimeType("depart")'}}
-                      I want to leave at...
+                      When do you want to get there?
                   %li{ng: {show: 'returnTimeType != "arrive"'}}
                     %a{ng: {click: 'specifyReturnTimeType("arrive")'}}
-                      I want to arrive by...
+                      When do you want to arrive by?
         .row
           %timepicker.timepicker{ng: {model: 'returnTime', show: '!mobile'}}
           %input#fromTime.form-control{type: 'time', ng: {model: 'returnTime', required: 'true', show: 'mobile && html5'}}
@@ -234,13 +225,65 @@
 
     .list_itineraries.col-xs-12.col-sm-8.col-sm-offset-2{ng: {show: 'step==="list_itineraries"'}}
       %h2 Here are your trip options:
-      %a.no_underline.row.row-eq-height.rounded-border{ng: {href: '#/plan/bus_options', show: 'fare_info["mode_transit"]'}}
+      %a.no_underline.row.row-eq-height.rounded-border{ng: {href: '#/plan/bus_options', show: 'fare_info["mode_transit"] && !transitInfos'}}
         .col-xs-2
           %img.img-responsive{ng: {src: 'images/modes/transit.png'}}
         .col-xs-4{style: "font-size: large"}
           Bus
         .col-xs-3{style: "font-size: large"}
           {{fare_info["mode_transit"]}}
+        .col-xs-2
+          %span.fa-lg.pull-right
+            %i.fa.fa-chevron-circle-right.fa-lg
+
+      %a.no_underline.row.row-eq-height.rounded-border{ng: {href: '#/plan/bus_options', repeat: 'transitInfo in transitInfos'}}
+        .col-xs-2
+          %img.img-responsive{ng: {src: 'images/modes/transit.png'}}
+        .col-xs-4
+          .row.row-eq-height{style: "border: 0px; margin: 0px; padding: 0px"}
+            .col-xs-9{style: "font-size: large"}
+              Bus
+          .row{style: "border: 0px; margin: 0px; padding: 0px"}
+            .col-xs-12
+              %p.text-left.text-muted{style: "border: 0px; margin: 0px; padding: 0px"}
+                Route: {{transitInfo.route}}
+            .col-xs-12
+              %p.text-left.text-muted{style: "border: 0px; margin: 0px; padding: 0px"}
+                Travel time: {{fare_info.paratransitTravelTime}}
+            .col-xs-12
+              %p.text-left.text-muted{style: "border: 0px; margin: 0px; padding: 0px"}
+                Start time: {{fare_info.paratransitStartTime}}
+        .col-xs-2{style: "font-size: large"}
+          ${{transitInfo.cost}}
+
+      %a.no_underline.row.row-eq-height.rounded-border{ng: {href: '#/plan/sharedride_options_1', show: 'fare_info["mode_paratransit"]'}}
+        .col-xs-2
+          %img.img-responsive{ng: {src: 'images/modes/paratransit.png'}}
+        .col-xs-4
+          .row.row-eq-height{style: "border: 0px; margin: 0px; padding: 0px"}
+            .col-xs-9{style: "font-size: large"}
+              Shared Ride
+          .row{style: "border: 0px; margin: 0px; padding: 0px"}
+            .col-xs-12
+              %p.text-left.text-muted{style: "border: 0px; margin: 0px; padding: 0px"}
+                Travel time: {{fare_info.paratransitTravelTime}}
+            .col-xs-12
+              %p.text-left.text-muted{style: "border: 0px; margin: 0px; padding: 0px"}
+                Start time: {{fare_info.paratransitStartTime}}
+        .col-xs-2{style: "font-size: large"}
+          {{fare_info["mode_paratransit"]}}
+      %a.text-center.btn-block{ng: {href: '#/plan/alternative_options', show: 'fare_info.other'}}
+        More options
+
+    .col-xs-12.col-sm-8.col-sm-offset-2{ng: {show: 'step==="alternative_options"'}}
+      %h2 Here are your alternative trip options:
+      %a.no_underline.row.row-eq-height.rounded-border{ng: {href: '#/plan/bus_options', show: 'fare_info["mode_walk"]'}}
+        .col-xs-2
+          %img.img-responsive{ng: {src: 'images/modes/walk.png'}}
+        .col-xs-4{style: "font-size: large"}
+          Bus
+        .col-xs-3{style: "font-size: large"}
+          {{fare_info["mode_walk"]}}
         .col-xs-1.col-lg-3
           %span.fa-lg.pull-right
             %i.fa.fa-chevron-circle-right.fa-lg

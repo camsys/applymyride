@@ -7,11 +7,11 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
 function($scope, $http, $routeParams, $location, planService, flash, usSpinnerService, $q, LocationSearch, localStorageService) {
 
 
-  /*$http.get('data/itineraries.json').
+  $http.get('data/itineraries.json').
     success(function(data) {
       planService.searchResults = data;
       planService.prepareTripSearchResultsPage($scope);
-    });*/
+    });
 
   $scope.minReturnDate = new Date();
 
@@ -162,13 +162,14 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
       var now = moment().startOf('day'); ;
       var dayDiff = now.diff(fromDate, 'days');
       if(Math.abs(dayDiff) < 1){
-        $scope.fromTimeType = 'asap';
-        planService.fromTimeType = 'asap';
+        $scope.fromTimeType = 'arrive';
+        planService.fromTimeType = 'arrive';
         $scope.showAsap = true;
       }else{
         $scope.fromTimeType = 'depart';
       }
       $scope.fromTime = new Date();
+      $scope.fromTime.setHours($scope.fromTime.getHours() + 2);
       $scope.showNext = true;
       break;
     case 'returnTimeType':
@@ -207,6 +208,14 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
       break;
     case 'list_itineraries':
       planService.prepareTripSearchResultsPage($scope);
+      if(!planService.paratransitItinerary && $scope.fare_info.mode_transit == undefined && $scope.fare_info.other){
+        $scope.showAlternativeOption
+        $location.path("/plan/alternative_options");
+        $scope.step = 'alternative_options';
+      }
+      $scope.showNext = false;
+      break;
+    case 'alternative_options':
       $scope.showNext = false;
       break;
     case 'bus_options':
@@ -300,6 +309,9 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
   $scope.specifyFromTimeType = function(type){
     $scope.fromTimeType = type;
     planService.fromTimeType = type;
+    if(type == 'asap'){
+      $scope.next();
+    }
   }
 
   $scope.specifyReturnTimeType = function(type){

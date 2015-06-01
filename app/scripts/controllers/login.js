@@ -8,6 +8,8 @@ angular.module('applyMyRideApp')
       $scope.disableNext = true;
       $scope.counties = ['Adams', 'Cambria', 'Cumberland', 'Dauphin', 'Franklin', 'Lebanon', 'York'];
       $scope.sharedRideId = planService.sharedRideId;
+      $scope.county = planService.county;
+      $scope.dateofbirth = planService.dateofbirth;
 
       $scope.checkId = function() {
         $scope.disableNext = true;
@@ -15,7 +17,7 @@ angular.module('applyMyRideApp')
         if(path == '/'){
           if($scope.sharedRideId && $scope.county){
             var sharedRideId = $scope.sharedRideId;
-            if(sharedRideId.length > 3){
+            if(sharedRideId.toString().length > 3){
               if(!isNaN(sharedRideId)){
                 $scope.disableNext = false;
               }
@@ -32,12 +34,12 @@ angular.module('applyMyRideApp')
         if($scope.disableNext)
           return;
         var path = $location.path();
+        planService.sharedRideId = $scope.sharedRideId;
+        planService.county = $scope.county;
+        planService.dateofbirth = $scope.dateofbirth;
         if(path == '/'){
-          planService.sharedRideId = $scope.sharedRideId;
-          planService.county = $scope.county;
           $location.path('/authenticateSharedRideId');
-          $scope.$apply();
-        }else if(path == '/authenticateSharedRideId'){
+        }else if(path == '/authenticateSharedRideId' || path == '/loginError'){
           $scope.authenticate();
         }
       }
@@ -55,14 +57,14 @@ angular.module('applyMyRideApp')
         planService.dateofbirth = $scope.dateofbirth;
         var login = {};
         login.session = {};
-        login.session.ecolane_id = planService.sharedRideId;
+        login.session.ecolane_id = planService.sharedRideId.toString();
         login.session.county = planService.county;
         login.session.dob = moment($scope.dateofbirth).format('M/D/YYYY');
 
         var promise = $http.post('api/v1/sign_in', login);
         promise.error(function(result) {
-          flash.setMessage(result.message)
-          $location.path('/');
+          //flash.setMessage(result.message)
+          $location.path('/loginError');
         });
         promise.then(function(result) {
           planService.authentication_token = result.data.authentication_token;
