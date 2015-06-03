@@ -277,34 +277,36 @@
 
     .col-xs-12.col-sm-8.col-sm-offset-2{ng: {show: 'step==="alternative_options"'}}
       %h2 Here are your alternative trip options:
-      %a.no_underline.row.row-eq-height.rounded-border{ng: {href: '#/plan/bus_options', show: 'fare_info["mode_walk"]'}}
-        .col-xs-2
-          %img.img-responsive{ng: {src: 'images/modes/walk.png'}}
-        .col-xs-4{style: "font-size: large"}
-          Bus
-        .col-xs-3{style: "font-size: large"}
-          {{fare_info["mode_walk"]}}
-        .col-xs-1.col-lg-3
-          %span.fa-lg.pull-right
-            %i.fa.fa-chevron-circle-right.fa-lg
       %a.no_underline.row.row-eq-height.rounded-border{ng: {href: '#/plan/sharedride_options_1', show: 'fare_info["mode_paratransit"]'}}
         .col-xs-2
-          %img.img-responsive{ng: {src: 'images/modes/paratransit.png'}}
-        .col-xs-10
+          %img.img-responsive{ng: {src: 'images/modes/walk.png'}}
+        .col-xs-4
           .row.row-eq-height{style: "border: 0px; margin: 0px; padding: 0px"}
             .col-xs-9{style: "font-size: large"}
-              Shared Ride
-            .col-xs-2{style: "font-size: large"}
-              {{fare_info["mode_paratransit"]}}
+              Walk
           .row{style: "border: 0px; margin: 0px; padding: 0px"}
             .col-xs-12
               %p.text-left.text-muted{style: "border: 0px; margin: 0px; padding: 0px"}
-                Travel time: {{fare_info.paratransitTravelTime}}
+                Distance: {{walkItinerary.walk_distance}} miles
             .col-xs-12
               %p.text-left.text-muted{style: "border: 0px; margin: 0px; padding: 0px"}
-                Start time: {{fare_info.paratransitStartTime}}
-      %a.text-center.btn-block{ng: {href: '#/plan/alternative_options', show: 'fare_info.other'}}
-        Alternative options
+                Travel time: {{walkItinerary.travelTime}}
+        .col-xs-2{style: "font-size: large"}
+          Free
+
+      %a.no_underline.row.row-eq-height.rounded-border{ng: {href: '#/plan/sharedride_options_1', show: 'fare_info["mode_taxi"]'}}
+        .col-xs-2
+          %img.img-responsive{ng: {src: 'images/modes/taxi.png'}}
+        .col-xs-4
+          .row.row-eq-height{style: "border: 0px; margin: 0px; padding: 0px"}
+            .col-xs-9{style: "font-size: large"}
+              Taxi
+          .row{style: "border: 0px; margin: 0px; padding: 0px"}
+            .col-xs-12
+              %p.text-left.text-muted{style: "border: 0px; margin: 0px; padding: 0px"}
+                Cost: ${{taxiItinerary.cost}}
+        .col-xs-2{style: "font-size: large"}
+          Free
 
     .bus_options{ng: {show: 'step==="bus_options"'}}
       .row{style: "margin: 0px; padding: 0px"}

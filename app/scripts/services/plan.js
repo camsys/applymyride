@@ -38,8 +38,16 @@ angular.module('applyMyRideApp')
         var itineraries = this.searchResults.itineraries;
         var itinerariesBySegmentThenMode = {};
         var fare_info = {};
+        var that = this;
 
         angular.forEach(itineraries, function(itinerary, index) {
+
+          itinerary.startDesc = that.getDateDescription(itinerary.start_time);
+          itinerary.startDesc += " at " + moment(itinerary.start_time).format('h:mm a')
+          itinerary.endDesc = that.getDateDescription(itinerary.end_time);
+          itinerary.endDesc += " at " + moment(itinerary.end_time).format('h:mm a');
+          itinerary.travelTime = humanizeDuration(itinerary.duration * 1000,  { units: ["hours", "minutes"], round: true });
+
           var mode = itinerary.returned_mode_code;
           var segment_index = itinerary.segment_index;
           console.log('adding itineraries for segment: ' + segment_index + ' mode: ' + mode);
@@ -77,6 +85,17 @@ angular.module('applyMyRideApp')
             delete itinerariesByMode.mode_paratransit;
           }
         }
+
+        var walkTrips = itinerariesByMode.mode_walk;
+        if(walkTrips){
+          this.walkItinerary = walkTrips[0];
+        }
+
+        var taxiTrips = itinerariesByMode.mode_taxi;
+        if(taxiTrips){
+          this.taxiItinerary = taxiTrips[0];
+        }
+
         angular.forEach(Object.keys(itinerariesByMode), function(mode_code, index) {
           var fares = [];
           angular.forEach(itinerariesByMode[mode_code], function(itinerary, index) {
@@ -138,11 +157,9 @@ angular.module('applyMyRideApp')
           var transitInfo = {};
           transitInfo.cost = itinerary.cost;
           transitInfo.startTime = itinerary.start_time;
-          transitInfo.startDesc = that.getDateDescription(itinerary.start_time);
-          transitInfo.startDesc += " at " + moment(itinerary.start_time).format('h:mm a')
-          transitInfo.endDesc = that.getDateDescription(itinerary.end_time);
-          transitInfo.endDesc += " at " + moment(itinerary.end_time).format('h:mm a');
-          transitInfo.travelTime = humanizeDuration(itinerary.duration * 1000,  { units: ["hours", "minutes"], round: true });
+          transitInfo.startDesc = itinerary.startDesc
+          transitInfo.endDesc = itinerary.endDesc;
+          transitInfo.travelTime = itinerary.travelTime;
           transitInfo.duration = itinerary.duration;
           var found = false;
           angular.forEach(itinerary.json_legs, function(leg, index) {
