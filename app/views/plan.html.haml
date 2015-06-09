@@ -236,7 +236,7 @@
           %span.fa-lg.pull-right
             %i.fa.fa-chevron-circle-right.fa-lg
 
-      %a.no_underline.row.row-eq-height.rounded-border{ng: {href: '#/plan/bus_options', repeat: 'transitInfo in transitInfos'}}
+      %a.no_underline.row.row-eq-height.rounded-border{ng: {href: '#/transit/{{transitInfo.id}}', repeat: 'transitInfo in transitInfos'}}
         .col-xs-2
           %img.img-responsive{ng: {src: 'images/modes/transit.png'}}
         .col-xs-4
@@ -387,7 +387,7 @@
       .col-md-8.col-md-offset-2.col-xs-12
         .form-group
           %h4 If you have any special instructions for the driver, please enter them below
-          %h4.text-muted This is optional
+          %h4c This is optional
         .row
           .form-group
             %textarea.form-control{placeholder: 'Dear Driver, please...', rows: '5', ng: {model: 'driverInstructions'}}

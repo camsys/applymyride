@@ -42,12 +42,7 @@ angular.module('applyMyRideApp')
 
         angular.forEach(itineraries, function(itinerary, index) {
 
-          itinerary.startDesc = that.getDateDescription(itinerary.start_time);
-          itinerary.startDesc += " at " + moment(itinerary.start_time).format('h:mm a')
-          itinerary.endDesc = that.getDateDescription(itinerary.end_time);
-          itinerary.endDesc += " at " + moment(itinerary.end_time).format('h:mm a');
-          itinerary.travelTime = humanizeDuration(itinerary.duration * 1000,  { units: ["hours", "minutes"], round: true });
-
+          that.setItineraryDescriptions(itinerary);
           var mode = itinerary.returned_mode_code;
           var segment_index = itinerary.segment_index;
           console.log('adding itineraries for segment: ' + segment_index + ' mode: ' + mode);
@@ -155,6 +150,7 @@ angular.module('applyMyRideApp')
         var that = this;
         angular.forEach(transitItineraries, function(itinerary, index) {
           var transitInfo = {};
+          transitInfo.id = itinerary.id;
           transitInfo.cost = itinerary.cost;
           transitInfo.startTime = itinerary.start_time;
           transitInfo.startDesc = itinerary.startDesc
@@ -198,6 +194,50 @@ angular.module('applyMyRideApp')
           }
         });
         $scope.transitInfos = transitInfos;
+      }
+
+      this.setItineraryDescriptions = function(itinerary){
+        itinerary.startDesc = this.getDateDescription(itinerary.start_time);
+        itinerary.startDesc += " at " + moment(itinerary.start_time).format('h:mm a')
+        itinerary.endDesc = this.getDateDescription(itinerary.end_time);
+        itinerary.endDesc += " at " + moment(itinerary.end_time).format('h:mm a');
+        itinerary.travelTime = humanizeDuration(itinerary.duration * 1000,  { units: ["hours", "minutes"], round: true });
+        itinerary.walkTimeDesc = humanizeDuration(itinerary.walk_time * 1000,  { units: ["hours", "minutes"], round: true });
+        itinerary.dayAndDateDesc = moment(itinerary.start_time).format('dddd, MMMM Do');
+      }
+
+      this.setItineraryLegDescriptions = function(itinerary){
+        itinerary.startDateDesc = this.getDateDescription(itinerary.startTime);
+        itinerary.startTimeDesc = moment(itinerary.startTime).format('h:mm a')
+        itinerary.startDesc = itinerary.startDateDesc + " at " + itinerary.startTimeDesc;
+        itinerary.endDateDesc = this.getDateDescription(itinerary.endTime);
+        itinerary.endTimeDesc = moment(itinerary.endTime).format('h:mm a')
+        itinerary.endDesc = itinerary.endDateDesc + " at " + itinerary.endTimeDesc;
+        itinerary.travelTime = humanizeDuration(itinerary.duration * 1000,  { units: ["hours", "minutes"], round: true });
+        itinerary.distanceDesc = ( itinerary.distance * 0.000621371 ).toFixed(2);
+        itinerary.dayAndDateDesc = moment(itinerary.startTime).format('dddd, MMMM Do');
+      }
+
+      this.setWalkingDescriptions = function(step){
+        step.distanceDesc = ( step.distance * 0.000621371 ).toFixed(2);
+        step.arrow = 'straight';
+
+        if(step.relativeDirection.indexOf('RIGHT') > -1){
+          step.arrow = 'right';
+        }else if(step.relativeDirection.indexOf('LEFT') > -1){
+          step.arrow = 'left';
+        }
+
+        if(step.relativeDirection == 'DEPART'){
+          step.description = 'Head ' + step.absoluteDirection.toLowerCase() + ' on ' + step.streetName;
+        }else{
+          step.description = this.capitalizeFirstLetter(step.relativeDirection) + ' on ' + step.streetName;
+        }
+        step.description = step.description.replace(/_/g,' ');
+      }
+
+      this.capitalizeFirstLetter = function(string) {
+        return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase()
       }
 
       this.getAddressDescriptionFromLocation = function(location){

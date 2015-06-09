@@ -59,9 +59,9 @@ angular.module('applyMyRideApp', [
         templateUrl: 'views/plan.html',
         controller: 'PlanController'
       })
-      .when('/plan2', {
-        templateUrl: 'views/plan2.html',
-        controller: 'PlanController'
+      .when('/transit/:tripid', {
+        templateUrl: 'views/transit.html',
+        controller: 'TransitController'
       })
       .when('/about', {
         templateUrl: 'views/about.html',

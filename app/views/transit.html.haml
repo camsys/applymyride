@@ -1,0 +1,66 @@
+.container.plan{style: 'padding: 0;', ng: {controller: "TransitController"}}
+  .col-xs-12.col-md-8.col-md-offset-2{style: 'padding: 0;'}
+    .row
+      .col-xs-12.text-muted
+        {{itinerary.dayAndDateDesc}}
+    .row
+      .col-xs-10.text-left
+        %h4 Approx. {{itinerary.travelTime}} ({{itinerary.walkTimeDesc}})
+      .col-xs-2.text-right
+        %h4 ${{itinerary.cost}}
+  .col-xs-12.col-md-8.col-md-offset-2.transit-container
+    .row.row-eq-height.transit-header
+      .blah{ng: {repeat: 'leg in itinerary.json_legs track by $index'}}
+        %img{ng: {if: 'leg.mode == "WALK"', src: 'images/modes/walk.png'}}
+        %img{ng: {if: 'leg.mode == "BUS"', src: 'images/modes/transit.png'}}
+        %i.fa.fa-lg.fa-chevron-right{ng: {if: '!$last'}}
+    .row-same-height.row-full-height.border-between.timeline{'index' => '{{$index}}', ng: {click: 'test()', repeat: 'leg in itinerary.json_legs track by $index', class: '{"mode_bus": leg.mode == "BUS", "mode_walk": leg.mode == "WALK"}'}}
+      .col-xs-1.col-full-height
+        .start_time
+          {{leg.startTimeDesc}}
+        %img.mode_icon{ng: {if: 'leg.mode == "WALK"', src: 'images/modes/walk.png'}}
+        %img.mode_icon{ng: {if: 'leg.mode == "BUS"', src: 'images/modes/transit.png'}}
+        %i.fa.fa-circle-o.fa-lg.waypoint{ng: {class: '{"mode_bus": leg.mode == "BUS", "mode_walk": leg.mode == "WALK"}'}}
+      .col-xs-6.leg-info.col-full-height.pull-left
+        .bus-info{ng: {show: 'leg.mode == "BUS"'}}
+          .row
+            .leg-info.col-xs-12.leg-header
+              %h4.leg-header {{leg.from.name}}
+          .row
+            .leg-info.col-xs-12
+              %h4 {{leg.travelTime}}
+          .row
+            .leg-info.col-xs-12
+              %h4 {{leg.distanceDesc}} Miles
+        .walk-info{ng: {show: 'leg.mode == "WALK"'}}
+          .row
+            .leg-info.col-xs-12
+              %h4.leg-header {{leg.from.name}}
+          .row
+            .leg-info.col-xs-12
+              %h4 {{leg.travelTime}}
+          .row
+            .leg-info.col-xs-12
+              %h4 {{leg.distanceDesc}} Miles
+          .animate-show.blah{ng: {show: 'showDiv[$index]'}}
+            .row{ng: {repeat: 'step in leg.steps'}}
+              .leg-info.col-xs-12{style: 'padding-left: 50px;'}
+                %img.walk-arrow{height: '30px', width: '30px', ng: {src: 'images/transit/{{step.arrow}}.png'}}
+                .row
+                  .leg-info.col-xs-12
+                    .walk-step
+                      {{step.description}}
+                .row.text-muted
+                  .leg-info.col-xs-12
+                    .walk-step
+                      {{step.distanceDesc}} miles
+    .row-same-height.row-full-height.border-between.timeline
+      .col-xs-1.col-full-height
+        .start_time
+          {{itinerary.destinationTimeDesc}}
+        %i.destination.fa.fa-dot-circle-o.fa-lg.waypoint
+      .col-xs-6.leg-info.col-full-height.pull-left
+        .walk-info
+          .row
+            .leg-info.col-xs-12.leg-header
+              %h4 {{itinerary.destinationDesc}}

@@ -1,4 +1,4 @@
-/* AUTOCOMPLETE */
+div:focus {outline:0 !important;}
 
 .autocomplete{
   width: 100%;
@@ -221,3 +221,128 @@ only screen and (min-device-pixel-ratio : 1.5) {
     font-size: 190%;
   }
 }
+
+
+.mode_bus > [class*='col-']:first-child:before {
+  background: #852303;
+  bottom: 0;
+  content: " ";
+  left: 24px;
+  position: absolute;
+  width: 6px;
+  top: 10px;
+  height: calc(100% + 3em);
+  z-index: -1;
+}
+
+.waypoint {
+  z-index: 999;
+  font-size: 2em; background: white
+}
+
+.mode_walk > [class*='col-']:first-child:before {
+  width: 5px;
+  background:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAACACAYAAADDEqOOAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAABESURBVEhL7c8xDgAgCEPR4sm9n94JF+LQycSkOvQtECZ+YGQHCczM2rdW843zly6PMi4iLhJwEXGRgIuIiwRcRL4rAhaEQCb9w6AeBAAAAABJRU5ErkJggg==) repeat;
+  bottom: 0;
+  content: " ";
+  left: 24px;
+  position: absolute;
+  top: 10px;
+  height: calc(100% + 3em);
+  z-index: -1;
+}
+
+
+
+.row-full-height {
+  height: 100%;
+  padding-bottom: 3em;
+}
+
+.col-full-height {
+  height: 100%;
+  vertical-align: top;
+  display: table-cell;
+  float: none !important;
+}
+
+.mode_icon {
+  position: relative;
+  top: calc(50%);
+}
+
+.row-same-height {
+  /*width: 100%;
+  table-layout: fixed;*/
+}
+
+.mode_icon {
+  top: calc(50% + .5em);
+  position: absolute;
+  z-index: -1;
+  left: -30px;
+}
+
+.start_time {
+  position: absolute;
+  left: -3em;
+  top:2px;
+}
+
+.leg-header {
+  background-color: #F2F2F2;
+  border: 1px solid #E4E4E4;
+}
+
+.transit-header {
+  padding: 1em;
+  background-color: #F2F2F2;
+  z-index: auto;
+  margin-bottom: 1em;
+  border-bottom: 1px solid #E4E4E4;
+}
+
+.animate-show.ng-hide-add.ng-hide-add-active,
+.animate-show.ng-hide-remove.ng-hide-remove-active {
+  -webkit-transition: all linear 0.5s;
+  transition: all linear 0.5s;
+}
+
+.animate-show.ng-hide {
+  line-height: 0;
+  opacity: 0;
+  padding: 0 10px;
+}
+
+.timeline {
+  margin-left: 4em;
+}
+
+.transit-container {
+  border: 1px solid #E4E4E4;
+  /*overflow: hidden;*/
+}
+
+.mode_walk i {
+  color: #20C0FF;
+}
+
+.mode_bus i {
+  color: #852303;
+}
+
+
+.leg-info {
+  padding: 0px ;
+}
+
+.bus-info, .walk-info {
+  display: table;
+  padding-right:40px;
+}
+
+.walk-arrow {
+  position: absolute;
+  left: 0em;
+}
+

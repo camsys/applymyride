@@ -1,0 +1,659 @@
+{
+  "trip_purpose": "General Purpose",
+  "itinerary_request": [
+    {
+      "segment_index": 0,
+      "start_location": {
+        "address_components": [
+          {
+            "long_name": "100",
+            "short_name": "100",
+            "types": [
+              "street_number"
+            ]
+          },
+          {
+            "long_name": "W Market St",
+            "short_name": "W Market St",
+            "types": [
+              "route"
+            ]
+          },
+          {
+            "long_name": "York",
+            "short_name": "York",
+            "types": [
+              "locality",
+              "political"
+            ]
+          },
+          {
+            "long_name": "York County",
+            "short_name": "York County",
+            "types": [
+              "administrative_area_level_2",
+              "political"
+            ]
+          },
+          {
+            "long_name": "Pennsylvania",
+            "short_name": "PA",
+            "types": [
+              "administrative_area_level_1",
+              "political"
+            ]
+          },
+          {
+            "long_name": "United States",
+            "short_name": "US",
+            "types": [
+              "country",
+              "political"
+            ]
+          },
+          {
+            "long_name": "17401",
+            "short_name": "17401",
+            "types": [
+              "postal_code"
+            ]
+          },
+          {
+            "long_name": "100 W Market St",
+            "short_name": "100 W Market St",
+            "types": [
+              "street_address"
+            ]
+          }
+        ],
+        "adr_address": "<span class=\"street-address\">100 W Market St</span>, <span class=\"locality\">York</span>, <span class=\"region\">PA</span> <span class=\"postal-code\">17401</span>, <span class=\"country-name\">USA</span>",
+        "formatted_address": "100 W Market St, York, PA 17401, USA",
+        "geometry": {
+          "location": {
+            "A": 39.9614871,
+            "F": -76.72993989999998
+          }
+        },
+        "icon": "http://maps.gstatic.com/mapfiles/place_api/icons/geocode-71.png",
+        "id": "3d15a6acbbe7ae40d5243741a9f69d66a746dae4",
+        "name": "100 W Market St",
+        "place_id": "ChIJp691JaaOyIkRCK41ptXOgS0",
+        "reference": "CpQBgQAAAFCMBrjCA_qDGxni8EHs79_g4PhPyU3ffYn1G2D0_nYG5_wHl0e8b5e6vUyy-egN-PoOwGDlyj1w-7CP4mipY1S8mW78hgHYCwj4b37w2rQ_neF-jF9IuuiHHCTBU-gyyjRtTX9AO1Av2CZEVMLRlhG5HIcBK6sSD6ob1Ye3RayFCydG4oz3shcBDid7ezD67RIQWB1HZaaPt1T6De5ohVXbuBoUY_GsueeXP3I0hbzDypxnewWUoVY",
+        "scope": "GOOGLE",
+        "types": [
+          "street_address"
+        ],
+        "url": "https://maps.google.com/maps/place?q=100+W+Market+St,+York,+PA+17401,+USA&ftid=0x89c88ea62575afa7:0x2d81ced5a635ae08",
+        "vicinity": "York",
+        "html_attributions": [
+
+        ]
+      },
+      "end_location": {
+        "address_components": [
+          {
+            "long_name": "2020",
+            "short_name": "2020",
+            "types": [
+              "street_number"
+            ]
+          },
+          {
+            "long_name": "West Market Street",
+            "short_name": "W Market St",
+            "types": [
+              "route"
+            ]
+          },
+          {
+            "long_name": "York",
+            "short_name": "York",
+            "types": [
+              "locality",
+              "political"
+            ]
+          },
+          {
+            "long_name": "Pennsylvania",
+            "short_name": "PA",
+            "types": [
+              "administrative_area_level_1",
+              "political"
+            ]
+          },
+          {
+            "long_name": "United States",
+            "short_name": "US",
+            "types": [
+              "country",
+              "political"
+            ]
+          },
+          {
+            "long_name": "17404",
+            "short_name": "17404",
+            "types": [
+              "postal_code"
+            ]
+          },
+          {
+            "long_name": "5509",
+            "short_name": "5509",
+            "types": [
+              "postal_code_suffix"
+            ]
+          },
+          {
+            "long_name": "2020 West Market Street",
+            "short_name": "2020 West Market Street",
+            "types": [
+              "street_address"
+            ]
+          }
+        ],
+        "adr_address": "<span class=\"street-address\">2020 West Market Street</span>, <span class=\"locality\">York</span>, <span class=\"region\">PA</span> <span class=\"postal-code\">17404-5509</span>, <span class=\"country-name\">United States</span>",
+        "formatted_address": "2020 West Market Street, York, PA 17404, United States",
+        "formatted_phone_number": "(717) 792-9406",
+        "geometry": {
+          "location": {
+            "A": 39.952025,
+            "F": -76.77169400000002
+          }
+        },
+        "icon": "http://maps.gstatic.com/mapfiles/place_api/icons/restaurant-71.png",
+        "id": "87cb6f4ed949f7a3f49074e971f5a674be9ea6f3",
+        "international_phone_number": "+1 717-792-9406",
+        "name": "Hardee's",
+        "opening_hours": {
+          "open_now": true,
+          "periods": [
+            {
+              "close": {
+                "day": 0,
+                "time": "2300",
+                "hours": 23,
+                "minutes": 0,
+                "nextDate": 1430708400000
+              },
+              "open": {
+                "day": 0,
+                "time": "0530",
+                "hours": 5,
+                "minutes": 30,
+                "nextDate": 1430645400000
+              }
+            },
+            {
+              "close": {
+                "day": 1,
+                "time": "2300",
+                "hours": 23,
+                "minutes": 0,
+                "nextDate": 1430794800000
+              },
+              "open": {
+                "day": 1,
+                "time": "0530",
+                "hours": 5,
+                "minutes": 30,
+                "nextDate": 1430731800000
+              }
+            },
+            {
+              "close": {
+                "day": 2,
+                "time": "2300",
+                "hours": 23,
+                "minutes": 0,
+                "nextDate": 1430881200000
+              },
+              "open": {
+                "day": 2,
+                "time": "0530",
+                "hours": 5,
+                "minutes": 30,
+                "nextDate": 1430818200000
+              }
+            },
+            {
+              "close": {
+                "day": 3,
+                "time": "2300",
+                "hours": 23,
+                "minutes": 0,
+                "nextDate": 1430967600000
+              },
+              "open": {
+                "day": 3,
+                "time": "0530",
+                "hours": 5,
+                "minutes": 30,
+                "nextDate": 1430904600000
+              }
+            },
+            {
+              "close": {
+                "day": 4,
+                "time": "2300",
+                "hours": 23,
+                "minutes": 0,
+                "nextDate": 1431054000000
+              },
+              "open": {
+                "day": 4,
+                "time": "0530",
+                "hours": 5,
+                "minutes": 30,
+                "nextDate": 1430991000000
+              }
+            },
+            {
+              "close": {
+                "day": 5,
+                "time": "2300",
+                "hours": 23,
+                "minutes": 0,
+                "nextDate": 1430535600000
+              },
+              "open": {
+                "day": 5,
+                "time": "0530",
+                "hours": 5,
+                "minutes": 30,
+                "nextDate": 1431077400000
+              }
+            },
+            {
+              "close": {
+                "day": 6,
+                "time": "2300",
+                "hours": 23,
+                "minutes": 0,
+                "nextDate": 1430622000000
+              },
+              "open": {
+                "day": 6,
+                "time": "0530",
+                "hours": 5,
+                "minutes": 30,
+                "nextDate": 1430559000000
+              }
+            }
+          ],
+          "weekday_text": [
+            "Monday: 5:30 am – 11:00 pm",
+            "Tuesday: 5:30 am – 11:00 pm",
+            "Wednesday: 5:30 am – 11:00 pm",
+            "Thursday: 5:30 am – 11:00 pm",
+            "Friday: 5:30 am – 11:00 pm",
+            "Saturday: 5:30 am – 11:00 pm",
+            "Sunday: 5:30 am – 11:00 pm"
+          ]
+        },
+        "place_id": "ChIJL-0D8YaLyIkROapmXv0m_pI",
+        "price_level": 1,
+        "reference": "CmRcAAAAPuBjR5qkjJ0q1NuD03Hxk4c-qWcd3QgqSKHBQ8vBEmYF7-Inq9sas08k8Xso0OJESdZkhX8yfWa5Wx_ACqZT23LzaulC1XsUXzpmM57p7OfAsJC_haah8h92qP9DX2adEhBMmyeA6UIKc-h6VErqdTZNGhTGj0gX2EQ72ajf-uT5aakAqnrIgQ",
+        "reviews": [
+          {
+            "aspects": [
+              {
+                "rating": 3,
+                "type": "overall"
+              }
+            ],
+            "author_name": "Richard mezza",
+            "author_url": "https://plus.google.com/114756987290915456369",
+            "language": "en",
+            "rating": 5,
+            "text": "Oh my god best place of all time. People there are so wonderful and nice. Some of the employees are super attractive. My favorite place to eat with the best service\n",
+            "time": 1427817691
+          }
+        ],
+        "scope": "GOOGLE",
+        "types": [
+          "restaurant",
+          "food",
+          "establishment"
+        ],
+        "url": "https://plus.google.com/106737028933520837362/about?hl=en-US",
+        "user_ratings_total": 1,
+        "utc_offset": -240,
+        "vicinity": "2020 West Market Street, York",
+        "website": "http://www.hardees.com/",
+        "html_attributions": [
+
+        ],
+        "tz": "GMT-0400"
+      },
+      "trip_time": "2015-05-01T21:25:23+00:00",
+      "departure_type": "depart"
+    },
+    {
+      "segment_index": 1,
+      "start_location": {
+        "address_components": [
+          {
+            "long_name": "2020",
+            "short_name": "2020",
+            "types": [
+              "street_number"
+            ]
+          },
+          {
+            "long_name": "West Market Street",
+            "short_name": "W Market St",
+            "types": [
+              "route"
+            ]
+          },
+          {
+            "long_name": "York",
+            "short_name": "York",
+            "types": [
+              "locality",
+              "political"
+            ]
+          },
+          {
+            "long_name": "Pennsylvania",
+            "short_name": "PA",
+            "types": [
+              "administrative_area_level_1",
+              "political"
+            ]
+          },
+          {
+            "long_name": "United States",
+            "short_name": "US",
+            "types": [
+              "country",
+              "political"
+            ]
+          },
+          {
+            "long_name": "17404",
+            "short_name": "17404",
+            "types": [
+              "postal_code"
+            ]
+          },
+          {
+            "long_name": "5509",
+            "short_name": "5509",
+            "types": [
+              "postal_code_suffix"
+            ]
+          },
+          {
+            "long_name": "2020 West Market Street",
+            "short_name": "2020 West Market Street",
+            "types": [
+              "street_address"
+            ]
+          }
+        ],
+        "adr_address": "<span class=\"street-address\">2020 West Market Street</span>, <span class=\"locality\">York</span>, <span class=\"region\">PA</span> <span class=\"postal-code\">17404-5509</span>, <span class=\"country-name\">United States</span>",
+        "formatted_address": "2020 West Market Street, York, PA 17404, United States",
+        "formatted_phone_number": "(717) 792-9406",
+        "geometry": {
+          "location": {
+            "A": 39.952025,
+            "F": -76.77169400000002
+          }
+        },
+        "icon": "http://maps.gstatic.com/mapfiles/place_api/icons/restaurant-71.png",
+        "id": "87cb6f4ed949f7a3f49074e971f5a674be9ea6f3",
+        "international_phone_number": "+1 717-792-9406",
+        "name": "Hardee's",
+        "opening_hours": {
+          "open_now": true,
+          "periods": [
+            {
+              "close": {
+                "day": 0,
+                "time": "2300",
+                "hours": 23,
+                "minutes": 0,
+                "nextDate": 1430708400000
+              },
+              "open": {
+                "day": 0,
+                "time": "0530",
+                "hours": 5,
+                "minutes": 30,
+                "nextDate": 1430645400000
+              }
+            },
+            {
+              "close": {
+                "day": 1,
+                "time": "2300",
+                "hours": 23,
+                "minutes": 0,
+                "nextDate": 1430794800000
+              },
+              "open": {
+                "day": 1,
+                "time": "0530",
+                "hours": 5,
+                "minutes": 30,
+                "nextDate": 1430731800000
+              }
+            },
+            {
+              "close": {
+                "day": 2,
+                "time": "2300",
+                "hours": 23,
+                "minutes": 0,
+                "nextDate": 1430881200000
+              },
+              "open": {
+                "day": 2,
+                "time": "0530",
+                "hours": 5,
+                "minutes": 30,
+                "nextDate": 1430818200000
+              }
+            },
+            {
+              "close": {
+                "day": 3,
+                "time": "2300",
+                "hours": 23,
+                "minutes": 0,
+                "nextDate": 1430967600000
+              },
+              "open": {
+                "day": 3,
+                "time": "0530",
+                "hours": 5,
+                "minutes": 30,
+                "nextDate": 1430904600000
+              }
+            },
+            {
+              "close": {
+                "day": 4,
+                "time": "2300",
+                "hours": 23,
+                "minutes": 0,
+                "nextDate": 1431054000000
+              },
+              "open": {
+                "day": 4,
+                "time": "0530",
+                "hours": 5,
+                "minutes": 30,
+                "nextDate": 1430991000000
+              }
+            },
+            {
+              "close": {
+                "day": 5,
+                "time": "2300",
+                "hours": 23,
+                "minutes": 0,
+                "nextDate": 1430535600000
+              },
+              "open": {
+                "day": 5,
+                "time": "0530",
+                "hours": 5,
+                "minutes": 30,
+                "nextDate": 1431077400000
+              }
+            },
+            {
+              "close": {
+                "day": 6,
+                "time": "2300",
+                "hours": 23,
+                "minutes": 0,
+                "nextDate": 1430622000000
+              },
+              "open": {
+                "day": 6,
+                "time": "0530",
+                "hours": 5,
+                "minutes": 30,
+                "nextDate": 1430559000000
+              }
+            }
+          ],
+          "weekday_text": [
+            "Monday: 5:30 am – 11:00 pm",
+            "Tuesday: 5:30 am – 11:00 pm",
+            "Wednesday: 5:30 am – 11:00 pm",
+            "Thursday: 5:30 am – 11:00 pm",
+            "Friday: 5:30 am – 11:00 pm",
+            "Saturday: 5:30 am – 11:00 pm",
+            "Sunday: 5:30 am – 11:00 pm"
+          ]
+        },
+        "place_id": "ChIJL-0D8YaLyIkROapmXv0m_pI",
+        "price_level": 1,
+        "reference": "CmRcAAAAPuBjR5qkjJ0q1NuD03Hxk4c-qWcd3QgqSKHBQ8vBEmYF7-Inq9sas08k8Xso0OJESdZkhX8yfWa5Wx_ACqZT23LzaulC1XsUXzpmM57p7OfAsJC_haah8h92qP9DX2adEhBMmyeA6UIKc-h6VErqdTZNGhTGj0gX2EQ72ajf-uT5aakAqnrIgQ",
+        "reviews": [
+          {
+            "aspects": [
+              {
+                "rating": 3,
+                "type": "overall"
+              }
+            ],
+            "author_name": "Richard mezza",
+            "author_url": "https://plus.google.com/114756987290915456369",
+            "language": "en",
+            "rating": 5,
+            "text": "Oh my god best place of all time. People there are so wonderful and nice. Some of the employees are super attractive. My favorite place to eat with the best service\n",
+            "time": 1427817691
+          }
+        ],
+        "scope": "GOOGLE",
+        "types": [
+          "restaurant",
+          "food",
+          "establishment"
+        ],
+        "url": "https://plus.google.com/106737028933520837362/about?hl=en-US",
+        "user_ratings_total": 1,
+        "utc_offset": -240,
+        "vicinity": "2020 West Market Street, York",
+        "website": "http://www.hardees.com/",
+        "html_attributions": [
+
+        ],
+        "tz": "GMT-0400"
+      },
+      "end_location": {
+        "address_components": [
+          {
+            "long_name": "100",
+            "short_name": "100",
+            "types": [
+              "street_number"
+            ]
+          },
+          {
+            "long_name": "W Market St",
+            "short_name": "W Market St",
+            "types": [
+              "route"
+            ]
+          },
+          {
+            "long_name": "York",
+            "short_name": "York",
+            "types": [
+              "locality",
+              "political"
+            ]
+          },
+          {
+            "long_name": "York County",
+            "short_name": "York County",
+            "types": [
+              "administrative_area_level_2",
+              "political"
+            ]
+          },
+          {
+            "long_name": "Pennsylvania",
+            "short_name": "PA",
+            "types": [
+              "administrative_area_level_1",
+              "political"
+            ]
+          },
+          {
+            "long_name": "United States",
+            "short_name": "US",
+            "types": [
+              "country",
+              "political"
+            ]
+          },
+          {
+            "long_name": "17401",
+            "short_name": "17401",
+            "types": [
+              "postal_code"
+            ]
+          },
+          {
+            "long_name": "100 W Market St",
+            "short_name": "100 W Market St",
+            "types": [
+              "street_address"
+            ]
+          }
+        ],
+        "adr_address": "<span class=\"street-address\">100 W Market St</span>, <span class=\"locality\">York</span>, <span class=\"region\">PA</span> <span class=\"postal-code\">17401</span>, <span class=\"country-name\">USA</span>",
+        "formatted_address": "100 W Market St, York, PA 17401, USA",
+        "geometry": {
+          "location": {
+            "A": 39.9614871,
+            "F": -76.72993989999998
+          }
+        },
+        "icon": "http://maps.gstatic.com/mapfiles/place_api/icons/geocode-71.png",
+        "id": "3d15a6acbbe7ae40d5243741a9f69d66a746dae4",
+        "name": "100 W Market St",
+        "place_id": "ChIJp691JaaOyIkRCK41ptXOgS0",
+        "reference": "CpQBgQAAAFCMBrjCA_qDGxni8EHs79_g4PhPyU3ffYn1G2D0_nYG5_wHl0e8b5e6vUyy-egN-PoOwGDlyj1w-7CP4mipY1S8mW78hgHYCwj4b37w2rQ_neF-jF9IuuiHHCTBU-gyyjRtTX9AO1Av2CZEVMLRlhG5HIcBK6sSD6ob1Ye3RayFCydG4oz3shcBDid7ezD67RIQWB1HZaaPt1T6De5ohVXbuBoUY_GsueeXP3I0hbzDypxnewWUoVY",
+        "scope": "GOOGLE",
+        "types": [
+          "street_address"
+        ],
+        "url": "https://maps.google.com/maps/place?q=100+W+Market+St,+York,+PA+17401,+USA&ftid=0x89c88ea62575afa7:0x2d81ced5a635ae08",
+        "vicinity": "York",
+        "html_attributions": [
+
+        ]
+      },
+      "departure_type": "arrive",
+      "trip_time": "2015-05-04T21:26:22+00:00"
+    }
+  ]
+}

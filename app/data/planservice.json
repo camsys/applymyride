@@ -1,0 +1,190 @@
+{
+  "sharedRideId": "2",
+  "username": "Eric",
+  "fromDate": "2015-04-23T18:40:32.485Z",
+  "fromTimeType": "depart",
+  "fromTime": "2015-04-23T19:41:37.682Z",
+  "from": "Harbor Frwy and Transit Way, Los Angeles, CA 90017, USA",
+  "fromDetails": {
+    "address_components": [
+      {
+        "long_name": "Harbor Frwy and Transit Way",
+        "short_name": "CA-110",
+        "types": [
+          "route"
+        ]
+      },
+      {
+        "long_name": "Downtown",
+        "short_name": "Downtown",
+        "types": [
+          "neighborhood",
+          "political"
+        ]
+      },
+      {
+        "long_name": "Los Angeles",
+        "short_name": "LA",
+        "types": [
+          "locality",
+          "political"
+        ]
+      },
+      {
+        "long_name": "Los Angeles County",
+        "short_name": "Los Angeles County",
+        "types": [
+          "administrative_area_level_2",
+          "political"
+        ]
+      },
+      {
+        "long_name": "California",
+        "short_name": "CA",
+        "types": [
+          "administrative_area_level_1",
+          "political"
+        ]
+      },
+      {
+        "long_name": "United States",
+        "short_name": "US",
+        "types": [
+          "country",
+          "political"
+        ]
+      },
+      {
+        "long_name": "90017",
+        "short_name": "90017",
+        "types": [
+          "postal_code"
+        ]
+      }
+    ],
+    "formatted_address": "Harbor Frwy and Transit Way, Los Angeles, CA 90017, USA",
+    "geometry": {
+      "bounds": {
+        "Da": {
+          "k": 34.0519484,
+          "j": 34.0550774
+        },
+        "va": {
+          "j": -118.2601272,
+          "k": -118.25705419999997
+        }
+      },
+      "location": {
+        "k": 34.0534209,
+        "D": -118.2584589
+      },
+      "location_type": "APPROXIMATE",
+      "viewport": {
+        "Da": {
+          "k": 34.0519484,
+          "j": 34.0550774
+        },
+        "va": {
+          "j": -118.2601272,
+          "k": -118.25705419999997
+        }
+      }
+    },
+    "place_id": "ChIJXzwZArLHwoARMsKoeXl6fpM",
+    "types": [
+      "route"
+    ]
+  },
+  "to": "3 Miramar Street Los Angeles CA United States",
+  "toDetails": {
+    "address_components": [
+      {
+        "long_name": "3",
+        "short_name": "3",
+        "types": [
+          "street_number"
+        ]
+      },
+      {
+        "long_name": "Miramar St",
+        "short_name": "Miramar St",
+        "types": [
+          "route"
+        ]
+      },
+      {
+        "long_name": "Downtown",
+        "short_name": "Downtown",
+        "types": [
+          "neighborhood",
+          "political"
+        ]
+      },
+      {
+        "long_name": "Los Angeles",
+        "short_name": "LA",
+        "types": [
+          "locality",
+          "political"
+        ]
+      },
+      {
+        "long_name": "Los Angeles County",
+        "short_name": "Los Angeles County",
+        "types": [
+          "administrative_area_level_2",
+          "political"
+        ]
+      },
+      {
+        "long_name": "California",
+        "short_name": "CA",
+        "types": [
+          "administrative_area_level_1",
+          "political"
+        ]
+      },
+      {
+        "long_name": "United States",
+        "short_name": "US",
+        "types": [
+          "country",
+          "political"
+        ]
+      },
+      {
+        "long_name": "90017",
+        "short_name": "90017",
+        "types": [
+          "postal_code"
+        ]
+      }
+    ],
+    "adr_address": "<span class=\"street-address\">3 Miramar St</span>, <span class=\"locality\">Los Angeles</span>, <span class=\"region\">CA</span> <span class=\"postal-code\">90017</span>, <span class=\"country-name\">USA</span>",
+    "formatted_address": "3 Miramar St, Los Angeles, CA 90017, USA",
+    "geometry": {
+      "location": {
+        "k": 34.0578954,
+        "D": -118.25943619999998
+      }
+    },
+    "icon": "http://maps.gstatic.com/mapfiles/place_api/icons/geocode-71.png",
+    "id": "84bfff5c2b92970494d992e91e9683b3f07ab539",
+    "name": "3 Miramar St",
+    "place_id": "ChIJyS5jvK7HwoAR-qAQL5x8gG8",
+    "reference": "CpQBhgAAANOwhvCQkd15E1vI8VlTTeszzj7t5KXmOEUxyGGSLJTsip_jJlsWJV8dL44UcwUmHL4uzfcTYIJ48Riynnv-H9V7mwMRoFgarFM1fM8Ok4gj5geyblCikQJ468KdPkjp3MQux38UtdBI8jW112_glfTnTDA6FheXWHJnVb-iXF6Q2BrMlfCtLRgfFmhGWFmlTBIQh_Qs76bWEsVn-57a00dhkBoUZYk16fOinxNcOejl6pDkxBqADx8",
+    "scope": "GOOGLE",
+    "types": [
+      "street_address"
+    ],
+    "url": "https://maps.google.com/maps/place?q=3+Miramar+St,+Los+Angeles,+CA+90017,+USA&ftid=0x80c2c7aebc632ec9:0x6f807c9c2f10a0fa",
+    "vicinity": "Los Angeles",
+    "html_attributions": [
+
+    ]
+  },
+  "purpose": "Pharmacy",
+  "returnDate": "2015-04-24T18:40:32.485Z",
+  "returnTimeType": "depart",
+  "returnTime": "2015-04-24T18:47:52.487Z"
+}
