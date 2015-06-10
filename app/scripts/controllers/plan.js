@@ -38,6 +38,12 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
     $scope.opened = true;
   };
 
+  $scope.setNoReturnTrip = function(){
+    planService.returnDate = null;
+    planService.returnTime = null;
+    $location.path('/plan/confirm');
+  }
+
   $scope.dateOptions = {
     formatYear: 'yy',
     startingDay: 0,

@@ -102,7 +102,7 @@
         %h4 Do you need a return trip?
         %a.btn.btn-success{ng: {href: '#/plan/returnDate'}}
           Yes
-        %a.btn.btn-success{ng: {href: '#/plan/confirm'}}
+        %a.btn.btn-success{ng: {click: 'setNoReturnTrip()'}}
           No
 
     .return-date{ng: {show: 'step==="returnDate"'}}
