@@ -32,10 +32,10 @@
                 %ul.dropdown-menu.pull-right{dropdown_menu: ''}
                   %li{ng: {show: 'fromTimeType != "depart"'}}
                     %a{ng: {click: 'specifyFromTimeType("depart")'}}
-                      When do you want to get there?
+                      When do you want to leave?
                   %li{ng: {show: 'fromTimeType != "arrive"'}}
                     %a{ng: {click: 'specifyFromTimeType("arrive")'}}
-                      When do you want to arrive by?
+                      When do you want to get there?
         .row{ng: {show: 'showAsap'}}
           .col-xs-12.pull-left{style: 'color: #2781FF'}
             %h5{ng: {click: 'specifyFromTimeType("asap")'}} As soon as possible
