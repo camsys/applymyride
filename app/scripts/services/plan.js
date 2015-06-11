@@ -57,29 +57,32 @@ angular.module('applyMyRideApp')
 
 
         var itinerariesByMode = itinerariesBySegmentThenMode['0'];
-        var paratransitTrips = itinerariesByMode.mode_paratransit;
-        if(paratransitTrips){
-          var lowestPricedParatransitTrip;
-          angular.forEach(paratransitTrips, function(paratransitTrip, index) {
-            if(paratransitTrip.duration && paratransitTrip.start_time){
-              paratransitTrip.travelTime = humanizeDuration(paratransitTrip.duration * 1000,  { units: ["hours", "minutes"], round: true });
-              paratransitTrip.startTime = moment(paratransitTrip.start_time).format('h:mm a')
-              if(!lowestPricedParatransitTrip){
-                lowestPricedParatransitTrip = paratransitTrip;
-              }else{
-                if(Number(paratransitTrip.cost) < Number(lowestPricedParatransitTrip.cost)){
+        if(itinerariesByMode.mode_paratransit){
+          var paratransitTrips = itinerariesByMode.mode_paratransit;
+          if(paratransitTrips){
+            var lowestPricedParatransitTrip;
+            angular.forEach(paratransitTrips, function(paratransitTrip, index) {
+              if(paratransitTrip.duration && paratransitTrip.start_time){
+                paratransitTrip.travelTime = humanizeDuration(paratransitTrip.duration * 1000,  { units: ["hours", "minutes"], round: true });
+                paratransitTrip.startTime = moment(paratransitTrip.start_time).format('h:mm a')
+                if(!lowestPricedParatransitTrip){
                   lowestPricedParatransitTrip = paratransitTrip;
+                }else{
+                  if(Number(paratransitTrip.cost) < Number(lowestPricedParatransitTrip.cost)){
+                    lowestPricedParatransitTrip = paratransitTrip;
+                  }
                 }
               }
+            });
+            if(lowestPricedParatransitTrip){
+              itinerariesByMode.mode_paratransit = [lowestPricedParatransitTrip];
+              this.paratransitItinerary = lowestPricedParatransitTrip;
+            }else{
+              delete itinerariesByMode.mode_paratransit;
             }
-          });
-          if(lowestPricedParatransitTrip){
-            itinerariesByMode.mode_paratransit = [lowestPricedParatransitTrip];
-            this.paratransitItinerary = lowestPricedParatransitTrip;
-          }else{
-            delete itinerariesByMode.mode_paratransit;
           }
         }
+
 
         var walkTrips = itinerariesByMode.mode_walk;
         if(walkTrips){

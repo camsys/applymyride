@@ -168,12 +168,10 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
       var now = moment().startOf('day'); ;
       var dayDiff = now.diff(fromDate, 'days');
       if(Math.abs(dayDiff) < 1){
-        $scope.fromTimeType = 'arrive';
-        planService.fromTimeType = 'arrive';
         $scope.showAsap = true;
-      }else{
-        $scope.fromTimeType = 'depart';
       }
+      $scope.fromTimeType = 'arrive';
+      planService.fromTimeType = 'arrive';
       $scope.fromTime = new Date();
       $scope.fromTime.setHours($scope.fromTime.getHours() + 2);
       $scope.showNext = true;
@@ -202,7 +200,7 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
         }
       }
       $scope.disableNext = false;
-      $scope.returnTimeType = 'depart';
+      $scope.returnTimeType = 'arrive';
       $scope.showNext = true;
       break;
     case 'from_confirm':
@@ -276,6 +274,7 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
         break;
       case 'returnTimeType':
         planService.returnTime = $scope.returnTime;
+        planService.returnTimeType = $scope.returnTimeType;
         $location.path('/plan/confirm');
         break;
       case 'confirm':
