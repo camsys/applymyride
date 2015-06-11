@@ -253,6 +253,29 @@ only screen and (min-device-pixel-ratio : 1.5) {
   z-index: -1;
 }
 
+.mode_walk > .row > [class*='col-']:first-child:before {
+  width: 40px;
+  height: 40px;
+  background: url(../images/modes/walk.png) repeat;
+  top: calc(50% - 1em);
+  content: " ";
+  position: absolute;
+  right: calc(16% + 10px);
+}
+
+.mode_bus > .row > [class*='col-']:first-child:before {
+  width: 40px;
+  height: 40px;
+  background: url(../images/modes/transit.png) repeat;
+  top: calc(50% - 1em);
+  content: " ";
+  position: absolute;
+  right: calc(16% + 10px);
+}
+
+
+
+
 .mode_icon {
   position: relative;
   top: calc(50%);
