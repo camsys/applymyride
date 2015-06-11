@@ -33,6 +33,9 @@ angular.module('applyMyRideApp')
           }
         });
       }
+
+      $scope.prepareTrip();
+
       $scope.test = function($event){
         var index = $(event.target).parents('.timeline').attr('index');
         $scope.showDiv[index] = !$scope.showDiv[index];

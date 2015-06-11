@@ -222,48 +222,35 @@ only screen and (min-device-pixel-ratio : 1.5) {
   }
 }
 
-
-.mode_bus > [class*='col-']:first-child:before {
-  background: #852303;
-  bottom: 0;
-  content: " ";
-  left: 24px;
-  position: absolute;
-  width: 6px;
-  top: 10px;
-  height: calc(100% + 3em);
-  z-index: -1;
-}
-
 .waypoint {
   z-index: 999;
-  font-size: 2em; background: white
+  font-size: 2em; background: white;
+  margin-top: 0.2em;
+  margin-left: -16px;
 }
 
-.mode_walk > [class*='col-']:first-child:before {
+.mode_walk > .row > [class*='col-']:nth-child(2):before {
   width: 5px;
   background:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAACACAYAAADDEqOOAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAABESURBVEhL7c8xDgAgCEPR4sm9n94JF+LQycSkOvQtECZ+YGQHCczM2rdW843zly6PMi4iLhJwEXGRgIuIiwRcRL4rAhaEQCb9w6AeBAAAAABJRU5ErkJggg==) repeat;
   bottom: 0;
   content: " ";
-  left: 24px;
+  left: 8px;
   position: absolute;
   top: 10px;
-  height: calc(100% + 3em);
+  height: 100%;
   z-index: -1;
 }
 
-
-
-.row-full-height {
+.mode_bus > .row > [class*='col-']:nth-child(2):before {
+  width: 5px;
+  background: #852303;
+  bottom: 0;
+  content: " ";
+  left: 8px;
+  position: absolute;
+  top: 10px;
   height: 100%;
-  padding-bottom: 3em;
-}
-
-.col-full-height {
-  height: 100%;
-  vertical-align: top;
-  display: table-cell;
-  float: none !important;
+  z-index: -1;
 }
 
 .mode_icon {
@@ -293,14 +280,15 @@ only screen and (min-device-pixel-ratio : 1.5) {
   padding: 0px;
   background-color: #F2F2F2;
   border: 1px solid #E4E4E4;
+  border-right: 0px;
 }
 
 .transit-header {
   padding: 1em;
   background-color: #F2F2F2;
   z-index: auto;
-  margin-bottom: 1em;
   border-bottom: 1px solid #E4E4E4;
+  margin-bottom: 1em;
 }
 
 .animate-show.ng-hide-add.ng-hide-add-active,
@@ -316,12 +304,18 @@ only screen and (min-device-pixel-ratio : 1.5) {
 }
 
 .timeline {
-  margin-left: 4em;
+  margin: 0px;
 }
 
 .transit-container {
   border: 1px solid #E4E4E4;
-  /*overflow: hidden;*/
+  border-bottom: 0px;
+}
+
+.transit-body {
+  border: 1px solid #E4E4E4;
+  border-top: 0px;
+  padding: 0px;
 }
 
 .mode_walk i {
@@ -332,13 +326,17 @@ only screen and (min-device-pixel-ratio : 1.5) {
   color: #852303;
 }
 
-
 .leg-info {
-  /*padding-right: 20px;*/
+  padding-right: 0px;
+}
+
+.leg-info .row{
+  margin: 0px;
 }
 
 .bus-info, .walk-info {
   display: table;
+  width: 100%;
   /*padding-right:40px;*/
 }
 
@@ -347,3 +345,27 @@ only screen and (min-device-pixel-ratio : 1.5) {
   left: 0em;
 }
 
+
+.timeline > .row > [class*='col-'] {
+
+}
+
+
+.even-height-row {
+  display: table;
+  width: 100%;
+  margin-left: 0px !important;
+}
+
+.left-side {
+  vertical-align: top;
+  float: none;
+  display: table-cell;
+  width: 100%;
+}
+
+.right-side {
+  vertical-align: top;
+  float: none;
+  display: table-cell;
+}
