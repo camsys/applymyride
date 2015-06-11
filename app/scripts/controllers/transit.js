@@ -9,12 +9,12 @@ angular.module('applyMyRideApp')
       $scope.tripid = $routeParams.tripid;
       $scope.showDiv = {};
 
-      $http.get('data/itineraries.json').
+      /*$http.get('data/itineraries.json').
         success(function(data) {
           planService.searchResults = data;
           planService.prepareTripSearchResultsPage($scope);
           $scope.prepareTrip();
-      });
+      });*/
 
       $scope.prepareTrip = function(){
         angular.forEach(planService.searchResults.itineraries, function(itinerary, index) {
