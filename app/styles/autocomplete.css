@@ -254,23 +254,25 @@ only screen and (min-device-pixel-ratio : 1.5) {
 }
 
 .mode_walk > .row > [class*='col-']:first-child:before {
-  width: 40px;
-  height: 40px;
-  background: url(../images/modes/walk.png) repeat;
-  top: calc(50% - 1em);
+  width: 20px;
+  height: 20px;
+  background-image: url(../images/modes/walk.png);
+  background-size: contain;
   content: " ";
   position: absolute;
-  right: calc(16% + 10px);
+  top: 50%;
+  right: 50%;
 }
 
 .mode_bus > .row > [class*='col-']:first-child:before {
-  width: 40px;
-  height: 40px;
-  background: url(../images/modes/transit.png) repeat;
-  top: calc(50% - 1em);
+  width: 20px;
+  height: 20px;
+  background-image: url(../images/modes/transit.png);
+  background-size: contain;
   content: " ";
   position: absolute;
-  right: calc(16% + 10px);
+  top: 50%;
+  right: 50%;
 }
 
 
