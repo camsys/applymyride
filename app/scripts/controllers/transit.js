@@ -41,19 +41,5 @@ angular.module('applyMyRideApp')
         $scope.showDiv[index] = !$scope.showDiv[index];
       }
 
-      $scope.next = function(){
-        if($scope.disableNext)
-          return;
-        var path = $location.path();
-        planService.sharedRideId = $scope.sharedRideId;
-        planService.county = $scope.county;
-        planService.dateofbirth = $scope.dateofbirth;
-        if(path == '/'){
-          $location.path('/authenticateSharedRideId');
-        }else if(path == '/authenticateSharedRideId' || path == '/loginError'){
-          $scope.authenticate();
-        }
-      }
-
     }
   ]);

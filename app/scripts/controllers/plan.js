@@ -6,13 +6,6 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
 
 function($scope, $http, $routeParams, $location, planService, flash, usSpinnerService, $q, LocationSearch, localStorageService) {
 
-
- /*$http.get('data/itineraries.json').
-    success(function(data) {
-      planService.searchResults = data;
-      planService.prepareTripSearchResultsPage($scope);
-    });*/
-
   $scope.minReturnDate = new Date();
 
   $scope.marker = null;
@@ -153,7 +146,7 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
       break;
     case 'purpose':
       planService.getTripPurposes($scope, $http);
-      planService.purposes = $scope.purposes
+      planService.purposes = $scope.purposes;
       $scope.showNext = false;
       break;
     case 'confirm':

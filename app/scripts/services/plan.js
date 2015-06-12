@@ -207,6 +207,8 @@ angular.module('applyMyRideApp')
         itinerary.travelTime = humanizeDuration(itinerary.duration * 1000,  { units: ["hours", "minutes"], round: true });
         itinerary.walkTimeDesc = humanizeDuration(itinerary.walk_time * 1000,  { units: ["hours", "minutes"], round: true });
         itinerary.dayAndDateDesc = moment(itinerary.start_time).format('dddd, MMMM Do');
+        itinerary.startTimeDesc = moment(itinerary.start_time).format('h:mm a')
+        itinerary.endTimeDesc = moment(itinerary.end_time).format('h:mm a')
       }
 
       this.setItineraryLegDescriptions = function(itinerary){
@@ -265,22 +267,23 @@ angular.module('applyMyRideApp')
         return description;
       }
 
-    this.getDateDescription = function(date){
-      var description;
-      var now = moment().startOf('day');
-      var dayDiff = moment(date).startOf('day').diff(moment().startOf('day'), 'days');
-      if(dayDiff == 0) {
-        description = "Today";
-      } else if (dayDiff == 1) {
-        description = "Tomorrow";
-      }else{
-        description = moment(date).format('dddd MMM DD');
+      this.getDateDescription = function(date){
+        var description;
+        var now = moment().startOf('day');
+        var dayDiff = moment(date).startOf('day').diff(moment().startOf('day'), 'days');
+        if(dayDiff == 0) {
+          description = "Today";
+        } else if (dayDiff == 1) {
+          description = "Tomorrow";
+        }else{
+          description = moment(date).format('dddd MMM DD');
+        }
+        return description;
       }
-      return description;
-    }
 
       this.getTripPurposes = function($scope, $http) {
-        $http.get('api/v1/trip_purposes/list', this.getHeaders()).
+        this.fixLatLon(this.fromDetails);
+        return $http.post('api/v1/trip_purposes/list', this.fromDetails, this.getHeaders()).
           success(function(data) {
             $scope.purposes = data.trip_purposes;
           }).
@@ -290,7 +293,6 @@ angular.module('applyMyRideApp')
       }
 
       this.postItineraryRequest = function($http) {
-        //var promise2 = $http.post('api/v1/itineraries/plan', this.itineraryRequestObject, this.getHeaders());
         var promise2 = $http.post('api/v1/itineraries/plan', this.itineraryRequestObject);
         var promise3 = promise2.then(function(result) {
           return result.data;
