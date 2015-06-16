@@ -210,8 +210,8 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
             planService.searchResults = data;
             planService.prepareTripSearchResultsPage(0);
             $scope.fare_info = planService.fare_info;
-            $scope.transitInfos = planService.transitInfos;
-            if(!planService.paratransitItinerary && $scope.fare_info.mode_transit == undefined && $scope.fare_info.other){
+            $scope.walkItinerary = planService.walkItinerary;
+            if(!planService.paratransitItinerary && $scope.fare_info.mode_transit == undefined && $scope.walkItinerary){
               $location.path("/plan/alternative_options");
               $scope.step = 'alternative_options';
             }else if(planService.walkItinerary){
@@ -222,7 +222,8 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
         planService.prepareTripSearchResultsPage(0);
         $scope.fare_info = planService.fare_info;
         $scope.transitInfos = planService.transitInfos;
-        if(!planService.paratransitItinerary && $scope.fare_info.mode_transit == undefined && $scope.fare_info.other){
+        $scope.walkItinerary = planService.walkItinerary;
+        if(!planService.paratransitItinerary && $scope.fare_info.mode_transit == undefined && $scope.walkItinerary){
           $location.path("/plan/alternative_options");
           $scope.step = 'alternative_options';
         }else if($scope.fare_info.other){
