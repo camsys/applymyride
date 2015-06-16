@@ -204,12 +204,34 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
       $scope.showNext = false;
       break;
     case 'list_itineraries':
-      planService.prepareTripSearchResultsPage($scope);
-      if(!planService.paratransitItinerary && $scope.fare_info.mode_transit == undefined && $scope.fare_info.other){
-        $scope.showAlternativeOption
-        $location.path("/plan/alternative_options");
-        $scope.step = 'alternative_options';
+      if($routeParams.test){
+        $http.get('data/'+ $routeParams.test + '.json').
+          success(function(data) {
+            planService.searchResults = data;
+            planService.prepareTripSearchResultsPage(0);
+            $scope.fare_info = planService.fare_info;
+            $scope.transitInfos = planService.transitInfos;
+            if(!planService.paratransitItinerary && $scope.fare_info.mode_transit == undefined && $scope.fare_info.other){
+              $location.path("/plan/alternative_options");
+              $scope.step = 'alternative_options';
+            }else if(planService.walkItinerary){
+              $scope.showAlternativeOption = true;
+            }
+          });
+      }else{
+        planService.prepareTripSearchResultsPage(0);
+        $scope.fare_info = planService.fare_info;
+        $scope.transitInfos = planService.transitInfos;
+        if(!planService.paratransitItinerary && $scope.fare_info.mode_transit == undefined && $scope.fare_info.other){
+          $location.path("/plan/alternative_options");
+          $scope.step = 'alternative_options';
+        }else if($scope.fare_info.other){
+          $scope.showAlternativeOption = true;
+        }
       }
+      $scope.showNext = false;
+      break;
+    case 'book_shared_ride':
       $scope.showNext = false;
       break;
     case 'alternative_options':
@@ -218,7 +240,7 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
       $scope.showNext = false;
       break;
     case 'bus_options':
-      planService.prepareTransitOptionsPage($scope);
+      $scope.transitInfos = planService.transitInfos;
       $scope.showNext = false;
       break;
     case 'sharedride_options_1':
@@ -292,10 +314,11 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
         $location.path('/plan/book_shared_ride');
         break;
       case 'book_shared_ride':
-        /*var promise = planService.bookSharedRide($http);
+        var promise = planService.bookSharedRide($http);
         promise.then(function(result) {
-          $location.path('/plan/confirm_shared_ride');
-        });*/
+          planService.booking_results = result.data.booking_results;
+          $location.path('/paratransit/confirm_shared_ride');
+        });
         break;
     }
   };
@@ -367,6 +390,10 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
         $scope.locations = choices;
       });
     }
+  }
+
+  $scope.selectTransitTrip = function(tripId){
+    $location.path("/transit/" + tripId);
   }
 
   $scope.selectPlace = function(place){

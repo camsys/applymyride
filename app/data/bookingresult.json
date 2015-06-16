@@ -1,0 +1,14 @@
+{
+  "booking_results": [
+    {
+      "trip_id": null,
+      "itinerary_id": 13365,
+      "booked": true,
+      "confirmation": "12345xyz",
+      "wait_start": "2015-06-11T18:01:28.000-04:00",
+      "wait_end": "2015-06-11T18:01:28.000-04:00",
+      "arrival": "2015-06-11T18:01:28.000-04:00",
+      "message": null
+    }
+  ]
+}

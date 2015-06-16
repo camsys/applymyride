@@ -1,0 +1,2241 @@
+{
+  "trip_id": 1864,
+  "trip_token": null,
+  "itineraries": [
+    {
+      "id": 13781,
+      "trip_part_id": 3488,
+      "mode_id": 2,
+      "service_id": 2,
+      "server_status": 200,
+      "server_message": null,
+      "duration": null,
+      "walk_time": 0,
+      "transit_time": null,
+      "wait_time": null,
+      "walk_distance": 0.0,
+      "transfers": null,
+      "count": null,
+      "legs": null,
+      "cost": null,
+      "hidden": false,
+      "created_at": "2015-06-16T13:56:19.041-04:00",
+      "updated_at": "2015-06-16T13:56:19.041-04:00",
+      "ride_count": null,
+      "external_info": null,
+      "match_score": 0.25,
+      "missing_information": true,
+      "accommodation_mismatch": false,
+      "missing_information_text": "disabled_missing_info:ada_eligible_missing_info:matp_missing_info:age_min60",
+      "date_mismatch": false,
+      "time_mismatch": false,
+      "too_late": false,
+      "missing_accommodations": "",
+      "cost_comments": null,
+      "selected": null,
+      "start_time": null,
+      "end_time": null,
+      "is_bookable": false,
+      "booking_confirmation": null,
+      "duration_estimated": false,
+      "map_image": {
+        "url": null
+      },
+      "too_early": false,
+      "returned_mode_code": "mode_paratransit",
+      "order_xml": null,
+      "discounts": [
+        {
+          "fare": 2.35,
+          "comment": null,
+          "funding_source": "Lottery"
+        },
+        {
+          "fare": 2.35,
+          "comment": null,
+          "funding_source": "PWD"
+        },
+        {
+          "fare": 3.2,
+          "comment": null,
+          "funding_source": "ADAYORK1"
+        },
+        {
+          "fare": 3.2,
+          "comment": null,
+          "funding_source": "ADAYORK2"
+        }
+      ],
+      "segment_index": 0,
+      "start_location": {
+        "address_components": [
+          {
+            "long_name": "400 E Locust Ln",
+            "short_name": "400 E Locust Ln",
+            "types": [
+              "street_address"
+            ]
+          },
+          {
+            "long_name": "York",
+            "short_name": "York",
+            "types": [
+              "locality",
+              "political"
+            ]
+          },
+          {
+            "long_name": "Pennsylvania",
+            "short_name": "Pennsylvania",
+            "types": [
+              "administrative_area_level_1",
+              "political"
+            ]
+          },
+          {
+            "long_name": "17406",
+            "short_name": "17406",
+            "types": [
+              "postal_code"
+            ]
+          }
+        ],
+        "formatted_address": "400 E Locust Ln, York, Pennsylvania 17406",
+        "geometry": {
+          "location": {
+            "lat": 40.0134428,
+            "lng": -76.7246173
+          }
+        },
+        "id": 4363,
+        "name": "400 E Locust Ln",
+        "scope": "user"
+      },
+      "end_location": {
+        "address_components": [
+          {
+            "long_name": "1800 Bannister St",
+            "short_name": "1800 Bannister St",
+            "types": [
+              "street_address"
+            ]
+          },
+          {
+            "long_name": "York",
+            "short_name": "York",
+            "types": [
+              "locality",
+              "political"
+            ]
+          },
+          {
+            "long_name": "Pennsylvania",
+            "short_name": "Pennsylvania",
+            "types": [
+              "administrative_area_level_1",
+              "political"
+            ]
+          },
+          {
+            "long_name": "17404",
+            "short_name": "17404",
+            "types": [
+              "postal_code"
+            ]
+          }
+        ],
+        "formatted_address": "1800 Bannister St, York, Pennsylvania 17404",
+        "geometry": {
+          "location": {
+            "lat": 39.959272,
+            "lng": -76.7638
+          }
+        },
+        "id": 4364,
+        "name": "1800 Bannister St",
+        "scope": "user"
+      },
+      "prebooking_questions": [
+        {
+          "question": "Will you be traveling with an approved escort",
+          "choices": [
+            true,
+            false
+          ],
+          "code": "assistant"
+        },
+        {
+          "question": "How many children or family members will be traveling with you?",
+          "choices": [
+            0,
+            1,
+            2
+          ],
+          "code": "children"
+        }
+      ],
+      "bookable": false,
+      "json_legs": null
+    },
+    {
+      "id": 13781,
+      "trip_part_id": 3488,
+      "mode_id": 2,
+      "service_id": 2,
+      "server_status": 200,
+      "server_message": null,
+      "duration": 3988,
+      "walk_time": 0,
+      "transit_time": null,
+      "wait_time": null,
+      "walk_distance": 0.0,
+      "transfers": null,
+      "count": null,
+      "legs": null,
+      "cost": null,
+      "hidden": false,
+      "created_at": "2015-06-16T13:56:19.041-04:00",
+      "updated_at": "2015-06-16T13:56:19.682-04:00",
+      "ride_count": null,
+      "external_info": null,
+      "match_score": 0.25,
+      "missing_information": true,
+      "accommodation_mismatch": false,
+      "missing_information_text": "disabled_missing_info:ada_eligible_missing_info:matp_missing_info:age_min60",
+      "date_mismatch": false,
+      "time_mismatch": false,
+      "too_late": false,
+      "missing_accommodations": "",
+      "cost_comments": null,
+      "selected": null,
+      "start_time": "2015-06-18T16:53:06.000-04:00",
+      "end_time": "2015-06-18T17:59:34.000-04:00",
+      "is_bookable": false,
+      "booking_confirmation": null,
+      "duration_estimated": true,
+      "map_image": {
+        "url": null
+      },
+      "too_early": false,
+      "returned_mode_code": "mode_paratransit",
+      "order_xml": null,
+      "discounts": [
+        {
+          "fare": 2.35,
+          "comment": null,
+          "funding_source": "Lottery"
+        },
+        {
+          "fare": 2.35,
+          "comment": null,
+          "funding_source": "PWD"
+        },
+        {
+          "fare": 3.2,
+          "comment": null,
+          "funding_source": "ADAYORK1"
+        },
+        {
+          "fare": 3.2,
+          "comment": null,
+          "funding_source": "ADAYORK2"
+        }
+      ],
+      "segment_index": 0,
+      "start_location": {
+        "address_components": [
+          {
+            "long_name": "400 E Locust Ln",
+            "short_name": "400 E Locust Ln",
+            "types": [
+              "street_address"
+            ]
+          },
+          {
+            "long_name": "York",
+            "short_name": "York",
+            "types": [
+              "locality",
+              "political"
+            ]
+          },
+          {
+            "long_name": "Pennsylvania",
+            "short_name": "Pennsylvania",
+            "types": [
+              "administrative_area_level_1",
+              "political"
+            ]
+          },
+          {
+            "long_name": "17406",
+            "short_name": "17406",
+            "types": [
+              "postal_code"
+            ]
+          }
+        ],
+        "formatted_address": "400 E Locust Ln, York, Pennsylvania 17406",
+        "geometry": {
+          "location": {
+            "lat": 40.01344280000001,
+            "lng": -76.72461729999998
+          }
+        },
+        "id": 4363,
+        "name": "400 E Locust Ln",
+        "scope": "user"
+      },
+      "end_location": {
+        "address_components": [
+          {
+            "long_name": "1800 Bannister St",
+            "short_name": "1800 Bannister St",
+            "types": [
+              "street_address"
+            ]
+          },
+          {
+            "long_name": "York",
+            "short_name": "York",
+            "types": [
+              "locality",
+              "political"
+            ]
+          },
+          {
+            "long_name": "Pennsylvania",
+            "short_name": "Pennsylvania",
+            "types": [
+              "administrative_area_level_1",
+              "political"
+            ]
+          },
+          {
+            "long_name": "17404",
+            "short_name": "17404",
+            "types": [
+              "postal_code"
+            ]
+          }
+        ],
+        "formatted_address": "1800 Bannister St, York, Pennsylvania 17404",
+        "geometry": {
+          "location": {
+            "lat": 39.959272,
+            "lng": -76.7638
+          }
+        },
+        "id": 4364,
+        "name": "1800 Bannister St",
+        "scope": "user"
+      },
+      "prebooking_questions": [
+        {
+          "question": "Will you be traveling with an approved escort",
+          "choices": [
+            true,
+            false
+          ],
+          "code": "assistant"
+        },
+        {
+          "question": "How many children or family members will be traveling with you?",
+          "choices": [
+            0,
+            1,
+            2
+          ],
+          "code": "children"
+        }
+      ],
+      "bookable": false,
+      "json_legs": null
+    },
+    {
+      "id": 13782,
+      "trip_part_id": 3488,
+      "mode_id": 1,
+      "service_id": 3,
+      "server_status": 200,
+      "server_message": null,
+      "duration": 5569,
+      "walk_time": 4896,
+      "transit_time": 671,
+      "wait_time": 2,
+      "walk_distance": 6414.65644411534,
+      "transfers": 0,
+      "count": null,
+      "legs": "---\n- startTime: 1434658388000\n  endTime: 1434663133000\n  departureDelay: 0\n  arrivalDelay: 0\n  realTime: false\n  isNonExactFrequency: \n  headway: \n  distance: 6226.274072214565\n  from:\n    name: Sinking Springs Lane\n    stopId: \n    stopCode: \n    platformCode: \n    lon: -76.7246149808683\n    lat: 40.0134308103871\n    arrival: \n    departure: 1434658388000\n    orig: ''\n    zoneId: \n    stopIndex: \n  to:\n    name: W Philadelphia At Beaver Ob\n    stopId:\n      agencyId: '210'\n      id: '765229'\n    stopCode: \n    platformCode: \n    lon: -76.73056999098837\n    lat: 39.96320826728453\n    arrival: 1434663133000\n    departure: 1434663134000\n    orig: \n    zoneId: \n    stopIndex: \n  legGeometry:\n    points: \"}bfsFzghsMB\\\\TvBB~AOvAr@j@p@|Aj@nA`BtDfArBp@h@^JtBl@^K\\\\U`ArAVh@bAxDf@bClAlEvAPfDZnBPvEd@f@D~J`ArGr@PBD?|AFnAPhGh@XBtL~@bGd@bANdAGz@Qf@OnCaArBk@jA]pAOp@BrBb@PHrAl@tAjAx@l@b@ZfAz@p@d@h@ZvBl@f@D~Hr@bAFfBIfCc@hAWt@OvE{@`Ba@zA]h@O`Ba@^GzBa@~E_AFAtAYxA[hASnB_@HALCJCdCe@p@Mp@OFA\\\\G`B]jCi@HAxBe@REbCi@j@MvDc@XEtFe@tDQFAp@EV?p@Cn@CTA|AGd@I`EaBNG`Bm@~FzH`Aa@LIn@Wb@Sf@Q|@a@NKPGNGb@OvD}A|B_ArAk@\\\\OXMLf@\"\n    levels: \n    length: 121\n  transitLeg: false\n  mode: WALK\n  route: ''\n  agencyName: \n  agencyUrl: \n  agencyTimeZoneOffset: -14400000\n  routeColor: \n  routeType: \n  routeId: \n  routeTextColor: \n  interlineWithPreviousLeg: false\n  tripShortName: \n  tripBlockId: \n  headsign: \n  agencyId: \n  tripId: \n  serviceDate: \n  intermediateStops: \n  steps:\n  - distance: 145.2124947642581\n    relativeDirection: DEPART\n    streetName: Sinking Springs Lane\n    absoluteDirection: WEST\n    exit: \n    stayOn: false\n    area: false\n    bogusName: false\n    lon: -76.7246149808683\n    lat: 40.0134308103871\n    alerts: \n    elevation: []\n  - distance: 441.07843881187154\n    relativeDirection: LEFT\n    streetName: Edinburgh Road\n    absoluteDirection: SOUTHWEST\n    exit: \n    stayOn: false\n    area: false\n    bogusName: false\n    lon: -76.7262884\n    lat: 40.0133645\n    alerts: \n    elevation: []\n  - distance: 319.8422096660929\n    relativeDirection: RIGHT\n    streetName: East Locust Lane\n    absoluteDirection: SOUTHWEST\n    exit: \n    stayOn: false\n    area: false\n    bogusName: false\n    lon: -76.7291921\n    lat: 40.0104767\n    alerts: \n    elevation: []\n  - distance: 4624.927767834872\n    relativeDirection: LEFT\n    streetName: North George Street\n    absoluteDirection: SOUTH\n    exit: \n    stayOn: false\n    area: false\n    bogusName: false\n    lon: -76.7324427\n    lat: 40.0090966\n    alerts: \n    elevation: []\n  - distance: 196.26692786244183\n    relativeDirection: RIGHT\n    streetName: Hamilton Avenue\n    absoluteDirection: SOUTHWEST\n    exit: \n    stayOn: false\n    area: false\n    bogusName: false\n    lon: -76.7308608\n    lat: 39.9685692\n    alerts: \n    elevation: []\n  - distance: 479.9760824564446\n    relativeDirection: LEFT\n    streetName: North Beaver Street\n    absoluteDirection: SOUTH\n    exit: \n    stayOn: false\n    area: false\n    bogusName: false\n    lon: -76.7324412\n    lat: 39.9672853\n    alerts: \n    elevation: []\n  - distance: 18.97015081858522\n    relativeDirection: RIGHT\n    streetName: West Philadelphia Street\n    absoluteDirection: SOUTHWEST\n    exit: \n    stayOn: false\n    area: false\n    bogusName: false\n    lon: -76.7303647\n    lat: 39.9632742\n    alerts: \n    elevation: []\n  notes: \n  alerts: \n  routeShortName: \n  routeLongName: \n  boardRule: \n  alightRule: \n  rentedBike: false\n  duration: 4745.0\n- startTime: 1434663134000\n  endTime: 1434663805000\n  departureDelay: 0\n  arrivalDelay: 0\n  realTime: false\n  isNonExactFrequency: \n  headway: \n  distance: 3023.798532174242\n  from:\n    name: W Philadelphia At Beaver Ob\n    stopId:\n      agencyId: '210'\n      id: '765229'\n    stopCode: \n    platformCode: \n    lon: -76.730585\n    lat: 39.963255\n    arrival: 1434663133000\n    departure: 1434663134000\n    orig: \n    zoneId: '0'\n    stopIndex: 2\n  to:\n    name: Bannister At Seward Ob\n    stopId:\n      agencyId: '210'\n      id: '765385'\n    stopCode: \n    platformCode: \n    lon: -76.763942\n    lat: 39.960678\n    arrival: 1434663805000\n    departure: 1434663806000\n    orig: \n    zoneId: '0'\n    stopIndex: 13\n  legGeometry:\n    points: _i|rF`misMn@vCv@fEFVTfAb@tBx@pDBL`AlEFZrC~Lf@dCBNnCxMH`@hAtF`B~HP|@jB~IHZdC|KC@TrA_ApDwBvI@AEL]zAk@~Bi@pBs@nCo@lCm@|BIb@_@`Bk@dCEL}BrKRhHRfKTbK@V\n    levels: \n    length: 42\n  transitLeg: true\n  mode: BUS\n  route: 1W\n  agencyName: \n  agencyUrl: \n  agencyTimeZoneOffset: -14400000\n  routeColor: FF0000\n  routeType: 3\n  routeId: '1264'\n  routeTextColor: '000000'\n  interlineWithPreviousLeg: false\n  tripShortName: \n  tripBlockId: \n  headsign: W Manch Mall\n  agencyId: '210'\n  tripId: 53752A1024B1797\n  serviceDate: '20150618'\n  intermediateStops: \n  steps: []\n  notes: \n  alerts: \n  routeShortName: 1W\n  routeLongName: West Manchester Mall\n  boardRule: \n  alightRule: \n  rentedBike: false\n  duration: 671.0\n- startTime: 1434663806000\n  endTime: 1434663957000\n  departureDelay: 0\n  arrivalDelay: 0\n  realTime: false\n  isNonExactFrequency: \n  headway: \n  distance: 188.0375108902804\n  from:\n    name: Bannister At Seward Ob\n    stopId:\n      agencyId: '210'\n      id: '765385'\n    stopCode: \n    platformCode: \n    lon: -76.76394113800453\n    lat: 39.960662909175014\n    arrival: 1434663805000\n    departure: 1434663806000\n    orig: \n    zoneId: \n    stopIndex: \n  to:\n    name: service road\n    stopId: \n    stopCode: \n    platformCode: \n    lon: -76.76379924035636\n    lat: 39.959272982150885\n    arrival: 1434663957000\n    departure: \n    orig: ''\n    zoneId: \n    stopIndex: \n  legGeometry:\n    points: cy{rFt}osMAYt@A\\?TANAVCXGL?L?BLBJ@HDDHHH@H?H?FIHMDO\n    levels: \n    length: 21\n  transitLeg: false\n  mode: WALK\n  route: ''\n  agencyName: \n  agencyUrl: \n  agencyTimeZoneOffset: -14400000\n  routeColor: \n  routeType: \n  routeId: \n  routeTextColor: \n  interlineWithPreviousLeg: false\n  tripShortName: \n  tripBlockId: \n  headsign: \n  agencyId: \n  tripId: \n  serviceDate: \n  intermediateStops: \n  steps:\n  - distance: 10.609558098677711\n    relativeDirection: DEPART\n    streetName: Bannister Street\n    absoluteDirection: EAST\n    exit: \n    stayOn: false\n    area: false\n    bogusName: false\n    lon: -76.76394113800453\n    lat: 39.960662909175014\n    alerts: \n    elevation: []\n  - distance: 177.4279527916027\n    relativeDirection: RIGHT\n    streetName: service road\n    absoluteDirection: SOUTH\n    exit: \n    stayOn: false\n    area: false\n    bogusName: true\n    lon: -76.763817\n    lat: 39.96067\n    alerts: \n    elevation: []\n  notes: \n  alerts: \n  routeShortName: \n  routeLongName: \n  boardRule: \n  alightRule: \n  rentedBike: false\n  duration: 151.0\n",
+      "cost": "1.6",
+      "hidden": false,
+      "created_at": "2015-06-16T13:56:19.504-04:00",
+      "updated_at": "2015-06-16T13:56:19.689-04:00",
+      "ride_count": null,
+      "external_info": null,
+      "match_score": -0.3,
+      "missing_information": false,
+      "accommodation_mismatch": false,
+      "missing_information_text": null,
+      "date_mismatch": false,
+      "time_mismatch": false,
+      "too_late": false,
+      "missing_accommodations": "",
+      "cost_comments": null,
+      "selected": null,
+      "start_time": "2015-06-18T16:13:08.000-04:00",
+      "end_time": "2015-06-18T17:45:57.000-04:00",
+      "is_bookable": false,
+      "booking_confirmation": null,
+      "duration_estimated": false,
+      "map_image": {
+        "url": null
+      },
+      "too_early": false,
+      "returned_mode_code": "mode_transit",
+      "order_xml": null,
+      "discounts": null,
+      "segment_index": 0,
+      "start_location": {
+        "address_components": [
+          {
+            "long_name": "400 E Locust Ln",
+            "short_name": "400 E Locust Ln",
+            "types": [
+              "street_address"
+            ]
+          },
+          {
+            "long_name": "York",
+            "short_name": "York",
+            "types": [
+              "locality",
+              "political"
+            ]
+          },
+          {
+            "long_name": "Pennsylvania",
+            "short_name": "Pennsylvania",
+            "types": [
+              "administrative_area_level_1",
+              "political"
+            ]
+          },
+          {
+            "long_name": "17406",
+            "short_name": "17406",
+            "types": [
+              "postal_code"
+            ]
+          }
+        ],
+        "formatted_address": "400 E Locust Ln, York, Pennsylvania 17406",
+        "geometry": {
+          "location": {
+            "lat": 40.0134428,
+            "lng": -76.7246173
+          }
+        },
+        "id": 4363,
+        "name": "400 E Locust Ln",
+        "scope": "user"
+      },
+      "end_location": {
+        "address_components": [
+          {
+            "long_name": "1800 Bannister St",
+            "short_name": "1800 Bannister St",
+            "types": [
+              "street_address"
+            ]
+          },
+          {
+            "long_name": "York",
+            "short_name": "York",
+            "types": [
+              "locality",
+              "political"
+            ]
+          },
+          {
+            "long_name": "Pennsylvania",
+            "short_name": "Pennsylvania",
+            "types": [
+              "administrative_area_level_1",
+              "political"
+            ]
+          },
+          {
+            "long_name": "17404",
+            "short_name": "17404",
+            "types": [
+              "postal_code"
+            ]
+          }
+        ],
+        "formatted_address": "1800 Bannister St, York, Pennsylvania 17404",
+        "geometry": {
+          "location": {
+            "lat": 39.959272,
+            "lng": -76.7638
+          }
+        },
+        "id": 4364,
+        "name": "1800 Bannister St",
+        "scope": "user"
+      },
+      "prebooking_questions": [
+        {
+          "question": "Will you be traveling with an approved escort",
+          "choices": [
+            true,
+            false
+          ],
+          "code": "assistant"
+        },
+        {
+          "question": "How many children or family members will be traveling with you?",
+          "choices": [
+            0,
+            1,
+            2
+          ],
+          "code": "children"
+        }
+      ],
+      "bookable": false,
+      "json_legs": [
+        {
+          "startTime": 1434658388000,
+          "endTime": 1434663133000,
+          "departureDelay": 0,
+          "arrivalDelay": 0,
+          "realTime": false,
+          "isNonExactFrequency": null,
+          "headway": null,
+          "distance": 6226.274072214565,
+          "from": {
+            "name": "Sinking Springs Lane",
+            "stopId": null,
+            "stopCode": null,
+            "platformCode": null,
+            "lon": -76.7246149808683,
+            "lat": 40.0134308103871,
+            "arrival": null,
+            "departure": 1434658388000,
+            "orig": "",
+            "zoneId": null,
+            "stopIndex": null
+          },
+          "to": {
+            "name": "W Philadelphia At Beaver Ob",
+            "stopId": {
+              "agencyId": "210",
+              "id": "765229"
+            },
+            "stopCode": null,
+            "platformCode": null,
+            "lon": -76.73056999098837,
+            "lat": 39.96320826728453,
+            "arrival": 1434663133000,
+            "departure": 1434663134000,
+            "orig": null,
+            "zoneId": null,
+            "stopIndex": null
+          },
+          "legGeometry": {
+            "points": "}bfsFzghsMB\\TvBB~AOvAr@j@p@|Aj@nA`BtDfArBp@h@^JtBl@^K\\U`ArAVh@bAxDf@bClAlEvAPfDZnBPvEd@f@D~J`ArGr@PBD?|AFnAPhGh@XBtL~@bGd@bANdAGz@Qf@OnCaArBk@jA]pAOp@BrBb@PHrAl@tAjAx@l@b@ZfAz@p@d@h@ZvBl@f@D~Hr@bAFfBIfCc@hAWt@OvE{@`Ba@zA]h@O`Ba@^GzBa@~E_AFAtAYxA[hASnB_@HALCJCdCe@p@Mp@OFA\\G`B]jCi@HAxBe@REbCi@j@MvDc@XEtFe@tDQFAp@EV?p@Cn@CTA|AGd@I`EaBNG`Bm@~FzH`Aa@LIn@Wb@Sf@Q|@a@NKPGNGb@OvD}A|B_ArAk@\\OXMLf@",
+            "levels": null,
+            "length": 121
+          },
+          "transitLeg": false,
+          "mode": "WALK",
+          "route": "",
+          "agencyName": null,
+          "agencyUrl": null,
+          "agencyTimeZoneOffset": -14400000,
+          "routeColor": null,
+          "routeType": null,
+          "routeId": null,
+          "routeTextColor": null,
+          "interlineWithPreviousLeg": false,
+          "tripShortName": null,
+          "tripBlockId": null,
+          "headsign": null,
+          "agencyId": null,
+          "tripId": null,
+          "serviceDate": null,
+          "intermediateStops": null,
+          "steps": [
+            {
+              "distance": 145.2124947642581,
+              "relativeDirection": "DEPART",
+              "streetName": "Sinking Springs Lane",
+              "absoluteDirection": "WEST",
+              "exit": null,
+              "stayOn": false,
+              "area": false,
+              "bogusName": false,
+              "lon": -76.7246149808683,
+              "lat": 40.0134308103871,
+              "alerts": null,
+              "elevation": [
+
+              ]
+            },
+            {
+              "distance": 441.07843881187154,
+              "relativeDirection": "LEFT",
+              "streetName": "Edinburgh Road",
+              "absoluteDirection": "SOUTHWEST",
+              "exit": null,
+              "stayOn": false,
+              "area": false,
+              "bogusName": false,
+              "lon": -76.7262884,
+              "lat": 40.0133645,
+              "alerts": null,
+              "elevation": [
+
+              ]
+            },
+            {
+              "distance": 319.8422096660929,
+              "relativeDirection": "RIGHT",
+              "streetName": "East Locust Lane",
+              "absoluteDirection": "SOUTHWEST",
+              "exit": null,
+              "stayOn": false,
+              "area": false,
+              "bogusName": false,
+              "lon": -76.7291921,
+              "lat": 40.0104767,
+              "alerts": null,
+              "elevation": [
+
+              ]
+            },
+            {
+              "distance": 4624.927767834872,
+              "relativeDirection": "LEFT",
+              "streetName": "North George Street",
+              "absoluteDirection": "SOUTH",
+              "exit": null,
+              "stayOn": false,
+              "area": false,
+              "bogusName": false,
+              "lon": -76.7324427,
+              "lat": 40.0090966,
+              "alerts": null,
+              "elevation": [
+
+              ]
+            },
+            {
+              "distance": 196.26692786244183,
+              "relativeDirection": "RIGHT",
+              "streetName": "Hamilton Avenue",
+              "absoluteDirection": "SOUTHWEST",
+              "exit": null,
+              "stayOn": false,
+              "area": false,
+              "bogusName": false,
+              "lon": -76.7308608,
+              "lat": 39.9685692,
+              "alerts": null,
+              "elevation": [
+
+              ]
+            },
+            {
+              "distance": 479.9760824564446,
+              "relativeDirection": "LEFT",
+              "streetName": "North Beaver Street",
+              "absoluteDirection": "SOUTH",
+              "exit": null,
+              "stayOn": false,
+              "area": false,
+              "bogusName": false,
+              "lon": -76.7324412,
+              "lat": 39.9672853,
+              "alerts": null,
+              "elevation": [
+
+              ]
+            },
+            {
+              "distance": 18.97015081858522,
+              "relativeDirection": "RIGHT",
+              "streetName": "West Philadelphia Street",
+              "absoluteDirection": "SOUTHWEST",
+              "exit": null,
+              "stayOn": false,
+              "area": false,
+              "bogusName": false,
+              "lon": -76.7303647,
+              "lat": 39.9632742,
+              "alerts": null,
+              "elevation": [
+
+              ]
+            }
+          ],
+          "notes": null,
+          "alerts": null,
+          "routeShortName": null,
+          "routeLongName": null,
+          "boardRule": null,
+          "alightRule": null,
+          "rentedBike": false,
+          "duration": 4745.0
+        },
+        {
+          "startTime": 1434663134000,
+          "endTime": 1434663805000,
+          "departureDelay": 0,
+          "arrivalDelay": 0,
+          "realTime": false,
+          "isNonExactFrequency": null,
+          "headway": null,
+          "distance": 3023.798532174242,
+          "from": {
+            "name": "W Philadelphia At Beaver Ob",
+            "stopId": {
+              "agencyId": "210",
+              "id": "765229"
+            },
+            "stopCode": null,
+            "platformCode": null,
+            "lon": -76.730585,
+            "lat": 39.963255,
+            "arrival": 1434663133000,
+            "departure": 1434663134000,
+            "orig": null,
+            "zoneId": "0",
+            "stopIndex": 2
+          },
+          "to": {
+            "name": "Bannister At Seward Ob",
+            "stopId": {
+              "agencyId": "210",
+              "id": "765385"
+            },
+            "stopCode": null,
+            "platformCode": null,
+            "lon": -76.763942,
+            "lat": 39.960678,
+            "arrival": 1434663805000,
+            "departure": 1434663806000,
+            "orig": null,
+            "zoneId": "0",
+            "stopIndex": 13
+          },
+          "legGeometry": {
+            "points": "_i|rF`misMn@vCv@fEFVTfAb@tBx@pDBL`AlEFZrC~Lf@dCBNnCxMH`@hAtF`B~HP|@jB~IHZdC|KC@TrA_ApDwBvI@AEL]zAk@~Bi@pBs@nCo@lCm@|BIb@_@`Bk@dCEL}BrKRhHRfKTbK@V",
+            "levels": null,
+            "length": 42
+          },
+          "transitLeg": true,
+          "mode": "BUS",
+          "route": "1W",
+          "agencyName": null,
+          "agencyUrl": null,
+          "agencyTimeZoneOffset": -14400000,
+          "routeColor": "FF0000",
+          "routeType": 3,
+          "routeId": "1264",
+          "routeTextColor": "000000",
+          "interlineWithPreviousLeg": false,
+          "tripShortName": null,
+          "tripBlockId": null,
+          "headsign": "W Manch Mall",
+          "agencyId": "210",
+          "tripId": "53752A1024B1797",
+          "serviceDate": "20150618",
+          "intermediateStops": null,
+          "steps": [
+
+          ],
+          "notes": null,
+          "alerts": null,
+          "routeShortName": "1W",
+          "routeLongName": "West Manchester Mall",
+          "boardRule": null,
+          "alightRule": null,
+          "rentedBike": false,
+          "duration": 671.0
+        },
+        {
+          "startTime": 1434663806000,
+          "endTime": 1434663957000,
+          "departureDelay": 0,
+          "arrivalDelay": 0,
+          "realTime": false,
+          "isNonExactFrequency": null,
+          "headway": null,
+          "distance": 188.0375108902804,
+          "from": {
+            "name": "Bannister At Seward Ob",
+            "stopId": {
+              "agencyId": "210",
+              "id": "765385"
+            },
+            "stopCode": null,
+            "platformCode": null,
+            "lon": -76.76394113800453,
+            "lat": 39.960662909175014,
+            "arrival": 1434663805000,
+            "departure": 1434663806000,
+            "orig": null,
+            "zoneId": null,
+            "stopIndex": null
+          },
+          "to": {
+            "name": "service road",
+            "stopId": null,
+            "stopCode": null,
+            "platformCode": null,
+            "lon": -76.76379924035636,
+            "lat": 39.959272982150885,
+            "arrival": 1434663957000,
+            "departure": null,
+            "orig": "",
+            "zoneId": null,
+            "stopIndex": null
+          },
+          "legGeometry": {
+            "points": "cy{rFt}osMAYt@A\\?TANAVCXGL?L?BLBJ@HDDHHH@H?H?FIHMDO",
+            "levels": null,
+            "length": 21
+          },
+          "transitLeg": false,
+          "mode": "WALK",
+          "route": "",
+          "agencyName": null,
+          "agencyUrl": null,
+          "agencyTimeZoneOffset": -14400000,
+          "routeColor": null,
+          "routeType": null,
+          "routeId": null,
+          "routeTextColor": null,
+          "interlineWithPreviousLeg": false,
+          "tripShortName": null,
+          "tripBlockId": null,
+          "headsign": null,
+          "agencyId": null,
+          "tripId": null,
+          "serviceDate": null,
+          "intermediateStops": null,
+          "steps": [
+            {
+              "distance": 10.609558098677711,
+              "relativeDirection": "DEPART",
+              "streetName": "Bannister Street",
+              "absoluteDirection": "EAST",
+              "exit": null,
+              "stayOn": false,
+              "area": false,
+              "bogusName": false,
+              "lon": -76.76394113800453,
+              "lat": 39.960662909175014,
+              "alerts": null,
+              "elevation": [
+
+              ]
+            },
+            {
+              "distance": 177.4279527916027,
+              "relativeDirection": "RIGHT",
+              "streetName": "service road",
+              "absoluteDirection": "SOUTH",
+              "exit": null,
+              "stayOn": false,
+              "area": false,
+              "bogusName": true,
+              "lon": -76.763817,
+              "lat": 39.96067,
+              "alerts": null,
+              "elevation": [
+
+              ]
+            }
+          ],
+          "notes": null,
+          "alerts": null,
+          "routeShortName": null,
+          "routeLongName": null,
+          "boardRule": null,
+          "alightRule": null,
+          "rentedBike": false,
+          "duration": 151.0
+        }
+      ]
+    },
+    {
+      "id": 13783,
+      "trip_part_id": 3488,
+      "mode_id": 1,
+      "service_id": 3,
+      "server_status": 200,
+      "server_message": null,
+      "duration": 4596,
+      "walk_time": 2319,
+      "transit_time": 2275,
+      "wait_time": 2,
+      "walk_distance": 3043.6819314102504,
+      "transfers": 2,
+      "count": null,
+      "legs": "---\n- startTime: 1434657561000\n  endTime: 1434659729000\n  departureDelay: 0\n  arrivalDelay: 0\n  realTime: false\n  isNonExactFrequency: \n  headway: \n  distance: 2855.3923923652733\n  from:\n    name: Sinking Springs Lane\n    stopId: \n    stopCode: \n    platformCode: \n    lon: -76.7246149808683\n    lat: 40.0134308103871\n    arrival: \n    departure: 1434657561000\n    orig: ''\n    zoneId: \n    stopIndex: \n  to:\n    name: Board Rd At Church Rd Ib\n    stopId:\n      agencyId: '210'\n      id: '765299'\n    stopCode: \n    platformCode: \n    lon: -76.74169499108777\n    lat: 40.02408354749473\n    arrival: 1434659729000\n    departure: 1434659730000\n    orig: \n    zoneId: \n    stopIndex: \n  legGeometry:\n    points: \"}bfsFzghsMB\\\\TvBB~AOvAg@lAa@p@eBxAaMlKmGuBeA]kBg@kIkC_AQ{@F_C\\\\cB\\\\qAVkEj@Ax@GVET]nBARE~@L`B^hBl@lBnAjBdBfD`@zAHnANlB@R`AlMTvB`@`Dv@nF@FLfA^vC]JkExAuJdD\"\n    levels: \n    length: 44\n  transitLeg: false\n  mode: WALK\n  route: ''\n  agencyName: \n  agencyUrl: \n  agencyTimeZoneOffset: -14400000\n  routeColor: \n  routeType: \n  routeId: \n  routeTextColor: \n  interlineWithPreviousLeg: false\n  tripShortName: \n  tripBlockId: \n  headsign: \n  agencyId: \n  tripId: \n  serviceDate: \n  intermediateStops: \n  steps:\n  - distance: 583.8254037471139\n    relativeDirection: DEPART\n    streetName: Sinking Springs Lane\n    absoluteDirection: WEST\n    exit: \n    stayOn: false\n    area: false\n    bogusName: false\n    lon: -76.7246149808683\n    lat: 40.0134308103871\n    alerts: \n    elevation: []\n  - distance: 815.9639098195802\n    relativeDirection: RIGHT\n    streetName: North George Street\n    absoluteDirection: NORTH\n    exit: \n    stayOn: false\n    area: false\n    bogusName: false\n    lon: -76.7293602\n    lat: 40.0164954\n    alerts: \n    elevation: []\n  - distance: 1099.13797423337\n    relativeDirection: LEFT\n    streetName: Church Road\n    absoluteDirection: WEST\n    exit: \n    stayOn: false\n    area: false\n    bogusName: false\n    lon: -76.7283141\n    lat: 40.023582\n    alerts: \n    elevation: []\n  - distance: 356.4651045652087\n    relativeDirection: RIGHT\n    streetName: Board Road\n    absoluteDirection: NORTH\n    exit: \n    stayOn: false\n    area: false\n    bogusName: false\n    lon: -76.7403519\n    lat: 40.0210473\n    alerts: \n    elevation: []\n  notes: \n  alerts: \n  routeShortName: \n  routeLongName: \n  boardRule: \n  alightRule: \n  rentedBike: false\n  duration: 2168.0\n- startTime: 1434659730000\n  endTime: 1434660300000\n  departureDelay: 0\n  arrivalDelay: 0\n  realTime: false\n  isNonExactFrequency: \n  headway: \n  distance: 5358.959583644491\n  from:\n    name: Board Rd At Church Rd Ib\n    stopId:\n      agencyId: '210'\n      id: '765299'\n    stopCode: \n    platformCode: \n    lon: -76.741721\n    lat: 40.024072\n    arrival: 1434659729000\n    departure: 1434659730000\n    orig: \n    zoneId: '0'\n    stopIndex: 15\n  to:\n    name: Manchester Xrds\n    stopId:\n      agencyId: '210'\n      id: '765318'\n    stopCode: \n    platformCode: \n    lon: -76.739832\n    lat: 39.985692\n    arrival: 1434660300000\n    departure: 1434660300000\n    orig: \n    zoneId: '0'\n    stopIndex: 18\n  legGeometry:\n    points: oehsFrrksMtJeDhFgBZ~B~@pHPvAd@zDr@vExA~LZnASpEOzF?`BUrEi@jBiAvAq@f@I@aARyBLoCN_BQu@_@wAiAc@UwBCgAG?Di@Av@s\\|Bu@~DDbM~@pF`@`PrAxQzAnIfBdIz@jY~@pM^rQeEvZ{UIEb@]~G_FrScGbMqFfD{BjDkC`DkBr@pBR\\ZFJALGd@a@GOz@i@\n    levels: \n    length: 58\n  transitLeg: true\n  mode: BUS\n  route: 18N\n  agencyName: \n  agencyUrl: \n  agencyTimeZoneOffset: -14400000\n  routeColor: ADFF2F\n  routeType: 3\n  routeId: '1287'\n  routeTextColor: '000000'\n  interlineWithPreviousLeg: false\n  tripShortName: \n  tripBlockId: \n  headsign: York City Ind Park\n  agencyId: '210'\n  tripId: 54347A1024B1797\n  serviceDate: '20150618'\n  intermediateStops: \n  steps: []\n  notes: \n  alerts: \n  routeShortName: 18N\n  routeLongName: Manchester Via George Street\n  boardRule: \n  alightRule: \n  rentedBike: false\n  duration: 570.0\n- startTime: 1434660300000\n  endTime: 1434661200000\n  departureDelay: 0\n  arrivalDelay: 0\n  realTime: false\n  isNonExactFrequency: \n  headway: \n  distance: 3213.456114701885\n  from:\n    name: Manchester Xrds\n    stopId:\n      agencyId: '210'\n      id: '765318'\n    stopCode: \n    platformCode: \n    lon: -76.739832\n    lat: 39.985692\n    arrival: 1434660300000\n    departure: 1434660300000\n    orig: \n    zoneId: '0'\n    stopIndex: 0\n  to:\n    name: Transfer Center\n    stopId:\n      agencyId: '210'\n      id: '765237'\n    stopCode: \n    platformCode: \n    lon: -76.731524\n    lat: 39.959945\n    arrival: 1434661200000\n    departure: 1434661200000\n    orig: \n    zoneId: '0'\n    stopIndex: 10\n  legGeometry:\n    points: \"{u`sFpfksM{@h@FNe@`@MFK@[GS]s@qBbBiAfBkAdBwAl@c@r@q@pA_A\\\\UnDkCE[Ja@Ji@Fc@Lq@Hm@Hk@Ji@@?HqAFMdL}BnHwAACXEdCe@bB]d@I`B]tCk@xBo@R@nDu@LAbEg@vFe@lFYV?p@Cn@ET?|AGd@I`EaB|Am@PIfA_@dBu@XKZMbEaBFCrF_CzBaAJEbC_A^fB^bBr@nDLf@A?hBhJzEqBtEmB\\\\xAfAG\"\n    levels: \n    length: 73\n  transitLeg: true\n  mode: BUS\n  route: 2N\n  agencyName: \n  agencyUrl: \n  agencyTimeZoneOffset: -14400000\n  routeColor: ADD8E6\n  routeType: 3\n  routeId: '1266'\n  routeTextColor: '000000'\n  interlineWithPreviousLeg: false\n  tripShortName: \n  tripBlockId: \n  headsign: 2n Downtown\n  agencyId: '210'\n  tripId: 53880A1024B1797\n  serviceDate: '20150618'\n  intermediateStops: \n  steps: []\n  notes: \n  alerts: \n  routeShortName: 2N\n  routeLongName: North York Via George Street\n  boardRule: \n  alightRule: \n  rentedBike: false\n  duration: 900.0\n- startTime: 1434661200000\n  endTime: 1434662005000\n  departureDelay: 0\n  arrivalDelay: 0\n  realTime: false\n  isNonExactFrequency: \n  headway: \n  distance: 3454.556396043503\n  from:\n    name: Transfer Center\n    stopId:\n      agencyId: '210'\n      id: '765237'\n    stopCode: \n    platformCode: \n    lon: -76.731524\n    lat: 39.959945\n    arrival: 1434661200000\n    departure: 1434661200000\n    orig: \n    zoneId: '0'\n    stopIndex: 0\n  to:\n    name: Bannister At Seward Ob\n    stopId:\n      agencyId: '210'\n      id: '765385'\n    stopCode: \n    platformCode: \n    lon: -76.763942\n    lat: 39.960678\n    arrival: 1434662005000\n    departure: 1434662006000\n    orig: \n    zoneId: '0'\n    stopIndex: 13\n  legGeometry:\n    points: qt{rFxsisMz@?aDsOuHxC?A{Bx@cC`ALf@n@vCv@fEFVTfAb@tBx@pDBL`AlEFZrC~Lf@dCBNnCxMH`@hAtF`B~HP|@jB~IHZdC|KC@TrA_ApDwBvI@AEL]zAk@~Bi@pBs@nCo@lCm@|BIb@_@`Bk@dCEL}BrKRhHRfKTbK@V\n    levels: \n    length: 49\n  transitLeg: true\n  mode: BUS\n  route: 1W\n  agencyName: \n  agencyUrl: \n  agencyTimeZoneOffset: -14400000\n  routeColor: FF0000\n  routeType: 3\n  routeId: '1264'\n  routeTextColor: '000000'\n  interlineWithPreviousLeg: false\n  tripShortName: \n  tripBlockId: \n  headsign: W Manch Mall\n  agencyId: '210'\n  tripId: 53751A1024B1797\n  serviceDate: '20150618'\n  intermediateStops: \n  steps: []\n  notes: \n  alerts: \n  routeShortName: 1W\n  routeLongName: West Manchester Mall\n  boardRule: \n  alightRule: \n  rentedBike: false\n  duration: 805.0\n- startTime: 1434662006000\n  endTime: 1434662157000\n  departureDelay: 0\n  arrivalDelay: 0\n  realTime: false\n  isNonExactFrequency: \n  headway: \n  distance: 188.0375108902804\n  from:\n    name: Bannister At Seward Ob\n    stopId:\n      agencyId: '210'\n      id: '765385'\n    stopCode: \n    platformCode: \n    lon: -76.76394113800453\n    lat: 39.960662909175014\n    arrival: 1434662005000\n    departure: 1434662006000\n    orig: \n    zoneId: \n    stopIndex: \n  to:\n    name: service road\n    stopId: \n    stopCode: \n    platformCode: \n    lon: -76.76379924035636\n    lat: 39.959272982150885\n    arrival: 1434662157000\n    departure: \n    orig: ''\n    zoneId: \n    stopIndex: \n  legGeometry:\n    points: cy{rFt}osMAYt@A\\?TANAVCXGL?L?BLBJ@HDDHHH@H?H?FIHMDO\n    levels: \n    length: 21\n  transitLeg: false\n  mode: WALK\n  route: ''\n  agencyName: \n  agencyUrl: \n  agencyTimeZoneOffset: -14400000\n  routeColor: \n  routeType: \n  routeId: \n  routeTextColor: \n  interlineWithPreviousLeg: false\n  tripShortName: \n  tripBlockId: \n  headsign: \n  agencyId: \n  tripId: \n  serviceDate: \n  intermediateStops: \n  steps:\n  - distance: 10.609558098677711\n    relativeDirection: DEPART\n    streetName: Bannister Street\n    absoluteDirection: EAST\n    exit: \n    stayOn: false\n    area: false\n    bogusName: false\n    lon: -76.76394113800453\n    lat: 39.960662909175014\n    alerts: \n    elevation: []\n  - distance: 177.4279527916027\n    relativeDirection: RIGHT\n    streetName: service road\n    absoluteDirection: SOUTH\n    exit: \n    stayOn: false\n    area: false\n    bogusName: true\n    lon: -76.763817\n    lat: 39.96067\n    alerts: \n    elevation: []\n  notes: \n  alerts: \n  routeShortName: \n  routeLongName: \n  boardRule: \n  alightRule: \n  rentedBike: false\n  duration: 151.0\n",
+      "cost": "1.6",
+      "hidden": false,
+      "created_at": "2015-06-16T13:56:19.560-04:00",
+      "updated_at": "2015-06-16T13:56:19.700-04:00",
+      "ride_count": null,
+      "external_info": null,
+      "match_score": -0.19999999999999998,
+      "missing_information": false,
+      "accommodation_mismatch": false,
+      "missing_information_text": null,
+      "date_mismatch": false,
+      "time_mismatch": false,
+      "too_late": false,
+      "missing_accommodations": "",
+      "cost_comments": null,
+      "selected": null,
+      "start_time": "2015-06-18T15:59:21.000-04:00",
+      "end_time": "2015-06-18T17:15:57.000-04:00",
+      "is_bookable": false,
+      "booking_confirmation": null,
+      "duration_estimated": false,
+      "map_image": {
+        "url": null
+      },
+      "too_early": false,
+      "returned_mode_code": "mode_transit",
+      "order_xml": null,
+      "discounts": null,
+      "segment_index": 0,
+      "start_location": {
+        "address_components": [
+          {
+            "long_name": "400 E Locust Ln",
+            "short_name": "400 E Locust Ln",
+            "types": [
+              "street_address"
+            ]
+          },
+          {
+            "long_name": "York",
+            "short_name": "York",
+            "types": [
+              "locality",
+              "political"
+            ]
+          },
+          {
+            "long_name": "Pennsylvania",
+            "short_name": "Pennsylvania",
+            "types": [
+              "administrative_area_level_1",
+              "political"
+            ]
+          },
+          {
+            "long_name": "17406",
+            "short_name": "17406",
+            "types": [
+              "postal_code"
+            ]
+          }
+        ],
+        "formatted_address": "400 E Locust Ln, York, Pennsylvania 17406",
+        "geometry": {
+          "location": {
+            "lat": 40.0134428,
+            "lng": -76.7246173
+          }
+        },
+        "id": 4363,
+        "name": "400 E Locust Ln",
+        "scope": "user"
+      },
+      "end_location": {
+        "address_components": [
+          {
+            "long_name": "1800 Bannister St",
+            "short_name": "1800 Bannister St",
+            "types": [
+              "street_address"
+            ]
+          },
+          {
+            "long_name": "York",
+            "short_name": "York",
+            "types": [
+              "locality",
+              "political"
+            ]
+          },
+          {
+            "long_name": "Pennsylvania",
+            "short_name": "Pennsylvania",
+            "types": [
+              "administrative_area_level_1",
+              "political"
+            ]
+          },
+          {
+            "long_name": "17404",
+            "short_name": "17404",
+            "types": [
+              "postal_code"
+            ]
+          }
+        ],
+        "formatted_address": "1800 Bannister St, York, Pennsylvania 17404",
+        "geometry": {
+          "location": {
+            "lat": 39.959272,
+            "lng": -76.7638
+          }
+        },
+        "id": 4364,
+        "name": "1800 Bannister St",
+        "scope": "user"
+      },
+      "prebooking_questions": [
+        {
+          "question": "Will you be traveling with an approved escort",
+          "choices": [
+            true,
+            false
+          ],
+          "code": "assistant"
+        },
+        {
+          "question": "How many children or family members will be traveling with you?",
+          "choices": [
+            0,
+            1,
+            2
+          ],
+          "code": "children"
+        }
+      ],
+      "bookable": false,
+      "json_legs": [
+        {
+          "startTime": 1434657561000,
+          "endTime": 1434659729000,
+          "departureDelay": 0,
+          "arrivalDelay": 0,
+          "realTime": false,
+          "isNonExactFrequency": null,
+          "headway": null,
+          "distance": 2855.3923923652733,
+          "from": {
+            "name": "Sinking Springs Lane",
+            "stopId": null,
+            "stopCode": null,
+            "platformCode": null,
+            "lon": -76.7246149808683,
+            "lat": 40.0134308103871,
+            "arrival": null,
+            "departure": 1434657561000,
+            "orig": "",
+            "zoneId": null,
+            "stopIndex": null
+          },
+          "to": {
+            "name": "Board Rd At Church Rd Ib",
+            "stopId": {
+              "agencyId": "210",
+              "id": "765299"
+            },
+            "stopCode": null,
+            "platformCode": null,
+            "lon": -76.74169499108777,
+            "lat": 40.02408354749473,
+            "arrival": 1434659729000,
+            "departure": 1434659730000,
+            "orig": null,
+            "zoneId": null,
+            "stopIndex": null
+          },
+          "legGeometry": {
+            "points": "}bfsFzghsMB\\TvBB~AOvAg@lAa@p@eBxAaMlKmGuBeA]kBg@kIkC_AQ{@F_C\\cB\\qAVkEj@Ax@GVET]nBARE~@L`B^hBl@lBnAjBdBfD`@zAHnANlB@R`AlMTvB`@`Dv@nF@FLfA^vC]JkExAuJdD",
+            "levels": null,
+            "length": 44
+          },
+          "transitLeg": false,
+          "mode": "WALK",
+          "route": "",
+          "agencyName": null,
+          "agencyUrl": null,
+          "agencyTimeZoneOffset": -14400000,
+          "routeColor": null,
+          "routeType": null,
+          "routeId": null,
+          "routeTextColor": null,
+          "interlineWithPreviousLeg": false,
+          "tripShortName": null,
+          "tripBlockId": null,
+          "headsign": null,
+          "agencyId": null,
+          "tripId": null,
+          "serviceDate": null,
+          "intermediateStops": null,
+          "steps": [
+            {
+              "distance": 583.8254037471139,
+              "relativeDirection": "DEPART",
+              "streetName": "Sinking Springs Lane",
+              "absoluteDirection": "WEST",
+              "exit": null,
+              "stayOn": false,
+              "area": false,
+              "bogusName": false,
+              "lon": -76.7246149808683,
+              "lat": 40.0134308103871,
+              "alerts": null,
+              "elevation": [
+
+              ]
+            },
+            {
+              "distance": 815.9639098195802,
+              "relativeDirection": "RIGHT",
+              "streetName": "North George Street",
+              "absoluteDirection": "NORTH",
+              "exit": null,
+              "stayOn": false,
+              "area": false,
+              "bogusName": false,
+              "lon": -76.7293602,
+              "lat": 40.0164954,
+              "alerts": null,
+              "elevation": [
+
+              ]
+            },
+            {
+              "distance": 1099.13797423337,
+              "relativeDirection": "LEFT",
+              "streetName": "Church Road",
+              "absoluteDirection": "WEST",
+              "exit": null,
+              "stayOn": false,
+              "area": false,
+              "bogusName": false,
+              "lon": -76.7283141,
+              "lat": 40.023582,
+              "alerts": null,
+              "elevation": [
+
+              ]
+            },
+            {
+              "distance": 356.4651045652087,
+              "relativeDirection": "RIGHT",
+              "streetName": "Board Road",
+              "absoluteDirection": "NORTH",
+              "exit": null,
+              "stayOn": false,
+              "area": false,
+              "bogusName": false,
+              "lon": -76.7403519,
+              "lat": 40.0210473,
+              "alerts": null,
+              "elevation": [
+
+              ]
+            }
+          ],
+          "notes": null,
+          "alerts": null,
+          "routeShortName": null,
+          "routeLongName": null,
+          "boardRule": null,
+          "alightRule": null,
+          "rentedBike": false,
+          "duration": 2168.0
+        },
+        {
+          "startTime": 1434659730000,
+          "endTime": 1434660300000,
+          "departureDelay": 0,
+          "arrivalDelay": 0,
+          "realTime": false,
+          "isNonExactFrequency": null,
+          "headway": null,
+          "distance": 5358.959583644491,
+          "from": {
+            "name": "Board Rd At Church Rd Ib",
+            "stopId": {
+              "agencyId": "210",
+              "id": "765299"
+            },
+            "stopCode": null,
+            "platformCode": null,
+            "lon": -76.741721,
+            "lat": 40.024072,
+            "arrival": 1434659729000,
+            "departure": 1434659730000,
+            "orig": null,
+            "zoneId": "0",
+            "stopIndex": 15
+          },
+          "to": {
+            "name": "Manchester Xrds",
+            "stopId": {
+              "agencyId": "210",
+              "id": "765318"
+            },
+            "stopCode": null,
+            "platformCode": null,
+            "lon": -76.739832,
+            "lat": 39.985692,
+            "arrival": 1434660300000,
+            "departure": 1434660300000,
+            "orig": null,
+            "zoneId": "0",
+            "stopIndex": 18
+          },
+          "legGeometry": {
+            "points": "oehsFrrksMtJeDhFgBZ~B~@pHPvAd@zDr@vExA~LZnASpEOzF?`BUrEi@jBiAvAq@f@I@aARyBLoCN_BQu@_@wAiAc@UwBCgAG?Di@Av@s\\|Bu@~DDbM~@pF`@`PrAxQzAnIfBdIz@jY~@pM^rQeEvZ{UIEb@]~G_FrScGbMqFfD{BjDkC`DkBr@pBR\\ZFJALGd@a@GOz@i@",
+            "levels": null,
+            "length": 58
+          },
+          "transitLeg": true,
+          "mode": "BUS",
+          "route": "18N",
+          "agencyName": null,
+          "agencyUrl": null,
+          "agencyTimeZoneOffset": -14400000,
+          "routeColor": "ADFF2F",
+          "routeType": 3,
+          "routeId": "1287",
+          "routeTextColor": "000000",
+          "interlineWithPreviousLeg": false,
+          "tripShortName": null,
+          "tripBlockId": null,
+          "headsign": "York City Ind Park",
+          "agencyId": "210",
+          "tripId": "54347A1024B1797",
+          "serviceDate": "20150618",
+          "intermediateStops": null,
+          "steps": [
+
+          ],
+          "notes": null,
+          "alerts": null,
+          "routeShortName": "18N",
+          "routeLongName": "Manchester Via George Street",
+          "boardRule": null,
+          "alightRule": null,
+          "rentedBike": false,
+          "duration": 570.0
+        },
+        {
+          "startTime": 1434660300000,
+          "endTime": 1434661200000,
+          "departureDelay": 0,
+          "arrivalDelay": 0,
+          "realTime": false,
+          "isNonExactFrequency": null,
+          "headway": null,
+          "distance": 3213.456114701885,
+          "from": {
+            "name": "Manchester Xrds",
+            "stopId": {
+              "agencyId": "210",
+              "id": "765318"
+            },
+            "stopCode": null,
+            "platformCode": null,
+            "lon": -76.739832,
+            "lat": 39.985692,
+            "arrival": 1434660300000,
+            "departure": 1434660300000,
+            "orig": null,
+            "zoneId": "0",
+            "stopIndex": 0
+          },
+          "to": {
+            "name": "Transfer Center",
+            "stopId": {
+              "agencyId": "210",
+              "id": "765237"
+            },
+            "stopCode": null,
+            "platformCode": null,
+            "lon": -76.731524,
+            "lat": 39.959945,
+            "arrival": 1434661200000,
+            "departure": 1434661200000,
+            "orig": null,
+            "zoneId": "0",
+            "stopIndex": 10
+          },
+          "legGeometry": {
+            "points": "{u`sFpfksM{@h@FNe@`@MFK@[GS]s@qBbBiAfBkAdBwAl@c@r@q@pA_A\\UnDkCE[Ja@Ji@Fc@Lq@Hm@Hk@Ji@@?HqAFMdL}BnHwAACXEdCe@bB]d@I`B]tCk@xBo@R@nDu@LAbEg@vFe@lFYV?p@Cn@ET?|AGd@I`EaB|Am@PIfA_@dBu@XKZMbEaBFCrF_CzBaAJEbC_A^fB^bBr@nDLf@A?hBhJzEqBtEmB\\xAfAG",
+            "levels": null,
+            "length": 73
+          },
+          "transitLeg": true,
+          "mode": "BUS",
+          "route": "2N",
+          "agencyName": null,
+          "agencyUrl": null,
+          "agencyTimeZoneOffset": -14400000,
+          "routeColor": "ADD8E6",
+          "routeType": 3,
+          "routeId": "1266",
+          "routeTextColor": "000000",
+          "interlineWithPreviousLeg": false,
+          "tripShortName": null,
+          "tripBlockId": null,
+          "headsign": "2n Downtown",
+          "agencyId": "210",
+          "tripId": "53880A1024B1797",
+          "serviceDate": "20150618",
+          "intermediateStops": null,
+          "steps": [
+
+          ],
+          "notes": null,
+          "alerts": null,
+          "routeShortName": "2N",
+          "routeLongName": "North York Via George Street",
+          "boardRule": null,
+          "alightRule": null,
+          "rentedBike": false,
+          "duration": 900.0
+        },
+        {
+          "startTime": 1434661200000,
+          "endTime": 1434662005000,
+          "departureDelay": 0,
+          "arrivalDelay": 0,
+          "realTime": false,
+          "isNonExactFrequency": null,
+          "headway": null,
+          "distance": 3454.556396043503,
+          "from": {
+            "name": "Transfer Center",
+            "stopId": {
+              "agencyId": "210",
+              "id": "765237"
+            },
+            "stopCode": null,
+            "platformCode": null,
+            "lon": -76.731524,
+            "lat": 39.959945,
+            "arrival": 1434661200000,
+            "departure": 1434661200000,
+            "orig": null,
+            "zoneId": "0",
+            "stopIndex": 0
+          },
+          "to": {
+            "name": "Bannister At Seward Ob",
+            "stopId": {
+              "agencyId": "210",
+              "id": "765385"
+            },
+            "stopCode": null,
+            "platformCode": null,
+            "lon": -76.763942,
+            "lat": 39.960678,
+            "arrival": 1434662005000,
+            "departure": 1434662006000,
+            "orig": null,
+            "zoneId": "0",
+            "stopIndex": 13
+          },
+          "legGeometry": {
+            "points": "qt{rFxsisMz@?aDsOuHxC?A{Bx@cC`ALf@n@vCv@fEFVTfAb@tBx@pDBL`AlEFZrC~Lf@dCBNnCxMH`@hAtF`B~HP|@jB~IHZdC|KC@TrA_ApDwBvI@AEL]zAk@~Bi@pBs@nCo@lCm@|BIb@_@`Bk@dCEL}BrKRhHRfKTbK@V",
+            "levels": null,
+            "length": 49
+          },
+          "transitLeg": true,
+          "mode": "BUS",
+          "route": "1W",
+          "agencyName": null,
+          "agencyUrl": null,
+          "agencyTimeZoneOffset": -14400000,
+          "routeColor": "FF0000",
+          "routeType": 3,
+          "routeId": "1264",
+          "routeTextColor": "000000",
+          "interlineWithPreviousLeg": false,
+          "tripShortName": null,
+          "tripBlockId": null,
+          "headsign": "W Manch Mall",
+          "agencyId": "210",
+          "tripId": "53751A1024B1797",
+          "serviceDate": "20150618",
+          "intermediateStops": null,
+          "steps": [
+
+          ],
+          "notes": null,
+          "alerts": null,
+          "routeShortName": "1W",
+          "routeLongName": "West Manchester Mall",
+          "boardRule": null,
+          "alightRule": null,
+          "rentedBike": false,
+          "duration": 805.0
+        },
+        {
+          "startTime": 1434662006000,
+          "endTime": 1434662157000,
+          "departureDelay": 0,
+          "arrivalDelay": 0,
+          "realTime": false,
+          "isNonExactFrequency": null,
+          "headway": null,
+          "distance": 188.0375108902804,
+          "from": {
+            "name": "Bannister At Seward Ob",
+            "stopId": {
+              "agencyId": "210",
+              "id": "765385"
+            },
+            "stopCode": null,
+            "platformCode": null,
+            "lon": -76.76394113800453,
+            "lat": 39.960662909175014,
+            "arrival": 1434662005000,
+            "departure": 1434662006000,
+            "orig": null,
+            "zoneId": null,
+            "stopIndex": null
+          },
+          "to": {
+            "name": "service road",
+            "stopId": null,
+            "stopCode": null,
+            "platformCode": null,
+            "lon": -76.76379924035636,
+            "lat": 39.959272982150885,
+            "arrival": 1434662157000,
+            "departure": null,
+            "orig": "",
+            "zoneId": null,
+            "stopIndex": null
+          },
+          "legGeometry": {
+            "points": "cy{rFt}osMAYt@A\\?TANAVCXGL?L?BLBJ@HDDHHH@H?H?FIHMDO",
+            "levels": null,
+            "length": 21
+          },
+          "transitLeg": false,
+          "mode": "WALK",
+          "route": "",
+          "agencyName": null,
+          "agencyUrl": null,
+          "agencyTimeZoneOffset": -14400000,
+          "routeColor": null,
+          "routeType": null,
+          "routeId": null,
+          "routeTextColor": null,
+          "interlineWithPreviousLeg": false,
+          "tripShortName": null,
+          "tripBlockId": null,
+          "headsign": null,
+          "agencyId": null,
+          "tripId": null,
+          "serviceDate": null,
+          "intermediateStops": null,
+          "steps": [
+            {
+              "distance": 10.609558098677711,
+              "relativeDirection": "DEPART",
+              "streetName": "Bannister Street",
+              "absoluteDirection": "EAST",
+              "exit": null,
+              "stayOn": false,
+              "area": false,
+              "bogusName": false,
+              "lon": -76.76394113800453,
+              "lat": 39.960662909175014,
+              "alerts": null,
+              "elevation": [
+
+              ]
+            },
+            {
+              "distance": 177.4279527916027,
+              "relativeDirection": "RIGHT",
+              "streetName": "service road",
+              "absoluteDirection": "SOUTH",
+              "exit": null,
+              "stayOn": false,
+              "area": false,
+              "bogusName": true,
+              "lon": -76.763817,
+              "lat": 39.96067,
+              "alerts": null,
+              "elevation": [
+
+              ]
+            }
+          ],
+          "notes": null,
+          "alerts": null,
+          "routeShortName": null,
+          "routeLongName": null,
+          "boardRule": null,
+          "alightRule": null,
+          "rentedBike": false,
+          "duration": 151.0
+        }
+      ]
+    },
+    {
+      "id": 13784,
+      "trip_part_id": 3488,
+      "mode_id": 1,
+      "service_id": 3,
+      "server_status": 200,
+      "server_message": null,
+      "duration": 7420,
+      "walk_time": 622,
+      "transit_time": 4213,
+      "wait_time": 2585,
+      "walk_distance": 804.9340810586517,
+      "transfers": 3,
+      "count": null,
+      "legs": "---\n- startTime: 1434657320000\n  endTime: 1434657791000\n  departureDelay: 0\n  arrivalDelay: 0\n  realTime: false\n  isNonExactFrequency: \n  headway: \n  distance: 616.7403574511848\n  from:\n    name: Sinking Springs Lane\n    stopId: \n    stopCode: \n    platformCode: \n    lon: -76.7246149808683\n    lat: 40.0134308103871\n    arrival: \n    departure: 1434657320000\n    orig: ''\n    zoneId: \n    stopIndex: \n  to:\n    name: George At Sinking Spring Rd Ob\n    stopId:\n      agencyId: '210'\n      id: '765223'\n    stopCode: \n    platformCode: \n    lon: -76.72947796293063\n    lat: 40.016213463824805\n    arrival: 1434657791000\n    departure: 1434657792000\n    orig: \n    zoneId: \n    stopIndex: \n  legGeometry:\n    points: \"}bfsFzghsMB\\\\TvBB~AOvAg@lAa@p@eBxAaMlKv@T\"\n    levels: \n    length: 10\n  transitLeg: false\n  mode: WALK\n  route: ''\n  agencyName: \n  agencyUrl: \n  agencyTimeZoneOffset: -14400000\n  routeColor: \n  routeType: \n  routeId: \n  routeTextColor: \n  interlineWithPreviousLeg: false\n  tripShortName: \n  tripBlockId: \n  headsign: \n  agencyId: \n  tripId: \n  serviceDate: \n  intermediateStops: \n  steps:\n  - distance: 583.8254037471139\n    relativeDirection: DEPART\n    streetName: Sinking Springs Lane\n    absoluteDirection: WEST\n    exit: \n    stayOn: false\n    area: false\n    bogusName: false\n    lon: -76.7246149808683\n    lat: 40.0134308103871\n    alerts: \n    elevation: []\n  - distance: 32.914953704070896\n    relativeDirection: HARD_LEFT\n    streetName: North George Street\n    absoluteDirection: SOUTH\n    exit: \n    stayOn: false\n    area: false\n    bogusName: false\n    lon: -76.7293602\n    lat: 40.0164954\n    alerts: \n    elevation: []\n  notes: \n  alerts: \n  routeShortName: \n  routeLongName: \n  boardRule: \n  alightRule: \n  rentedBike: false\n  duration: 471.0\n- startTime: 1434657792000\n  endTime: 1434658620000\n  departureDelay: 0\n  arrivalDelay: 0\n  realTime: false\n  isNonExactFrequency: \n  headway: \n  distance: 6017.2640460249895\n  from:\n    name: George At Sinking Spring Rd Ob\n    stopId:\n      agencyId: '210'\n      id: '765223'\n    stopCode: \n    platformCode: \n    lon: -76.729417\n    lat: 40.016188\n    arrival: 1434657791000\n    departure: 1434657792000\n    orig: \n    zoneId: '0'\n    stopIndex: 11\n  to:\n    name: Manchester Boro\n    stopId:\n      agencyId: '210'\n      id: '765188'\n    stopCode: \n    platformCode: \n    lon: -76.723102\n    lat: 40.050311\n    arrival: 1434658620000\n    departure: 1434658620000\n    orig: \n    zoneId: '0'\n    stopIndex: 18\n  legGeometry:\n    points: itfsFffisMw@UwGyB@?s@ULoAEuA{@yHu@uHIiBR}DVwAh@cB~I}MdAwAtB}BlC}BrCmBtMwGlAeAZ\\\\@x@QpEwBBO?IMK}DgAeAdC?By@lAe@d@k@d@gDzAaFbCsFfDkFtFeCbDwGbKu@c@e@o@Y}@Ms@UkGmHb@A?oF`@MKOCKN@RHBLCHGTOrOcAVpHPv@R`@pArAi@bBWvAS|DHhBt@tHz@xHDtAMnAiOqEw@FuFnA_MpAwHDmG[_IgAaI{BqHkCmBa@wMqA_KsAgAEy[wDCBaC[m@IgGw@gI_AgGq@u@I{PqBGA\n    levels: \n    length: 91\n  transitLeg: true\n  mode: BUS\n  route: 18N\n  agencyName: \n  agencyUrl: \n  agencyTimeZoneOffset: -14400000\n  routeColor: ADFF2F\n  routeType: 3\n  routeId: '1287'\n  routeTextColor: '000000'\n  interlineWithPreviousLeg: false\n  tripShortName: \n  tripBlockId: \n  headsign: Manchester Via George\n  agencyId: '210'\n  tripId: 54337A1024B1797\n  serviceDate: '20150618'\n  intermediateStops: \n  steps: []\n  notes: \n  alerts: \n  routeShortName: 18N\n  routeLongName: Manchester Via George Street\n  boardRule: \n  alightRule: \n  rentedBike: false\n  duration: 828.0\n- startTime: 1434658620000\n  endTime: 1434658620000\n  departureDelay: 0\n  arrivalDelay: 0\n  realTime: false\n  isNonExactFrequency: \n  headway: \n  distance: 0.0\n  from:\n    name: Manchester Boro\n    stopId:\n      agencyId: '210'\n      id: '765188'\n    stopCode: \n    platformCode: \n    lon: -76.723102\n    lat: 40.050311\n    arrival: 1434658620000\n    departure: 1434658620000\n    orig: \n    zoneId: \n    stopIndex: \n  to:\n    name: Manchester Boro\n    stopId:\n      agencyId: '210'\n      id: '765188'\n    stopCode: \n    platformCode: \n    lon: -76.723102\n    lat: 40.050311\n    arrival: 1434658620000\n    departure: 1434658620000\n    orig: \n    zoneId: \n    stopIndex: \n  legGeometry:\n    points: ''\n    levels: \n    length: 0\n  transitLeg: false\n  mode: WALK\n  route: ''\n  agencyName: \n  agencyUrl: \n  agencyTimeZoneOffset: -14400000\n  routeColor: \n  routeType: \n  routeId: \n  routeTextColor: \n  interlineWithPreviousLeg: false\n  tripShortName: \n  tripBlockId: \n  headsign: \n  agencyId: \n  tripId: \n  serviceDate: \n  intermediateStops: \n  steps: []\n  notes: \n  alerts: \n  routeShortName: \n  routeLongName: \n  boardRule: \n  alightRule: \n  rentedBike: false\n  duration: 0.0\n- startTime: 1434658620000\n  endTime: 1434660300000\n  departureDelay: 0\n  arrivalDelay: 0\n  realTime: false\n  isNonExactFrequency: \n  headway: \n  distance: 12476.775499542846\n  from:\n    name: Manchester Boro\n    stopId:\n      agencyId: '210'\n      id: '765188'\n    stopCode: \n    platformCode: \n    lon: -76.723102\n    lat: 40.050311\n    arrival: 1434658620000\n    departure: 1434658620000\n    orig: \n    zoneId: '0'\n    stopIndex: 0\n  to:\n    name: Manchester Xrds\n    stopId:\n      agencyId: '210'\n      id: '765318'\n    stopCode: \n    platformCode: \n    lon: -76.739832\n    lat: 39.985692\n    arrival: 1434660300000\n    departure: 1434660300000\n    orig: \n    zoneId: '0'\n    stopIndex: 18\n  legGeometry:\n    points: kimsFb~gsMF@kBxJuA`G~KfErEfBjBbAvAlApEdFhCvD@D?CpPpSvF|HaIfNqF~ImJ~HURkBsDg@g@aBo@s@e@e@i@g@cAu@{C]i@}@u@YDQZP[XE|@t@\\h@t@zCf@bAd@h@r@d@`Bn@f@f@jBrDeDbDmBfDYz@g@xDWz@eBfE|@t@DDvLdK`@v@@\\yHjBs@A@?YCuFyE[eA?@YiAtFyMX_Af@yDX{@lBgDdDcDkBsDg@g@aBo@s@e@e@i@g@cAu@{C]i@}@u@YDQZP[XE|@t@\\h@t@zCf@bAd@h@r@d@`Bn@f@f@jBrDh@c@xIoH~IiOr@x@|GlEeA`EGvA@tCDl@Nf@t@|A`@`@dB~@j@t@Nt@tAxNPv@`@n@j@\\|@Hr@]C?dLsBtI_BnGgAScBs@gGR{A`AeCbJjFlHlEhC^H@pBOvGkBHChO_Fp@UtJeDhFgBZ~B~@pHPvAd@zDr@vExA~LZnASpEOzF?`BUrEi@jBiAvAq@f@I@aARyBLoCN_BQu@_@wAiAc@UwBCgAG?Di@Av@s\\|Bu@~DDbM~@pF`@`PrAxQzAnIfBdIz@jY~@pM^rQeEvZ{UIEb@]~G_FrScGbMqFfD{BjDkC`DkBr@pBR\\ZFJALGd@a@GOz@i@\n    levels: \n    length: 182\n  transitLeg: true\n  mode: BUS\n  route: 18N\n  agencyName: \n  agencyUrl: \n  agencyTimeZoneOffset: -14400000\n  routeColor: ADFF2F\n  routeType: 3\n  routeId: '1287'\n  routeTextColor: '000000'\n  interlineWithPreviousLeg: false\n  tripShortName: \n  tripBlockId: \n  headsign: York City Ind Park\n  agencyId: '210'\n  tripId: 54347A1024B1797\n  serviceDate: '20150618'\n  intermediateStops: \n  steps: []\n  notes: \n  alerts: \n  routeShortName: 18N\n  routeLongName: Manchester Via George Street\n  boardRule: \n  alightRule: \n  rentedBike: false\n  duration: 1680.0\n- startTime: 1434660300000\n  endTime: 1434661200000\n  departureDelay: 0\n  arrivalDelay: 0\n  realTime: false\n  isNonExactFrequency: \n  headway: \n  distance: 3213.456114701885\n  from:\n    name: Manchester Xrds\n    stopId:\n      agencyId: '210'\n      id: '765318'\n    stopCode: \n    platformCode: \n    lon: -76.739832\n    lat: 39.985692\n    arrival: 1434660300000\n    departure: 1434660300000\n    orig: \n    zoneId: '0'\n    stopIndex: 0\n  to:\n    name: Transfer Center\n    stopId:\n      agencyId: '210'\n      id: '765237'\n    stopCode: \n    platformCode: \n    lon: -76.731524\n    lat: 39.959945\n    arrival: 1434661200000\n    departure: 1434663000000\n    orig: \n    zoneId: '0'\n    stopIndex: 10\n  legGeometry:\n    points: \"{u`sFpfksM{@h@FNe@`@MFK@[GS]s@qBbBiAfBkAdBwAl@c@r@q@pA_A\\\\UnDkCE[Ja@Ji@Fc@Lq@Hm@Hk@Ji@@?HqAFMdL}BnHwAACXEdCe@bB]d@I`B]tCk@xBo@R@nDu@LAbEg@vFe@lFYV?p@Cn@ET?|AGd@I`EaB|Am@PIfA_@dBu@XKZMbEaBFCrF_CzBaAJEbC_A^fB^bBr@nDLf@A?hBhJzEqBtEmB\\\\xAfAG\"\n    levels: \n    length: 73\n  transitLeg: true\n  mode: BUS\n  route: 2N\n  agencyName: \n  agencyUrl: \n  agencyTimeZoneOffset: -14400000\n  routeColor: ADD8E6\n  routeType: 3\n  routeId: '1266'\n  routeTextColor: '000000'\n  interlineWithPreviousLeg: false\n  tripShortName: \n  tripBlockId: \n  headsign: 2n Downtown\n  agencyId: '210'\n  tripId: 53880A1024B1797\n  serviceDate: '20150618'\n  intermediateStops: \n  steps: []\n  notes: \n  alerts: \n  routeShortName: 2N\n  routeLongName: North York Via George Street\n  boardRule: \n  alightRule: \n  rentedBike: false\n  duration: 900.0\n- startTime: 1434663000000\n  endTime: 1434663805000\n  departureDelay: 0\n  arrivalDelay: 0\n  realTime: false\n  isNonExactFrequency: \n  headway: \n  distance: 3454.556396043503\n  from:\n    name: Transfer Center\n    stopId:\n      agencyId: '210'\n      id: '765237'\n    stopCode: \n    platformCode: \n    lon: -76.731524\n    lat: 39.959945\n    arrival: 1434661200000\n    departure: 1434663000000\n    orig: \n    zoneId: '0'\n    stopIndex: 0\n  to:\n    name: Bannister At Seward Ob\n    stopId:\n      agencyId: '210'\n      id: '765385'\n    stopCode: \n    platformCode: \n    lon: -76.763942\n    lat: 39.960678\n    arrival: 1434663805000\n    departure: 1434664589000\n    orig: \n    zoneId: '0'\n    stopIndex: 13\n  legGeometry:\n    points: qt{rFxsisMz@?aDsOuHxC?A{Bx@cC`ALf@n@vCv@fEFVTfAb@tBx@pDBL`AlEFZrC~Lf@dCBNnCxMH`@hAtF`B~HP|@jB~IHZdC|KC@TrA_ApDwBvI@AEL]zAk@~Bi@pBs@nCo@lCm@|BIb@_@`Bk@dCEL}BrKRhHRfKTbK@V\n    levels: \n    length: 49\n  transitLeg: true\n  mode: BUS\n  route: 1W\n  agencyName: \n  agencyUrl: \n  agencyTimeZoneOffset: -14400000\n  routeColor: FF0000\n  routeType: 3\n  routeId: '1264'\n  routeTextColor: '000000'\n  interlineWithPreviousLeg: false\n  tripShortName: \n  tripBlockId: \n  headsign: W Manch Mall\n  agencyId: '210'\n  tripId: 53752A1024B1797\n  serviceDate: '20150618'\n  intermediateStops: \n  steps: []\n  notes: \n  alerts: \n  routeShortName: 1W\n  routeLongName: West Manchester Mall\n  boardRule: \n  alightRule: \n  rentedBike: false\n  duration: 805.0\n- startTime: 1434664589000\n  endTime: 1434664740000\n  departureDelay: 0\n  arrivalDelay: 0\n  realTime: false\n  isNonExactFrequency: \n  headway: \n  distance: 188.0375108902804\n  from:\n    name: Bannister At Seward Ob\n    stopId:\n      agencyId: '210'\n      id: '765385'\n    stopCode: \n    platformCode: \n    lon: -76.76394113800453\n    lat: 39.960662909175014\n    arrival: 1434663805000\n    departure: 1434664589000\n    orig: \n    zoneId: \n    stopIndex: \n  to:\n    name: service road\n    stopId: \n    stopCode: \n    platformCode: \n    lon: -76.76379924035636\n    lat: 39.959272982150885\n    arrival: 1434664740000\n    departure: \n    orig: ''\n    zoneId: \n    stopIndex: \n  legGeometry:\n    points: cy{rFt}osMAYt@A\\?TANAVCXGL?L?BLBJ@HDDHHH@H?H?FIHMDO\n    levels: \n    length: 21\n  transitLeg: false\n  mode: WALK\n  route: ''\n  agencyName: \n  agencyUrl: \n  agencyTimeZoneOffset: -14400000\n  routeColor: \n  routeType: \n  routeId: \n  routeTextColor: \n  interlineWithPreviousLeg: false\n  tripShortName: \n  tripBlockId: \n  headsign: \n  agencyId: \n  tripId: \n  serviceDate: \n  intermediateStops: \n  steps:\n  - distance: 10.609558098677711\n    relativeDirection: DEPART\n    streetName: Bannister Street\n    absoluteDirection: EAST\n    exit: \n    stayOn: false\n    area: false\n    bogusName: false\n    lon: -76.76394113800453\n    lat: 39.960662909175014\n    alerts: \n    elevation: []\n  - distance: 177.4279527916027\n    relativeDirection: RIGHT\n    streetName: service road\n    absoluteDirection: SOUTH\n    exit: \n    stayOn: false\n    area: false\n    bogusName: true\n    lon: -76.763817\n    lat: 39.96067\n    alerts: \n    elevation: []\n  notes: \n  alerts: \n  routeShortName: \n  routeLongName: \n  boardRule: \n  alightRule: \n  rentedBike: false\n  duration: 151.0\n",
+      "cost": "1.6",
+      "hidden": false,
+      "created_at": "2015-06-16T13:56:19.618-04:00",
+      "updated_at": "2015-06-16T13:56:19.705-04:00",
+      "ride_count": null,
+      "external_info": null,
+      "match_score": -0.09999999999999998,
+      "missing_information": false,
+      "accommodation_mismatch": false,
+      "missing_information_text": null,
+      "date_mismatch": false,
+      "time_mismatch": false,
+      "too_late": false,
+      "missing_accommodations": "",
+      "cost_comments": null,
+      "selected": null,
+      "start_time": "2015-06-18T15:55:20.000-04:00",
+      "end_time": "2015-06-18T17:59:00.000-04:00",
+      "is_bookable": false,
+      "booking_confirmation": null,
+      "duration_estimated": false,
+      "map_image": {
+        "url": null
+      },
+      "too_early": false,
+      "returned_mode_code": "mode_transit",
+      "order_xml": null,
+      "discounts": null,
+      "segment_index": 0,
+      "start_location": {
+        "address_components": [
+          {
+            "long_name": "400 E Locust Ln",
+            "short_name": "400 E Locust Ln",
+            "types": [
+              "street_address"
+            ]
+          },
+          {
+            "long_name": "York",
+            "short_name": "York",
+            "types": [
+              "locality",
+              "political"
+            ]
+          },
+          {
+            "long_name": "Pennsylvania",
+            "short_name": "Pennsylvania",
+            "types": [
+              "administrative_area_level_1",
+              "political"
+            ]
+          },
+          {
+            "long_name": "17406",
+            "short_name": "17406",
+            "types": [
+              "postal_code"
+            ]
+          }
+        ],
+        "formatted_address": "400 E Locust Ln, York, Pennsylvania 17406",
+        "geometry": {
+          "location": {
+            "lat": 40.0134428,
+            "lng": -76.7246173
+          }
+        },
+        "id": 4363,
+        "name": "400 E Locust Ln",
+        "scope": "user"
+      },
+      "end_location": {
+        "address_components": [
+          {
+            "long_name": "1800 Bannister St",
+            "short_name": "1800 Bannister St",
+            "types": [
+              "street_address"
+            ]
+          },
+          {
+            "long_name": "York",
+            "short_name": "York",
+            "types": [
+              "locality",
+              "political"
+            ]
+          },
+          {
+            "long_name": "Pennsylvania",
+            "short_name": "Pennsylvania",
+            "types": [
+              "administrative_area_level_1",
+              "political"
+            ]
+          },
+          {
+            "long_name": "17404",
+            "short_name": "17404",
+            "types": [
+              "postal_code"
+            ]
+          }
+        ],
+        "formatted_address": "1800 Bannister St, York, Pennsylvania 17404",
+        "geometry": {
+          "location": {
+            "lat": 39.959272,
+            "lng": -76.7638
+          }
+        },
+        "id": 4364,
+        "name": "1800 Bannister St",
+        "scope": "user"
+      },
+      "prebooking_questions": [
+        {
+          "question": "Will you be traveling with an approved escort",
+          "choices": [
+            true,
+            false
+          ],
+          "code": "assistant"
+        },
+        {
+          "question": "How many children or family members will be traveling with you?",
+          "choices": [
+            0,
+            1,
+            2
+          ],
+          "code": "children"
+        }
+      ],
+      "bookable": false,
+      "json_legs": [
+        {
+          "startTime": 1434657320000,
+          "endTime": 1434657791000,
+          "departureDelay": 0,
+          "arrivalDelay": 0,
+          "realTime": false,
+          "isNonExactFrequency": null,
+          "headway": null,
+          "distance": 616.7403574511848,
+          "from": {
+            "name": "Sinking Springs Lane",
+            "stopId": null,
+            "stopCode": null,
+            "platformCode": null,
+            "lon": -76.7246149808683,
+            "lat": 40.0134308103871,
+            "arrival": null,
+            "departure": 1434657320000,
+            "orig": "",
+            "zoneId": null,
+            "stopIndex": null
+          },
+          "to": {
+            "name": "George At Sinking Spring Rd Ob",
+            "stopId": {
+              "agencyId": "210",
+              "id": "765223"
+            },
+            "stopCode": null,
+            "platformCode": null,
+            "lon": -76.72947796293063,
+            "lat": 40.016213463824805,
+            "arrival": 1434657791000,
+            "departure": 1434657792000,
+            "orig": null,
+            "zoneId": null,
+            "stopIndex": null
+          },
+          "legGeometry": {
+            "points": "}bfsFzghsMB\\TvBB~AOvAg@lAa@p@eBxAaMlKv@T",
+            "levels": null,
+            "length": 10
+          },
+          "transitLeg": false,
+          "mode": "WALK",
+          "route": "",
+          "agencyName": null,
+          "agencyUrl": null,
+          "agencyTimeZoneOffset": -14400000,
+          "routeColor": null,
+          "routeType": null,
+          "routeId": null,
+          "routeTextColor": null,
+          "interlineWithPreviousLeg": false,
+          "tripShortName": null,
+          "tripBlockId": null,
+          "headsign": null,
+          "agencyId": null,
+          "tripId": null,
+          "serviceDate": null,
+          "intermediateStops": null,
+          "steps": [
+            {
+              "distance": 583.8254037471139,
+              "relativeDirection": "DEPART",
+              "streetName": "Sinking Springs Lane",
+              "absoluteDirection": "WEST",
+              "exit": null,
+              "stayOn": false,
+              "area": false,
+              "bogusName": false,
+              "lon": -76.7246149808683,
+              "lat": 40.0134308103871,
+              "alerts": null,
+              "elevation": [
+
+              ]
+            },
+            {
+              "distance": 32.914953704070896,
+              "relativeDirection": "HARD_LEFT",
+              "streetName": "North George Street",
+              "absoluteDirection": "SOUTH",
+              "exit": null,
+              "stayOn": false,
+              "area": false,
+              "bogusName": false,
+              "lon": -76.7293602,
+              "lat": 40.0164954,
+              "alerts": null,
+              "elevation": [
+
+              ]
+            }
+          ],
+          "notes": null,
+          "alerts": null,
+          "routeShortName": null,
+          "routeLongName": null,
+          "boardRule": null,
+          "alightRule": null,
+          "rentedBike": false,
+          "duration": 471.0
+        },
+        {
+          "startTime": 1434657792000,
+          "endTime": 1434658620000,
+          "departureDelay": 0,
+          "arrivalDelay": 0,
+          "realTime": false,
+          "isNonExactFrequency": null,
+          "headway": null,
+          "distance": 6017.2640460249895,
+          "from": {
+            "name": "George At Sinking Spring Rd Ob",
+            "stopId": {
+              "agencyId": "210",
+              "id": "765223"
+            },
+            "stopCode": null,
+            "platformCode": null,
+            "lon": -76.729417,
+            "lat": 40.016188,
+            "arrival": 1434657791000,
+            "departure": 1434657792000,
+            "orig": null,
+            "zoneId": "0",
+            "stopIndex": 11
+          },
+          "to": {
+            "name": "Manchester Boro",
+            "stopId": {
+              "agencyId": "210",
+              "id": "765188"
+            },
+            "stopCode": null,
+            "platformCode": null,
+            "lon": -76.723102,
+            "lat": 40.050311,
+            "arrival": 1434658620000,
+            "departure": 1434658620000,
+            "orig": null,
+            "zoneId": "0",
+            "stopIndex": 18
+          },
+          "legGeometry": {
+            "points": "itfsFffisMw@UwGyB@?s@ULoAEuA{@yHu@uHIiBR}DVwAh@cB~I}MdAwAtB}BlC}BrCmBtMwGlAeAZ\\\\@x@QpEwBBO?IMK}DgAeAdC?By@lAe@d@k@d@gDzAaFbCsFfDkFtFeCbDwGbKu@c@e@o@Y}@Ms@UkGmHb@A?oF`@MKOCKN@RHBLCHGTOrOcAVpHPv@R`@pArAi@bBWvAS|DHhBt@tHz@xHDtAMnAiOqEw@FuFnA_MpAwHDmG[_IgAaI{BqHkCmBa@wMqA_KsAgAEy[wDCBaC[m@IgGw@gI_AgGq@u@I{PqBGA",
+            "levels": null,
+            "length": 91
+          },
+          "transitLeg": true,
+          "mode": "BUS",
+          "route": "18N",
+          "agencyName": null,
+          "agencyUrl": null,
+          "agencyTimeZoneOffset": -14400000,
+          "routeColor": "ADFF2F",
+          "routeType": 3,
+          "routeId": "1287",
+          "routeTextColor": "000000",
+          "interlineWithPreviousLeg": false,
+          "tripShortName": null,
+          "tripBlockId": null,
+          "headsign": "Manchester Via George",
+          "agencyId": "210",
+          "tripId": "54337A1024B1797",
+          "serviceDate": "20150618",
+          "intermediateStops": null,
+          "steps": [
+
+          ],
+          "notes": null,
+          "alerts": null,
+          "routeShortName": "18N",
+          "routeLongName": "Manchester Via George Street",
+          "boardRule": null,
+          "alightRule": null,
+          "rentedBike": false,
+          "duration": 828.0
+        },
+        {
+          "startTime": 1434658620000,
+          "endTime": 1434658620000,
+          "departureDelay": 0,
+          "arrivalDelay": 0,
+          "realTime": false,
+          "isNonExactFrequency": null,
+          "headway": null,
+          "distance": 0.0,
+          "from": {
+            "name": "Manchester Boro",
+            "stopId": {
+              "agencyId": "210",
+              "id": "765188"
+            },
+            "stopCode": null,
+            "platformCode": null,
+            "lon": -76.723102,
+            "lat": 40.050311,
+            "arrival": 1434658620000,
+            "departure": 1434658620000,
+            "orig": null,
+            "zoneId": null,
+            "stopIndex": null
+          },
+          "to": {
+            "name": "Manchester Boro",
+            "stopId": {
+              "agencyId": "210",
+              "id": "765188"
+            },
+            "stopCode": null,
+            "platformCode": null,
+            "lon": -76.723102,
+            "lat": 40.050311,
+            "arrival": 1434658620000,
+            "departure": 1434658620000,
+            "orig": null,
+            "zoneId": null,
+            "stopIndex": null
+          },
+          "legGeometry": {
+            "points": "",
+            "levels": null,
+            "length": 0
+          },
+          "transitLeg": false,
+          "mode": "WALK",
+          "route": "",
+          "agencyName": null,
+          "agencyUrl": null,
+          "agencyTimeZoneOffset": -14400000,
+          "routeColor": null,
+          "routeType": null,
+          "routeId": null,
+          "routeTextColor": null,
+          "interlineWithPreviousLeg": false,
+          "tripShortName": null,
+          "tripBlockId": null,
+          "headsign": null,
+          "agencyId": null,
+          "tripId": null,
+          "serviceDate": null,
+          "intermediateStops": null,
+          "steps": [
+
+          ],
+          "notes": null,
+          "alerts": null,
+          "routeShortName": null,
+          "routeLongName": null,
+          "boardRule": null,
+          "alightRule": null,
+          "rentedBike": false,
+          "duration": 0.0
+        },
+        {
+          "startTime": 1434658620000,
+          "endTime": 1434660300000,
+          "departureDelay": 0,
+          "arrivalDelay": 0,
+          "realTime": false,
+          "isNonExactFrequency": null,
+          "headway": null,
+          "distance": 12476.775499542846,
+          "from": {
+            "name": "Manchester Boro",
+            "stopId": {
+              "agencyId": "210",
+              "id": "765188"
+            },
+            "stopCode": null,
+            "platformCode": null,
+            "lon": -76.723102,
+            "lat": 40.050311,
+            "arrival": 1434658620000,
+            "departure": 1434658620000,
+            "orig": null,
+            "zoneId": "0",
+            "stopIndex": 0
+          },
+          "to": {
+            "name": "Manchester Xrds",
+            "stopId": {
+              "agencyId": "210",
+              "id": "765318"
+            },
+            "stopCode": null,
+            "platformCode": null,
+            "lon": -76.739832,
+            "lat": 39.985692,
+            "arrival": 1434660300000,
+            "departure": 1434660300000,
+            "orig": null,
+            "zoneId": "0",
+            "stopIndex": 18
+          },
+          "legGeometry": {
+            "points": "kimsFb~gsMF@kBxJuA`G~KfErEfBjBbAvAlApEdFhCvD@D?CpPpSvF|HaIfNqF~ImJ~HURkBsDg@g@aBo@s@e@e@i@g@cAu@{C]i@}@u@YDQZP[XE|@t@\\h@t@zCf@bAd@h@r@d@`Bn@f@f@jBrDeDbDmBfDYz@g@xDWz@eBfE|@t@DDvLdK`@v@@\\yHjBs@A@?YCuFyE[eA?@YiAtFyMX_Af@yDX{@lBgDdDcDkBsDg@g@aBo@s@e@e@i@g@cAu@{C]i@}@u@YDQZP[XE|@t@\\h@t@zCf@bAd@h@r@d@`Bn@f@f@jBrDh@c@xIoH~IiOr@x@|GlEeA`EGvA@tCDl@Nf@t@|A`@`@dB~@j@t@Nt@tAxNPv@`@n@j@\\|@Hr@]C?dLsBtI_BnGgAScBs@gGR{A`AeCbJjFlHlEhC^H@pBOvGkBHChO_Fp@UtJeDhFgBZ~B~@pHPvAd@zDr@vExA~LZnASpEOzF?`BUrEi@jBiAvAq@f@I@aARyBLoCN_BQu@_@wAiAc@UwBCgAG?Di@Av@s\\|Bu@~DDbM~@pF`@`PrAxQzAnIfBdIz@jY~@pM^rQeEvZ{UIEb@]~G_FrScGbMqFfD{BjDkC`DkBr@pBR\\ZFJALGd@a@GOz@i@",
+            "levels": null,
+            "length": 182
+          },
+          "transitLeg": true,
+          "mode": "BUS",
+          "route": "18N",
+          "agencyName": null,
+          "agencyUrl": null,
+          "agencyTimeZoneOffset": -14400000,
+          "routeColor": "ADFF2F",
+          "routeType": 3,
+          "routeId": "1287",
+          "routeTextColor": "000000",
+          "interlineWithPreviousLeg": false,
+          "tripShortName": null,
+          "tripBlockId": null,
+          "headsign": "York City Ind Park",
+          "agencyId": "210",
+          "tripId": "54347A1024B1797",
+          "serviceDate": "20150618",
+          "intermediateStops": null,
+          "steps": [
+
+          ],
+          "notes": null,
+          "alerts": null,
+          "routeShortName": "18N",
+          "routeLongName": "Manchester Via George Street",
+          "boardRule": null,
+          "alightRule": null,
+          "rentedBike": false,
+          "duration": 1680.0
+        },
+        {
+          "startTime": 1434660300000,
+          "endTime": 1434661200000,
+          "departureDelay": 0,
+          "arrivalDelay": 0,
+          "realTime": false,
+          "isNonExactFrequency": null,
+          "headway": null,
+          "distance": 3213.456114701885,
+          "from": {
+            "name": "Manchester Xrds",
+            "stopId": {
+              "agencyId": "210",
+              "id": "765318"
+            },
+            "stopCode": null,
+            "platformCode": null,
+            "lon": -76.739832,
+            "lat": 39.985692,
+            "arrival": 1434660300000,
+            "departure": 1434660300000,
+            "orig": null,
+            "zoneId": "0",
+            "stopIndex": 0
+          },
+          "to": {
+            "name": "Transfer Center",
+            "stopId": {
+              "agencyId": "210",
+              "id": "765237"
+            },
+            "stopCode": null,
+            "platformCode": null,
+            "lon": -76.731524,
+            "lat": 39.959945,
+            "arrival": 1434661200000,
+            "departure": 1434663000000,
+            "orig": null,
+            "zoneId": "0",
+            "stopIndex": 10
+          },
+          "legGeometry": {
+            "points": "{u`sFpfksM{@h@FNe@`@MFK@[GS]s@qBbBiAfBkAdBwAl@c@r@q@pA_A\\UnDkCE[Ja@Ji@Fc@Lq@Hm@Hk@Ji@@?HqAFMdL}BnHwAACXEdCe@bB]d@I`B]tCk@xBo@R@nDu@LAbEg@vFe@lFYV?p@Cn@ET?|AGd@I`EaB|Am@PIfA_@dBu@XKZMbEaBFCrF_CzBaAJEbC_A^fB^bBr@nDLf@A?hBhJzEqBtEmB\\xAfAG",
+            "levels": null,
+            "length": 73
+          },
+          "transitLeg": true,
+          "mode": "BUS",
+          "route": "2N",
+          "agencyName": null,
+          "agencyUrl": null,
+          "agencyTimeZoneOffset": -14400000,
+          "routeColor": "ADD8E6",
+          "routeType": 3,
+          "routeId": "1266",
+          "routeTextColor": "000000",
+          "interlineWithPreviousLeg": false,
+          "tripShortName": null,
+          "tripBlockId": null,
+          "headsign": "2n Downtown",
+          "agencyId": "210",
+          "tripId": "53880A1024B1797",
+          "serviceDate": "20150618",
+          "intermediateStops": null,
+          "steps": [
+
+          ],
+          "notes": null,
+          "alerts": null,
+          "routeShortName": "2N",
+          "routeLongName": "North York Via George Street",
+          "boardRule": null,
+          "alightRule": null,
+          "rentedBike": false,
+          "duration": 900.0
+        },
+        {
+          "startTime": 1434663000000,
+          "endTime": 1434663805000,
+          "departureDelay": 0,
+          "arrivalDelay": 0,
+          "realTime": false,
+          "isNonExactFrequency": null,
+          "headway": null,
+          "distance": 3454.556396043503,
+          "from": {
+            "name": "Transfer Center",
+            "stopId": {
+              "agencyId": "210",
+              "id": "765237"
+            },
+            "stopCode": null,
+            "platformCode": null,
+            "lon": -76.731524,
+            "lat": 39.959945,
+            "arrival": 1434661200000,
+            "departure": 1434663000000,
+            "orig": null,
+            "zoneId": "0",
+            "stopIndex": 0
+          },
+          "to": {
+            "name": "Bannister At Seward Ob",
+            "stopId": {
+              "agencyId": "210",
+              "id": "765385"
+            },
+            "stopCode": null,
+            "platformCode": null,
+            "lon": -76.763942,
+            "lat": 39.960678,
+            "arrival": 1434663805000,
+            "departure": 1434664589000,
+            "orig": null,
+            "zoneId": "0",
+            "stopIndex": 13
+          },
+          "legGeometry": {
+            "points": "qt{rFxsisMz@?aDsOuHxC?A{Bx@cC`ALf@n@vCv@fEFVTfAb@tBx@pDBL`AlEFZrC~Lf@dCBNnCxMH`@hAtF`B~HP|@jB~IHZdC|KC@TrA_ApDwBvI@AEL]zAk@~Bi@pBs@nCo@lCm@|BIb@_@`Bk@dCEL}BrKRhHRfKTbK@V",
+            "levels": null,
+            "length": 49
+          },
+          "transitLeg": true,
+          "mode": "BUS",
+          "route": "1W",
+          "agencyName": null,
+          "agencyUrl": null,
+          "agencyTimeZoneOffset": -14400000,
+          "routeColor": "FF0000",
+          "routeType": 3,
+          "routeId": "1264",
+          "routeTextColor": "000000",
+          "interlineWithPreviousLeg": false,
+          "tripShortName": null,
+          "tripBlockId": null,
+          "headsign": "W Manch Mall",
+          "agencyId": "210",
+          "tripId": "53752A1024B1797",
+          "serviceDate": "20150618",
+          "intermediateStops": null,
+          "steps": [
+
+          ],
+          "notes": null,
+          "alerts": null,
+          "routeShortName": "1W",
+          "routeLongName": "West Manchester Mall",
+          "boardRule": null,
+          "alightRule": null,
+          "rentedBike": false,
+          "duration": 805.0
+        },
+        {
+          "startTime": 1434664589000,
+          "endTime": 1434664740000,
+          "departureDelay": 0,
+          "arrivalDelay": 0,
+          "realTime": false,
+          "isNonExactFrequency": null,
+          "headway": null,
+          "distance": 188.0375108902804,
+          "from": {
+            "name": "Bannister At Seward Ob",
+            "stopId": {
+              "agencyId": "210",
+              "id": "765385"
+            },
+            "stopCode": null,
+            "platformCode": null,
+            "lon": -76.76394113800453,
+            "lat": 39.960662909175014,
+            "arrival": 1434663805000,
+            "departure": 1434664589000,
+            "orig": null,
+            "zoneId": null,
+            "stopIndex": null
+          },
+          "to": {
+            "name": "service road",
+            "stopId": null,
+            "stopCode": null,
+            "platformCode": null,
+            "lon": -76.76379924035636,
+            "lat": 39.959272982150885,
+            "arrival": 1434664740000,
+            "departure": null,
+            "orig": "",
+            "zoneId": null,
+            "stopIndex": null
+          },
+          "legGeometry": {
+            "points": "cy{rFt}osMAYt@A\\?TANAVCXGL?L?BLBJ@HDDHHH@H?H?FIHMDO",
+            "levels": null,
+            "length": 21
+          },
+          "transitLeg": false,
+          "mode": "WALK",
+          "route": "",
+          "agencyName": null,
+          "agencyUrl": null,
+          "agencyTimeZoneOffset": -14400000,
+          "routeColor": null,
+          "routeType": null,
+          "routeId": null,
+          "routeTextColor": null,
+          "interlineWithPreviousLeg": false,
+          "tripShortName": null,
+          "tripBlockId": null,
+          "headsign": null,
+          "agencyId": null,
+          "tripId": null,
+          "serviceDate": null,
+          "intermediateStops": null,
+          "steps": [
+            {
+              "distance": 10.609558098677711,
+              "relativeDirection": "DEPART",
+              "streetName": "Bannister Street",
+              "absoluteDirection": "EAST",
+              "exit": null,
+              "stayOn": false,
+              "area": false,
+              "bogusName": false,
+              "lon": -76.76394113800453,
+              "lat": 39.960662909175014,
+              "alerts": null,
+              "elevation": [
+
+              ]
+            },
+            {
+              "distance": 177.4279527916027,
+              "relativeDirection": "RIGHT",
+              "streetName": "service road",
+              "absoluteDirection": "SOUTH",
+              "exit": null,
+              "stayOn": false,
+              "area": false,
+              "bogusName": true,
+              "lon": -76.763817,
+              "lat": 39.96067,
+              "alerts": null,
+              "elevation": [
+
+              ]
+            }
+          ],
+          "notes": null,
+          "alerts": null,
+          "routeShortName": null,
+          "routeLongName": null,
+          "boardRule": null,
+          "alightRule": null,
+          "rentedBike": false,
+          "duration": 151.0
+        }
+      ]
+    }
+  ]
+}

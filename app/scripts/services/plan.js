@@ -34,29 +34,11 @@ angular.module('applyMyRideApp')
         $scope.request = request;
       }
 
-      this.prepareTripSearchResultsPage = function($scope){
+      this.prepareTripSearchResultsPage = function(segment_index, $scope){
         var itineraries = this.searchResults.itineraries;
-        var itinerariesBySegmentThenMode = {};
+        var itinerariesBySegmentThenMode = this.getItinerariesBySegmentAndMode(itineraries);
         var fare_info = {};
-        var that = this;
-
-        angular.forEach(itineraries, function(itinerary, index) {
-
-          that.setItineraryDescriptions(itinerary);
-          var mode = itinerary.returned_mode_code;
-          var segment_index = itinerary.segment_index;
-          console.log('adding itineraries for segment: ' + segment_index + ' mode: ' + mode);
-          if (itinerariesBySegmentThenMode[segment_index] == undefined){
-            itinerariesBySegmentThenMode[segment_index] = {};
-          }
-          if (itinerariesBySegmentThenMode[segment_index][mode] == undefined){
-            itinerariesBySegmentThenMode[segment_index][mode] = [];
-          }
-          itinerariesBySegmentThenMode[segment_index][mode].push(itinerary);
-        }, itinerariesBySegmentThenMode);
-
-
-        var itinerariesByMode = itinerariesBySegmentThenMode['0'];
+        var itinerariesByMode = itinerariesBySegmentThenMode[segment_index];
         if(itinerariesByMode.mode_paratransit){
           var paratransitTrips = itinerariesByMode.mode_paratransit;
           if(paratransitTrips){
@@ -89,11 +71,6 @@ angular.module('applyMyRideApp')
           this.walkItinerary = walkTrips[0];
         }
 
-        var taxiTrips = itinerariesByMode.mode_taxi;
-        if(taxiTrips){
-          this.taxiItinerary = taxiTrips[0];
-        }
-
         angular.forEach(Object.keys(itinerariesByMode), function(mode_code, index) {
           var fares = [];
           angular.forEach(itinerariesByMode[mode_code], function(itinerary, index) {
@@ -101,18 +78,24 @@ angular.module('applyMyRideApp')
               var fare = parseFloat(Math.round(itinerary.cost * 100) / 100).toFixed(2);
               itinerary.cost = fare;
               fares.push(fare);
+            } else if (itinerary.discounts){
+              angular.forEach(itinerary.discounts, function(discount, index) {
+                var fare = parseFloat(Math.round(discount.fare * 100) / 100).toFixed(2);
+                fares.push(fare);
+              });
             }
-          }, $scope);
+          });
 
-          var lowestFare = Math.min.apply(null, fares).toFixed(2);
-          var highestFare = Math.max.apply(null, fares).toFixed(2);
-          if(lowestFare == highestFare){
-            fare_info[[mode_code]] = "$" + lowestFare;
-          }else{
-            fare_info[[mode_code]] = "$" + lowestFare + "-$" + highestFare;
+          if(fares.length > 0){
+            var lowestFare = Math.min.apply(null, fares).toFixed(2);
+            var highestFare = Math.max.apply(null, fares).toFixed(2);
+            if(lowestFare == highestFare){
+              fare_info[[mode_code]] = "$" + lowestFare;
+            }else{
+              fare_info[[mode_code]] = "$" + lowestFare + "-$" + highestFare;
+            }
           }
-          $scope[mode_code] = itinerariesByMode[mode_code];
-        }, $scope);
+        });
         var modes = Object.keys(fare_info);
         var index = $.inArray("mode_transit", modes);
         if (index>=0) modes.splice(index, 1);
@@ -127,30 +110,45 @@ angular.module('applyMyRideApp')
         }else{
           fare_info.other = false;
         }
-        $scope.fare_info = fare_info;
 
-        itinerariesByMode.mode_transit = [itinerariesByMode.mode_transit[0]];
-
-        if(itinerariesByMode.mode_transit && itinerariesByMode.mode_transit.length == 1){
-          this.prepareTransitOptionsPage($scope);
+        if(itinerariesByMode.mode_transit){
+          this.transitInfos = this.prepareTransitOptionsPage(itinerariesByMode.mode_transit, segment_index);
         }
-        $scope.transitInfos = [$scope.transitInfos[0]];
+        //$scope.transitInfos = [$scope.transitInfos[0]];
+        this.fare_info = fare_info;
       }
 
-      this.prepareTransitOptionsPage = function($scope){
+      this.getItinerariesBySegmentAndMode = function(itineraries){
+        var itinerariesBySegmentThenMode = {};
+        var that = this;
+        angular.forEach(itineraries, function(itinerary, index) {
 
-        var itineraries = this.searchResults.itineraries;
+          that.prepareItinerary(itinerary);
+          var mode = itinerary.returned_mode_code;
+          var segment_index = itinerary.segment_index;
+          if (itinerariesBySegmentThenMode[segment_index] == undefined){
+            itinerariesBySegmentThenMode[segment_index] = {};
+          }
+          if (itinerariesBySegmentThenMode[segment_index][mode] == undefined){
+            itinerariesBySegmentThenMode[segment_index][mode] = [];
+          }
+          itinerariesBySegmentThenMode[segment_index][mode].push(itinerary);
+        }, itinerariesBySegmentThenMode);
+        return itinerariesBySegmentThenMode;
+      }
+
+      this.prepareTransitOptionsPage = function(itineraries, segment_index){
+
         var transitItineraries = [];
 
         angular.forEach(itineraries, function(itinerary, index) {
           var mode = itinerary.returned_mode_code;
-          if (mode == 'mode_transit'){
+          if (mode == 'mode_transit' && itinerary.segment_index == segment_index){
             transitItineraries.push(itinerary);
           }
         }, transitItineraries);
 
         var transitInfos = []
-        var that = this;
         angular.forEach(transitItineraries, function(itinerary, index) {
           var transitInfo = {};
           transitInfo.id = itinerary.id;
@@ -196,7 +194,28 @@ angular.module('applyMyRideApp')
             transitInfo.label = "Similar"
           }
         });
-        $scope.transitInfos = transitInfos;
+        return transitInfos;
+      }
+
+      this.prepareItinerary = function(itinerary){
+        this.setItineraryDescriptions(itinerary);
+        if(itinerary.cost){
+          itinerary.cost = parseFloat(Math.round(itinerary.cost * 100) / 100).toFixed(2);
+
+        }
+        if(itinerary.json_legs){
+          var that = this;
+          angular.forEach(itinerary.json_legs, function(leg, index) {
+            that.setItineraryLegDescriptions(leg);
+            if(leg.steps){
+              angular.forEach(leg.steps, function(step, index) {
+                that.setWalkingDescriptions(step);
+              });
+            }
+          });
+          itinerary.destinationDesc = itinerary.json_legs[itinerary.json_legs.length - 1].to.name;
+          itinerary.destinationTimeDesc = itinerary.json_legs[itinerary.json_legs.length - 1].endTimeDesc;
+        }
       }
 
       this.setItineraryDescriptions = function(itinerary){
@@ -216,7 +235,7 @@ angular.module('applyMyRideApp')
         itinerary.startTimeDesc = moment(itinerary.startTime).format('h:mm a')
         itinerary.startDesc = itinerary.startDateDesc + " at " + itinerary.startTimeDesc;
         itinerary.endDateDesc = this.getDateDescription(itinerary.endTime);
-        itinerary.endTimeDesc = moment(itinerary.endTime).format('h:mm a')
+        itinerary.endTimeDesc = moment(itinerary.endTime).format('h:mm a');
         itinerary.endDesc = itinerary.endDateDesc + " at " + itinerary.endTimeDesc;
         itinerary.travelTime = humanizeDuration(itinerary.duration * 1000,  { units: ["hours", "minutes"], round: true });
         itinerary.distanceDesc = ( itinerary.distance * 0.000621371 ).toFixed(2);
@@ -293,7 +312,7 @@ angular.module('applyMyRideApp')
       }
 
       this.postItineraryRequest = function($http) {
-        var promise2 = $http.post('api/v1/itineraries/plan', this.itineraryRequestObject);
+        var promise2 = $http.post('api/v1/itineraries/plan', this.itineraryRequestObject, this.getHeaders());
         var promise3 = promise2.then(function(result) {
           return result.data;
         });
@@ -322,7 +341,7 @@ angular.module('applyMyRideApp')
         if(this.driverInstructions){
           bookingRequest.note = this.driverInstructions;
         }
-        return $http.post('api/v1/itineraries/book', bookingRequest, this.getHeaders());
+        return $http.post('api/v1/itineraries/book', requestHolder, this.getHeaders());
 
       }
 

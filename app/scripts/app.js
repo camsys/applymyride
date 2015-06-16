@@ -67,6 +67,10 @@ angular.module('applyMyRideApp', [
         templateUrl: 'views/paratransit.html',
         controller: 'ParatransitController'
       })
+      .when('/walk/:walkid', {
+        templateUrl: 'views/walk.html',
+        controller: 'WalkController'
+      })
       .when('/about', {
         templateUrl: 'views/about.html',
         controller: 'AboutController'
