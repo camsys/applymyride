@@ -89,6 +89,16 @@ angular.module('applyMyRideApp', [
 
   })  //global event handler
   .run(function($rootScope, $window) {
+
+    //Hamburger menu toggle
+    $(".navbar-nav li a").click(function (event) {
+      // check if window is small enough so dropdown is created
+      var toggle = $(".navbar-toggle").is(":visible");
+      if (toggle) {
+        $(".navbar-collapse").collapse('hide');
+      }
+    });
+
     $rootScope.slide = '';
     $rootScope.$on('$routeChangeStart', function() {
       //event button to move backward

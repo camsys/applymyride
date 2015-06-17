@@ -624,6 +624,21 @@ body {
   height: 50px;
 }
 
+.navbar {
+  background-color: white !important;
+}
+
+.navbar, .navbar-inverse {
+  border-radius: 0;
+  border: none;
+  margin-bottom: 0;
+}
+
+/*.navbar-inverse .navbar-nav li a:hover {
+  background-color: red;
+  transition: 0.7s all linear;
+  height: 100%;
+}*/
 
 /*@media only screen
 and (min-device-width : 320px)

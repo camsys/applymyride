@@ -24,37 +24,42 @@
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
 
-    <div ng-show="showNavbar()" class="navbar navbar-default navbar-static-top" style="box-shadow: 0px 2px 8px rgba(0,0,0,0.4);">
-      <div class="container-fluid">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="#/">
-            <img ng-src="images/FMR.png"/>
-          </a>
-          <div style="left: 0; height: 1em !important;">
-            <p>Email: {{email}}</p>
-            <p>Deployed version: deployed_version</p>
-          </div>
-        </div>
-  <div class="collapse navbar-collapse">
-        <ul class="nav navbar-nav navbar-right">
-            <li>
-               <a class="navbar-icon" href="#/">
-                  <i class="fa fa-home"></i>
+    <div ng-show="showNavbar()" class="navbar navbar-default navbar-static-top" style="box-shadow: 0px 2px 8px rgba(0,0,0,0.4); margin-bottom: 1em;">
+     <div class="container-fluid">
+        <nav class="navbar navbar-static-top" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand" href="#/">
+                <img ng-src="images/FMR.png"/>
               </a>
-          </li>
-          <li>
-            <a class="navbar-icon" ng-click="logout()">
-              logout
-            </a>
-          </li>
-        </ul>
-        </div>
+            </div>
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+              <ul class="nav navbar-nav navbar-right">
+                <li ng-show="email">
+                  <div>
+                    <p>Email: {{email}}</p>
+                    <p>Deployed version: deployed_version</p>
+                  </div>
+                </li>
+                <li ng-show="email">
+                  <a class="navbar-icon" ng-click="logout()" href="" style="margin-top: .5em;">
+                    logout
+                  </a>
+                </li>
+                <li>
+                  <a class="navbar-icon" href="#/">
+                    <i class="fa fa-home"></i>
+                  </a>
+                </li>
+              </ul>
+            </div>
+        </nav>
       </div>
     </div>
 
@@ -87,17 +92,6 @@
     </div>
     </div>
 
-    <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
-<!--     <script>
-       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-       })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-       ga('create', 'UA-XXXXX-X');
-       ga('send', 'pageview');
-    </script>
-    -->
 
     <!-- build:js(.) scripts/oldieshim.js -->
     <!--[if lt IE 9]>
