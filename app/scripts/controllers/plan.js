@@ -102,8 +102,8 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
       if(planService.from != null){
         $scope.fromDetails = planService.fromDetails;
         $scope.fromChoice = planService.from;
-        //$scope.$apply();
       }
+      $scope.showNext = false;
       break;
     case 'fromDate':
       $scope.minDate = new Date();
@@ -125,6 +125,7 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
         $scope.toChoice = planService.to;
         $scope.toDetails = planService.toDetails;
       }
+      $scope.showNext = false;
       break;
     case 'returnDate':
 

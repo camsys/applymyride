@@ -613,17 +613,6 @@ body {
   margin: 0 0 100px; /* bottom = footer height */
 }
 
-.sticky-footer {
-  background-color: #ffffff;
-  border: 1px #BDBDBD solid;
-  border-bottom: hidden;
-  position: fixed;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 50px;
-}
-
 .navbar {
   background-color: white !important;
 }
@@ -634,13 +623,8 @@ body {
   margin-bottom: 0;
 }
 
-/*.navbar-inverse .navbar-nav li a:hover {
-  background-color: red;
-  transition: 0.7s all linear;
-  height: 100%;
-}*/
 
-/*@media only screen
+@media only screen
 and (min-device-width : 320px)
 and (max-device-width : 480px) {
   .sticky-footer {
@@ -653,4 +637,9 @@ and (max-device-width : 480px) {
     bottom: 0;
     height: 50px;
   }
-}*/
+
+  .row {
+    margin-left: -20px;
+    margin-right: -20px;
+  }
+}
