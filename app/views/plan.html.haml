@@ -478,15 +478,136 @@
           %a.center-block.btn.btn-success{"ng-href" => "#/"}
             Return to home screen
 
-  .container
+
+    .discounts{ng: {show: 'step==="discounts"'}}
+      .discounts-body.col-md-8.col-md-offset-2.col-xs-12
+        .row.discounts-header
+          .col-xs-12.pull-left
+            %h1 Shared Rides
+            %h3 Provided by the Commonwealth of PA
+        .row
+          .col-xs-12.discounts-row
+            .col-xs-6.pull-left
+              %h3 Full fare
+            .col-xs-6.pull-right
+              %h3 $22.00
+        .row
+          .col-xs-12.discounts-row
+            .col-xs-8.pull-left
+              %h3 Riders 65 or older
+            .col-xs-4.pull-right
+              %h3 $3.30
+              %span.or-less or less
+        .row
+          .col-xs-12.discounts-row
+            .col-xs-6.pull-left
+              %h3 blah
+            .col-xs-6.pull-right
+              %h3 blah
+              %span.or-less or less
+        .row
+          .col-xs-12.discounts-row
+            .col-xs-6.pull-left
+              %h3 blah
+            .col-xs-6.pull-right
+              %h3 blah
+              %span.or-less or less
+        .row{style: 'margin-top: 2em; padding-bottom: 0px; border-bottom: hidden;'}
+          .col-xs-12.discounts-row.pull-left{style: 'color: black;'}
+            %h3 You must sign up in advance to use Shared Ride services
+        .row
+          .col-xs-12.discounts-row.pull-left{style: 'color: black; border-top: hidden;'}
+            %h4
+              .fa.fa-phone
+              Call to learn more
+              %span.btn-next
+                (XXX) XXX-XXXX
+        .row
+          .col-xs-12.pull-left.no-padding
+            %h4 Already a Shared Ride member?
+            %h4.btn-next Login to book a ride
+
+    .discounts{ng: {show: 'step==="my_rides"'}}
+      .col-md-8.col-md-offset-2.col-xs-12
+        %tabset
+          %tab{'heading' => 'Today (1)'}
+            .myride
+              .row
+                .col-xs-2.col-height-slave
+                  %img.img-responsive{ng: {src: 'images/modes/paratransit.png'}}
+                .col-xs-10.col-height-master{style: 'width: 60em !important;'}
+                  .row
+                    .col-xs-12
+                      %h4 20 Stony Ln to E. Locus Street
+                  .row
+                    .col-xs-8
+                      %h5.blue-text Thursday, May 7th 2pm
+                    .col-xs-4
+                      %h5.text-muted.text-right (round trip)
+          %tab{'heading' => 'Future (6)'}
+            .myride
+              .row
+                .col-xs-2.col-height-slave
+                  %img.img-responsive{ng: {src: 'images/modes/transit.png'}}
+                .col-xs-10.col-height-master{style: 'width: 60em !important;'}
+                  .row
+                    .col-xs-12
+                      %h4 20 Stony Ln to E. Locus Street
+                  .row
+                    .col-xs-8
+                      %h5.blue-text Thursday, May 7th 2pm
+                    .col-xs-4
+                      %h5.text-muted.text-right (round trip)
+            .myride
+              .row
+                .col-xs-2.col-height-slave
+                  %img.img-responsive{ng: {src: 'images/modes/paratransit.png'}}
+                .col-xs-10.col-height-master{style: 'width: 60em !important;'}
+                  .row
+                    .col-xs-12
+                      %h4 20 Stony Ln to E. Locus Street
+                  .row
+                    .col-xs-8
+                      %h5.blue-text Thursday, May 7th 2pm
+                    .col-xs-4
+                      %h5.text-muted.text-right (round trip)
+            .myride
+              .row
+                .col-xs-2.col-height-slave
+                  %img.img-responsive{ng: {src: 'images/modes/transit.png'}}
+                .col-xs-10.col-height-master{style: 'width: 60em !important;'}
+                  .row
+                    .col-xs-12
+                      %h4 20 Stony Ln to E. Locus Street
+                  .row
+                    .col-xs-8
+                      %h5.blue-text Thursday, May 7th 2pm
+                    .col-xs-4
+                      %h5.text-muted.text-right (round trip)
+            .myride
+              .row
+                .col-xs-2.col-height-slave
+                  %img.img-responsive{ng: {src: 'images/modes/paratransit.png'}}
+                .col-xs-10.col-height-master{style: 'width: 60em !important;'}
+                  .row
+                    .col-xs-12
+                      %h4 20 Stony Ln to E. Locus Street
+                  .row
+                    .col-xs-8
+                      %h5.blue-text Thursday, May 7th 2pm
+                    .col-xs-4
+                      %h5.text-muted.text-right (round trip)
+          %tab{'heading' => 'Past (6)'}
+            More static content
+  .container.sticky-footer
     .row{style: 'margin-top: 10px'}
       .col-md-8.col-md-offset-2.col-xs-12
         .pull-left
-          %a.btn.btn-success{back: '', ng: {click: "back()"}}
+          %a.btn-back{back: '', ng: {click: "back()"}}
             %span{ng: {include: "'views/button-chevron-left.html'"}}
             Back
         .pull-right
-          %a.btn.btn-success{ng: {show: 'showNext', click: 'next()', disabled: 'disableNext'}}
+          %a.btn-next{ng: {show: 'showNext', click: 'next()'}}
             Next
             %span{ng: {include: "'views/button-chevron-right.html'"}}
 
