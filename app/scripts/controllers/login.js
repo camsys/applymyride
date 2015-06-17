@@ -71,7 +71,7 @@ angular.module('applyMyRideApp')
         login.session.dob = moment($scope.dateofbirth).format('M/D/YYYY');
 
         var promise = $http.post('api/v1/sign_in', login);
-        promise.error(function(result) {x
+        promise.error(function(result) {
           $location.path('/loginError');
         });
         promise.then(function(result) {
