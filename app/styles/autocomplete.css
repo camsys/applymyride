@@ -479,6 +479,7 @@ only screen and (min-device-pixel-ratio : 1.5) {
 
 .btn-back {
   color: #2884FF;
+  cursor: pointer;
   background: none;
   text-decoration: underline;
   border: none;
@@ -486,6 +487,7 @@ only screen and (min-device-pixel-ratio : 1.5) {
 
 .btn-next {
   color: #2884FF;
+  cursor: pointer;
   background: none;
   text-decoration: underline;
   border: none;
@@ -527,11 +529,113 @@ only screen and (min-device-pixel-ratio : 1.5) {
   border-bottom: 1px grey solid;
 }
 
-/*
-.row {
-  border: 1px blue solid;
+.discounts-body {
+  background-color: #DDDDDD;
+  padding: 2em;
+  padding-top: 1em;
+  padding-bottom: 0em;
 }
 
-[class*='col-'] {
-  border: 1px #000000 solid;
+.discounts-header {
+  margin-left: -2.5em;
+}
+
+.discounts-body > .row {
+  padding-bottom: .3em;
+}
+
+.discounts-row {
+  background-color: white;
+  border: 1px #BDBDBD solid;
+  color: #878787;
+  padding: 0px;
+  padding-top: .5em;
+  padding-bottom: .5em;
+}
+
+.or-less {
+  position: absolute;
+  width: auto;
+  right: 0.5em;
+  top: 1.8em;
+}
+
+.discounts-row > [class*='col-'] {
+  padding: 0px;
+}
+
+.discounts-row > [class*='col-']:nth-child(1) {
+  text-align: left;
+}
+
+.discounts-row > [class*='col-']:nth-child(2) {
+  text-align: right;
+}
+
+.myride {
+  margin-top: .5em;
+  border: 1px #BDBDBD solid;
+  padding: .5em;
+}
+
+.blue-text {
+  color: #2884FF;
+}
+
+.myride > .row > [class*='col-'] {
+  padding: 0px;
+}
+
+.myride > .row {
+  padding: 0px;
+  margin: 0px;
+}
+
+.nav-tabs {
+  border: hidden;
+}
+
+.nav-tabs > li.active {
+  border-bottom: 5px #238B00 solid;
+  outline-width: 0;
+}
+
+li.active a {
+  border: hidden !important;
+  outline-width: 0;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+body {
+  margin: 0 0 100px; /* bottom = footer height */
+}
+
+.sticky-footer {
+  background-color: #ffffff;
+  border: 1px #BDBDBD solid;
+  border-bottom: hidden;
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 50px;
+}
+
+
+/*@media only screen
+and (min-device-width : 320px)
+and (max-device-width : 480px) {
+  .sticky-footer {
+    background-color: #ffffff;
+    border: 1px #BDBDBD solid;
+    border-bottom: hidden;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 50px;
+  }
 }*/
