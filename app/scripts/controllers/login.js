@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('applyMyRideApp')
-  .controller('LoginController', ['$scope', '$location', 'flash', 'planService', '$http',
-    function ($scope, $location, flash, planService, $http) {
+  .controller('LoginController', ['$scope', '$location', 'flash', 'planService', '$http', '$cookies',
+    function ($scope, $location, flash, planService, $http, $cookies) {
 
       $scope.location = $location.path();
       $scope.disableNext = true;
@@ -10,6 +10,15 @@ angular.module('applyMyRideApp')
       $scope.sharedRideId = planService.sharedRideId;
       $scope.county = planService.county;
       $scope.dateofbirth = planService.dateofbirth;
+
+      var authentication_token = $cookies['authentication_token'];
+      var email = $cookies['email'];
+
+      if(authentication_token && email){
+        planService.authentication_token = authentication_token;
+        planService.email = email;
+        $location.path('/plan/fromDate');
+      }
 
       $scope.checkId = function() {
         $scope.disableNext = true;
@@ -62,13 +71,14 @@ angular.module('applyMyRideApp')
         login.session.dob = moment($scope.dateofbirth).format('M/D/YYYY');
 
         var promise = $http.post('api/v1/sign_in', login);
-        promise.error(function(result) {
-          //flash.setMessage(result.message)
+        promise.error(function(result) {x
           $location.path('/loginError');
         });
         promise.then(function(result) {
           planService.authentication_token = result.data.authentication_token;
           planService.email = result.data.email;
+          $cookies['email'] = planService.email;
+          $cookies['authentication_token'] = planService.authentication_token;
           $location.path('/plan/fromDate');
         });
       }

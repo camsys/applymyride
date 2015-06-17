@@ -37,6 +37,7 @@
             <img ng-src="images/FMR.png"/>
           </a>
           <div style="left: 0; height: 1em !important;">
+            <p>Email: {{email}}</p>
             <p>Deployed version: deployed_version</p>
           </div>
         </div>
@@ -46,7 +47,12 @@
                <a class="navbar-icon" href="#/">
                   <i class="fa fa-home"></i>
               </a>
-              </li>
+          </li>
+          <li>
+            <a class="navbar-icon" ng-click="logout()">
+              logout
+            </a>
+          </li>
         </ul>
         </div>
       </div>
