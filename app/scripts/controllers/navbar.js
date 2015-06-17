@@ -3,8 +3,8 @@
 var app = angular.module('applyMyRideApp');
 
 angular.module('applyMyRideApp')
-  .controller('NavbarController', ['$scope', '$location', 'flash', 'planService', 'deviceDetector', '$cookies',
-    function ($scope, $location, flash, planService, deviceDetector, $cookies) {
+  .controller('NavbarController', ['$scope', '$location', 'flash', 'planService', 'deviceDetector', 'ipCookie',
+    function ($scope, $location, flash, planService, deviceDetector, ipCookie) {
 
     var input = document.createElement('input');
     input.setAttribute('type','date');
@@ -16,18 +16,17 @@ angular.module('applyMyRideApp')
     planService.mobile = $scope.mobile;
 
     $scope.flash = flash;
-    $scope.email = $cookies['email'];
 
     var that = this;
     that.$scope = $scope;
     $scope.showNavbar = function() {
-      that.$scope.email = $cookies['email'];
+      that.$scope.email = ipCookie('email');
       return true;
     };
 
     $scope.logout = function() {
-      delete $cookies['email'];
-      delete $cookies['authentication_token'];
+      delete ipCookie.remove('email');
+      delete ipCookie.remove('authentication_token');
       $location.path('/');
     };
 

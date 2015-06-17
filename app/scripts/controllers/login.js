@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('applyMyRideApp')
-  .controller('LoginController', ['$scope', '$location', 'flash', 'planService', '$http', '$cookies',
-    function ($scope, $location, flash, planService, $http, $cookies) {
+  .controller('LoginController', ['$scope', '$location', 'flash', 'planService', '$http', 'ipCookie',
+    function ($scope, $location, flash, planService, $http, ipCookie) {
 
       $scope.location = $location.path();
       $scope.disableNext = true;
@@ -11,8 +11,8 @@ angular.module('applyMyRideApp')
       $scope.county = planService.county;
       $scope.dateofbirth = planService.dateofbirth;
 
-      var authentication_token = $cookies['authentication_token'];
-      var email = $cookies['email'];
+      var authentication_token = ipCookie('authentication_token');
+      var email = ipCookie('email');
 
       if(authentication_token && email){
         planService.authentication_token = authentication_token;
@@ -77,8 +77,8 @@ angular.module('applyMyRideApp')
         promise.then(function(result) {
           planService.authentication_token = result.data.authentication_token;
           planService.email = result.data.email;
-          $cookies['email'] = planService.email;
-          $cookies['authentication_token'] = planService.authentication_token;
+          ipCookie('email', planService.email);
+          ipCookie('authentication_token', planService.authentication_token);
           $location.path('/plan/fromDate');
         });
       }

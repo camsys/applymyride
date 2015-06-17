@@ -11,7 +11,7 @@
 angular.module('applyMyRideApp', [
     'ngAnimate',
     'ngAria',
-    'ngCookies',
+    'ipCookie',
     'ngMessages',
     'ngResource',
     'ngRoute',
