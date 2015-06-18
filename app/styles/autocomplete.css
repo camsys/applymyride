@@ -643,3 +643,11 @@ and (max-device-width : 480px) {
     margin-right: -20px;
   }
 }
+
+
+.btn-success, .btn-success:active, .btn-success:hover {
+  background-color: #2884FF !important;
+  border-color: #2884FF !important;
+  box-shadow: none !important;
+}
+
