@@ -25,7 +25,8 @@ angular.module('applyMyRideApp', [
     'dcbClearInput',
     'LocalStorageModule',
     'ng.deviceDetector',
-  ]).config(function ($routeProvider, $locationProvider) {
+    'ngBootbox',
+  ]).config(function ($routeProvider) {
     $routeProvider
       .when('/', {
         templateUrl: 'views/login.html',
@@ -89,26 +90,12 @@ angular.module('applyMyRideApp', [
 
   })  //global event handler
   .run(function($rootScope, $window) {
-
     //Hamburger menu toggle
     $(".navbar-nav li a").click(function (event) {
       // check if window is small enough so dropdown is created
       var toggle = $(".navbar-toggle").is(":visible");
       if (toggle) {
         $(".navbar-collapse").collapse('hide');
-      }
-    });
-
-    $rootScope.slide = '';
-    $rootScope.$on('$routeChangeStart', function() {
-      //event button to move backward
-      $rootScope.back = function() {
-        $rootScope.slide = 'slide-left';
-        $window.history.back();
-      }
-      //event button item list to move forward
-      $rootScope.next = function() {
-        $rootScope.slide = 'slide-left';
       }
     });
   });;

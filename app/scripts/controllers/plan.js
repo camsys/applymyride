@@ -298,10 +298,14 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
         usSpinnerService.spin('spinner-1');
         var promise = planService.postItineraryRequest($http);
         promise.then(function(result) {
-          planService.searchResults = result;
-          $location.path('/plan/list_itineraries');
-        })
-        break;
+          if(result){
+            planService.searchResults = result;
+            $location.path('/plan/list_itineraries');
+          }else{
+            bootbox.alert("An error occured on the server, please repeat your search or try again later.");
+            usSpinnerService.stop('spinner-1');
+          }
+        });
       case 'bus_options':
         $location.path('/plan/book_shared_ride');
         break;
