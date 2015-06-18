@@ -312,14 +312,7 @@ angular.module('applyMyRideApp')
       }
 
       this.postItineraryRequest = function($http) {
-        var promise2 = $http.post('api/v1/itineraries/plan', this.itineraryRequestObject, this.getHeaders());
-        var promise3 = promise2.then(function(result) {
-          if(result.status != 200){
-            return null;
-          }
-          return result.data;
-        });
-        return promise3;
+        return $http.post('api/v1/itineraries/plan', this.itineraryRequestObject, this.getHeaders());
       }
 
       this.bookSharedRide = function($http) {

@@ -297,15 +297,15 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
       case 'confirm':
         usSpinnerService.spin('spinner-1');
         var promise = planService.postItineraryRequest($http);
-        promise.then(function(result) {
-          if(result){
-            planService.searchResults = result;
+        promise.
+          success(function(result) {
+            planService.searchResults = result.data;
             $location.path('/plan/list_itineraries');
-          }else{
-            bootbox.alert("An error occured on the server, please repeat your search or try again later.");
+          }).
+          error(function(result) {
+            bootbox.alert("An error occured on the server, please retry your search or try again later.");
             usSpinnerService.stop('spinner-1');
-          }
-        });
+          });
         break;
       case 'bus_options':
         $location.path('/plan/book_shared_ride');
