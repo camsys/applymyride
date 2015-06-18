@@ -306,6 +306,7 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
             usSpinnerService.stop('spinner-1');
           }
         });
+        break;
       case 'bus_options':
         $location.path('/plan/book_shared_ride');
         break;
