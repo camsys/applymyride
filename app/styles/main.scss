@@ -342,7 +342,7 @@ $kioskfonts: "Avenir Next", "Helvetica Neue", Helvetica, sans-serif;
 
 @media(max-width:$screen-sm-max) {
   .map-canvas {
-    min-height: 350px;
+    min-height: 275px;
     height: auto !important;
     margin-top:1em;
   }
