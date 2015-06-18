@@ -192,7 +192,7 @@
       "transfers": null,
       "count": null,
       "legs": null,
-      "cost": null,
+      "cost": "1.00",
       "hidden": false,
       "created_at": "2015-06-16T13:56:19.041-04:00",
       "updated_at": "2015-06-16T13:56:19.682-04:00",

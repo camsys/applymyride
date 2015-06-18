@@ -639,8 +639,8 @@ and (max-device-width : 480px) {
   }
 
   .row {
-    margin-left: -20px;
-    margin-right: -20px;
+    margin-left: -10px;
+    margin-right: -10px;
   }
 }
 
@@ -651,3 +651,12 @@ and (max-device-width : 480px) {
   box-shadow: none !important;
 }
 
+.navbar i {
+  font-size: 3em;
+  color: #03763a;
+}
+
+.dropdown-menu.pull-right {
+  right: auto;
+  left: auto;
+}

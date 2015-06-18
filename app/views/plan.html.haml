@@ -23,21 +23,21 @@
     .depart-time{ng: {show: 'step==="fromTimeType"'}}
       .col-md-8.col-md-offset-2.col-xs-12
         .row
-          .col-xs-12.pull-left
+          .col-xs-12.pull-left.no-padding
             %h3
-              %span.timeTypeSelection{ng: {show: 'fromTimeType == "depart"'}} When do you want to get there?
-              %span.timeTypeSelection{ng: {show: 'fromTimeType == "arrive"'}} When do you want to arrive by?
+              %span.timeTypeSelection{ng: {show: 'fromTimeType == "depart"'}} When do you want to leave by?
+              %span.timeTypeSelection{ng: {show: 'fromTimeType == "arrive"'}} When do you want to get there?
               %span.dropdown{dropdown: '', style: 'cursor: pointer;'}
                 %i.fa.fa-lg.fa-sort-desc{dropdown_toggle: '', style: 'vertical-align: 15%; color: #2781FF;'}
                 %ul.dropdown-menu.pull-right{dropdown_menu: ''}
                   %li{ng: {show: 'fromTimeType != "depart"'}}
                     %a{ng: {click: 'specifyFromTimeType("depart")'}}
-                      When do you want to leave?
+                      When do you want to leave by?
                   %li{ng: {show: 'fromTimeType != "arrive"'}}
                     %a{ng: {click: 'specifyFromTimeType("arrive")'}}
                       When do you want to get there?
         .row{ng: {show: 'showAsap'}}
-          .col-xs-12.pull-left{style: 'color: #2781FF'}
+          .col-xs-12.pull-left{style: 'color: #2781FF; padding: 0px;'}
             %h5{ng: {click: 'specifyFromTimeType("asap")'}} As soon as possible
         .row{ng: {show: 'fromTimeType != "asap"'}}
           %timepicker.timepicker{ng: {model: 'fromTime', show: '!mobile'}}
@@ -268,7 +268,27 @@
               %img{style: 'height: 20px;', ng: {src: 'images/modes/transit.png'}}
               %span {{transitInfo.route}}
 
-      %a.no_underline.row.row-eq-height.rounded-border{ng: {href: '#/plan/sharedride_options_1', show: 'fare_info["mode_paratransit"]'}}
+      %a.no_underline.row.row-eq-height.rounded-border{ng: {href: '#/plan/sharedride_options_1', show: 'fare_info["mode_paratransit"] && email'}}
+        .row.even-height-row.table-compact
+          .col-xs-2.col-height-slave
+            %img.img-responsive{ng: {src: 'images/modes/paratransit.png'}}
+          .col-xs-6.col-height-master
+            .row.row-eq-height.table-compact
+              .col-xs-12
+                Shared Ride
+            .row.table-compact
+              .col-xs-12
+                %p.text-left.text-muted
+                  Travel time: {{fare_info.paratransitTravelTime}}
+              .col-xs-12
+                %p.text-left.text-muted
+                  Start time: {{fare_info.paratransitStartTime}}
+          .col-xs-4.col-height-slave
+            .row.row-eq-height.table-compact.pull-right
+              .col-xs-12
+                {{fare_info["mode_paratransit"]}}
+
+      %a.no_underline.row.row-eq-height.rounded-border{ng: {href: '#/plan/discounts', show: 'fare_info["mode_paratransit"] && !email'}}
         .row.even-height-row.table-compact
           .col-xs-2.col-height-slave
             %img.img-responsive{ng: {src: 'images/modes/paratransit.png'}}
