@@ -89,13 +89,21 @@ angular.module('applyMyRideApp', [
       });
 
   })  //global event handler
-  .run(function($rootScope, $window) {
+  .run(function($rootScope, $window, $location) {
     //Hamburger menu toggle
     $(".navbar-nav li a").click(function (event) {
       // check if window is small enough so dropdown is created
       var toggle = $(".navbar-toggle").is(":visible");
       if (toggle) {
         $(".navbar-collapse").collapse('hide');
+      }
+    });
+
+    $window.$rootScope = $rootScope;
+    $rootScope.$on('$routeChangeStart', function (event) {
+      console.log($window.visited);
+      if(!$window.visited){
+        $location.path('/');
       }
     });
   });;

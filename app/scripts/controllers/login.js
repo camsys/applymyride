@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('applyMyRideApp')
-  .controller('LoginController', ['$scope', '$location', 'flash', 'planService', '$http', 'ipCookie',
-    function ($scope, $location, flash, planService, $http, ipCookie) {
+  .controller('LoginController', ['$scope', '$location', 'flash', 'planService', '$http', 'ipCookie', '$window',
+    function ($scope, $location, flash, planService, $http, ipCookie, $window) {
 
       $scope.location = $location.path();
       $scope.disableNext = true;
@@ -13,6 +13,7 @@ angular.module('applyMyRideApp')
 
       var authentication_token = ipCookie('authentication_token');
       var email = ipCookie('email');
+      $window.visited = true;
 
       if(authentication_token && email){
         planService.authentication_token = authentication_token;
