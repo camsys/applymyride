@@ -242,7 +242,7 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
       $scope.showNext = false;
       break;
     case 'my_rides':
-      $scope.rides = planService.getRides($http, $scope);
+      planService.getRides($http, $scope);
       $scope.showNext = false;
       break;
     case 'bus_options':

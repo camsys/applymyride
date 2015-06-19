@@ -20,7 +20,7 @@
           %img{ng: {if: 'leg.mode == "BUS"', src: 'images/modes/transit.png'}}
           %i.fa.fa-lg.fa-chevron-right{ng: {if: '!$last'}}
     .col-xs-12.col-md-8.col-md-offset-2.transit-body
-      .border-between.timeline{'index' => '{{$index}}', ng: {click: 'test()', repeat: 'leg in itinerary.json_legs track by $index', class: '{"mode_bus": leg.mode == "BUS", "mode_walk": leg.mode == "WALK"}'}}
+      .border-between.timeline{'index' => '{{$index}}', ng: {click: 'show()', repeat: 'leg in itinerary.json_legs track by $index', class: '{"mode_bus": leg.mode == "BUS", "mode_walk": leg.mode == "WALK"}'}}
         .row.even-height-row
           .col-xs-2.right-side
             %h4 {{leg.startTimeDesc}}

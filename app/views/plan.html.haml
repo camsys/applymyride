@@ -551,7 +551,7 @@
       .col-md-8.col-md-offset-2.col-xs-12
         %tabset
           %tab{'heading' => 'Today ({{trips.today.length}})'}
-            .myride{ng: {repeat: 'trip in trips.today'}}
+            .myride{index: '{{$index}}', ng: {click: 'tripDivs.today[$index] = !tripDivs.today[$index]', repeat: 'trip in trips.today'}}
               .row
                 .col-xs-2.col-height-slave
                   %img.img-responsive{ng: {src: 'images/modes/paratransit.png'}}
@@ -564,8 +564,21 @@
                       %h5.blue-text {{trip.startDesc}}
                     .col-xs-4
                       %h5.text-muted.text-right (round trip)
+              .animate-show.myride-buttons{ng: {show: 'tripDivs.today[$index]'}}
+                .row.even-height-row
+                  .col-xs-6.col-height-master{style: 'text-align: right;'}
+                    %span.fa-stack
+                      %i.fa.fa-circle.fa-stack-2x
+                      %i.fa.fa-times.fa-stack-1x{style: 'color: white;'}
+                    %a.blue-text
+                      Cancel ride
+                  .col-xs-6.col-height-slave{style: 'text-align: left;'}
+                    %span.fa-stack
+                      %i.fa.fa-share-square-o.fa-stack-2x
+                    %a.blue-text
+                      Send to friend
           %tab{'heading' => 'Future ({{trips.future.length}})'}
-            .myride{ng: {repeat: 'trip in trips.future'}}
+            .myride{'index' => '{{$index}}', ng: {click: 'tripDivs.future[$index] = !tripDivs.future[$index]', repeat: 'trip in trips.future'}}
               .row
                 .col-xs-2.col-height-slave
                   %img.img-responsive{ng: {src: 'images/modes/transit.png'}}
@@ -578,8 +591,21 @@
                       %h5.blue-text {{trip.startDesc}}
                     .col-xs-4
                       %h5.text-muted.text-right (round trip)
+              .animate-show.myride-buttons{ng: {show: 'tripDivs.future[$index]'}}
+                .row.even-height-row
+                  .col-xs-6.col-height-master{style: 'text-align: right;'}
+                    %span.fa-stack
+                      %i.fa.fa-circle.fa-stack-2x
+                      %i.fa.fa-times.fa-stack-1x{style: 'color: white;'}
+                    %a.blue-text
+                      Cancel ride
+                  .col-xs-6.col-height-slave{style: 'text-align: left;'}
+                    %span.fa-stack
+                      %i.fa.fa-share-square-o.fa-stack-2x
+                    %a.blue-text
+                      Send to friend
           %tab{'heading' => 'Past ({{trips.past.length}})'}
-            .myride{ng: {repeat: 'trip in trips.past'}}
+            .myride{'index' => '{{$index}}', ng: {click: 'tripDivs.past[$index] = !tripDivs.past[$index]', repeat: 'trip in trips.past'}}
               .row
                 .col-xs-2.col-height-slave
                   %img.img-responsive{ng: {src: 'images/modes/transit.png'}}
@@ -592,6 +618,13 @@
                       %h5.blue-text {{trip.startDesc}}
                     .col-xs-4
                       %h5.text-muted.text-right (round trip)
+              .animate-show.myride-buttons{ng: {show: 'tripDivs.past[$index]'}}
+                .row.even-height-row
+                  .col-xs-12.col-height-slave.text-center
+                    %span.fa-stack
+                      %i.fa.fa-share-square-o.fa-stack-2x
+                    %a.blue-text
+                      Send to friend
   .container.sticky-footer
     .row{style: 'margin-top: 10px'}
       .col-md-8.col-md-offset-2.col-xs-12

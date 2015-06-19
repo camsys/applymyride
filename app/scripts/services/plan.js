@@ -21,20 +21,29 @@ angular.module('applyMyRideApp')
             trips.past = [];
             trips.future = [];
 
+            var tripDivs = {};
+            tripDivs.today = [];
+            tripDivs.past = [];
+            tripDivs.future = [];
+
             angular.forEach($scope.trips, function(trip, index) {
               trip.startDesc = that.getDateDescription(trip.scheduled_time);
               trip.startDesc += " at " + moment(trip.scheduled_time).format('h:mm a');
               var dayDiff = moment(trip.scheduled_time).startOf('day').diff(moment().startOf('day'), 'days');
               if(dayDiff == 0) {
                 trips.today.push(trip);
+                tripDivs.today.push(false);
               }else if(dayDiff < 0){
                 trips.past.push(trip);
+                tripDivs.past.push(false);
               }else{
                 trips.future.push(trip);
+                tripDivs.future.push(false);
               }
             });
 
             $scope.trips = trips;
+            $scope.tripDivs = tripDivs;
           });
       }
 
