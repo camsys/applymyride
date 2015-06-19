@@ -78,6 +78,7 @@ angular.module('applyMyRideApp')
         promise.then(function(result) {
           planService.authentication_token = result.data.authentication_token;
           planService.email = result.data.email;
+          planService.getRides($http, $scope, ipCookie);
           ipCookie('email', planService.email);
           ipCookie('authentication_token', planService.authentication_token);
           $location.path('/plan/fromDate');

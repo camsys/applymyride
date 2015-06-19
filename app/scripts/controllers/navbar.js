@@ -24,6 +24,7 @@ angular.module('applyMyRideApp')
       that.$scope.authentication_token = ipCookie('authentication_token');
       planService.email = $scope.email;
       planService.authentication_token = $scope.authentication_token;
+      $scope.rideCount = ipCookie('rideCount');
       return true;
     };
 

@@ -2,9 +2,9 @@
 
 var app = angular.module('applyMyRideApp');
 
-app.controller('PlanController', ['$scope', '$http','$routeParams', '$location', 'planService', 'flash', 'usSpinnerService', '$q', 'LocationSearch', 'localStorageService',
+app.controller('PlanController', ['$scope', '$http','$routeParams', '$location', 'planService', 'flash', 'usSpinnerService', '$q', 'LocationSearch', 'localStorageService', 'ipCookie',
 
-function($scope, $http, $routeParams, $location, planService, flash, usSpinnerService, $q, LocationSearch, localStorageService) {
+function($scope, $http, $routeParams, $location, planService, flash, usSpinnerService, $q, LocationSearch, localStorageService, ipCookie) {
 
   $scope.minReturnDate = new Date();
 
@@ -242,7 +242,7 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
       $scope.showNext = false;
       break;
     case 'my_rides':
-      planService.getRides($http, $scope);
+      planService.getRides($http, $scope, ipCookie);
       $scope.showNext = false;
       break;
     case 'bus_options':

@@ -29,7 +29,7 @@
     .row{style: 'margin-top: 2em'}
       %h4 Your Shared Ride ID:
     .row
-      %input.form-control{type: 'number', min: '0', inputmode:'numeric', pattern:'[0-9]*', placeholder: 'Shared Ride ID', ng: {model: 'sharedRideId', required: 'true', change: 'checkId()', enter: 'next()'}}
+      %input.form-control{placeholder: 'Shared Ride ID', ng: {model: 'sharedRideId', required: 'true', change: 'checkId()', enter: 'next()'}}
     .row
       %h4 Your county:
     .row

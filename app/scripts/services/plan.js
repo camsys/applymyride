@@ -3,7 +3,7 @@
 angular.module('applyMyRideApp')
     .service('planService', function() {
 
-      this.getRides = function($http, $scope) {
+      this.getRides = function($http, $scope, ipCookie) {
         var that = this;
         $http.get('api/v1/trips/list', this.getHeaders()).
           success(function(data) {
@@ -41,7 +41,7 @@ angular.module('applyMyRideApp')
                 tripDivs.future.push(false);
               }
             });
-
+            ipCookie('rideCount', data.trips.length);
             $scope.trips = trips;
             $scope.tripDivs = tripDivs;
           });
