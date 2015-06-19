@@ -243,7 +243,7 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
       break;
     case 'my_rides':
       planService.getRides($http, $scope, ipCookie);
-      $scope.showNext = false;
+      $scope.hideButtonBar = true;
       break;
     case 'bus_options':
       $scope.transitInfos = planService.transitInfos;

@@ -625,9 +625,13 @@
                       %i.fa.fa-share-square-o.fa-stack-2x
                     %a.blue-text
                       Send to friend
-  .container.sticky-footer
+        .row{style: 'margin-top: 10px'}
+          .col-md-4.col-md-offset-4.col-xs-12.text-center
+            %a.btn.btn-success.btn-block{ng: {href: '#/plan/from'}}
+              Plan a new trip
+  .container.sticky-footer{ng: {hide: 'hideButtonBar'}}
     .row{style: 'margin-top: 10px'}
-      .col-md-8.col-md-offset-2.col-xs-12
+      .col-md-8.col-md-offset-2.col-xs-6.col-xs-offset-3
         .pull-left
           %a.btn-back{back: '', ng: {click: "back()"}}
             %span{ng: {include: "'views/button-chevron-left.html'"}}
