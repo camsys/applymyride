@@ -550,75 +550,48 @@
     .discounts{ng: {show: 'step==="my_rides"'}}
       .col-md-8.col-md-offset-2.col-xs-12
         %tabset
-          %tab{'heading' => 'Today (1)'}
-            .myride
+          %tab{'heading' => 'Today ({{trips.today.length}})'}
+            .myride{ng: {repeat: 'trip in trips.today'}}
               .row
                 .col-xs-2.col-height-slave
                   %img.img-responsive{ng: {src: 'images/modes/paratransit.png'}}
                 .col-xs-10.col-height-master{style: 'width: 60em !important;'}
                   .row
                     .col-xs-12
-                      %h4 20 Stony Ln to E. Locus Street
+                      %h4 {{trip.from_place}} to {{trip.to_place}}
                   .row
                     .col-xs-8
-                      %h5.blue-text Thursday, May 7th 2pm
+                      %h5.blue-text {{trip.startDesc}}
                     .col-xs-4
                       %h5.text-muted.text-right (round trip)
-          %tab{'heading' => 'Future (6)'}
-            .myride
+          %tab{'heading' => 'Future ({{trips.future.length}})'}
+            .myride{ng: {repeat: 'trip in trips.future'}}
               .row
                 .col-xs-2.col-height-slave
                   %img.img-responsive{ng: {src: 'images/modes/transit.png'}}
                 .col-xs-10.col-height-master{style: 'width: 60em !important;'}
                   .row
                     .col-xs-12
-                      %h4 20 Stony Ln to E. Locus Street
+                      %h4 {{trip.from_place}} to {{trip.to_place}}
                   .row
                     .col-xs-8
-                      %h5.blue-text Thursday, May 7th 2pm
+                      %h5.blue-text {{trip.startDesc}}
                     .col-xs-4
                       %h5.text-muted.text-right (round trip)
-            .myride
-              .row
-                .col-xs-2.col-height-slave
-                  %img.img-responsive{ng: {src: 'images/modes/paratransit.png'}}
-                .col-xs-10.col-height-master{style: 'width: 60em !important;'}
-                  .row
-                    .col-xs-12
-                      %h4 20 Stony Ln to E. Locus Street
-                  .row
-                    .col-xs-8
-                      %h5.blue-text Thursday, May 7th 2pm
-                    .col-xs-4
-                      %h5.text-muted.text-right (round trip)
-            .myride
+          %tab{'heading' => 'Past ({{trips.past.length}})'}
+            .myride{ng: {repeat: 'trip in trips.past'}}
               .row
                 .col-xs-2.col-height-slave
                   %img.img-responsive{ng: {src: 'images/modes/transit.png'}}
                 .col-xs-10.col-height-master{style: 'width: 60em !important;'}
                   .row
                     .col-xs-12
-                      %h4 20 Stony Ln to E. Locus Street
+                      %h4 {{trip.from_place}} to {{trip.to_place}}
                   .row
                     .col-xs-8
-                      %h5.blue-text Thursday, May 7th 2pm
+                      %h5.blue-text {{trip.startDesc}}
                     .col-xs-4
                       %h5.text-muted.text-right (round trip)
-            .myride
-              .row
-                .col-xs-2.col-height-slave
-                  %img.img-responsive{ng: {src: 'images/modes/paratransit.png'}}
-                .col-xs-10.col-height-master{style: 'width: 60em !important;'}
-                  .row
-                    .col-xs-12
-                      %h4 20 Stony Ln to E. Locus Street
-                  .row
-                    .col-xs-8
-                      %h5.blue-text Thursday, May 7th 2pm
-                    .col-xs-4
-                      %h5.text-muted.text-right (round trip)
-          %tab{'heading' => 'Past (6)'}
-            More static content
   .container.sticky-footer
     .row{style: 'margin-top: 10px'}
       .col-md-8.col-md-offset-2.col-xs-12

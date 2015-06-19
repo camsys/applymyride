@@ -3,6 +3,41 @@
 angular.module('applyMyRideApp')
     .service('planService', function() {
 
+      this.getRides = function($http, $scope) {
+        var that = this;
+        $http.get('api/v1/trips/list', this.getHeaders()).
+          success(function(data) {
+            var sortable = [];
+            angular.forEach(data.trips, function(trip, index) {
+              sortable.push([trip, trip.scheduled_time])
+            });
+            sortable.sort(function(a,b){ return a[1].localeCompare(b[1]); })
+            $scope.trips = [];
+            angular.forEach(sortable, function(trip, index) {
+              $scope.trips.push(trip[0]);
+            });
+            var trips = {};
+            trips.today = [];
+            trips.past = [];
+            trips.future = [];
+
+            angular.forEach($scope.trips, function(trip, index) {
+              trip.startDesc = that.getDateDescription(trip.scheduled_time);
+              trip.startDesc += " at " + moment(trip.scheduled_time).format('h:mm a');
+              var dayDiff = moment(trip.scheduled_time).startOf('day').diff(moment().startOf('day'), 'days');
+              if(dayDiff == 0) {
+                trips.today.push(trip);
+              }else if(dayDiff < 0){
+                trips.past.push(trip);
+              }else{
+                trips.future.push(trip);
+              }
+            });
+
+            $scope.trips = trips;
+          });
+      }
+
       this.prepareConfirmationPage = function($scope) {
         var itineraryRequestObject = this.createItineraryRequest();
         this.itineraryRequestObject = itineraryRequestObject;
@@ -287,6 +322,8 @@ angular.module('applyMyRideApp')
       }
 
       this.getDateDescription = function(date){
+        if(!date)
+          return null;
         var description;
         var now = moment().startOf('day');
         var dayDiff = moment(date).startOf('day').diff(moment().startOf('day'), 'days');

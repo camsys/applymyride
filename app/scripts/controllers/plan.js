@@ -241,6 +241,10 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
       $scope.taxiItinerary = planService.taxiItinerary;
       $scope.showNext = false;
       break;
+    case 'my_rides':
+      $scope.rides = planService.getRides($http, $scope);
+      $scope.showNext = false;
+      break;
     case 'bus_options':
       $scope.transitInfos = planService.transitInfos;
       $scope.showNext = false;
