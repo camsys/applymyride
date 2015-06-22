@@ -505,32 +505,12 @@
           .col-xs-12.pull-left
             %h1 Shared Rides
             %h3 Provided by the Commonwealth of PA
-        .row
+        .row{index: '{{$index}}', ng: {repeat: 'discount in paratransitItinerary.discounts'}}
           .col-xs-12.discounts-row
             .col-xs-6.pull-left
-              %h3 Full fare
+              %h3 {{discount.comment}}
             .col-xs-6.pull-right
-              %h3 $22.00
-        .row
-          .col-xs-12.discounts-row
-            .col-xs-8.pull-left
-              %h3 Riders 65 or older
-            .col-xs-4.pull-right
-              %h3 $3.30
-              %span.or-less or less
-        .row
-          .col-xs-12.discounts-row
-            .col-xs-6.pull-left
-              %h3 blah
-            .col-xs-6.pull-right
-              %h3 blah
-              %span.or-less or less
-        .row
-          .col-xs-12.discounts-row
-            .col-xs-6.pull-left
-              %h3 blah
-            .col-xs-6.pull-right
-              %h3 blah
+              %h3 ${{discount.fare}}
               %span.or-less or less
         .row{style: 'margin-top: 2em; padding-bottom: 0px; border-bottom: hidden;'}
           .col-xs-12.discounts-row.pull-left{style: 'color: black;'}

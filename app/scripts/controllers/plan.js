@@ -233,6 +233,13 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
       }
       $scope.showNext = false;
       break;
+    case 'discounts':
+      angular.forEach(planService.paratransitItinerary.discounts, function(discount, index) {
+        discount.fare = new Number(discount.fare).toFixed(2);
+      });
+      $scope.paratransitItinerary = planService.paratransitItinerary;
+      $scope.showNext = false;
+      break;
     case 'book_shared_ride':
       $scope.showNext = false;
       break;

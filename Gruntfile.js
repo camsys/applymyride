@@ -478,6 +478,7 @@ module.exports = function (grunt) {
         algorithm: 'md5',
         length: 16,
         deleteOriginals: true,
+        ignorePatterns:['close.png'],
         baseDir: '<%= yeoman.dist %>'
       },
       assets: {
@@ -485,7 +486,8 @@ module.exports = function (grunt) {
           src: [
             '<%= yeoman.dist %>/index.html',
             '<%= yeoman.dist %>/scripts/*.js',
-            '<%= yeoman.dist %>/styles/*.css',
+            /*'<%= yeoman.dist %>/styles*//*.css',
+            '<%= yeoman.dist %>/images*//*.*',*/
             '<%= yeoman.dist %>/views/*.html',
           ]
         }]
