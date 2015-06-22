@@ -469,6 +469,27 @@ module.exports = function (grunt) {
         configFile: 'test/karma.conf.js',
         singleRun: true
       }
+    },
+
+    //cache bust
+    cacheBust: {
+      options: {
+        encoding: 'utf8',
+        algorithm: 'md5',
+        length: 16,
+        deleteOriginals: true,
+        baseDir: '<%= yeoman.dist %>'
+      },
+      assets: {
+        files: [{
+          src: [
+            '<%= yeoman.dist %>/index.html',
+            '<%= yeoman.dist %>/scripts/*.js',
+            '<%= yeoman.dist %>/styles/*.css',
+            '<%= yeoman.dist %>/views/*.html',
+          ]
+        }]
+      }
     }
   });
 
@@ -504,11 +525,12 @@ module.exports = function (grunt) {
     // 'karma'
   ]);
 
-  grunt.registerTask('build', [
+  grunt.registerTask(
+    'build', [
     'clean:dist',
     'wiredep',
-      'coffee:dist',
-      'haml:dist',
+    'coffee:dist',
+    'haml:dist',
     'useminPrepare',
     'concurrent:dist',
     'autoprefixer',
@@ -519,7 +541,8 @@ module.exports = function (grunt) {
     'cssmin',
     'uglify',
     'usemin',
-    'htmlmin'
+    'htmlmin',
+    'cacheBust'
   ]);
 
   grunt.registerTask('default', [
@@ -527,4 +550,9 @@ module.exports = function (grunt) {
     'test',
     'build'
   ]);
+
+  grunt.registerTask(
+    'bust', [
+      'cacheBust'
+    ]);
 };
