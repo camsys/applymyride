@@ -303,7 +303,7 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
         var promise = planService.postItineraryRequest($http);
         promise.
           success(function(result) {
-            planService.searchResults = result.data;
+            planService.searchResults = result;
             $location.path('/plan/list_itineraries');
           }).
           error(function(result) {
