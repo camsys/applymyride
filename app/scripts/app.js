@@ -100,10 +100,12 @@ angular.module('applyMyRideApp', [
     });
 
     $window.$rootScope = $rootScope;
+    var exceptions = ["/plan/my_rides"];
     $rootScope.$on('$routeChangeStart', function (event) {
-      console.log($window.visited);
       if(!$window.visited){
-        $location.path('/');
+        if(exceptions.indexOf($location.$$path) < 0){
+          $location.path('/');
+        }
       }
     });
   });;
