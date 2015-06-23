@@ -104,7 +104,7 @@ angular.module('applyMyRideApp', [
     $rootScope.$on('$routeChangeStart', function (event) {
       if(!$window.visited){
         if(exceptions.indexOf($location.$$path) < 0){
-          //$location.path('/');
+          $location.path('/');
         }
       }
     });
