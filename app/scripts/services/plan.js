@@ -9,7 +9,9 @@ angular.module('applyMyRideApp')
           success(function(data) {
             var sortable = [];
             angular.forEach(data.trips, function(trip, index) {
-              sortable.push([trip, trip.scheduled_time])
+              if(trip.scheduled_time){
+                sortable.push([trip, trip.scheduled_time])
+              }
             });
             sortable.sort(function(a,b){ return a[1].localeCompare(b[1]); })
             $scope.trips = [];

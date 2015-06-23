@@ -611,8 +611,10 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
   $scope.$watch('fromChoice', function(n) {
       if($scope.step == 'from'){
         planService.from = n;
-        $scope.disableNext = true;
         $scope.showMap = false;
+        if(!n){
+          $scope.showNext = false;
+        }
       }
     }
   );
@@ -620,9 +622,9 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
   $scope.$watch('fromDetails', function(n) {
       if($scope.step == 'from'){
         if (n) {
-          $scope.disableNext = false;
+          $scope.showNext = true;
         }else{
-          $scope.disableNext = true;
+          $scope.showNext = false;
         }
       }
     }
@@ -631,8 +633,10 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
   $scope.$watch('toChoice', function(n) {
       if($scope.step == 'to'){
         planService.to = n;
-        $scope.disableNext = true;
         $scope.showMap = false;
+        if(!n){
+          $scope.showNext = false;
+        }
       }
     }
   );
@@ -640,9 +644,9 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
   $scope.$watch('toDetails', function(n) {
       if($scope.step == 'to'){
         if (n) {
-          $scope.disableNext = false;
+          $scope.showNext = true;
         }else{
-          $scope.disableNext = true;
+          $scope.showNext = false;
         }
       }
     }

@@ -80,8 +80,7 @@
           %h4 Where are you starting from?
       .row
         .col-md-8.col-md-offset-2.col-xs-12
-          %div#overlayWrapper
-            %autocomplete{'clear-input' => '', 'inputclass' => 'clearable', 'disable-filter' => 'true', 'data' => 'locations', 'on-type'=> 'getLocations', 'on-select' => 'selectPlace', :ng => {:model => 'fromChoice'}}
+          %autocomplete{'clear-input' => '', 'inputclass' => 'clearable', 'disable-filter' => 'true', 'data' => 'locations', 'on-type'=> 'getLocations', 'on-select' => 'selectPlace', :ng => {:model => 'fromChoice'}}
       .row
         .col-md-8.col-md-offset-2.col-xs-12
           %div.map-canvas{'ui-map' => 'fromLocationMap', 'ui-options' => 'mapOptions', ng: {show: 'showMap'}}

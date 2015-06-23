@@ -19,7 +19,6 @@
     "angular-ui-utils": "bower-event",
     "angular-ui": "~0.4.0",
     "angular-bootstrap": "0.12.1",
-    "angular-clear-input": "~0.1.0",
     "humanize-duration": "~2.6.1",
     "angular-local-storage": "~0.1.5",
     "ng-device-detector": "~1.1.5",
