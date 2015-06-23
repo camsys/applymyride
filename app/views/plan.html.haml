@@ -547,7 +547,7 @@
                       %h5.text-muted.text-right{ng: {show: 'trip.roundTrip'}} (round trip)
                       %h5.text-muted.text-right{ng: {show: '!trip.roundTrip'}} (one way)
               .animate-show.myride-buttons{ng: {show: 'tripDivs.today[$index]'}}
-                .row.even-height-row
+                .row.even-height-row{ng: {show: 'trip.mode == "mode_paratransit"'}}
                   .col-xs-6.col-height-master{style: 'text-align: right;'}
                     %span.fa-stack
                       %i.fa.fa-circle.fa-stack-2x
@@ -555,6 +555,12 @@
                     %a.blue-text
                       Cancel ride
                   .col-xs-6.col-height-slave{style: 'text-align: left;'}
+                    %span.fa-stack
+                      %i.fa.fa-share-square-o.fa-stack-2x
+                    %a.blue-text
+                      Send to friend
+                .row.even-height-row{ng: {show: 'trip.mode != "mode_paratransit"'}}
+                  .col-xs-12.col-height-slave.text-center
                     %span.fa-stack
                       %i.fa.fa-share-square-o.fa-stack-2x
                     %a.blue-text
@@ -576,7 +582,7 @@
                     .col-xs-4
                       %h5.text-muted.text-right (round trip)
               .animate-show.myride-buttons{ng: {show: 'tripDivs.future[$index]'}}
-                .row.even-height-row
+                .row.even-height-row{ng: {show: 'trip.mode == "mode_paratransit"'}}
                   .col-xs-6.col-height-master{style: 'text-align: right;'}
                     %span.fa-stack
                       %i.fa.fa-circle.fa-stack-2x
@@ -584,6 +590,12 @@
                     %a.blue-text
                       Cancel ride
                   .col-xs-6.col-height-slave{style: 'text-align: left;'}
+                    %span.fa-stack
+                      %i.fa.fa-share-square-o.fa-stack-2x
+                    %a.blue-text
+                      Send to friend
+                .row.even-height-row{ng: {show: 'trip.mode != "mode_paratransit"'}}
+                  .col-xs-12.col-height-slave.text-center
                     %span.fa-stack
                       %i.fa.fa-share-square-o.fa-stack-2x
                     %a.blue-text
