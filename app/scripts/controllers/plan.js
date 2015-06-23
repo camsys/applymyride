@@ -558,11 +558,27 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
       if (status == google.maps.GeocoderStatus.OK) {
         if (results[0]) {
           var result = results[0];
-          planService.from = result.formatted_address;
-          planService.fromDetails = result;
-          $location.path("/plan/from_confirm");
-          $scope.step = 'from_confirm';
-          $scope.$apply();
+
+          var serviceAreaPromise = planService.checkServiceArea($http, result);
+          serviceAreaPromise.
+            success(function(serviceAreaResult) {
+              if(serviceAreaResult.result == true){
+                planService.from = result.formatted_address;
+                planService.fromDetails = result;
+                $location.path("/plan/from_confirm");
+                $scope.step = 'from_confirm';
+                $scope.$apply();
+              }else{
+                $scope.showMap = false;
+                $scope.showNext = false;
+                bootbox.alert("You are currently outside the service area.  To plan a trip, enter a starting location within the service area.");
+                $location.path("/plan/from");
+                $scope.step = 'from';
+              }
+            }).
+            error(function(serviceAreaResult) {
+              bootbox.alert("An error occured on the server, please retry your search or try again later.");
+            });
         }
       }
     })
