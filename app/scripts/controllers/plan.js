@@ -435,8 +435,12 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
           offset: 0,
           componentRestrictions: {country: 'us'}
         }, function(list, status) {
-          var placeId = list[0].place_id;
-          placeIdPromise.resolve(placeId);
+          if(status == "ZERO_RESULTS" || list == null){
+            bootbox.alert("We were unable to geocode the address you selected.");
+          }else{
+            var placeId = list[0].place_id;
+            placeIdPromise.resolve(placeId);
+          }
         });
     }
 

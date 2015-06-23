@@ -81,7 +81,7 @@
       .row
         .col-md-8.col-md-offset-2.col-xs-12
           %div#overlayWrapper
-            %autocomplete{'clear-input' => '', 'inputclass' => 'clearable', 'disable-filter' => 'true', 'data' => 'locations', 'on-type'=> 'getLocations', 'on-select' => 'selectPlace', :ng => {:model => 'fromChoice', enter: 'next()'}}
+            %autocomplete{'clear-input' => '', 'inputclass' => 'clearable', 'disable-filter' => 'true', 'data' => 'locations', 'on-type'=> 'getLocations', 'on-select' => 'selectPlace', :ng => {:model => 'fromChoice'}}
       .row
         .col-md-8.col-md-offset-2.col-xs-12
           %div.map-canvas{'ui-map' => 'fromLocationMap', 'ui-options' => 'mapOptions', ng: {show: 'showMap'}}
@@ -92,7 +92,7 @@
           %h4 Where are you going?
       .row
         .col-md-8.col-md-offset-2.col-xs-12
-          %autocomplete{'clear-input' => '', 'disable-filter' => 'true', 'data' => 'locations', 'on-type'=> 'getLocations', 'on-select' => 'selectPlace', :ng => {:model => 'toChoice', enter: 'next()'}}
+          %autocomplete{'clear-input' => '', 'disable-filter' => 'true', 'data' => 'locations', 'on-type'=> 'getLocations', 'on-select' => 'selectPlace', :ng => {:model => 'toChoice'}}
       .row
         .col-md-8.col-md-offset-2.col-xs-12
           %div.map-canvas{'ui-map' => 'toLocationMap', 'ui-options' => 'mapOptions', ng: {show: 'showMap'}}
