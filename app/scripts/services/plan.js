@@ -10,7 +10,7 @@ angular.module('applyMyRideApp')
             var sortable = [];
             angular.forEach(data.trips, function(trip, index) {
               if(trip.scheduled_time){
-                sortable.push([trip, trip.scheduled_time])
+                sortable.push([trip, trip.itineraries[0].start_time])
               }
             });
             sortable.sort(function(a,b){ return a[1].localeCompare(b[1]); })
@@ -29,9 +29,11 @@ angular.module('applyMyRideApp')
             tripDivs.future = [];
 
             angular.forEach($scope.trips, function(trip, index) {
-              trip.startDesc = that.getDateDescription(trip.scheduled_time);
-              trip.startDesc += " at " + moment(trip.scheduled_time).format('h:mm a');
-              var dayDiff = moment(trip.scheduled_time).startOf('day').diff(moment().startOf('day'), 'days');
+              trip.mode = trip.itineraries[0].returned_mode_code;
+              trip.roundTrip = trip.itineraries.length > 1 ? true : false;
+              trip.startDesc = that.getDateDescription(trip.itineraries[0].start_time);
+              trip.startDesc += " at " + moment(trip.itineraries[0].start_time).format('h:mm a');
+              var dayDiff = moment(trip.itineraries[0].start_time).startOf('day').diff(moment().startOf('day'), 'days');
               if(dayDiff == 0) {
                 trips.today.push(trip);
                 tripDivs.today.push(false);
@@ -337,13 +339,14 @@ angular.module('applyMyRideApp')
           return null;
         var description;
         var now = moment().startOf('day');
-        var dayDiff = moment(date).startOf('day').diff(moment().startOf('day'), 'days');
+        var then = moment(date).startOf('day');
+        var dayDiff = now.diff(then, 'days');
         if(dayDiff == 0) {
           description = "Today";
         } else if (dayDiff == 1) {
           description = "Tomorrow";
         }else{
-          description = moment(date).format('dddd MMM DD');
+          description = moment(date).format('dddd MMM DD, YYYY');
         }
         return description;
       }

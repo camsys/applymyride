@@ -533,7 +533,9 @@
             .myride{index: '{{$index}}', ng: {click: 'tripDivs.today[$index] = !tripDivs.today[$index]', repeat: 'trip in trips.today'}}
               .row
                 .col-xs-2.col-height-slave
-                  %img.img-responsive{ng: {src: 'images/modes/paratransit.png'}}
+                  %img.img-responsive{ng: {src: 'images/modes/paratransit.png', show: 'trip.mode == "mode_paratransit"'}}
+                  %img.img-responsive{ng: {src: 'images/modes/transit.png', show: 'trip.mode == "mode_transit"'}}
+                  %img.img-responsive{ng: {src: 'images/modes/walk.png', show: 'trip.mode == "mode_walk"'}}
                 .col-xs-10.col-height-master{style: 'width: 60em !important;'}
                   .row
                     .col-xs-12
@@ -542,7 +544,8 @@
                     .col-xs-8
                       %h5.blue-text {{trip.startDesc}}
                     .col-xs-4
-                      %h5.text-muted.text-right (round trip)
+                      %h5.text-muted.text-right{ng: {show: 'trip.roundTrip'}} (round trip)
+                      %h5.text-muted.text-right{ng: {show: '!trip.roundTrip'}} (one way)
               .animate-show.myride-buttons{ng: {show: 'tripDivs.today[$index]'}}
                 .row.even-height-row
                   .col-xs-6.col-height-master{style: 'text-align: right;'}
@@ -560,7 +563,9 @@
             .myride{'index' => '{{$index}}', ng: {click: 'tripDivs.future[$index] = !tripDivs.future[$index]', repeat: 'trip in trips.future'}}
               .row
                 .col-xs-2.col-height-slave
-                  %img.img-responsive{ng: {src: 'images/modes/transit.png'}}
+                  %img.img-responsive{ng: {src: 'images/modes/paratransit.png', show: 'trip.mode == "mode_paratransit"'}}
+                  %img.img-responsive{ng: {src: 'images/modes/transit.png', show: 'trip.mode == "mode_transit"'}}
+                  %img.img-responsive{ng: {src: 'images/modes/walk.png', show: 'trip.mode == "mode_walk"'}}
                 .col-xs-10.col-height-master{style: 'width: 60em !important;'}
                   .row
                     .col-xs-12
@@ -587,7 +592,9 @@
             .myride{'index' => '{{$index}}', ng: {click: 'tripDivs.past[$index] = !tripDivs.past[$index]', repeat: 'trip in trips.past'}}
               .row
                 .col-xs-2.col-height-slave
-                  %img.img-responsive{ng: {src: 'images/modes/transit.png'}}
+                  %img.img-responsive{ng: {src: 'images/modes/paratransit.png', show: 'trip.mode == "mode_paratransit"'}}
+                  %img.img-responsive{ng: {src: 'images/modes/transit.png', show: 'trip.mode == "mode_transit"'}}
+                  %img.img-responsive{ng: {src: 'images/modes/walk.png', show: 'trip.mode == "mode_walk"'}}
                 .col-xs-10.col-height-master{style: 'width: 60em !important;'}
                   .row
                     .col-xs-12
