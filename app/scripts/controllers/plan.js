@@ -422,7 +422,6 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
       map = $scope.toLocationMap;
     }
     var placeIdPromise = $q.defer();
-    var serviceAreaPromise = $q.defer();
     var placeId = $scope.placeIds[$scope.placeLabels.indexOf(place)];
     if(placeId) {
       placeIdPromise.resolve(placeId);
@@ -464,7 +463,27 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
             planService.toDetails = result;
           }
 
-          serviceAreaPromise = planService.checkServiceArea($http, result);
+          if($scope.marker){
+            $scope.marker.setMap(null);
+          }
+
+          $scope.showMap = true;
+          $scope.showUndo = true;
+          $scope.disableNext = false;
+          $scope.showNext = true;
+          $scope.$apply();
+
+          google.maps.event.trigger(map, 'resize');
+
+
+          map.setCenter(result.geometry.location);
+          $scope.marker = new google.maps.Marker({
+            map: map,
+            position: result.geometry.location,
+            animation: google.maps.Animation.DROP
+          });
+
+          var serviceAreaPromise = planService.checkServiceArea($http, result);
           serviceAreaPromise.
             success(function(serviceAreaResult) {
               if(serviceAreaResult.result == true){
@@ -476,26 +495,30 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
                 $scope.showUndo = true;
                 $scope.disableNext = false;
                 $scope.showNext = true;
-                $scope.$apply();
 
                 google.maps.event.trigger(map, 'resize');
-                map.setCenter({latitude:result.geometry.location.lat, longitude: result.geometry.location.lng});
+                var location = result.geometry.location;//$.extend(true, [], result.geometry.location); //new google.maps.LatLng(result.geometry.location.lat, result.geometry.location.lng);
+                delete location.lat;
+                delete location.lng;
+                map.setCenter(location);
 
                 $scope.marker = new google.maps.Marker({
                   map: map,
-                  position: result.geometry.location,
+                  position: location,
                   animation: google.maps.Animation.DROP
                 });
               }else{
+                $scope.showMap = false;
+                $scope.showNext = false;
                 bootbox.alert("The location you selected is outside the service area.");
               }
             }).
             error(function(serviceAreaResult) {
               bootbox.alert("An error occured on the server, please retry your search or try again later.");
-              usSpinnerService.stop('spinner-1');
             });
+
         } else {
-          bootbox.alert('Geocode was not successful for the following reason: ' + status);
+          alert('Geocode was not successful for the following reason: ' + status);
         }
       });
     })
