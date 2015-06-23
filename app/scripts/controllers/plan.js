@@ -422,6 +422,7 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
       map = $scope.toLocationMap;
     }
     var placeIdPromise = $q.defer();
+    var serviceAreaPromise = $q.defer();
     var placeId = $scope.placeIds[$scope.placeLabels.indexOf(place)];
     if(placeId) {
       placeIdPromise.resolve(placeId);
@@ -463,31 +464,38 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
             planService.toDetails = result;
           }
 
-          if($scope.marker){
-            $scope.marker.setMap(null);
-          }
+          serviceAreaPromise = planService.checkServiceArea($http, result);
+          serviceAreaPromise.
+            success(function(serviceAreaResult) {
+              if(serviceAreaResult.result == true){
+                if($scope.marker){
+                  $scope.marker.setMap(null);
+                }
 
-          $scope.showMap = true;
-          $scope.showUndo = true;
-          $scope.disableNext = false;
-          $scope.showNext = true;
-          $scope.$apply();
+                $scope.showMap = true;
+                $scope.showUndo = true;
+                $scope.disableNext = false;
+                $scope.showNext = true;
+                $scope.$apply();
 
-          google.maps.event.trigger(map, 'resize');
+                google.maps.event.trigger(map, 'resize');
+                map.setCenter({latitude:result.geometry.location.lat, longitude: result.geometry.location.lng});
 
-
-          map.setCenter(result.geometry.location);
-          $scope.marker = new google.maps.Marker({
-            map: map,
-            position: result.geometry.location,
-            animation: google.maps.Animation.DROP
-          });
-          //var bounds = new google.maps.LatLngBounds(result.geometry.location, result.geometry.location);
-          var contentString = '' + result.name;
-          var infoWindow = new google.maps.InfoWindow({content: contentString, position: result.geometry.location});
-
+                $scope.marker = new google.maps.Marker({
+                  map: map,
+                  position: result.geometry.location,
+                  animation: google.maps.Animation.DROP
+                });
+              }else{
+                bootbox.alert("The location you selected is outside the service area.");
+              }
+            }).
+            error(function(serviceAreaResult) {
+              bootbox.alert("An error occured on the server, please retry your search or try again later.");
+              usSpinnerService.stop('spinner-1');
+            });
         } else {
-          alert('Geocode was not successful for the following reason: ' + status);
+          bootbox.alert('Geocode was not successful for the following reason: ' + status);
         }
       });
     })

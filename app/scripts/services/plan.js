@@ -359,6 +359,11 @@ angular.module('applyMyRideApp')
           });
       }
 
+      this.checkServiceArea = function($http, place) {
+        this.fixLatLon(place);
+        return $http.post('api/v1/places/within_area', place, this.getHeaders());
+      }
+
       this.postItineraryRequest = function($http) {
         return $http.post('api/v1/itineraries/plan', this.itineraryRequestObject, this.getHeaders());
       }
