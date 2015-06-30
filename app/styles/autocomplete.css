@@ -252,7 +252,7 @@ only screen and (min-device-pixel-ratio : 1.5) {
 }
 
 .destination {
-  margin-left: -15px !important;
+  margin-left: -13px !important;
 }
 
 .mode_walk > .row > [class*='col-']:nth-child(2):before {
@@ -703,4 +703,9 @@ and (max-device-width : 480px) {
 
 .myride:hover {
   background-color: #EAEAEA;
+}
+
+
+.col-xs-2.right-side {
+  max-width: 16.6666666667%;
 }
