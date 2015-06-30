@@ -286,6 +286,9 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
       $scope.showNext = true;
       $scope.disableNext = false;
       break;
+    case 'sharedride_options_3':
+      $scope.driverInstructions = planService.driverInstructions;
+      break;
     default:
 
       break;
