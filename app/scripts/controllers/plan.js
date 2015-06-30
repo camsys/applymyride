@@ -379,6 +379,14 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
     planService.returnTimeType = type;
   }
 
+  $scope.clearFrom = function(){
+    $scope.fromChoice = null;
+  }
+
+  $scope.clearTo = function(){
+    $scope.toChoice = null;
+  }
+
   $scope.getLocations = function(typed){
     if(typed){
       var config = planService.getHeaders();
