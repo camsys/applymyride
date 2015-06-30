@@ -1,4 +1,21 @@
-.container{style: 'padding: 0;', ng: {controller: "TransitController"}}
+.container{style: 'padding: 0;', ng: {controller: "WalkController"}}
+  .row{style: 'margin-bottom: 1em;'}
+    .col-xs-12.col-md-8.col-md-offset-2{style: 'padding: 0;'}
+      .row
+        .col-xs-12
+          %h2{ng: {show: 'walkItineraries.length > 1'}} Here is your round-trip transit itinerary
+          %h2{ng: {show: 'walkItineraries.length == 1'}} Here is your one way transit itinerary
+.walkitinerary{ng: {repeat: 'itinerary in walkItineraries'}}
+  .row{style: 'margin-bottom: 1em;', ng: {show: '$index == 0'}}
+    .col-xs-12.col-md-8.col-md-offset-2{style: 'padding: 0;'}
+      .row
+        .col-xs-12
+          %h2 Outbound Trip
+  .row{style: 'margin-bottom: 1em;', ng: {show: '$index == 1'}}
+    .col-xs-12.col-md-8.col-md-offset-2{style: 'padding: 0;'}
+      .row
+        .col-xs-12
+          %h2 Return Trip
   .row{style: 'margin-bottom: 1em;'}
     .col-xs-12.col-md-8.col-md-offset-2{style: 'padding: 0;'}
       .row
@@ -48,10 +65,12 @@
                     .row
                       .leg-info.col-xs-12
                         .walk-step
-                          {{step.description}} xx
+                          {{step.description}}
                     .row.text-muted
                       .leg-info.col-xs-12
-                        .walk-step
+                        .walk-step{ng: {show: '!$last'}}
+                          {{step.distanceDesc}} miles
+                        %div{ng: {show: '$last'}}
                           {{step.distanceDesc}} miles
       .border-between.timeline{style: 'margin-bottom: 1em;'}
         .row.even-height-row
@@ -64,3 +83,22 @@
               .row
                 .leg-info.col-xs-12.leg-header
                   %h4 {{itinerary.destinationDesc}}
+    .row{style: 'margin-bottom: 1em;', ng: {show: '$index == 0'}}
+      .col-xs-12.col-md-8.col-md-offset-2{style: 'padding: 0;'}
+        .row
+          .col-xs-12
+            %h1 {{purpose}}
+
+.row{style: 'margin-top: 1em;'}
+  .col-md-8.col-md-offset-2.col-xs-12
+    .row{ng:{show: 'email'}}
+      .col-xs-6.text-left
+        %a.btn.btn-success.btn-block{ng: {click: 'saveWalkItinerary()'}}
+          Save this itinerary to My Rides
+      .col-xs-6.text-right
+        %a.btn.btn-success.btn-block{ng: {click: 'emailWalkItinerary()'}}
+          Email this itinerary
+    .row{ng:{show: '!email'}}
+      .col-xs-6.col-xs-offset-3.text-center
+        %a.btn.btn-success.btn-block{ng: {click: 'emailWalkItinerary()'}}
+          Email this itinerary

@@ -6,16 +6,31 @@ angular.module('applyMyRideApp')
 
         $scope.location = $location.path();
         $scope.disableNext = true;
-        $scope.walkid = $routeParams.walkid;
         $scope.showDiv = {};
         $scope.success = true;
 
       $scope.prepareTrip = function(){
-        angular.forEach(planService.searchResults.itineraries, function(itinerary, index) {
-          if(itinerary.id == $scope.walkid){
-            $scope.itinerary = itinerary;
-          }
+        $scope.walkItineraries = planService.walkItineraries;
+        $scope.purpose = planService.itineraryRequestObject.trip_purpose;
+      }
+
+      $scope.saveWalkItinerary = function(){
+        $scope.walkItineraries = planService.walkItineraries;
+        var selectedItineraries = [];
+        var tripId = planService.tripId;
+        angular.forEach(planService.walkItineraries, function(itinerary, index) {
+          selectedItineraries.push({"trip_id":tripId, "itinerary_id":itinerary.id});
         });
+
+        var selectedItineraries = {"select_itineraries": selectedItineraries};
+        var promise = planService.selectItineraries($http, selectedItineraries);
+        promise.then(function(result) {
+          $location.path('/plan/my_rides');
+        });
+      }
+
+      $scope.emailWalkItinerary = function(){
+
       }
 
       if($routeParams.test){

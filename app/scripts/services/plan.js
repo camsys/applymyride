@@ -82,88 +82,148 @@ angular.module('applyMyRideApp')
         $scope.request = request;
       }
 
-      this.prepareTripSearchResultsPage = function(segment_index, $scope){
+      this.prepareTripSearchResultsPage = function(){
+        this.transitItineraries = [];
+        this.paratransitItineraries = [];
+        this.walkItineraries = [];
+        this.tripId = this.searchResults.trip_id;
         var itineraries = this.searchResults.itineraries;
         var itinerariesBySegmentThenMode = this.getItinerariesBySegmentAndMode(itineraries);
         var fare_info = {};
-        var itinerariesByMode = itinerariesBySegmentThenMode[segment_index];
-        if(itinerariesByMode.mode_paratransit){
-          var paratransitTrips = itinerariesByMode.mode_paratransit;
-          if(paratransitTrips){
-            var lowestPricedParatransitTrip;
-            angular.forEach(paratransitTrips, function(paratransitTrip, index) {
-              if(paratransitTrip.duration && paratransitTrip.start_time){
-                paratransitTrip.travelTime = humanizeDuration(paratransitTrip.duration * 1000,  { units: ["hours", "minutes"], round: true });
-                paratransitTrip.startTime = moment(paratransitTrip.start_time).format('h:mm a')
-                if(!lowestPricedParatransitTrip){
-                  lowestPricedParatransitTrip = paratransitTrip;
-                }else{
-                  if(Number(paratransitTrip.cost) < Number(lowestPricedParatransitTrip.cost)){
-                    lowestPricedParatransitTrip = paratransitTrip;
-                  }
-                }
+        fare_info.roundtrip = false;
+        if(this.itineraryRequestObject.itinerary_request.length > 1){
+          fare_info.roundtrip = true;
+        }
+        var that = this;
+        angular.forEach(Object.keys(itinerariesBySegmentThenMode), function(segmentIndex, index) {
+          var itinerariesByMode = itinerariesBySegmentThenMode[segmentIndex];
+          angular.forEach(Object.keys(itinerariesByMode), function(mode_code, index) {
+            var fares = [];
+            angular.forEach(itinerariesByMode[mode_code], function(itinerary, index) {
+              if(itinerary.cost){
+                var fare = parseFloat(Math.round(itinerary.cost * 100) / 100).toFixed(2);
+                itinerary.cost = fare;
+                fares.push(fare);
+              } else if (itinerary.discounts && !that.guestParatransitItinerary){
+                that.guestParatransitItinerary = itinerary;
+                angular.forEach(itinerary.discounts, function(discount, index) {
+                  var fare = parseFloat(Math.round(discount.fare * 100) / 100).toFixed(2);
+                  fares.push(fare);
+                });
               }
             });
-            if(lowestPricedParatransitTrip){
-              itinerariesByMode.mode_paratransit = [lowestPricedParatransitTrip];
-              this.paratransitItinerary = lowestPricedParatransitTrip;
-            }else{
-              delete itinerariesByMode.mode_paratransit;
-            }
-          }
-        }
 
-
-        var walkTrips = itinerariesByMode.mode_walk;
-        if(walkTrips){
-          this.walkItinerary = walkTrips[0];
-        }
-
-        angular.forEach(Object.keys(itinerariesByMode), function(mode_code, index) {
-          var fares = [];
-          angular.forEach(itinerariesByMode[mode_code], function(itinerary, index) {
-            if(itinerary.cost){
-              var fare = parseFloat(Math.round(itinerary.cost * 100) / 100).toFixed(2);
-              itinerary.cost = fare;
-              fares.push(fare);
-            } else if (itinerary.discounts){
-              angular.forEach(itinerary.discounts, function(discount, index) {
-                var fare = parseFloat(Math.round(discount.fare * 100) / 100).toFixed(2);
-                fares.push(fare);
-              });
+            if(fares.length > 0){
+              var lowestFare = Math.min.apply(null, fares).toFixed(2);
+              var highestFare = Math.max.apply(null, fares).toFixed(2);
+              if(lowestFare == highestFare || (mode_code == 'mode_paratransit' && that.email)){
+                fare_info[[mode_code]] = "$" + lowestFare;  //if the user is registered, show the lowest paratransit fare
+              }else{
+                fare_info[[mode_code]] = "$" + lowestFare + "-$" + highestFare;
+              }
             }
           });
+        });
 
-          if(fares.length > 0){
-            var lowestFare = Math.min.apply(null, fares).toFixed(2);
-            var highestFare = Math.max.apply(null, fares).toFixed(2);
-            if(lowestFare == highestFare){
-              fare_info[[mode_code]] = "$" + lowestFare;
+        var itinerariesByModeOutbound = itinerariesBySegmentThenMode[0];
+        var itinerariesByModeReturn = itinerariesBySegmentThenMode[1];
+
+        if(itinerariesByModeOutbound.mode_paratransit){
+          var lowestPricedParatransitTrip = this.getLowestPricedParatransitTrip(itinerariesByModeOutbound.mode_paratransit);
+          if(!this.email){
+            //guest user, just use the first paratransit itinerary since the prices are unknown
+            lowestPricedParatransitTrip = this.guestParatransitItinerary;
+          }
+          if(lowestPricedParatransitTrip){
+            this.paratransitItineraries.push(lowestPricedParatransitTrip);
+            fare_info.paratransitTravelTime = lowestPricedParatransitTrip.travelTime;
+            fare_info.paratransitStartTime = lowestPricedParatransitTrip.startTime;
+          }
+        }
+
+        if(itinerariesByModeOutbound.mode_transit){
+          this.transitItineraries.push(itinerariesByModeOutbound.mode_transit);
+        }
+
+
+        if(itinerariesByModeOutbound.mode_walk){
+          this.walkItineraries.push(itinerariesByModeOutbound.mode_walk[0]);
+        }
+
+        //if a mode doesn't appear in both outbound and return itinerary lists, remove it
+
+        if(fare_info.roundtrip == true){
+          if(itinerariesByModeReturn.mode_transit){
+            this.transitItineraries.push(itinerariesByModeReturn.mode_transit);
+          }else{
+            this.transitItineraries = [];
+          }
+
+          if(itinerariesByModeReturn.mode_paratransit && this.email){ //this doesn't matter for guest users since they can't book anyway
+            var lowestPricedParatransitTrip = this.getLowestPricedParatransitTrip(itinerariesByModeReturn.mode_paratransit);
+            if(lowestPricedParatransitTrip){
+              this.paratransitItineraries.push(lowestPricedParatransitTrip);
             }else{
-              fare_info[[mode_code]] = "$" + lowestFare + "-$" + highestFare;
+              this.paratransitItineraries = [];
             }
           }
-        });
-        var modes = Object.keys(fare_info);
-        var index = $.inArray("mode_transit", modes);
-        if (index>=0) modes.splice(index, 1);
-        index = $.inArray("mode_paratransit", modes);
-        if (index>=0){
-          modes.splice(index, 1);
-          fare_info.paratransitTravelTime = itinerariesByMode.mode_paratransit[0].travelTime;
-          fare_info.paratransitStartTime = itinerariesByMode.mode_paratransit[0].startTime;
-        }
-        if(modes.length > 0){
-          fare_info.other = true;
-        }else{
-          fare_info.other = false;
+
+          if(itinerariesByModeReturn.mode_walk){
+            this.walkItineraries.push(itinerariesByModeReturn.mode_walk[0]);
+          }else{
+            this.walkItineraries = [];
+          }
         }
 
-        if(itinerariesByMode.mode_transit){
-          this.transitInfos = this.prepareTransitOptionsPage(itinerariesByMode.mode_transit, segment_index);
+        this.transitInfos = [];
+        if(itinerariesBySegmentThenMode[0] && itinerariesBySegmentThenMode[0].mode_transit){
+          this.transitInfos.push(this.prepareTransitOptionsPage(itinerariesBySegmentThenMode[0].mode_transit));
         }
-        //$scope.transitInfos = [$scope.transitInfos[0]];
+
+        if(itinerariesBySegmentThenMode[1] && itinerariesBySegmentThenMode[1].mode_transit){
+          //for round trips, show the fare as the sum of the two recommended fares
+          this.transitInfos.push(this.prepareTransitOptionsPage(itinerariesBySegmentThenMode[1].mode_transit));
+          var fare1 = this.transitInfos[0][0].cost;
+          var fare2 = this.transitInfos[1][0].cost;
+          fare_info.mode_transit = (new Number(fare1) + new Number(fare2)).toFixed(2).toString();
+        }else if (fare_info.roundtrip == true){
+          this.transitInfos = [];
+        }
+
+        if(this.email){
+          if(this.paratransitItineraries.length > 1){
+            //for round trips, show the fare as the sum of the two PARATRANSIT fares
+            var fare1 = this.paratransitItineraries[0].cost;
+            var fare2 = this.paratransitItineraries[1].cost;
+            fare_info.mode_paratransit = (new Number(fare1) + new Number(fare2)).toFixed(2).toString();
+          }else if(this.paratransitItineraries.length == 1){
+            fare_info.mode_paratransit = new Number(this.paratransitItineraries[0].cost).toFixed(2).toString();
+          }
+        }
         this.fare_info = fare_info;
+      }
+
+      this.getLowestPricedParatransitTrip = function(paratransitTrips){
+        var lowestPricedParatransitTrip;
+        angular.forEach(paratransitTrips, function(paratransitTrip, index) {
+          if(paratransitTrip.duration && paratransitTrip.start_time && paratransitTrip.cost) {
+            paratransitTrip.travelTime = humanizeDuration(paratransitTrip.duration * 1000, {
+              units: ["hours", "minutes"],
+              round: true
+            });
+            paratransitTrip.startTime = moment(paratransitTrip.start_time).format('h:mm a')
+            if (!lowestPricedParatransitTrip) {
+              lowestPricedParatransitTrip = paratransitTrip;
+            } else {
+              if (Number(paratransitTrip.cost) < Number(lowestPricedParatransitTrip.cost)) {
+                lowestPricedParatransitTrip = paratransitTrip;
+              }
+            }
+            lowestPricedParatransitTrip.travelTime = humanizeDuration(paratransitTrip.duration * 1000,  { units: ["hours", "minutes"], round: true });
+            lowestPricedParatransitTrip.startTime = moment(paratransitTrip.start_time).format('h:mm a')
+          }
+        });
+        return lowestPricedParatransitTrip;
       }
 
       this.getItinerariesBySegmentAndMode = function(itineraries){
@@ -185,18 +245,8 @@ angular.module('applyMyRideApp')
         return itinerariesBySegmentThenMode;
       }
 
-      this.prepareTransitOptionsPage = function(itineraries, segment_index){
-
-        var transitItineraries = [];
-
-        angular.forEach(itineraries, function(itinerary, index) {
-          var mode = itinerary.returned_mode_code;
-          if (mode == 'mode_transit' && itinerary.segment_index == segment_index){
-            transitItineraries.push(itinerary);
-          }
-        }, transitItineraries);
-
-        var transitInfos = []
+      this.prepareTransitOptionsPage = function(transitItineraries){
+        var transitInfos = [];
         angular.forEach(transitItineraries, function(itinerary, index) {
           var transitInfo = {};
           transitInfo.id = itinerary.id;
@@ -274,8 +324,10 @@ angular.module('applyMyRideApp')
         itinerary.travelTime = humanizeDuration(itinerary.duration * 1000,  { units: ["hours", "minutes"], round: true });
         itinerary.walkTimeDesc = humanizeDuration(itinerary.walk_time * 1000,  { units: ["hours", "minutes"], round: true });
         itinerary.dayAndDateDesc = moment(itinerary.start_time).format('dddd, MMMM Do');
-        itinerary.startTimeDesc = moment(itinerary.start_time).format('h:mm a')
-        itinerary.endTimeDesc = moment(itinerary.end_time).format('h:mm a')
+        itinerary.startTimeDesc = moment(itinerary.start_time).format('h:mm a');
+        itinerary.endTimeDesc = moment(itinerary.end_time).format('h:mm a');
+        itinerary.distanceDesc = ( itinerary.distance * 0.000621371 ).toFixed(2);
+        itinerary.walkDistanceDesc = ( itinerary.walk_distance * 0.000621371 ).toFixed(2);
       }
 
       this.setItineraryLegDescriptions = function(itinerary){
@@ -362,6 +414,10 @@ angular.module('applyMyRideApp')
           });
       }
 
+      this.selectItineraries = function($http, itineraryObject) {
+        return $http.post('api/v1/itineraries/select', itineraryObject, this.getHeaders());
+      }
+
       this.checkServiceArea = function($http, place) {
         this.fixLatLon(place);
         return $http.post('api/v1/places/within_area', place, this.getHeaders());
@@ -374,25 +430,30 @@ angular.module('applyMyRideApp')
       this.bookSharedRide = function($http) {
         var requestHolder = {};
         requestHolder.booking_request = [];
-        var bookingRequest = {};
-        requestHolder.booking_request.push(bookingRequest);
-        bookingRequest.itinerary_id = this.paratransitItinerary.id;
 
-        if(this.hasEscort){
-          bookingRequest.escort = this.hasEscort;
-        }
+        var that = this;
+        angular.forEach(this.paratransitItineraries, function(paratransitItinerary, index) {
+          var bookingRequest = {};
+          bookingRequest.itinerary_id = paratransitItinerary.id;
 
-        if(this.numberOfFamily){
-          bookingRequest.family = this.numberOfFamily;
-        }
+          if(that.hasEscort){
+            bookingRequest.escort = that.hasEscort;
+          }
 
-        if(this.numberOfCompanions){
-          bookingRequest.companions = this.numberOfCompanions;
-        }
+          if(that.numberOfFamily){
+            bookingRequest.family = that.numberOfFamily;
+          }
 
-        if(this.driverInstructions){
-          bookingRequest.note = this.driverInstructions;
-        }
+          if(that.numberOfCompanions){
+            bookingRequest.companions = that.numberOfCompanions;
+          }
+
+          if(that.driverInstructions){
+            bookingRequest.note = that.driverInstructions;
+          }
+          requestHolder.booking_request.push(bookingRequest);
+        });
+
         return $http.post('api/v1/itineraries/book', requestHolder, this.getHeaders());
 
       }

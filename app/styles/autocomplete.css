@@ -8,8 +8,6 @@
   -o-transition-duration: 0.5s;
   transition-duration: 0.5s;
   position: absolute;
-  top: 0px;
-  left: 0px;
   opacity: 0;
 }
 
@@ -27,8 +25,6 @@
   -o-transition-duration: 0.5s;
   transition-duration: 0.5s;
   position: absolute;
-  top: 0px;
-  left: 0px;
   opacity: 1;
 }
 
@@ -252,7 +248,11 @@ only screen and (min-device-pixel-ratio : 1.5) {
   z-index: 999;
   font-size: 2em; background: white;
   margin-top: 0.2em;
-  margin-left: -16px;
+  margin-left: -13px;
+}
+
+.destination {
+  margin-left: -15px !important;
 }
 
 .mode_walk > .row > [class*='col-']:nth-child(2):before {

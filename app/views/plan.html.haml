@@ -1,4 +1,4 @@
-.plan{"ng-controller" => "PlanController"}
+.plan
   .container
     %span{'us-spinner' => '', 'spinner-key' => "spinner-1"}
     .alert.alert-danger.text-center{"ng-show" => "apiError", :role => "alert"}
@@ -222,13 +222,19 @@
           %a.btn-block{"ng-href" => "#/plan/fromDate"}
             No, change my request
 
-    .list_itineraries.col-xs-12.col-sm-8.col-sm-offset-2{ng: {show: 'step==="list_itineraries"'}}
-      %h2 Here are your trip options:
+    .list_itineraries.col-xs-12.col-sm-8.col-sm-offset-2{ng: {show: 'step==="list_itineraries" && noresults == true'}}
+      %h2 We did not find any rides matching your request
+      %a.btn-block{"ng-href" => "#/plan/fromDate"}
+        Change my request
 
-      %a.no_underline.row.row-eq-height.rounded-border{ng: {href: '#/plan/bus_options', show: 'fare_info["mode_transit"] && transitInfos.length >  1'}}
+    .list_itineraries.col-xs-12.col-sm-8.col-sm-offset-2{ng: {show: 'step==="list_itineraries" && noresults == false'}}
+      %h2{ng: {show: 'fare_info.roundtrip'}} Here are your round-trip options:
+      %h2{ng: {show: '!fare_info.roundtrip'}} Here are your one-way trip options:
+
+      %a.no_underline.row.row-eq-height.rounded-border{ng: {href: '#/transitoptions/0', show: 'fare_info["mode_transit"] && transitInfos[0].length >  1'}}
         .row.even-height-row.table-compact
           .col-xs-2.col-height-slave
-            %img.img-responsive{ng: {src: 'images/modes/paratransit.png'}}
+            %img.img-responsive{ng: {src: 'images/modes/transit.png'}}
           .col-xs-4.col-height-master
             .row.row-eq-height.table-compact
               .col-xs-12{style: "font-size: large"}
@@ -236,14 +242,14 @@
           .col-xs-2.col-height-master
             .row.row-eq-height.table-compact
               .col-xs-12{style: "font-size: large"}
-                {{fare_info["mode_transit"]}}
+                ${{fare_info["mode_transit"]}}
           .col-xs-4.col-height-slave
             .row.row-eq-height.table-compact.pull-right
               .col-xs-12
                 %span.fa-lg.pull-right
                   %i.fa.fa-chevron-circle-right.fa-lg
 
-      %a.no_underline.row.row-eq-height.rounded-border{ng: {show: 'transitInfos.length == 1', href: '#/transit/{{transitInfo.id}}', repeat: 'transitInfo in transitInfos'}}
+      %a.no_underline.row.row-eq-height.rounded-border{ng: {show: 'transitInfos[0].length == 1', href: '#/transit/0/{{transitInfo.id}}', repeat: 'transitInfo in transitInfos[0]'}}
         .row.even-height-row.table-compact
           .col-xs-2.col-height-slave
             %img.img-responsive{ng: {src: 'images/modes/transit.png'}}
@@ -272,20 +278,31 @@
           .col-xs-2.col-height-slave
             %img.img-responsive{ng: {src: 'images/modes/paratransit.png'}}
           .col-xs-6.col-height-master
-            .row.row-eq-height.table-compact
+
+            .row.row-eq-height.table-compact{style: "font-size: large"}
               .col-xs-12
                 Shared Ride
-            .row.table-compact
-              .col-xs-12
-                %p.text-left.text-muted
-                  Travel time: {{fare_info.paratransitTravelTime}}
-              .col-xs-12
-                %p.text-left.text-muted
-                  Start time: {{fare_info.paratransitStartTime}}
+            .sharedridesegment{ng: {repeat: 'itinerary in paratransitItineraries'}}
+              .row.table-compact{ng: {show: '$first && paratransitItineraries.length > 1'}}
+                .col-xs-12
+                  %p.text-left{style: 'text-decoration: underline;'}
+                    Outbound trip
+              .row.table-compact{ng: {show: '$last && paratransitItineraries.length > 1'}}
+                .col-xs-12
+                  %p.text-left{style: 'text-decoration: underline;'}
+                    Return trip
+              .row.table-compact
+                .col-xs-12
+                  %p.text-left.text-muted
+                    Travel time: {{itinerary.travelTime}}
+              .row.table-compact
+                .col-xs-12
+                  %p.text-left.text-muted
+                    Start: {{itinerary.startDesc}}
           .col-xs-4.col-height-slave
             .row.row-eq-height.table-compact.pull-right
-              .col-xs-12
-                {{fare_info["mode_paratransit"]}}
+              .col-xs-12{style: "font-size: large"}
+                ${{fare_info["mode_paratransit"]}}
 
       %a.no_underline.row.row-eq-height.rounded-border{ng: {href: '#/plan/discounts', show: 'fare_info["mode_paratransit"] && !email'}}
         .row.even-height-row.table-compact
@@ -313,20 +330,29 @@
 
     .col-xs-12.col-sm-8.col-sm-offset-2{ng: {show: 'step==="alternative_options"'}}
       %h2 Here are your alternative trip options:
-      %a.no_underline.row.row-eq-height.rounded-border{ng: {href: '#/walk/{{walkItinerary.id}}', show: 'walkItinerary'}}
+      %a.no_underline.row.row-eq-height.rounded-border{ng: {href: '#/walkconfirm', show: 'walkItineraries'}}
         .col-xs-2
           %img.img-responsive{ng: {src: 'images/modes/walk.png'}}
         .col-xs-4
           .row.row-eq-height{style: "border: 0px; margin: 0px; padding: 0px"}
             .col-xs-9{style: "font-size: large"}
               Walk
-          .row{style: "border: 0px; margin: 0px; padding: 0px"}
-            .col-xs-12
-              %p.text-left.text-muted{style: "border: 0px; margin: 0px; padding: 0px"}
-                Distance: {{walkItinerary.walk_distance}} miles
-            .col-xs-12
-              %p.text-left.text-muted{style: "border: 0px; margin: 0px; padding: 0px"}
-                Travel time: {{walkItinerary.travelTime}}
+          .walkitinerary{index: '{{$index}}', ng: {repeat: 'itinerary in walkItineraries'}}
+            .row.table-compact{ng: {show: '$first && walkItineraries.length > 1'}}
+              .col-xs-12
+                %p.text-left{style: 'text-decoration: underline;'}
+                  Outbound trip
+            .row.table-compact{ng: {show: '$last && walkItineraries.length > 1'}}
+              .col-xs-12
+                %p.text-left{style: 'text-decoration: underline;'}
+                  Return trip
+            .row{style: "border: 0px; margin: 0px; padding: 0px"}
+              .col-xs-12
+                %p.text-left.text-muted{style: "border: 0px; margin: 0px; padding: 0px"}
+                  Distance: {{walkItinerary.walkDistanceDesc}} miles
+              .col-xs-12
+                %p.text-left.text-muted{style: "border: 0px; margin: 0px; padding: 0px"}
+                  Travel time: {{walkItinerary.travelTime}}
         .col-xs-2{style: "font-size: large"}
           Free
 
@@ -354,10 +380,10 @@
               %h3 Bus Options:
           .row
             .col-xs-12.text-muted
-              %h4 Click to select one
+              %h4 Click an option to view details about it
 
       .row
-        .bus.rounded-border{style: "padding: 1em", ng: {repeat: 'transitInfo in transitInfos', click: 'selectTransitTrip(transitInfo.id);'}}
+        .bus.rounded-border{style: "padding: 1em", ng: {repeat: 'transitInfo in transitInfos[0]', click: 'selectTransitTrip(transitInfo.id);'}}
           .row
             .col-xs-8
               .badge.alert-success{style: "font-size: large"} {{transitInfo.label}}

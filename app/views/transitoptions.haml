@@ -1,0 +1,39 @@
+.plan
+  .container
+    %span{'us-spinner' => '', 'spinner-key' => "spinner-1"}
+    .alert.alert-danger.text-center{"ng-show" => "apiError", :role => "alert"}
+      %b API Error :
+      %span {{ apiStatus }}
+    .bus_options
+      .row{style: "margin: 0px; padding: 0px"}
+        .col-xs-2.col-lg-1
+          %img{style: '', ng: {src: 'images/modes/transit.png'}}
+        .col-xs-10.col-lg-11{style: 'margin-left: -.5em; margin-top: -.5em;'}
+          .row
+            .col-xs-12
+              %h3 Bus Options {{message}}:
+          .row
+            .col-xs-12.text-muted
+              %h4 Click an option to view details about it
+
+      .row
+        .bus.rounded-border{style: "padding: 1em", ng: {repeat: 'transitInfo in transitInfos', click: 'viewTransitTrip(transitInfo.id, segmentid);'}}
+          .row
+            .col-xs-8
+              .badge.alert-success{style: "font-size: large"} {{transitInfo.label}}
+            .col-xs-3.pull-right{style: 'border-left: 1px solid grey; border-bottom: 1px solid grey;  padding: .5em; margin-top: -1em; width: auto'}
+              .pull-right.blah{style: 'height: 2em;'}
+                %img{style: 'max-height:100%; ', ng: {src: 'images/modes/transit.png'}}
+                %span{style: "font-size: large; vertical-align: bottom;"} {{transitInfo.route}}
+          .row{style: "margin-top: .5em"}
+            .col-xs-12.text-muted
+              Fare ${{transitInfo.cost}}
+          .row{style: "margin-top: .5em"}
+            .col-xs-12.text-muted
+              Leave {{transitInfo.startDesc}}
+          .row
+            .col-xs-12.text-muted
+              Arrive {{transitInfo.endDesc}}
+          .row
+            .col-xs-12.text-muted{style: 'font-size: 1em'}
+              Total trip time is {{transitInfo.travelTime}}

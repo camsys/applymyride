@@ -40,18 +40,6 @@ angular.module('applyMyRideApp', [
         templateUrl: 'views/login.html',
         controller: 'LoginController'
       })
-      .when('/register', {
-        templateUrl: 'views/register.html',
-        controller: 'RegisterController'
-      })
-      .when('/questions/:sectionId', {
-        templateUrl: 'views/questions.html',
-        controller: 'QuestionsController'
-      })
-      .when('/try-it-out', {
-        templateUrl: 'views/try-it-out.html',
-        controller: 'PlanController'
-      })
       .when('/plan', {
         templateUrl: 'views/plan.html',
         controller: 'PlanController'
@@ -60,29 +48,29 @@ angular.module('applyMyRideApp', [
         templateUrl: 'views/plan.html',
         controller: 'PlanController'
       })
-      .when('/transit/:tripid', {
+      .when('/transit/:segmentid/:tripid', {
         templateUrl: 'views/transit.html',
+        controller: 'TransitController'
+      })
+      .when('/transitoptions/:segmentid', {
+        templateUrl: 'views/transitoptions.html',
+        controller: 'TransitController'
+      })
+      .when('/transitconfirm', {
+        templateUrl: 'views/transitconfirm.html',
         controller: 'TransitController'
       })
       .when('/paratransit/:tripid', {
         templateUrl: 'views/paratransit.html',
         controller: 'ParatransitController'
       })
-      .when('/walk/:walkid', {
+      .when('/walkconfirm', {
         templateUrl: 'views/walk.html',
         controller: 'WalkController'
       })
       .when('/about', {
         templateUrl: 'views/about.html',
         controller: 'AboutController'
-      })
-      .when('/questions/:sectionId', {
-        templateUrl: 'views/questions.html',
-        controller: 'QuestionsController'
-      })
-      .when('/eligibility', {
-        templateUrl: 'views/eligibility.html',
-        controller: 'EligibilityController'
       })
       .otherwise({
         redirectTo: '/'
@@ -104,7 +92,7 @@ angular.module('applyMyRideApp', [
     $rootScope.$on('$routeChangeStart', function (event) {
       if(!$window.visited){
         if(exceptions.indexOf($location.$$path) < 0){
-          $location.path('/');
+          //$location.path('/');
         }
       }
     });

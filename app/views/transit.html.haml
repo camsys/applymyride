@@ -57,17 +57,43 @@
                         {{step.description}}
                     .row.text-muted
                       .leg-info.col-xs-12
-                        .walk-step
+                        .walk-step{ng: {show: '!$last'}}
+                          {{step.distanceDesc}} miles
+                        %div{ng: {show: '$last'}}
                           {{step.distanceDesc}} miles
       .border-between.timeline{style: 'margin-bottom: 1em;'}
         .row.even-height-row
           .col-xs-2.right-side
             %h4 {{itinerary.destinationTimeDesc}}
           .col-xs-1.right-side
-            %i.destination.fa.fa-dot-circle-o.fa-lg.waypoint{style: 'margin-left: -18px;'}
+            %i.destination.fa.fa-dot-circle-o.fa-lg.waypoint{style: 'margin-left: -16px;'}
           .col-xs-9.leg-info.pull-left.left-side
             .bus-info
               .row
                 .leg-info.col-xs-12.leg-header
                   %h5.text-muted Arrive at
                   %h4 {{itinerary.destinationDesc}}
+  .container.sticky-footer{ng: {show: 'roundtrip'}}
+    .row{style: 'margin-top: 1em'}
+      .col-md-8.col-md-offset-2.col-xs-6.col-xs-offset-3
+        .pull-left
+          %a.btn-back{back: '', ng: {click: "back()"}}
+            %span{ng: {include: "'views/button-chevron-left.html'"}}
+            Back
+        .pull-right
+          %a.btn-next{ng: {click: 'selectTransitTrip(tripid,segmentid)'}}
+            Select this option and continue
+            %span{ng: {include: "'views/button-chevron-right.html'"}}
+  .row{style: 'margin-top: 1em;', ng: {show: 'roundtrip == false'}}
+    .col-md-8.col-md-offset-2.col-xs-12
+      .row{ng:{show: 'email'}}
+        .col-xs-6.text-left
+          %a.btn.btn-success.btn-block{ng: {click: 'saveTransitItinerary(tripid)'}}
+            Save this itinerary to My Rides
+        .col-xs-6.text-right
+          %a.btn.btn-success.btn-block{ng: {click: 'emailTransitItinerary(tripid)'}}
+            Email this itinerary
+      .row{ng:{show: '!email'}}
+        .col-xs-6.col-xs-offset-3.text-center
+          %a.btn.btn-success.btn-block{ng: {click: 'emailTransitItinerary(tripid)'}}
+            Email this itinerary
