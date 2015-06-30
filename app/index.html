@@ -41,24 +41,23 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
               <ul class="nav navbar-nav navbar-right">
                 <li ng-show="email">
-                  <div>
-                    <p>Email: {{email}}</p>
-                    <p>Deployed version: deployed_version</p>
-                  </div>
-                </li>
-                <li ng-show="email">
                   <a class="navbar-icon" href="#/plan/my_rides" style="margin-top: .5em;">
-                    My Rides <div class="badge alert-success">{{rideCount}}</div>
+                    My rides <div class="badge alert-success">{{rideCount}}</div>
                   </a>
                 </li>
                 <li ng-show="email">
                   <a class="navbar-icon" ng-click="logout()" href="" style="margin-top: .5em;">
-                    logout
+                    Sign out
                   </a>
                 </li>
-                <li>
-                  <a class="navbar-icon" href="#/">
-                    <i class="fa fa-home"></i>
+                <li ng-show="!email">
+                  <a class="navbar-icon" href="#/" style="margin-top: .5em;">
+                    Sign in
+                  </a>
+                </li>
+                <li ng-show="email">
+                  <a class="navbar-icon" href="#/" style="margin-top: .5em;">
+                    New trip
                   </a>
                 </li>
               </ul>
