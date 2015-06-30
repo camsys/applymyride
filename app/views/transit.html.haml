@@ -82,7 +82,8 @@
             Back
         .pull-right
           %a.btn-next{ng: {click: 'selectTransitTrip(tripid,segmentid)'}}
-            Select this option and continue
+            %span.visible-xs{style: 'display: inline-block !important; text-decoration: underline !important;'}  Select
+            %span.hidden-xs Select this option and continue
             %span{ng: {include: "'views/button-chevron-right.html'"}}
   .row{style: 'margin-top: 1em;', ng: {show: 'roundtrip == false'}}
     .col-md-8.col-md-offset-2.col-xs-12

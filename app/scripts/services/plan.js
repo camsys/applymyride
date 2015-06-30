@@ -280,8 +280,6 @@ angular.module('applyMyRideApp')
             transitInfo.label = "Faster"
           } else if (transitInfo.walkTime < best.walkTime){
             transitInfo.label = "Less Walking"
-          } else if (transitInfo.travelTime < best.travelTime){
-            transitInfo.label = "Faster"
           }else if(transitInfo.cost > best.cost){
             transitInfo.label = "More Expensive"
           } else if (transitInfo.startTime < best.startTime){
