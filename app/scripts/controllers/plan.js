@@ -480,6 +480,19 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
             localStorageService.set('recentSearches', JSON.stringify(recentSearches));
           }
 
+          //verify the location has a street address
+          var datatypes = [];
+          angular.forEach(result.address_components, function(component, index) {
+            angular.forEach(component.types, function(type, index) {
+              datatypes.push(type)
+            });
+          });
+
+          if(datatypes.indexOf('street_number') < 0 || datatypes.indexOf('route') < 0){
+            bootbox.alert("The location you selected does not have a valid street address, please select another location.");
+            return;
+          }
+
           if($routeParams.step == 'from'){
             planService.fromDetails = result;
           }else if($routeParams.step == 'to'){

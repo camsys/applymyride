@@ -509,7 +509,6 @@ angular.module('applyMyRideApp')
           returnTrip.trip_time = returnTimeString;
           request.itinerary_request.push(returnTrip);
         }
-        console.log(JSON.stringify(request));
         return request;
       };
 
