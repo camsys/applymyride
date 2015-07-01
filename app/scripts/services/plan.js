@@ -452,6 +452,8 @@ angular.module('applyMyRideApp')
           requestHolder.booking_request.push(bookingRequest);
         });
 
+        this.booking_request = requestHolder;
+
         return $http.post('api/v1/itineraries/book', requestHolder, this.getHeaders());
 
       }

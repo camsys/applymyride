@@ -1,4 +1,15 @@
-.container{style: 'padding: 0;', ng: {controller: "ParatransitController", show: 'success'}}
+.container{style: 'padding: 0;'}
+  .row{style: 'margin-bottom: 1em;'}
+    .col-xs-12.col-md-8.col-md-offset-2{style: 'padding: 0;'}
+      %h1 Good news!
+      %h2.text-muted Your trip has been saved
+  .row{style: 'margin-bottom: 1em;'}
+    .col-xs-4.col-xs-offset-4{style: 'padding: 0;'}
+      %a.btn.btn-success.btn-block{"ng-href" => "#/plan/fromDate"}
+        Plan another ride
+      %a.btn-block.text-center{"ng-href" => "#/plan/my_rides"}
+        View my saved rides
+.container{style: 'padding: 0;', index: '{{$index}}', ng: {show: '!booking_failed', repeat: 'itinerary in paratransitItineraries'}}
   .row{style: 'margin-bottom: 1em;'}
     .col-xs-12.col-md-8.col-md-offset-2{style: 'padding: 0;'}
       .row
@@ -14,7 +25,7 @@
       .border-between.timeline.mode_wait
         .row.even-height-row
           .col-xs-2.right-side.no-padding
-            %h4 {{booking_result.wait_startDesc}}
+            %h4 {{booking_results[$index].wait_startDesc}}
           .col-xs-1.right-side
           .col-xs-9.leg-info.left-side
             .wait-info
@@ -26,11 +37,11 @@
                   %h4.text-muted {{itinerary.start_location.name}}
               .row
                 .leg-info.col-xs-12
-                  %h5.text-muted Confirm #: {{booking_result.confirmation}}
+                  %h5.text-muted Confirm #: {{booking_results[$index].confirmation_id}}
       .border-between.timeline.mode_paratransit
         .row.even-height-row
           .col-xs-2.right-side.no-padding
-            %h4 {{booking_result.wait_endDesc}}
+            %h4 {{booking_results[$index].wait_endDesc}}
           .col-xs-1.right-side
             %i.fa.fa-circle-o.fa-lg.waypoint{style: 'color: #0E5302;'}
           .col-xs-9.leg-info.left-side
@@ -39,7 +50,7 @@
       .border-between.timeline.mode_paratransit
         .row.even-height-row
           .col-xs-2.right-side.no-padding
-            %h4 {{booking_result.arrivalDesc}}
+            %h4 {{booking_results[$index].arrivalDesc}}
           .col-xs-1.right-side.no-pseudo
             %i.fa.fa-circle-o.fa-lg.waypoint{style: 'color: #0E5302;'}
           .col-xs-9.leg-info.left-side
@@ -48,11 +59,10 @@
                 .leg-info.col-xs-12.leg-header
                   %h5.text-muted ARRIVE
                   %h4.text-muted {{itinerary.end_location.name}}
-      .border-between.timeline.mode_paratransit
-        .text-center
-          %h1 {{purpose}}
-
-.container{style: 'padding: 0;', ng: {controller: "ParatransitController", show: '!success'}}
+    .row{style: 'margin-bottom: 1em;',  ng: {show: '$first'}}
+      .col-xs-12.col-md-8.col-md-offset-2{style: 'padding: 0;'}
+        %h2 {{purpose}}
+.container{style: 'padding: 0;', ng: {show: 'booking_failed'}}
   .row{style: 'margin-bottom: 1em;'}
     .col-xs-12.col-md-8.col-md-offset-2{style: 'padding: 0;'}
       .row

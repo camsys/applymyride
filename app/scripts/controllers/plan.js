@@ -357,7 +357,6 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
         promise.then(function(result) {
           planService.booking_results = result.data.booking_results;
           $location.path('/paratransit/confirm_shared_ride');
-
         });
         break;
     }
