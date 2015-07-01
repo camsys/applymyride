@@ -112,14 +112,6 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
       }
       $scope.disableNext = false;
       break;
-    case 'fromTime':
-      if(planService.fromTime != null){
-        $scope.fromTime = planService.fromTime;
-      }else{
-        $scope.fromTime = new Date();
-      }
-      $scope.disableNext = false;
-      break;
     case 'to':
       if(planService.to != null){
         $scope.toChoice = planService.to;
@@ -162,12 +154,15 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
       var now = moment().startOf('day'); ;
       var dayDiff = now.diff(fromDate, 'days');
       if(Math.abs(dayDiff) < 1){
+        $scope.fromTime = new Date();
+        $scope.fromTime.setHours($scope.fromTime.getHours() + 2);
         $scope.showAsap = true;
+      }else{
+        now.add(9, 'hours');
+        $scope.fromTime = now.toDate();
       }
       $scope.fromTimeType = 'arrive';
       planService.fromTimeType = 'arrive';
-      $scope.fromTime = new Date();
-      $scope.fromTime.setHours($scope.fromTime.getHours() + 2);
       $scope.showNext = true;
       break;
     case 'returnTimeType':
