@@ -206,29 +206,27 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
       break;
     case 'list_itineraries':
       if($routeParams.test){
-        $http.get('data/'+ $routeParams.test + '.json').
+        $http.get('data/bookingresult.json').
           success(function(data) {
-            planService.searchResults = data;
-            $http.get('data/itinerary_request.json').
-              success(function(data) {
-                //data.itinerary_request = [];
-                planService.itineraryRequestObject = data;
-                planService.prepareTripSearchResultsPage();
-                $scope.fare_info = planService.fare_info;
-                $scope.paratransitItineraries = planService.paratransitItineraries;
-                $scope.walkItineraries = planService.walkItineraries;
-                $scope.transitItineraries = planService.transitItineraries;
-                $scope.transitInfos = planService.transitInfos;
-                $scope.noresults = false;
-                if(!$scope.paratransitItineraries && !$scope.transitItineraries && !$scope.walkItineraries){
-                  $scope.noresults = true;
-                }else if($scope.paratransitItineraries.length < 1 && $scope.transitItineraries.length < 1  && $scope.walkItineraries.length > 0){
-                  $location.path("/plan/alternative_options");
-                  $scope.step = 'alternative_options';
-                }else if($scope.walkItineraries.length > 0){
-                  $scope.showAlternativeOption = true;
-                }
-              });
+            planService.itineraryRequestObject = data.itinerary_request;
+            planService.searchResults = data.itinerary_response;
+            planService.booking_request = data.booking_request;
+            planService.booking_results = data.booking_response.booking_results;
+            planService.prepareTripSearchResultsPage();
+            $scope.fare_info = planService.fare_info;
+            $scope.paratransitItineraries = planService.paratransitItineraries;
+            $scope.walkItineraries = planService.walkItineraries;
+            $scope.transitItineraries = planService.transitItineraries;
+            $scope.transitInfos = planService.transitInfos;
+            $scope.noresults = false;
+            if($scope.paratransitItineraries.length < 1 && $scope.transitItineraries.length < 1 && $scope.walkItineraries.length < 1){
+              $scope.noresults = true;
+            }else if($scope.paratransitItineraries.length < 1 && $scope.transitItineraries.length < 1 && $scope.walkItineraries.length > 0){
+              $location.path("/plan/alternative_options");
+              $scope.step = 'alternative_options';
+            }else if($scope.walkItineraries.length > 0){
+              $scope.showAlternativeOption = true;
+            }
           });
       }else{
         planService.prepareTripSearchResultsPage();
@@ -238,9 +236,9 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
         $scope.transitItineraries = planService.transitItineraries;
         $scope.transitInfos = planService.transitInfos;
         $scope.noresults = false;
-        if(!$scope.paratransitItineraries && !$scope.transitItineraries && !$scope.walkItineraries){
+        if($scope.paratransitItineraries.length < 1 && $scope.transitItineraries.length < 1 && $scope.walkItineraries.length < 1){
           $scope.noresults = true;
-        }else if(!$scope.paratransitItineraries && !$scope.transitItineraries  && $scope.walkItineraries){
+        }else if($scope.paratransitItineraries.length < 1 && $scope.transitItineraries.length < 1 && $scope.walkItineraries.length > 0){
           $location.path("/plan/alternative_options");
           $scope.step = 'alternative_options';
         }else if($scope.walkItineraries.length > 0){
