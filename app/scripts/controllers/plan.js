@@ -273,7 +273,7 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
       $scope.showNext = false;
       break;
     case 'sharedride_options_2':
-      $scope.questionCodes = $.map(planService.paratransitItinerary.prebooking_questions, function(value, key) {
+      $scope.questionCodes = $.map(planService.paratransitItineraries[0].prebooking_questions, function(value, key) {
         return value.code;
       });
       $scope.showNext = true;
