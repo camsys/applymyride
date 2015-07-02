@@ -708,4 +708,5 @@ and (max-device-width : 480px) {
 
 .col-xs-2.right-side {
   max-width: 16.6666666667%;
+  min-width: 90px;
 }
