@@ -85,3 +85,11 @@
       .col-xs-6.col-xs-offset-3.text-center
         %a.btn.btn-success.btn-block{ng: {click: 'emailWalkItinerary()'}}
           Email this itinerary
+
+.container.sticky-footer
+  .row{style: 'margin-top: 10px'}
+    .col-md-8.col-md-offset-2.col-xs-6.col-xs-offset-3
+      .pull-left
+        %a.btn-back{back: '', ng: {click: "back()"}}
+          %span{ng: {include: "'views/button-chevron-left.html'"}}
+          Back
