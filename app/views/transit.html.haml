@@ -31,8 +31,9 @@
               .row
                 .leg-info.col-xs-12.leg-header
                   %h5.text-muted{ng: {show: '!$first'}} Get on
+                  %h4{ng: {show: '!$first'}}  Bus {{leg.route}} @ {{leg.from.name}}
                   %h5.text-muted{ng: {show: '$first'}} Begin at
-                  %h4 Bus {{leg.route}} @ {{leg.from.name}}
+                  %h4{ng: {show: '$first'}}  Bus {{leg.route}} @ {{itinerary.start_location.name}}
               .row
                 .leg-info.col-xs-12
                   %h5.text-muted Towards {{leg.headsign}}
@@ -43,8 +44,9 @@
               .row
                 .leg-info.col-xs-12.leg-header
                   %h5.text-muted{ng: {show: '!$first'}} Get off
+                  %h4{ng: {show: '!$first'}} {{leg.from.name}}
                   %h5.text-muted{ng: {show: '$first'}} Begin at
-                  %h4 {{leg.from.name}}
+                  %h4{ng: {show: '$first'}}  {{itinerary.start_location.name}}
               .row
                 .leg-info.col-xs-12
                   .row.even-height-row
@@ -78,7 +80,7 @@
               .row
                 .leg-info.col-xs-12.leg-header
                   %h5.text-muted Arrive at
-                  %h4 {{itinerary.destinationDesc}}
+                  %h4 {{itinerary.end_location.name}}
   .container.sticky-footer{ng: {show: 'roundtrip'}}
     .row{style: 'margin-top: 1em'}
       .col-md-8.col-md-offset-2.col-xs-6.col-xs-offset-3
