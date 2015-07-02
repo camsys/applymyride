@@ -234,8 +234,7 @@
         Change my request
 
     .list_itineraries.col-xs-12.col-sm-8.col-sm-offset-2{ng: {show: 'step==="list_itineraries" && noresults == false'}}
-      %h2{ng: {show: 'fare_info.roundtrip'}} Here are your round-trip options:
-      %h2{ng: {show: '!fare_info.roundtrip'}} Here are your one-way trip options:
+      %h2 Your options:
 
       %a.no_underline.row.row-eq-height.rounded-border{ng: {href: '#/transitoptions/0', show: 'fare_info["mode_transit"] && transitInfos[0].length >  1'}}
         .row.even-height-row.table-compact
@@ -335,7 +334,7 @@
         More options
 
     .col-xs-12.col-sm-8.col-sm-offset-2{ng: {show: 'step==="alternative_options"'}}
-      %h2 Here are your alternative trip options:
+      %h2 Your alternative options:
       %a.no_underline.row.row-eq-height.rounded-border{ng: {href: '#/walk/confirm', show: 'walkItineraries'}}
         .col-xs-2
           %img.img-responsive{ng: {src: 'images/modes/walk.png'}}
