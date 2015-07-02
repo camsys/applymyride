@@ -157,6 +157,10 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
         $scope.fromTime = new Date();
         $scope.fromTime.setHours($scope.fromTime.getHours() + 2);
         $scope.showAsap = true;
+        //now round to 15 min interval
+        var start = moment($scope.fromTime);
+        var remainder = (15 - start.minute()) % 15;
+        $scope.fromTime.setMinutes($scope.fromTime.getMinutes() + remainder);
       }else{
         now.add(9, 'hours');
         $scope.fromTime = now.toDate();
@@ -185,9 +189,16 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
             $scope.returnTime.setHours($scope.returnTime.getHours() + 2);
           }
         }else{
-          $scope.returnTime = new Date();
+          var now = moment().startOf('day');
+          now.add(9, 'hours');
+          $scope.returnTime = now.toDate();
         }
       }
+      //now round up to 15 min interval
+      var start = moment($scope.returnTime);
+      var remainder = (15 - start.minute()) % 15;
+      $scope.returnTime.setMinutes($scope.returnTime.getMinutes() + remainder);
+
       $scope.disableNext = false;
       $scope.returnTimeType = 'arrive';
       $scope.showNext = true;
