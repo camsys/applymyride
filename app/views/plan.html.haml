@@ -633,7 +633,7 @@
                     %a.blue-text
                       Send to friend
           %tab{'heading' => 'Past ({{trips.past.length}})'}
-            .myride{'index' => '{{$index}}', ng: {click: 'tripDivs.past[$index] = !tripDivs.past[$index]', repeat: 'trip in trips.past'}}
+            .myride{'index' => '{{$index}}', ng: {click: 'toggleRidePanelVisible("past", $index);', repeat: 'trip in trips.past'}}
               .row
                 .col-xs-2.col-height-slave
                   %img.img-responsive{ng: {src: 'images/modes/paratransit.png', show: 'trip.mode == "mode_paratransit"'}}

@@ -641,6 +641,21 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
     planService.fromDetails = null;
   };
 
+
+  $scope.toggleRidePanelVisible = function(type, divIndex) {
+    var tripDivs = $scope.tripDivs;
+    angular.forEach(Object.keys(tripDivs), function(key, index) {
+      var tripTab = tripDivs[key];
+      angular.forEach(tripTab, function(trip, index) {
+        if(key == type && index == divIndex){
+          tripTab[index] = !tripTab[index];
+        }else{
+          tripTab[index] = false;
+        }
+      });
+    });
+  };
+
   $scope.$watch('fromDate', function(n) {
       if($scope.step == 'fromDate'){
         if (n) {
@@ -815,7 +830,6 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
       $scope.showUndo = true;
     }
   })
-
 
   $scope.$watch('confirmFromLocationMap', function(n) {
       if (n) {
