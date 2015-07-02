@@ -1,4 +1,4 @@
-.container{style: 'padding: 0;', ng: {controller: "TransitController"}}
+.container{style: 'padding: 0;'}
   .row{style: 'margin-bottom: 1em;'}
     .col-xs-12.col-md-8.col-md-offset-2{style: 'padding: 0;'}
       .row
@@ -47,7 +47,13 @@
                   %h4 {{leg.from.name}}
               .row
                 .leg-info.col-xs-12
-                  %h5.text-muted {{leg.distanceDesc}} Miles ({{leg.travelTime}})
+                  .row.even-height-row
+                    .col-height-slave{style: 'width: 20px'}
+                      %i.fa.fa-chevron-down.fa-lg{style: 'color: grey', ng: {show: '!showDiv[$index] || showDiv[$index] == false'}}
+                      %i.fa.fa-chevron-up.fa-lg{style: 'color: grey', ng: {show: 'showDiv[$index] == true'}}
+                    .col-height-master
+                      %h5.text-muted Walk
+                      %h5.text-muted {{leg.distanceDesc}} Miles ({{leg.travelTime}})
               .animate-show.blah{ng: {show: 'showDiv[$index]'}}
                 .row{ng: {repeat: 'step in leg.steps'}}
                   .leg-info.col-xs-12{style: 'padding-left: 50px;'}

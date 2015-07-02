@@ -64,7 +64,7 @@ angular.module('applyMyRideApp', [
         templateUrl: 'views/paratransit.html',
         controller: 'ParatransitController'
       })
-      .when('/walkconfirm', {
+      .when('/walk/confirm', {
         templateUrl: 'views/walk.html',
         controller: 'WalkController'
       })

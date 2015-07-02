@@ -248,7 +248,7 @@
           .col-xs-2.col-height-master
             .row.row-eq-height.table-compact
               .col-xs-12{style: "font-size: large"}
-                ${{fare_info["mode_transit"]}}
+                {{fare_info["mode_transit"]}}
           .col-xs-4.col-height-slave
             .row.row-eq-height.table-compact.pull-right
               .col-xs-12
@@ -274,7 +274,7 @@
           .col-xs-4.col-height-slave
             .row.row-eq-height.table-compact.pull-right
               .col-xs-12
-                ${{transitInfo.cost}}
+                {{transitInfo.cost}}
             .route-badge
               %img{style: 'height: 20px;', ng: {src: 'images/modes/transit.png'}}
               %span {{transitInfo.route}}
@@ -308,7 +308,7 @@
           .col-xs-4.col-height-slave
             .row.row-eq-height.table-compact.pull-right
               .col-xs-12{style: "font-size: large"}
-                ${{fare_info["mode_paratransit"]}}
+                {{fare_info["mode_paratransit"]}}
 
       %a.no_underline.row.row-eq-height.rounded-border{ng: {href: '#/plan/discounts', show: 'fare_info["mode_paratransit"] && !email'}}
         .row.even-height-row.table-compact
@@ -336,7 +336,7 @@
 
     .col-xs-12.col-sm-8.col-sm-offset-2{ng: {show: 'step==="alternative_options"'}}
       %h2 Here are your alternative trip options:
-      %a.no_underline.row.row-eq-height.rounded-border{ng: {href: '#/walkconfirm', show: 'walkItineraries'}}
+      %a.no_underline.row.row-eq-height.rounded-border{ng: {href: '#/walk/confirm', show: 'walkItineraries'}}
         .col-xs-2
           %img.img-responsive{ng: {src: 'images/modes/walk.png'}}
         .col-xs-4

@@ -1,4 +1,4 @@
-.container{style: 'padding: 0;', ng: {controller: "WalkController"}}
+.container{style: 'padding: 0;'}
   .row{style: 'margin-bottom: 1em;'}
     .col-xs-12.col-md-8.col-md-offset-2{style: 'padding: 0;'}
       .row
@@ -38,26 +38,14 @@
           .col-xs-1.right-side
             %i.fa.fa-circle-o.fa-lg.waypoint
           .col-xs-9.leg-info.pull-left.left-side
-            .bus-info{ng: {show: 'leg.mode == "BUS"'}}
-              .row
-                .leg-info.col-xs-12.leg-header
-                  %h4 {{leg.from.name}}
-              .row
-                .leg-info.col-xs-12
-                  %h4 {{leg.travelTime}}
-              .row
-                .leg-info.col-xs-12
-                  %h4 {{leg.distanceDesc}} Miles
             .walk-info{ng: {show: 'leg.mode == "WALK"'}}
               .row
                 .leg-info.col-xs-12.leg-header
                   %h4 {{leg.from.name}}
               .row
                 .leg-info.col-xs-12
-                  %h4 {{leg.travelTime}}
-              .row
-                .leg-info.col-xs-12
-                  %h4 {{leg.distanceDesc}} Miles
+                  %h4.text-muted Walk
+                  %h4.text-muted {{leg.distanceDesc}} Miles ({{leg.travelTime}})
               .animate-show.blah{ng: {hide: 'showDiv[$index]'}}
                 .row{ng: {repeat: 'step in leg.steps'}}
                   .leg-info.col-xs-12{style: 'padding-left: 50px;'}
