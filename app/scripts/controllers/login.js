@@ -79,9 +79,14 @@ angular.module('applyMyRideApp')
           planService.authentication_token = result.data.authentication_token;
           planService.email = result.data.email;
           planService.getRides($http, $scope, ipCookie);
-          ipCookie('email', planService.email);
-          ipCookie('authentication_token', planService.authentication_token);
-          $location.path('/plan/fromDate');
+          if($scope.rememberme == true){
+            ipCookie('email', planService.email, {expires: 7, expirationUnit: 'days'});
+            ipCookie('authentication_token', planService.authentication_token, {expires: 7, expirationUnit: 'days'});
+            $location.path('/plan/fromDate');
+          }else{
+            ipCookie.remove('email');
+            ipCookie.remove('authentication_token');
+          }
         });
       }
     }

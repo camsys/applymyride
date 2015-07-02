@@ -63,7 +63,9 @@
         .row{style: 'margin-top: 2em'}
           %h4
             Your Shared Ride ID: {{sharedRideId}} in {{county}} county
-
+        .row
+          %input{type: 'checkbox',  ng: {model: 'rememberme'}}
+            Remember me for 7 days
 
   .row.action-button
     .col-md-4.col-md-offset-4.col-xs-12
