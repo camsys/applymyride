@@ -82,11 +82,11 @@ angular.module('applyMyRideApp')
           if($scope.rememberme == true){
             ipCookie('email', planService.email, {expires: 7, expirationUnit: 'days'});
             ipCookie('authentication_token', planService.authentication_token, {expires: 7, expirationUnit: 'days'});
-            $location.path('/plan/fromDate');
           }else{
             ipCookie.remove('email');
             ipCookie.remove('authentication_token');
           }
+          $location.path('/plan/fromDate');
         });
       }
     }
