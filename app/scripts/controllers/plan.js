@@ -20,10 +20,43 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
   $scope.disableNext = false;
   $scope.showUndo = false;
   $scope.showNext = true;
+  $scope.showEmail = false;
+  $scope.invalidEmail = false;
   $scope.showBack = false;
   $scope.planService = planService;
   $scope.fromDate = new Date();
   $scope.returnDate = new Date();
+
+  $scope.toggleEmail = function($event) {
+    $scope.invalidEmail = false;
+    $scope.showEmail = !$scope.showEmail;
+    $event.stopPropagation();
+  };
+
+  $scope.sendEmail = function($event) {
+    $event.stopPropagation();
+    angular.forEach(Object.keys($scope.trips), function(key, index) {
+      var tripTab = $scope.trips[key];
+      angular.forEach(tripTab, function(trip, index) {
+        if(trip.emailString){
+          var result = planService.validateEmail(trip.emailString);
+          if(result == true){
+            delete trip.emailString;
+            $scope.showEmail = false;
+            $scope.tripDivs[key][index] = false;
+            var emailRequest = {};
+            emailRequest.email_itineraries = [];
+            angular.forEach(trip.itineraries, function(itinerary, index) {
+              emailRequest.email_itineraries.push({"trip_id":trip.id.toString(),"itinerary_id":itinerary.id.toString()})
+            });
+            planService.emailItineraries($http, emailRequest);
+          }else{
+            $scope.invalidEmail = true;
+          }
+        }
+      });
+    });
+  };
 
   $scope.openCalendar = function($event) {
     $event.preventDefault();
@@ -262,7 +295,7 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
         discount.fare = new Number(discount.fare).toFixed(2);
       });
       if(basefareIndex){
-        var basefare = discounts[basefareIndex];
+        var basefare = planService.paratransitItineraries[0].discounts[basefareIndex];
         planService.paratransitItineraries[0].discounts.splice(basefareIndex, 1);
         planService.paratransitItineraries[0].discounts.unshift(basefare);
       }
@@ -654,6 +687,7 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
 
 
   $scope.toggleRidePanelVisible = function(type, divIndex) {
+    $scope.showEmail = false;
     var tripDivs = $scope.tripDivs;
     angular.forEach(Object.keys(tripDivs), function(key, index) {
       var tripTab = tripDivs[key];
