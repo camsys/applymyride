@@ -98,11 +98,13 @@
     .row{ng: {show: 'email'}}
       .col-xs-6.text-left
         %a.btn.btn-success.btn-block{ng: {click: 'saveTransitItinerary()'}}
-          Save this itinerary to My Rides {{tripid}}
+          Save this Ride {{tripid}}
       .col-xs-6.text-right
         %a.btn.btn-success.btn-block{ng: {click: 'emailTransitItinerary()'}}
-          Email this itinerary
+          %i.fa.fa-share-square-o
+          Share this Ride
     .row{ng: {show: '!email'}}
       .col-xs-12.text-center
         %a.btn.btn-success.btn-block{ng: {click: 'emailTransitItinerary()'}}
-          Email this itinerary
+          %i.fa.fa-share-square-o
+          Share this Ride
