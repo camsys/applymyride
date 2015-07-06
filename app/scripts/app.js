@@ -60,11 +60,19 @@ angular.module('applyMyRideApp', [
         templateUrl: 'views/transitconfirm.html',
         controller: 'TransitController'
       })
+      .when('/transit/details/:tripid', {
+        templateUrl: 'views/transitconfirm.html',
+        controller: 'TransitController'
+      })
       .when('/paratransit/:tripid', {
         templateUrl: 'views/paratransit.html',
         controller: 'ParatransitController'
       })
       .when('/walk/confirm', {
+        templateUrl: 'views/walk.html',
+        controller: 'WalkController'
+      })
+      .when('/walk/details/:tripid', {
         templateUrl: 'views/walk.html',
         controller: 'WalkController'
       })

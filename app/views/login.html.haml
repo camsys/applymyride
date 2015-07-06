@@ -44,6 +44,9 @@
     .row{style: 'margin-top: 2em'}
       %a.btn-block{"ng-href" => "#/plan/fromDate"}
         Or, continue as a guest
+    .row
+      %input{type: 'checkbox',  ng: {model: 'rememberme'}}
+        Remember me for 7 days
     .row{style: 'margin-top: 2em'}
       .pull-right
         %a.btn-next{style: 'font-size: 1em', ng: {click: 'next()', hide: 'disableNext'}}

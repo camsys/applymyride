@@ -3,6 +3,34 @@
 angular.module('applyMyRideApp')
     .service('planService', function() {
 
+      this.emailItineraries = function($http, emailRequest){
+        return $http.post('api/v1/itineraries/email', emailRequest, this.getHeaders()).
+          success(function(data) {
+            alert('success');
+          }).
+          error(function(data) {
+            alert('fail');
+          });
+      }
+
+      this.validateEmail = function(emailString){
+        var addresses = emailString.split(/[ ,;]+/);
+        var valid = true;
+        var that = this;
+        angular.forEach(addresses, function(address, index) {
+          var result = that.validateEmailAddress(address);
+          if(result == false){
+            valid = false;
+          }
+        });
+        return valid;
+      }
+
+      this.validateEmailAddress = function(email) {
+        var re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+        return re.test(email);
+      }
+
       this.getRides = function($http, $scope, ipCookie) {
         var that = this;
         $http.get('api/v1/trips/list', this.getHeaders()).
@@ -104,7 +132,7 @@ angular.module('applyMyRideApp')
                 var fare = parseFloat(Math.round(itinerary.cost * 100) / 100).toFixed(2);
                 itinerary.cost = fare;
                 fares.push(fare);
-              } else if (itinerary.discounts && !that.guestParatransitItinerary){
+              } else if (itinerary.discounts){
                 that.guestParatransitItinerary = itinerary;
                 angular.forEach(itinerary.discounts, function(discount, index) {
                   var fare = parseFloat(Math.round(discount.fare * 100) / 100).toFixed(2);
