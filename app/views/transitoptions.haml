@@ -37,3 +37,11 @@
           .row
             .col-xs-12.text-muted{style: 'font-size: 1em'}
               Total trip time is {{transitInfo.travelTime}}
+
+  .container.sticky-footer
+    .row{style: 'margin-top: 10px'}
+      .col-md-8.col-md-offset-2.col-xs-6.col-xs-offset-3
+        .pull-left
+          %a.btn-back{back: '', ng: {click: "back()"}}
+            %span{ng: {include: "'views/button-chevron-left.html'"}}
+            Back
