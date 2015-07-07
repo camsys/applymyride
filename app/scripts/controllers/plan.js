@@ -342,6 +342,10 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
       case 'fromTimeType':
         planService.fromTime = $scope.fromTime;
         planService.fromTimeType = $scope.fromTimeType;
+        if($scope.fromTimeType == 'asap'){
+          planService.fromTime = new Date();
+          planService.fromTimeType = 'depart';
+        }
         $location.path('/plan/start_current');
         break;
       case 'from':
@@ -407,7 +411,6 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
 
   $scope.specifyFromTimeType = function(type){
     $scope.fromTimeType = type;
-    planService.fromTimeType = type;
     if(type == 'asap'){
       $scope.next();
     }

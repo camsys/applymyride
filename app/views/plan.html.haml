@@ -40,17 +40,8 @@
           .col-xs-12.pull-left{style: 'color: #2781FF; padding: 0px;'}
             %h5{ng: {click: 'specifyFromTimeType("asap")'}} As soon as possible
         .row{ng: {show: 'fromTimeType != "asap"'}}
-          %timepicker.timepicker{ng: {model: 'fromTime', show: '!mobile'}}
-          %input#fromTime.form-control{type: 'time', ng: {model: 'fromTime', required: 'true', show: 'mobile && html5'}}
-
-    .depart-time{ng: {show: 'step==="fromTime"'}}
-      %form
-        .col-md-4.col-md-offset-4.col-xs-12.text-center
-          .row
-            %h4 What time would you like to {{ planService.fromTimeType }}?
-          .row
-            %timepicker.timepicker{ng: {model: 'fromTime', show: '!mobile'}}
-            %input#fromTime.form-control{type: 'time', ng: {model: 'fromTime', required: 'true', show: 'mobile && html5'}}
+          %timepicker.timepicker{'minute-step' => '5', ng: {model: 'fromTime', show: '!mobile'}}
+          %input#fromTime.form-control{type: 'time', step: '300', ng: {model: 'fromTime', required: 'true', show: 'mobile && html5'}}
 
     .use-current-location{ng: {show: 'step==="start_current"'}}
       .row
@@ -142,8 +133,8 @@
                     %a{ng: {click: 'specifyReturnTimeType("arrive")'}}
                       When do you want to leave?
         .row
-          %timepicker.timepicker{ng: {model: 'returnTime', show: '!mobile'}}
-          %input#fromTime.form-control{type: 'time', ng: {model: 'returnTime', required: 'true', show: 'mobile && html5'}}
+          %timepicker.timepicker{'minute-step' => '5', ng: {model: 'returnTime', show: '!mobile'}}
+          %input#fromTime.form-control{type: 'time', step: '300', ng: {model: 'returnTime', required: 'true', show: 'mobile && html5'}}
           %h4.btn-danger{ng: {show: 'disableNext'}} You must select a time after your outbound trip!
 
     .purpose{ng: {show: 'step==="purpose"'}}
