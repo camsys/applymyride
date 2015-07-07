@@ -233,7 +233,7 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
       $scope.returnTime.setMinutes($scope.returnTime.getMinutes() + remainder);
 
       $scope.disableNext = false;
-      $scope.returnTimeType = 'arrive';
+      $scope.returnTimeType = 'depart';
       $scope.showNext = true;
       break;
     case 'from_confirm':
