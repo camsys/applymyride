@@ -11,10 +11,10 @@
         .col-xs-10.col-lg-11{style: 'margin-left: -.5em; margin-top: -.5em;'}
           .row
             .col-xs-12
-              %h3 Bus Options {{message}}:
+              %h3 {{message}}:
           .row
             .col-xs-12.text-muted
-              %h4 Click an option to view details about it
+              %h4 Click for details
 
       .row
         .bus.rounded-border{style: "padding: 1em", ng: {repeat: 'transitInfo in transitInfos', click: 'viewTransitTrip(transitInfo.id, segmentid);'}}

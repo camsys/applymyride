@@ -25,9 +25,9 @@ angular.module('applyMyRideApp')
       if($location.$$path.indexOf('/transitoptions') > -1) {
         $scope.transitInfos = planService.transitInfos[$scope.segmentid];
         if ($scope.segmentid == "0") {
-          $scope.message = ' to your destination';
+          $scope.message = 'Outbound Bus Options';
         } else {
-          $scope.message = ' returning from your destination';
+          $scope.message = 'Return Bus Options';
         }
       }else if($location.$$path.indexOf('/transitconfirm') > -1){
         angular.forEach(planService.searchResults.itineraries, function(itinerary, index) {
