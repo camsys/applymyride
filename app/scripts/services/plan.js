@@ -619,7 +619,9 @@ angular.module('applyMyRideApp')
 
         }, function(list, status) {
           angular.forEach(list, function(value, index) {
-            if(that.results.length < 10){
+
+            //verify the location has a street address
+            if(that.results.length < 10 && (value.types.indexOf('route') > -1)){
               var terms = [];
               angular.forEach(value.terms, function(term, index) {
                 terms.push(term.value)
