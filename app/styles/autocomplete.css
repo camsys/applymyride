@@ -171,6 +171,9 @@ and (max-device-width : 480px) {
   {
     font-size: 75%;
   }
+  .dropdown-menu.pull-right {
+    position: relative;
+  }
 }
 /* Smartphones (landscape) ----------- */
 @media only screen
