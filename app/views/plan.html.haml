@@ -121,17 +121,17 @@
         .row
           .col-xs-12.pull-left
             %h3
-              %span.timeTypeSelection{ng: {show: 'returnTimeType == "depart"'}} When do you want to get back?
-              %span.timeTypeSelection{ng: {show: 'returnTimeType == "arrive"'}} When do you want to leave?
+              %span.timeTypeSelection{ng: {show: 'returnTimeType == "depart"'}} When do you want to leave?
+              %span.timeTypeSelection{ng: {show: 'returnTimeType == "arrive"'}} When do you want to get back?
               %span.dropdown{dropdown: '', style: 'cursor: pointer;'}
                 %i.fa.fa-lg.fa-sort-desc{dropdown_toggle: '', style: 'vertical-align: 15%; color: #2781FF;'}
                 %ul.dropdown-menu.pull-right{dropdown_menu: ''}
                   %li{ng: {show: 'returnTimeType != "depart"'}}
                     %a{ng: {click: 'specifyReturnTimeType("depart")'}}
-                      When do you want to get back?
+                      When do you want to leave?
                   %li{ng: {show: 'returnTimeType != "arrive"'}}
                     %a{ng: {click: 'specifyReturnTimeType("arrive")'}}
-                      When do you want to leave?
+                      When do you want to get back?
         .row.text-center
           %timepicker.timepicker{'minute-step' => '5', ng: {model: 'returnTime', show: '!mobile'}}
           %input#fromTime.form-control{type: 'time', step: '300', ng: {model: 'returnTime', required: 'true', show: 'mobile && html5'}}
