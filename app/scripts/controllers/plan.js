@@ -790,17 +790,25 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
 
   $scope.$watch('fromTime', function(n) {
       if($scope.step == 'fromTimeType'){
-        if (n) {
-          $scope.disableNext = false;
-        }else{
-          $scope.disableNext = true;  //not a valid time
+        var fromDate = planService.fromDate;
+        var now = moment(returnDate).startOf('day'); ;
+        var dayDiff = now.diff(fromDate, 'days');
+        if(Math.abs(dayDiff) < 1){
+          var timeDiff = moment().diff(n, 'seconds');
+          if(timeDiff > 0){
+            $scope.showNext = false;
+            $scope.message = 'Please enter a departure time after the current time.'
+          }else{
+            $scope.showNext = true;
+            $scope.message = null;
+          }
         }
       }
     }
   );
 
   $scope.$watch('returnTime', function(n) {
-      if($scope.step == 'returnTime'){
+      if($scope.step == 'returnTimeType'){
         if (n) {
 
           var fromDate = planService.fromDate;
@@ -821,11 +829,13 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
             returnTime.setYear(returnDate.getFullYear());
             returnTime.setMonth(returnDate.getMonth());
             returnTime.setDate(returnDate.getDate());
-
-            if((returnTime - fromTime) / 1000 / 60 < -1){
-              $scope.disableNext = true;
+            var timeDiff = moment(returnTime).diff(fromTime, 'minutes');
+            if(timeDiff > 10){
+              $scope.showNext = true;
+              $scope.message = null;
             } else {
-              $scope.disableNext = false;
+              $scope.showNext = false;
+              $scope.message = 'Please enter a return time at least 10 minutes after the departure time.'
             }
           }
         }else{

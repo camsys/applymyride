@@ -39,10 +39,10 @@
         .row{ng: {show: 'showAsap'}}
           .col-xs-12.pull-left{style: 'color: #2781FF; padding: 0px;'}
             %h5{ng: {click: 'specifyFromTimeType("asap")'}} As soon as possible
-        .row{ng: {show: 'fromTimeType != "asap"'}}
+        .row.text-center{ng: {show: 'fromTimeType != "asap"'}}
           %timepicker.timepicker{'minute-step' => '5', ng: {model: 'fromTime', show: '!mobile'}}
           %input#fromTime.form-control{type: 'time', step: '300', ng: {model: 'fromTime', required: 'true', show: 'mobile && html5'}}
-
+          %span{style: 'color: red;'} {{message}}
     .use-current-location{ng: {show: 'step==="start_current"'}}
       .row
         .text-center
@@ -132,10 +132,10 @@
                   %li{ng: {show: 'returnTimeType != "arrive"'}}
                     %a{ng: {click: 'specifyReturnTimeType("arrive")'}}
                       When do you want to leave?
-        .row
+        .row.text-center
           %timepicker.timepicker{'minute-step' => '5', ng: {model: 'returnTime', show: '!mobile'}}
           %input#fromTime.form-control{type: 'time', step: '300', ng: {model: 'returnTime', required: 'true', show: 'mobile && html5'}}
-          %h4.btn-danger{ng: {show: 'disableNext'}} You must select a time after your outbound trip!
+          %span{style: 'color: red;'} {{message}}
 
     .purpose{ng: {show: 'step==="purpose"'}}
       .text-center
