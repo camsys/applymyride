@@ -27,6 +27,34 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
   $scope.fromDate = new Date();
   $scope.returnDate = new Date();
 
+
+
+
+  $scope.toggleRidePanelVisible = function(type, divIndex) {
+    $scope.showEmail = false;
+    var tripDivs = $scope.tripDivs;
+    angular.forEach(Object.keys(tripDivs), function(key, index) {
+      var tripTab = tripDivs[key];
+      angular.forEach(tripTab, function(trip, index) {
+        if(key == type && index == divIndex){
+          tripTab[index] = !tripTab[index];
+        }else{
+          tripTab[index] = false;
+        }
+      });
+    });
+  };
+
+  $scope.toggleMyRideButtonBar = function(type, index) {
+    angular.forEach(Object.keys($scope.tripDivs), function(key, index) {
+      var divs = $scope.tripDivs[key];
+      angular.forEach(divs, function(div, index) {
+        divs[index] = false;
+      });
+    });
+    $scope.tripDivs[type][index] = !$scope.tripDivs[type][index];
+  };
+
   $scope.toggleEmail = function($event) {
     $scope.invalidEmail = false;
     $scope.showEmail = !$scope.showEmail;
@@ -41,15 +69,23 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
         if(trip.emailString){
           var result = planService.validateEmail(trip.emailString);
           if(result == true){
-            delete trip.emailString;
+
             $scope.showEmail = false;
             $scope.tripDivs[key][index] = false;
+            var addresses = trip.emailString.split(/[ ,;]+/);
             var emailRequest = {};
             emailRequest.email_itineraries = [];
+            angular.forEach(addresses, function(address, index) {
+              var emailRequestPart = {};
+              emailRequestPart.email_address = address;
+              emailRequestPart.itineraries = [];
             angular.forEach(trip.itineraries, function(itinerary, index) {
-              emailRequest.email_itineraries.push({"trip_id":trip.id.toString(),"itinerary_id":itinerary.id.toString()})
+                emailRequestPart.itineraries.push({"trip_id":trip.id.toString(),"itinerary_id":itinerary.id.toString()})
+            });
+              emailRequest.email_itineraries.push(emailRequestPart)
             });
             planService.emailItineraries($http, emailRequest);
+            delete trip.emailString;
           }else{
             $scope.invalidEmail = true;
           }
@@ -317,9 +353,7 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
       $scope.showNext = false;
       break;
     case 'sharedride_options_2':
-      $scope.questionCodes = $.map(planService.paratransitItineraries[0].prebooking_questions, function(value, key) {
-        return value.code;
-      });
+      $scope.questions = planService.getPrebookingQuestions();
       $scope.showNext = true;
       $scope.disableNext = false;
       break;

@@ -3,6 +3,23 @@
 angular.module('applyMyRideApp')
     .service('planService', function() {
 
+      this.getPrebookingQuestions = function(){
+        var questions = this.paratransitItineraries[0].prebooking_questions;
+        var questionObj = {};
+        angular.forEach(questions, function(question, index) {
+          if(question.code == 'assistant'){
+            questionObj.assistant = question.question;
+          }else if(question.code == 'children'){
+            questionObj.children = question.question;
+            questionObj.limit = question.choices;
+            if(questionObj.limit[0] == '0'){
+              questionObj.limit.shift();
+            }
+          }
+        });
+        return questionObj;
+      }
+
       this.emailItineraries = function($http, emailRequest){
         return $http.post('api/v1/itineraries/email', emailRequest, this.getHeaders()).
           success(function(data) {
