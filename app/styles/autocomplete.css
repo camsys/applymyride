@@ -7,11 +7,14 @@
   -moz-transition-duration: 0.5s;
   -o-transition-duration: 0.5s;
   transition-duration: 0.5s;
-  position: absolute;
   opacity: 0;
 }
 
 .at-view-fade-in.ng-enter-active {
+  -webkit-transition-delay: 0.5s;
+  -moz-transition-delay: 0.5s;
+  -o-transition-delay: 0.5s;
+  transition-delay: 0.5s;
   opacity: 1;
 }
 
@@ -24,7 +27,6 @@
   -moz-transition-duration: 0.5s;
   -o-transition-duration: 0.5s;
   transition-duration: 0.5s;
-  position: absolute;
   opacity: 1;
 }
 
