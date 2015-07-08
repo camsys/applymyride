@@ -13,9 +13,9 @@
               %h4{ng: {show: 'planService.username'}} Hi {{ planService.username }}!
               %h4 What day do you want to leave?
               %p.input-group{'ng-show' => 'html5', 'style' => 'width: 100%;'}
-                %input#fromDate.form-control{min: "{{minDate | date:'yyyy-MM-dd'}}", focus: '', type: 'date', ng: {model: 'fromDate', required: 'true', enter: 'next()'}}
+                %input#fromDate.form-control{min: "{{minDate | date:'yyyy-MM-dd'}}", type: 'date', ng: {model: 'fromDate', required: 'true', enter: 'next()'}}
               %p.input-group{'ng-show' => '!html5', }
-                %input.form-control{'focus' => '', 'type' => 'text', 'datepicker-popup' => "MMMM-dd-yyyy", 'min-date' => 'minDate', 'is-open' => 'opened', 'datepicker-options' => 'dateOptions', 'close-text' => 'Close', 'ng-model' => 'fromDate',}
+                %input.form-control{'type' => 'text', 'datepicker-popup' => "MMMM-dd-yyyy", 'min-date' => 'minDate', 'is-open' => 'opened', 'datepicker-options' => 'dateOptions', 'close-text' => 'Close', 'ng-model' => 'fromDate',}
                   %span.input-group-btn
                     %button.btn.btn-default{'type' => 'button', 'ng-click' => 'openCalendar($event)'}
                       %i.glyphicon.glyphicon-calendar
@@ -109,7 +109,7 @@
         .row
           .col-md-4.col-md-offset-4.col-xs-12
             %p.input-group{'ng-show' => 'html5', 'style' => 'width: 100%;'}
-              %input#returnDate.form-control{min: "{{minReturnDate | date:'yyyy-MM-dd'}}", focus: '', type: 'date', ng: {model: 'returnDate', required: 'true', enter: 'next()'}}
+              %input#returnDate.form-control{min: "{{minReturnDate | date:'yyyy-MM-dd'}}", type: 'date', ng: {model: 'returnDate', required: 'true', enter: 'next()'}}
             %p.input-group{'ng-show' => '!html5', }
               %input.form-control{'type' => 'text', 'datepicker-popup' => "MMMM-dd-yyyy", 'min-date' => 'fromDate', 'is-open' => 'opened', 'datepicker-options' => 'dateOptions', 'close-text' => 'Close', 'ng-model' => 'returnDate',}
                 %span.input-group-btn
