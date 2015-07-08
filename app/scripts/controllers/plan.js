@@ -551,16 +551,6 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
           $scope.showNext = true;
           $scope.$apply();
 
-          google.maps.event.trigger(map, 'resize');
-
-
-          map.setCenter(result.geometry.location);
-          $scope.marker = new google.maps.Marker({
-            map: map,
-            position: result.geometry.location,
-            animation: google.maps.Animation.DROP
-          });
-
           var serviceAreaPromise = planService.checkServiceArea($http, result);
           serviceAreaPromise.
             success(function(serviceAreaResult) {
