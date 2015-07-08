@@ -4,10 +4,10 @@ angular.module('applyMyRideApp')
   .controller('ParatransitController', ['$scope','$routeParams', '$location', 'flash', 'planService', '$http',
     function ($scope, $routeParams, $location, flash, planService, $http) {
 
-        $scope.location = $location.path();
-        $scope.disableNext = true;
-        $scope.tripid = $routeParams.tripid;
-        $scope.showDiv = {};
+      $scope.location = $location.path();
+      $scope.disableNext = true;
+      $scope.tripid = $routeParams.tripid;
+      $scope.showDiv = {};
 
       $scope.prepareTrip = function(){
 
@@ -21,8 +21,8 @@ angular.module('applyMyRideApp')
           result.wait_startDesc = moment(result.wait_start).format('h:mm a');
           result.wait_endDesc = moment(result.wait_end).format('h:mm a');
           result.arrivalDesc = moment(result.arrival).format('h:mm a');
-          if(!result.success  == true){
-            $scope.success = false;
+          if(!result.booked  == true){
+            $scope.booking_failed = true;
           }
         });
 

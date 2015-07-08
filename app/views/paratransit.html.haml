@@ -1,4 +1,4 @@
-.container{style: 'padding: 0;'}
+.container{style: 'padding: 0;', index: '{{$index}}', ng: {show: '!booking_failed', repeat: 'itinerary in paratransitItineraries'}}
   .row{style: 'margin-bottom: 1em;'}
     .col-xs-12.col-md-8.col-md-offset-2{style: 'padding: 0;'}
       %h1 Good news!
@@ -9,7 +9,6 @@
         Plan another ride
       %a.btn-block.text-center{"ng-href" => "#/plan/my_rides"}
         View my saved rides
-.container{style: 'padding: 0;', index: '{{$index}}', ng: {show: '!booking_failed', repeat: 'itinerary in paratransitItineraries'}}
   .row{style: 'margin-bottom: 1em;'}
     .col-xs-12.col-md-8.col-md-offset-2{style: 'padding: 0;'}
       .row
