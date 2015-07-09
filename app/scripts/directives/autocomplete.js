@@ -256,6 +256,7 @@ app.directive('autocomplete', function() {
         <div class="autocomplete {{ attrs.class }}" id="{{ attrs.id }}">\
           <input\
             type="text"\
+            "{{ attrs.mobile ? focus : \"\" }}"\
             ng-model="searchParam"\
             placeholder="{{ attrs.placeholder }}"\
             class="clearable {{ attrs.inputclass }}"\

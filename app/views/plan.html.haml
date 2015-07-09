@@ -13,7 +13,8 @@
               %h4{ng: {show: 'planService.username'}} Hi {{ planService.username }}!
               %h4 What day do you want to leave?
               %p.input-group{'ng-show' => 'html5', 'style' => 'width: 100%;'}
-                %input#fromDate.form-control{min: "{{minDate | date:'yyyy-MM-dd'}}", type: 'date', ng: {model: 'fromDate', required: 'true', enter: 'next()'}}
+                %input#fromDate.form-control{min: "{{minDate | date:'yyyy-MM-dd'}}", type: 'date', ng: {model: 'fromDate', required: 'true', enter: 'next()', show: 'mobile'}}
+                %input#fromDate.form-control{min: "{{minDate | date:'yyyy-MM-dd'}}", focus: '', type: 'date', ng: {model: 'fromDate', required: 'true', enter: 'next()', show: '!mobile'}}
               %p.input-group{'ng-show' => '!html5', }
                 %input.form-control{'type' => 'text', 'datepicker-popup' => "MMMM-dd-yyyy", 'min-date' => 'minDate', 'is-open' => 'opened', 'datepicker-options' => 'dateOptions', 'close-text' => 'Close', 'ng-model' => 'fromDate',}
                   %span.input-group-btn
@@ -71,8 +72,9 @@
           %h4 Where are you starting from?
       .row
         .col-md-7.col-md-offset-2.col-xs-11{'style' => 'line-height: 2em; padding-right: 0px;'}
-          %autocomplete{'inputclass' => 'clearable', 'disable-filter' => 'true', 'data' => 'locations', 'on-type'=> 'getLocations', 'on-select' => 'selectPlace', :ng => {:model => 'fromChoice'}}
         .col-md-1.col-xs-1{'style' => 'line-height: 2em; padding-left: 0px;'}
+          %autocomplete{'inputclass' => 'clearable', 'disable-filter' => 'true', 'data' => 'locations', 'on-type'=> 'getLocations', 'on-select' => 'selectPlace', :ng => {:model => 'fromChoice', show: 'mobile'}}
+          %autocomplete{'inputclass' => 'clearable', 'disable-filter' => 'true', 'data' => 'locations', 'on-type'=> 'getLocations', 'on-select' => 'selectPlace', 'mobile' => 'false', :ng => {:model => 'fromChoice', show: '!mobile'}}
           %a.btn.btn-success.btn-block{style: 'padding-left: 0px; padding-right: 0px;min-width: 20px; border-top-left-radius:0px; border-bottom-left-radius:0px;', ng: {click: 'clearFrom()'}}
             %i.fa.fa-times.fa-lg{style:'color: white;'}
       .row
@@ -85,8 +87,9 @@
           %h4 Where are you going?
       .row
         .col-md-7.col-md-offset-2.col-xs-11{'style' => 'line-height: 2em; padding-right: 0px;'}
-          %autocomplete{'inputclass' => 'clearable', 'disable-filter' => 'true', 'data' => 'locations', 'on-type'=> 'getLocations', 'on-select' => 'selectPlace', :ng => {:model => 'toChoice'}}
         .col-md-1.col-xs-1{'style' => 'line-height: 2em; padding-left: 0px;'}
+          %autocomplete{'inputclass' => 'clearable', 'disable-filter' => 'true', 'data' => 'locations', 'on-type'=> 'getLocations', 'on-select' => 'selectPlace', :ng => {:model => 'toChoice', show: 'mobile'}}
+          %autocomplete{'inputclass' => 'clearable', 'disable-filter' => 'true', 'data' => 'locations', 'on-type'=> 'getLocations', 'on-select' => 'selectPlace', 'mobile' => 'false', :ng => {:model => 'toChoice', show: '!mobile'}}
           %a.btn.btn-success.btn-block{style: 'padding-left: 0px; padding-right: 0px;min-width: 20px; border-top-left-radius:0px; border-bottom-left-radius:0px;', ng: {click: 'clearTo()'}}
             %i.fa.fa-times.fa-lg{style:'color: white;'}
       .row
@@ -109,7 +112,8 @@
         .row
           .col-md-4.col-md-offset-4.col-xs-12
             %p.input-group{'ng-show' => 'html5', 'style' => 'width: 100%;'}
-              %input#returnDate.form-control{min: "{{minReturnDate | date:'yyyy-MM-dd'}}", type: 'date', ng: {model: 'returnDate', required: 'true', enter: 'next()'}}
+              %input#returnDate.form-control{min: "{{minReturnDate | date:'yyyy-MM-dd'}}", type: 'date', ng: {model: 'returnDate', required: 'true', enter: 'next()', show: 'mobile'}}
+              %input#returnDate.form-control{min: "{{minReturnDate | date:'yyyy-MM-dd'}}", focus: '', type: 'date', ng: {model: 'returnDate', required: 'true', enter: 'next()', show: '!mobile'}}
             %p.input-group{'ng-show' => '!html5', }
               %input.form-control{'type' => 'text', 'datepicker-popup' => "MMMM-dd-yyyy", 'min-date' => 'fromDate', 'is-open' => 'opened', 'datepicker-options' => 'dateOptions', 'close-text' => 'Close', 'ng-model' => 'returnDate',}
                 %span.input-group-btn
