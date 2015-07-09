@@ -27,9 +27,6 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
   $scope.fromDate = new Date();
   $scope.returnDate = new Date();
 
-
-
-
   $scope.toggleRidePanelVisible = function(type, divIndex) {
     $scope.showEmail = false;
     var tripDivs = $scope.tripDivs;
@@ -61,6 +58,33 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
     $event.stopPropagation();
   };
 
+  $scope.cancelTrip = function($event, tab, index) {
+    $event.stopPropagation();
+    bootbox.confirm("Are you sure you want to cancel this trip?", function(result) {
+      if(result == true){
+        $scope.tripDivs[tab][index] = false;
+        var trip = $scope.trips[tab][index];
+        var cancel = {};
+        cancel.bookingcancellation_request = [];
+
+        angular.forEach(trip.itineraries, function(itinerary, index) {
+          var itineraryCancellation = {};
+          itineraryCancellation.itinerary_id = itinerary.id;
+          cancel.bookingcancellation_request.push(itineraryCancellation);
+        });
+        var cancelPromise = planService.cancelTrip($http, cancel)
+        cancelPromise.error(function(data) {
+          alert(data);
+        });
+        cancelPromise.success(function(data) {
+          flash.setMessage('Your trip has been cancelled.');
+          $scope.tripDivs[tab].splice(index, 1);
+          $scope.trips[tab].splice(index, 1);
+        })
+      }
+    });
+  };
+
   $scope.sendEmail = function($event) {
     $event.stopPropagation();
     angular.forEach(Object.keys($scope.trips), function(key, index) {
@@ -84,8 +108,12 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
             });
               emailRequest.email_itineraries.push(emailRequestPart)
             });
-            planService.emailItineraries($http, emailRequest);
+            var emailPromise = planService.emailItineraries($http, emailRequest);
+            emailPromise.error(function(data) {
+              alert(data);
+            });
             delete trip.emailString;
+            flash.setMessage('Your email was sent');
           }else{
             $scope.invalidEmail = true;
           }

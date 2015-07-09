@@ -544,7 +544,7 @@
       .col-md-8.col-md-offset-2.col-xs-12
         %tabset
           %tab{'heading' => 'Today ({{trips.today.length}})'}
-            .myride{index: '{{$index}}', ng: {click: 'toggleMyRideButtonBar("today", $index)', repeat: 'trip in trips.today'}}
+            .myride{index: '{{$index}}', ng: {init: 'tab = "today"', click: 'toggleMyRideButtonBar("today", $index)', repeat: 'trip in trips.today'}}
               .row
                 .col-xs-2.col-height-slave
                   %img.img-responsive{ng: {src: 'images/modes/paratransit.png', show: 'trip.mode == "mode_paratransit"'}}
@@ -562,25 +562,12 @@
                       %h5.text-muted.text-right{ng: {show: '!trip.roundTrip'}} (one way)
               .animate-show.myride-buttons{ng: {show: 'tripDivs.today[$index]'}}
                 .row.even-height-row{ng: {show: 'trip.mode == "mode_paratransit"'}}
-                  .col-xs-6.col-height-master{style: 'text-align: right;'}
-                    %span.fa-stack
-                      %i.fa.fa-circle.fa-stack-2x
-                      %i.fa.fa-times.fa-stack-1x{style: 'color: white;'}
-                    %a.blue-text
-                      Cancel ride
-                  .col-xs-6.col-height-slave{style: 'text-align: left;'}
-                    %span.fa-stack
-                      %i.fa.fa-share-square-o.fa-stack-2x
-                    %a.blue-text
-                      Send to friend
+                %span{ng: {include: "'views/emailOrCancel.html'"}}
                 .row.even-height-row{ng: {show: 'trip.mode != "mode_paratransit"'}}
                   .col-xs-12.col-height-slave.text-center
-                    %span.fa-stack
-                      %i.fa.fa-share-square-o.fa-stack-2x
-                    %a.blue-text
-                      Send to friend
+                    %span{ng: {include: "'views/email.html'"}}
           %tab{'heading' => 'Future ({{trips.future.length}})'}
-            .myride{'index' => '{{$index}}', ng: {click: 'toggleMyRideButtonBar("future", $index)', repeat: 'trip in trips.future'}}
+            .myride{'index' => '{{$index}}', ng: {init: 'tab = "future"', click: 'toggleMyRideButtonBar("future", $index)', repeat: 'trip in trips.future'}}
               .row
                 .col-xs-2.col-height-slave
                   %img.img-responsive{ng: {src: 'images/modes/paratransit.png', show: 'trip.mode == "mode_paratransit"'}}
@@ -597,25 +584,12 @@
                       %h5.text-muted.text-right (round trip)
               .animate-show.myride-buttons{ng: {show: 'tripDivs.future[$index]'}}
                 .row.even-height-row{ng: {show: 'trip.mode == "mode_paratransit"'}}
-                  .col-xs-6.col-height-master{style: 'text-align: right;'}
-                    %span.fa-stack
-                      %i.fa.fa-circle.fa-stack-2x
-                      %i.fa.fa-times.fa-stack-1x{style: 'color: white;'}
-                    %a.blue-text
-                      Cancel ride
-                  .col-xs-6.col-height-slave{style: 'text-align: left;'}
-                    %span.fa-stack
-                      %i.fa.fa-share-square-o.fa-stack-2x
-                    %a.blue-text
-                      Send to friend
+                  %span{ng: {include: "'views/emailOrCancel.html'"}}
                 .row.even-height-row{ng: {show: 'trip.mode != "mode_paratransit"'}}
                   .col-xs-12.col-height-slave.text-center
-                    %span.fa-stack
-                      %i.fa.fa-share-square-o.fa-stack-2x
-                    %a.blue-text
-                      Send to friend
+                    %span{ng: {include: "'views/email.html'"}}
           %tab{'heading' => 'Past ({{trips.past.length}})'}
-            .myride{'index' => '{{$index}}', ng: {click: 'toggleMyRideButtonBar("past", $index);', repeat: 'trip in trips.past'}}
+            .myride{'index' => '{{$index}}', ng: {init: 'tab = "past"', click: 'toggleMyRideButtonBar("past", $index);', repeat: 'trip in trips.past'}}
               .row
                 .col-xs-2.col-height-slave
                   %img.img-responsive{ng: {src: 'images/modes/paratransit.png', show: 'trip.mode == "mode_paratransit"'}}

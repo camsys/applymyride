@@ -31,18 +31,7 @@ angular.module('applyMyRideApp')
 
       }
 
-      if($routeParams.test){
-        $http.get('data/bookingresult.json').
-          success(function(data) {
-            planService.itineraryRequestObject = data.itinerary_request;
-            planService.searchResults = data.itinerary_response;
-            planService.booking_request = data.booking_request;
-            planService.booking_results = data.booking_response.booking_results;
-            planService.prepareTripSearchResultsPage(0);
-            $scope.prepareTrip();
-          });
-      }else{
-        $scope.prepareTrip();
-      }
+      $scope.prepareTrip();
+
     }
   ]);

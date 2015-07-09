@@ -21,13 +21,11 @@ angular.module('applyMyRideApp')
       }
 
       this.emailItineraries = function($http, emailRequest){
-        return $http.post('api/v1/itineraries/email', emailRequest, this.getHeaders()).
-          success(function(data) {
-            alert('success');
-          }).
-          error(function(data) {
-            alert('fail');
-          });
+        return $http.post('api/v1/itineraries/email', emailRequest, this.getHeaders())
+      }
+
+      this.cancelTrip = function($http, cancelRequest){
+        return $http.post('api/v1/itineraries/cancel', cancelRequest, this.getHeaders())
       }
 
       this.validateEmail = function(emailString){
