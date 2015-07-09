@@ -256,7 +256,8 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
         $scope.showAsap = true;
         //now round to 15 min interval
         var start = moment($scope.fromTime);
-        var remainder = (15 - start.minute()) % 15;
+        var remainder = (start.minute()) % 15;
+        remainder = Math.abs(remainder - 15);
         $scope.fromTime.setMinutes($scope.fromTime.getMinutes() + remainder);
       }else{
         now.add(9, 'hours');
@@ -293,7 +294,8 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
       }
       //now round up to 15 min interval
       var start = moment($scope.returnTime);
-      var remainder = (15 - start.minute()) % 15;
+      var remainder = (start.minute()) % 15;
+      remainder = Math.abs(remainder - 15);
       $scope.returnTime.setMinutes($scope.returnTime.getMinutes() + remainder);
 
       $scope.disableNext = false;
