@@ -419,6 +419,9 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
       case 'to':
         $location.path('/plan/purpose');
         break;
+      case 'purpose':
+        $location.path('/plan/needReturnTrip');
+        break;
       case 'needReturnTrip':
         $location.path('/plan/returnDate');
         break;
@@ -468,7 +471,7 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
   $scope.specifyTripPurpose = function(purpose){
     planService.purpose = purpose;
     $location.path("/plan/needReturnTrip");
-    $scope.step = 'needReturnTrip';
+    $scope.next();
   }
 
   $scope.specifyFromTimeType = function(type){
