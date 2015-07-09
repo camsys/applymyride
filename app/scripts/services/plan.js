@@ -109,7 +109,7 @@ angular.module('applyMyRideApp')
 
         var outboundTime = itineraryRequestObject.itinerary_request[0].trip_time;
         request.when1 = this.getDateDescription(outboundTime);
-        request.when2 = moment(outboundTime).format('h:mm a') + " " + (itineraryRequestObject.itinerary_request[0].departure_type == 'depart' ? "departure" : "arrival");
+        request.when2 = (itineraryRequestObject.itinerary_request[0].departure_type == 'depart' ? "Start out at " : "Arrive by ") + moment(outboundTime).format('h:mm a');
 
         if(itineraryRequestObject.itinerary_request.length > 1){
           request.roundtrip = true;
@@ -119,7 +119,7 @@ angular.module('applyMyRideApp')
           if(request.when1 == request.when3){
             request.sameday = true;
           }
-          request.when4 = moment(returnTime).format('h:mm a') + " " + (itineraryRequestObject.itinerary_request[1].departure_type == 'depart' ? "departure" : "arrival");
+          request.when4 = (itineraryRequestObject.itinerary_request[1].departure_type == 'depart' ? "Leave at " : "Get back by ") + moment(returnTime).format('h:mm a');
         }
         request.purpose = this.purpose;
         $scope.request = request;
