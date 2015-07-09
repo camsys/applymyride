@@ -25,17 +25,17 @@
         .row
           .col-xs-12.pull-left.no-padding
             %h3
-              %span.timeTypeSelection{ng: {show: 'fromTimeType == "depart"'}} When do you want to leave by?
-              %span.timeTypeSelection{ng: {show: 'fromTimeType == "arrive"'}} When do you want to get there?
+              %span.timeTypeSelection{ng: {show: 'fromTimeType == "depart"'}} When do you want to start out?
+              %span.timeTypeSelection{ng: {show: 'fromTimeType == "arrive"'}} When do you want to arrive?
               %span.dropdown{dropdown: '', style: 'cursor: pointer;'}
                 %i.fa.fa-lg.fa-sort-desc{dropdown_toggle: '', style: 'vertical-align: 15%; color: #2781FF;'}
                 %ul.dropdown-menu.pull-right{dropdown_menu: ''}
                   %li{ng: {show: 'fromTimeType != "depart"'}}
                     %a{ng: {click: 'specifyFromTimeType("depart")'}}
-                      When do you want to leave by?
+                      When do you want to start out?
                   %li{ng: {show: 'fromTimeType != "arrive"'}}
                     %a{ng: {click: 'specifyFromTimeType("arrive")'}}
-                      When do you want to get there?
+                      When do you want to arrive?
         .row{ng: {show: 'showAsap'}}
           .col-xs-12.pull-left{style: 'color: #2781FF; padding: 0px;'}
             %h5{ng: {click: 'specifyFromTimeType("asap")'}} As soon as possible
