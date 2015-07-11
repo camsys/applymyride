@@ -407,7 +407,13 @@ angular.module('applyMyRideApp')
 
       this.getAddressDescriptionFromLocation = function(location){
         var description = {};
-        if(location.name){
+        if(location.poi){
+          description.line1 = location.poi.name
+          description.line2 = location.formatted_address;
+          if(description.line2.indexOf(description.line1) > -1){
+            description.line2 = description.line2.substr(description.line1.length + 2);
+          }
+        }else if(location.name){
           description.line1 = location.name;
           description.line2 = location.formatted_address;
           if(description.line2.indexOf(description.line1) > -1){
@@ -502,6 +508,12 @@ angular.module('applyMyRideApp')
       }
 
       this.createItineraryRequest = function() {
+        if(this.fromDetails.poi){
+          this.fromDetails.name = this.fromDetails.poi.name
+        }
+        if(this.toDetails.poi){
+          this.toDetails.name = this.toDetails.poi.name
+        }
         var request = {};
         request.trip_purpose = this.purpose;
         request.itinerary_request = [];
@@ -636,7 +648,7 @@ angular.module('applyMyRideApp')
           angular.forEach(list, function(value, index) {
 
             //verify the location has a street address
-            if(that.results.length < 10 && (value.types.indexOf('route') > -1)){
+            if(that.results.length < 10 && ((value.types.indexOf('route') > -1) || (value.types.indexOf('establishment') > -1))){
               var terms = [];
               angular.forEach(value.terms, function(term, index) {
                 terms.push(term.value)
@@ -661,7 +673,7 @@ angular.module('applyMyRideApp')
         this.recentSearchPlaceIds = [];
         var that = this;
         angular.forEach(Object.keys(recentSearches), function(key, index) {
-          if(that.recentSearchResults.length < 10 && key.toLowerCase().indexOf(text.toLowerCase()) > -1){
+          if(that.recentSearchResults.length < 10 && key.toLowerCase().indexOf(text.toLowerCase()) > -1 && that.recentSearchResults.indexOf(key) < 0){
             var location = recentSearches[key];
             that.recentSearchResults.push(key);
             that.recentSearchPlaceIds.push(location.place_id)
@@ -677,6 +689,7 @@ angular.module('applyMyRideApp')
       this.savedPlaceIds = [];
       this.savedPlaceAddresses = [];
       this.savedPlaceResults = [];
+      this.poiData = [];
       var that = this;
       $http.get('api/v1/places/search?include_user_pois=true&search_string=%25' + text + '%25', config).
         success(function(data) {
@@ -686,9 +699,10 @@ angular.module('applyMyRideApp')
               that.savedPlaceResults.push(value.name + " " + value.formatted_address);
               that.savedPlaceAddresses.push(value.formatted_address);
               that.savedPlaceIds.push(value.place_id);
+              that.poiData.push(value);
             }
           });
-          savedPlaceData.resolve({savedplaces:that.savedPlaceResults, placeIds: that.savedPlaceIds, savedplaceaddresses: that.savedPlaceAddresses});
+          savedPlaceData.resolve({savedplaces:that.savedPlaceResults, placeIds: that.savedPlaceIds, savedplaceaddresses: that.savedPlaceAddresses, poiData: that.poiData});
         });
       return savedPlaceData.promise;
     }

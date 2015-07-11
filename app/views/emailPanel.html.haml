@@ -1,17 +1,9 @@
-.row.even-height-row
-  .col-xs-6.col-height-master{style: 'text-align: right;', ng: {click: 'cancelTrip($event, tab, $index)'}}
-    %span.fa-stack
-      %i.fa.fa-circle.fa-stack-2x
-      %i.fa.fa-times.fa-stack-1x{style: 'color: white;'}
-    %a.blue-text
-      Drop this ride
-  .col-xs-6.col-height-slave{style: 'text-align: left;'}
-    .row{ng: {click: 'toggleEmail($event)'}}
-      %span.fa-stack
-        %i.fa.fa-share-square-o.fa-stack-2x
-      %a.blue-text
+.blah
+  .row
+    .col-md-4.col-md-offset-4.col-xs-12.text-center
+      %a.btn.btn-success.btn-block{ng: {click: 'toggleEmail($event)'}}
         Email
-.row{ng: {show: 'showEmail'}}
+%div{style: 'margin-top: 1em', ng: {show: 'showEmail'}}
   .row
     .col-xs-12.col-sm-8.col-sm-offset-2.text-left
       Email your ride details to a friend (or yourself).

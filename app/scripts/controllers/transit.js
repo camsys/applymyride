@@ -10,6 +10,48 @@ angular.module('applyMyRideApp')
       $scope.fare_info = planService.fare_info;
       $scope.disableNext = true;
       $scope.showDiv = {};
+      $scope.showEmail = false;
+
+      $scope.toggleEmail = function() {
+        $scope.invalidEmail = false;
+        $scope.showEmail = !$scope.showEmail;
+      };
+
+
+      $scope.sendEmail = function() {
+        if($scope.emailString){
+          var result = planService.validateEmail($scope.emailString);
+          if(result == true){
+
+            $scope.showEmail = false;
+            var addresses = $scope.emailString.split(/[ ,;]+/);
+            var emailRequest = {};
+            emailRequest.email_itineraries = [];
+            angular.forEach(addresses, function(address, index) {
+              var emailRequestPart = {};
+              emailRequestPart.email_address = address;
+              emailRequestPart.itineraries = [];
+              var ids = [];
+              ids.push(planService.outboundTripId);
+              if(planService.returnTripId){
+                ids.push(planService.returnTripId);
+              }
+
+              angular.forEach(ids, function(id, index) {
+                emailRequestPart.itineraries.push({"trip_id":planService.selectedTripId,"itinerary_id":id})
+              });
+              emailRequest.email_itineraries.push(emailRequestPart)
+            });
+            var emailPromise = planService.emailItineraries($http, emailRequest);
+            emailPromise.error(function(data) {
+              alert(data);
+            });
+            flash.setMessage('Your email was sent');
+          }else{
+            $scope.invalidEmail = true;
+          }
+        }
+      };
 
       $scope.prepareTrip = function(){
         angular.forEach(planService.searchResults.itineraries, function(itinerary, index) {
@@ -24,10 +66,14 @@ angular.module('applyMyRideApp')
 
       if($location.$$path.indexOf('/transitoptions') > -1) {
         $scope.transitInfos = planService.transitInfos[$scope.segmentid];
-        if ($scope.segmentid == "0") {
-          $scope.message = 'Outbound Bus Options';
-        } else {
-          $scope.message = 'Return Bus Options';
+        if(planService.fare_info.roundtrip == true){
+          if ($scope.segmentid == "0") {
+            $scope.message = 'Outbound Bus Options';
+          } else {
+            $scope.message = 'Return Bus Options';
+          }
+        }else{
+          $scope.message = 'Bus Options';
         }
       }else if($location.$$path.indexOf('/transitconfirm') > -1){
         angular.forEach(planService.searchResults.itineraries, function(itinerary, index) {
@@ -40,7 +86,9 @@ angular.module('applyMyRideApp')
         });
         $scope.itineraries = [];
         $scope.itineraries.push($scope.outboundTrip);
-        $scope.itineraries.push($scope.returnTrip);
+        if($scope.returnTrip != null){
+          $scope.itineraries.push($scope.returnTrip);
+        }
         $scope.purpose = planService.itineraryRequestObject.trip_purpose;
       }else{
         $scope.prepareTrip();
@@ -48,14 +96,18 @@ angular.module('applyMyRideApp')
 
 
       $scope.selectTransitTrip = function(tripid, segmentid){
+        planService.selectedTripId = tripid;
         if(planService.fare_info.roundtrip == true){
           if(segmentid == "0"){
             planService.outboundTripId = tripid;
             $location.path("/transitoptions/1");
           }else{
             planService.returnTripId = tripid;
-            $location.path("/transitconfirm");
+            $location.path("/transitconfirm/");
           }
+        }else{
+          planService.outboundTripId = tripid;
+          $location.path("/transitconfirm");
         }
       }
 

@@ -1,4 +1,42 @@
 .container{style: 'padding: 0;'}
+  .row{style: 'margin-top: 1em;', ng: {show: '!selected'}}
+    .col-md-4.col-md-offset-4.col-xs-12.text-center
+      %a.btn.btn-success.btn-block{ng: {click: 'selectWalkingTrip()'}}
+        Select this walk
+  .row{style: 'margin-top: 1em;', ng: {show: 'selected == true'}}
+    .col-md-8.col-md-offset-2.col-xs-12
+      .row{ng: {show: 'email'}}
+        .col-xs-12.col-md-6.text-left
+          %a.btn.btn-success.btn-block{ng: {href: '#/plan/fromDate'}}
+            Plan a new trip
+        .col-xs-12.col-md-6.text-right
+          %a.btn.btn-success.btn-block{ng: {href: '#/plan/my_rides'}}
+            View my saved rides
+      .row{ng: {show: '!email'}}
+        .col-xs-12.col-md-6.text-left
+          %a.btn.btn-success.btn-block{ng: {href: '#/plan/fromDate'}}
+            Plan a new trip
+        .col-xs-12.col-md-6.text-right
+          %a.btn.btn-success.btn-block{ng: {click: 'toggleEmail()'}}
+            Email
+  %div{style: 'margin-top: 1em', ng: {show: 'showEmail'}}
+    .row
+      .col-xs-12.col-sm-8.col-sm-offset-2.text-left
+        Email your ride details to a friend (or yourself).
+    .row
+      .col-xs-12.col-sm-8.col-sm-offset-2.text-left.text-muted
+        Use a comma to separate multiple addresses
+    .row
+      .col-xs-10.col-sm-6.col-sm-offset-2{'style' => 'line-height: 2em; padding-right: 0px;'}
+        %input.form-control{style: 'font-size: .9em; border-top-right-radius:0px; border-bottom-right-radius:0px;', ng: {model: 'emailString'}}
+      .col-xs-2.col-sm-2{'style' => 'line-height: 2em; padding-left: 0px;'}
+        %a.btn.btn-success.btn-block{style: 'padding-left: 0px; padding-right: 0px;min-width: 20px; border-top-left-radius:0px; border-bottom-left-radius:0px;', ng: {click: 'sendEmail()'}}
+          %i.fa.fa-envelope-o.fa-lg{style:'color: white;'}
+            %span
+              Send
+    .row{ng: {show: 'invalidEmail == true'}}
+      .col-xs-12.col-sm-8.col-sm-offset-2.text-left{style: 'color: red'}
+        Please enter only valid email addresses
   .row{style: 'margin-bottom: 1em;'}
     .col-xs-12.col-md-8.col-md-offset-2{style: 'padding: 0;'}
       .row
@@ -81,12 +119,12 @@
       .col-xs-6.text-right
         %a.btn.btn-success.btn-block{ng: {click: 'emailWalkItinerary()'}}
           %i.fa.fa-share-square-o
-          Share this Ride
+          Email
     .row{ng:{show: '!email'}}
       .col-xs-6.col-xs-offset-3.text-center
         %a.btn.btn-success.btn-block{ng: {click: 'emailWalkItinerary()'}}
           %i.fa.fa-share-square-o
-          Share this Ride
+          Email
 
 .container.sticky-footer
   .row{style: 'margin-top: 10px'}

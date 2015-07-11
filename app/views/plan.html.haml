@@ -72,8 +72,7 @@
           %h4 Where are you starting from?
       .row
         .col-md-7.col-md-offset-2.col-xs-11{'style' => 'line-height: 2em; padding-right: 0px;'}
-          %autocomplete{'inputclass' => 'clearable', 'disable-filter' => 'true', 'data' => 'locations', 'on-type'=> 'getLocations', 'on-select' => 'selectPlace', :ng => {:model => 'fromChoice', show: 'mobile'}}
-          %autocomplete{'inputclass' => 'clearable', 'disable-filter' => 'true', 'data' => 'locations', 'on-type'=> 'getLocations', 'on-select' => 'selectPlace', 'mobile' => 'false', :ng => {:model => 'fromChoice', show: '!mobile'}}
+          %autocomplete{'inputclass' => 'clearable', 'disable-filter' => 'true', 'data' => 'locations', 'on-type'=> 'getLocations', 'on-select' => 'selectPlace', ng: {model: 'fromChoice', 'attr-mobile' => '{{mobile}}'}}
         .col-md-1.col-xs-1{'style' => 'line-height: 2em; padding-left: 0px;'}
           %a.btn.btn-success.btn-block{style: 'padding-left: 0px; padding-right: 0px;min-width: 20px; border-top-left-radius:0px; border-bottom-left-radius:0px;', ng: {click: 'clearFrom()'}}
             %i.fa.fa-times.fa-lg{style:'color: white;'}
@@ -87,8 +86,7 @@
           %h4 Where are you going?
       .row
         .col-md-7.col-md-offset-2.col-xs-11{'style' => 'line-height: 2em; padding-right: 0px;'}
-          %autocomplete{'inputclass' => 'clearable', 'disable-filter' => 'true', 'data' => 'locations', 'on-type'=> 'getLocations', 'on-select' => 'selectPlace', :ng => {:model => 'toChoice', show: 'mobile'}}
-          %autocomplete{'inputclass' => 'clearable', 'disable-filter' => 'true', 'data' => 'locations', 'on-type'=> 'getLocations', 'on-select' => 'selectPlace', 'mobile' => 'false', :ng => {:model => 'toChoice', show: '!mobile'}}
+          %autocomplete{'inputclass' => 'clearable', 'disable-filter' => 'true', 'data' => 'locations', 'on-type'=> 'getLocations', 'on-select' => 'selectPlace', :ng => {:model => 'toChoice', 'attr-mobile' => '{{mobile}}'}}
         .col-md-1.col-xs-1{'style' => 'line-height: 2em; padding-left: 0px;'}
           %a.btn.btn-success.btn-block{style: 'padding-left: 0px; padding-right: 0px;min-width: 20px; border-top-left-radius:0px; border-bottom-left-radius:0px;', ng: {click: 'clearTo()'}}
             %i.fa.fa-times.fa-lg{style:'color: white;'}
@@ -565,11 +563,8 @@
                       %h5.text-muted.text-right{ng: {show: 'trip.roundTrip'}} (round trip)
                       %h5.text-muted.text-right{ng: {show: '!trip.roundTrip'}} (one way)
               .animate-show.myride-buttons{ng: {show: 'tripDivs.today[$index]'}}
-                .row.even-height-row{ng: {show: 'trip.mode == "mode_paratransit"'}}
-                %span{ng: {include: "'views/emailOrCancel.html'"}}
-                .row.even-height-row{ng: {show: 'trip.mode != "mode_paratransit"'}}
-                  .col-xs-12.col-height-slave.text-center
-                    %span{ng: {include: "'views/email.html'"}}
+                .row.even-height-row
+                  %span{ng: {include: "'views/emailOrCancel.html'"}}
           %tab{'heading' => 'Future ({{trips.future.length}})'}
             .myride{'index' => '{{$index}}', ng: {init: 'tab = "future"', click: 'toggleMyRideButtonBar("future", $index)', repeat: 'trip in trips.future'}}
               .row
@@ -587,11 +582,8 @@
                     .col-xs-4
                       %h5.text-muted.text-right (round trip)
               .animate-show.myride-buttons{ng: {show: 'tripDivs.future[$index]'}}
-                .row.even-height-row{ng: {show: 'trip.mode == "mode_paratransit"'}}
+                .row.even-height-row
                   %span{ng: {include: "'views/emailOrCancel.html'"}}
-                .row.even-height-row{ng: {show: 'trip.mode != "mode_paratransit"'}}
-                  .col-xs-12.col-height-slave.text-center
-                    %span{ng: {include: "'views/email.html'"}}
           %tab{'heading' => 'Past ({{trips.past.length}})'}
             .myride{'index' => '{{$index}}', ng: {init: 'tab = "past"', click: 'toggleMyRideButtonBar("past", $index);', repeat: 'trip in trips.past'}}
               .row
@@ -611,7 +603,7 @@
               .animate-show.myride-buttons{ng: {show: 'tripDivs.past[$index]'}}
                 .row.even-height-row
                   .col-xs-12.col-height-slave.text-center
-                    %span{ng: {include: "'views/email.html'"}}
+                    %span{ng: {include: "'views/emailOrCancel.html'"}}
         .row{style: 'margin-top: 10px'}
           .col-md-4.col-md-offset-4.col-xs-12.text-center
             %a.btn.btn-success.btn-block{ng: {href: '#/plan/fromDate'}}

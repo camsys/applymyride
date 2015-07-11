@@ -1,12 +1,49 @@
 .container{style: 'padding: 0;'}
+  .row{style: 'margin-top: 1em;'}
+    .col-md-8.col-md-offset-2.col-xs-12
+      .row{ng: {show: 'email'}}
+        .col-xs-12.col-md-6.text-left
+          %a.btn.btn-success.btn-block{ng: {href: '#/plan/fromDate'}}
+            Plan a new trip
+        .col-xs-12.col-md-6.text-right
+          %a.btn.btn-success.btn-block{ng: {href: '#/plan/my_rides'}}
+            View my saved rides
+      .row{ng: {show: '!email'}}
+        .col-xs-12.col-md-6.text-left
+          %a.btn.btn-success.btn-block{ng: {href: '#/plan/fromDate'}}
+            Plan a new trip
+        .col-xs-12.col-md-6.text-right
+          %a.btn.btn-success.btn-block{ng: {click: 'toggleEmail()'}}
+            Email
+
+  %div{style: 'margin-top: 1em', ng: {show: 'showEmail'}}
+    .row
+      .col-xs-12.col-sm-8.col-sm-offset-2.text-left
+        Email your ride details to a friend (or yourself).
+    .row
+      .col-xs-12.col-sm-8.col-sm-offset-2.text-left.text-muted
+        Use a comma to separate multiple addresses
+    .row
+      .col-xs-10.col-sm-6.col-sm-offset-2{'style' => 'line-height: 2em; padding-right: 0px;'}
+        %input.form-control{style: 'font-size: .9em; border-top-right-radius:0px; border-bottom-right-radius:0px;', ng: {model: 'emailString'}}
+      .col-xs-2.col-sm-2{'style' => 'line-height: 2em; padding-left: 0px;'}
+        %a.btn.btn-success.btn-block{style: 'padding-left: 0px; padding-right: 0px;min-width: 20px; border-top-left-radius:0px; border-bottom-left-radius:0px;', ng: {click: 'sendEmail()'}}
+          %i.fa.fa-envelope-o.fa-lg{style:'color: white;'}
+            %span
+              Send
+    .row{ng: {show: 'invalidEmail == true'}}
+      .col-xs-12.col-sm-8.col-sm-offset-2.text-left{style: 'color: red'}
+        Please enter only valid email addresses
+
+
   .row{style: 'margin-bottom: 1em;'}
     .col-xs-12.col-md-8.col-md-offset-2{style: 'padding: 0;'}
       .row
         .col-xs-12
-          %h2{ng: {show: 'itineraries.length > 1'}} Here is your round-trip transit itinerary
-          %h2{ng: {show: 'itineraries.length == 1'}} Here is your one way transit itinerary
+          %h2{ng: {show: 'itineraries.length > 1'}} Here is your round-trip itinerary
+          %h2{ng: {show: 'itineraries.length == 1'}} Here is your one-way itinerary
   .transititinerary{index: '{{$index}}', ng: {repeat: 'itinerary in itineraries'}}
-    .row{style: 'margin-bottom: 1em;', ng: {show: '$index == 0'}}
+    .row{style: 'margin-bottom: 1em;', ng: {show: '$index == 0 && itineraries.length > 1'}}
       .col-xs-12.col-md-8.col-md-offset-2{style: 'padding: 0;'}
         .row
           .col-xs-12
@@ -91,20 +128,6 @@
                 .row
                   .leg-info.col-xs-12.leg-header
                     %h5.text-muted Arrive at
-                    %h4 {{itinerary.destinationDesc}}
+                    %h4 {{itinerary.end_location.name}}
 
-.row{style: 'margin-top: 1em;'}
-  .col-md-8.col-md-offset-2.col-xs-12
-    .row{ng: {show: 'email'}}
-      .col-xs-6.text-left
-        %a.btn.btn-success.btn-block{ng: {click: 'saveTransitItinerary()'}}
-          Save this Ride {{tripid}}
-      .col-xs-6.text-right
-        %a.btn.btn-success.btn-block{ng: {click: 'emailTransitItinerary()'}}
-          %i.fa.fa-share-square-o
-          Share this Ride
-    .row{ng: {show: '!email'}}
-      .col-xs-12.text-center
-        %a.btn.btn-success.btn-block{ng: {click: 'emailTransitItinerary()'}}
-          %i.fa.fa-share-square-o
-          Share this Ride
+

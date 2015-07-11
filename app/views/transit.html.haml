@@ -1,4 +1,9 @@
 .container{style: 'padding: 0;'}
+  .buttonwrapper
+    .row{style: 'margin-top: 1em;', ng: {show: 'roundtrip == false || segmentid == 1'}}
+      .col-md-4.col-md-offset-4.col-xs-12.text-center
+        %a.btn.btn-success.btn-block{ng: {click: 'selectTransitTrip(itinerary.id, segmentid)'}}
+          Select this ride
   .row{style: 'margin-bottom: 1em;'}
     .col-xs-12.col-md-8.col-md-offset-2{style: 'padding: 0;'}
       .row
@@ -81,37 +86,14 @@
                 .leg-info.col-xs-12.leg-header
                   %h5.text-muted Arrive at
                   %h4 {{itinerary.end_location.name}}
-  .container.sticky-footer{ng: {show: 'roundtrip'}}
+  .container.sticky-footer
     .row{style: 'margin-top: 1em'}
       .col-md-8.col-md-offset-2.col-xs-6.col-xs-offset-3
         .pull-left
           %a.btn-back{back: '', ng: {click: "back()"}}
             %span{ng: {include: "'views/button-chevron-left.html'"}}
             Back
-        .pull-right
+        .pull-right{ng: {show: 'roundtrip && segmentid == 0'}}
           %a.btn-next{ng: {click: 'selectTransitTrip(tripid,segmentid)'}}
-            %span.visible-xs{style: 'display: inline-block !important; text-decoration: underline !important;'}  Select
-            %span.hidden-xs Select this option and continue
+            %span Select and continue
             %span{ng: {include: "'views/button-chevron-right.html'"}}
-  .row{style: 'margin-top: 1em;', ng: {show: 'roundtrip == false'}}
-    .col-md-8.col-md-offset-2.col-xs-12
-      .row{ng:{show: 'email'}}
-        .col-xs-6.text-left
-          %a.btn.btn-success.btn-block{ng: {click: 'saveTransitItinerary(tripid)'}}
-            Save this Ride
-        .col-xs-6.text-right
-          %a.btn.btn-success.btn-block{ng: {click: 'emailTransitItinerary(tripid)'}}
-            %i.fa.fa-share-square-o
-            Share this Ride
-      .row{ng:{show: '!email'}}
-        .col-xs-6.col-xs-offset-3.text-center
-          %a.btn.btn-success.btn-block{ng: {click: 'emailTransitItinerary(tripid)'}}
-            %i.fa.fa-share-square-o
-            Share this Ride
-  .container.sticky-footer
-    .row{style: 'margin-top: 10px'}
-      .col-md-8.col-md-offset-2.col-xs-6.col-xs-offset-3
-        .pull-left
-          %a.btn-back{back: '', ng: {click: "back()"}}
-            %span{ng: {include: "'views/button-chevron-left.html'"}}
-            Back

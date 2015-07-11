@@ -27,22 +27,9 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
   $scope.fromDate = new Date();
   $scope.returnDate = new Date();
 
-  $scope.toggleRidePanelVisible = function(type, divIndex) {
-    $scope.showEmail = false;
-    var tripDivs = $scope.tripDivs;
-    angular.forEach(Object.keys(tripDivs), function(key, index) {
-      var tripTab = tripDivs[key];
-      angular.forEach(tripTab, function(trip, index) {
-        if(key == type && index == divIndex){
-          tripTab[index] = !tripTab[index];
-        }else{
-          tripTab[index] = false;
-        }
-      });
-    });
-  };
 
   $scope.toggleMyRideButtonBar = function(type, index) {
+    $scope.showEmail = false;
     angular.forEach(Object.keys($scope.tripDivs), function(key, index) {
       var divs = $scope.tripDivs[key];
       angular.forEach(divs, function(div, index) {
@@ -74,10 +61,10 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
         });
         var cancelPromise = planService.cancelTrip($http, cancel)
         cancelPromise.error(function(data) {
-          alert(data);
+          bootbox.alert("An error occured on the server, your trip was not dropped.");
         });
         cancelPromise.success(function(data) {
-          flash.setMessage('Your trip has been cancelled.');
+          bootbox.alert('Your trip has been dropped.');
           $scope.tripDivs[tab].splice(index, 1);
           $scope.trips[tab].splice(index, 1);
         })
@@ -110,7 +97,7 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
             });
             var emailPromise = planService.emailItineraries($http, emailRequest);
             emailPromise.error(function(data) {
-              alert(data);
+              alert("An error occurred on the server, your email was not sent.");
             });
             delete trip.emailString;
             flash.setMessage('Your email was sent');
@@ -442,7 +429,7 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
         promise.
           success(function(result) {
             planService.searchResults = result;
-            $location.path('/plan/list_itineraries');
+            $location.path('/plan/list_itineraries');ca
           }).
           error(function(result) {
             bootbox.alert("An error occured on the server, please retry your search or try again later.");
@@ -506,6 +493,7 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
         $scope.placeLabels = [];
         $scope.placeIds = [];
         $scope.placeAddresses = [];
+        $scope.poiData = [];
 
         var savedPlaceData = data[1].savedplaces;
         if(savedPlaceData && savedPlaceData.length > 0){
@@ -515,6 +503,7 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
           }, choices);
           $scope.placeLabels = $scope.placeLabels.concat(savedPlaceData);
           $scope.placeIds = $scope.placeIds.concat(data[1].placeIds);
+          $scope.poiData = data[1].poiData;
           $scope.placeAddresses = $scope.placeAddresses.concat(data[1].savedplaceaddresses);
         }
 
@@ -554,7 +543,12 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
       map = $scope.toLocationMap;
     }
     var placeIdPromise = $q.defer();
-    var placeId = $scope.placeIds[$scope.placeLabels.indexOf(place)];
+    var selectedIndex = $scope.placeLabels.indexOf(place);
+    if(selectedIndex < $scope.poiData.length){
+      //this is a POI result, get the 1Click location name
+      $scope.poi = $scope.poiData[selectedIndex];
+    }
+    var placeId = $scope.placeIds[selectedIndex];
     if(placeId) {
       placeIdPromise.resolve(placeId);
     }else{
@@ -580,14 +574,6 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
       var placesService = new google.maps.places.PlacesService(map);
       placesService.getDetails( { 'placeId': placeId}, function(result, status) {
         if (status == google.maps.GeocoderStatus.OK) {
-          var recentSearches = localStorageService.get('recentSearches');
-          if(!recentSearches){
-            recentSearches = {};
-          }
-          if (typeof(recentSearches[place]) == 'undefined'){
-            recentSearches[place] = result;
-            localStorageService.set('recentSearches', JSON.stringify(recentSearches));
-          }
 
           //verify the location has a street address
           var datatypes = [];
@@ -602,6 +588,16 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
             return;
           }
 
+          var recentSearches = localStorageService.get('recentSearches');
+          if(!recentSearches){
+            recentSearches = {};
+          }
+          if (typeof(recentSearches[place]) == 'undefined'){
+            recentSearches[place] = result;
+            localStorageService.set('recentSearches', JSON.stringify(recentSearches));
+          }
+
+          result.poi = $scope.poi;
           if($routeParams.step == 'from'){
             planService.fromDetails = result;
           }else if($routeParams.step == 'to'){
