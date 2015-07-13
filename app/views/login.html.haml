@@ -1,21 +1,21 @@
 .row{ng: {show: "location == '/'"}}
   .col-md-4.col-md-offset-4.col-xs-12
     .row
-      %h1 Let's get started
+      %h1{style: 'font-weight:600;'} Let's get started
     .row{style: 'margin-top: 2em'}
       %h3 Enter your Shared Ride ID
     .row
       %input.form-control{style: 'font-size: .9em; width: 50%;', placeholder: '00000', type: 'number', ng: {model: 'sharedRideId', required: 'true', change: 'checkId()', enter: 'next()'}}
-    .row{style: 'margin-top: 2em'}
+    .row{style: 'margin-top: 1em'}
       %h3 What county do you live in?
     .row
       %select.btn-lg{style: 'width: 100%', ng: {model: 'county', change: 'checkId()', options: 'county for county in counties', enter: 'next()'}}
         %option{value: '', disabled: '', selected: ''}
-          Enter your county
-    .row{style: 'margin-top: 2em'}
+          Select your county
+    .row{style: 'margin-top: 1em'}
       %a.btn-block{"ng-href" => "#/plan/fromDate"}
         Or, continue as a guest
-    .row{style: 'margin-top: 2em'}
+    .row{style: 'margin-top: 1em'}
       .pull-right
         %a.btn-next{ng: {click: 'next()', hide: 'disableNext'}}
           Next

@@ -25,7 +25,7 @@
       .col-md-8.col-md-offset-2.col-xs-12
         .row
           .col-xs-12.pull-left.no-padding
-            %h3
+            %h4
               %span.timeTypeSelection{ng: {show: 'fromTimeType == "depart"'}} When do you want to start out?
               %span.timeTypeSelection{ng: {show: 'fromTimeType == "arrive"'}} When do you want to arrive?
               %span.dropdown{dropdown: '', style: 'cursor: pointer;'}
@@ -71,11 +71,12 @@
         .col-md-8.col-md-offset-2.col-xs-12
           %h4 Where are you starting from?
       .row
-        .col-md-7.col-md-offset-2.col-xs-11{'style' => 'line-height: 2em; padding-right: 0px;'}
-          %autocomplete{'inputclass' => 'clearable', 'disable-filter' => 'true', 'data' => 'locations', 'on-type'=> 'getLocations', 'on-select' => 'selectPlace', ng: {model: 'fromChoice', 'attr-mobile' => '{{mobile}}'}}
-        .col-md-1.col-xs-1{'style' => 'line-height: 2em; padding-left: 0px;'}
-          %a.btn.btn-success.btn-block{style: 'padding-left: 0px; padding-right: 0px;min-width: 20px; border-top-left-radius:0px; border-bottom-left-radius:0px;', ng: {click: 'clearFrom()'}}
-            %i.fa.fa-times.fa-lg{style:'color: white;'}
+        .col-md-8.col-md-offset-2.col-xs-12{'style' => 'line-height: 2em;'}
+          .input-group
+            %autocomplete{'inputclass' => 'clearable', 'disable-filter' => 'true', 'data' => 'locations', 'on-type'=> 'getLocations', 'on-select' => 'selectPlace', ng: {model: 'fromChoice', 'attr-mobile' => '{{mobile}}'}}
+            .input-group-btn
+              %a.btn.btn-success.btn-block{style: 'padding-left: 0px; padding-right: 0px;min-width: 20px; border-top-left-radius:0px; border-bottom-left-radius:0px;', ng: {click: 'clearFrom()'}}
+                %i.fa.fa-times.fa-lg{style:'color: white;'}
       .row
         .col-md-8.col-md-offset-2.col-xs-12
           %div.map-canvas{'ui-map' => 'fromLocationMap', 'ui-options' => 'mapOptions', ng: {show: 'showMap'}}
@@ -85,11 +86,12 @@
         .col-md-8.col-md-offset-2.col-xs-12
           %h4 Where are you going?
       .row
-        .col-md-7.col-md-offset-2.col-xs-11{'style' => 'line-height: 2em; padding-right: 0px;'}
-          %autocomplete{'inputclass' => 'clearable', 'disable-filter' => 'true', 'data' => 'locations', 'on-type'=> 'getLocations', 'on-select' => 'selectPlace', :ng => {:model => 'toChoice', 'attr-mobile' => '{{mobile}}'}}
-        .col-md-1.col-xs-1{'style' => 'line-height: 2em; padding-left: 0px;'}
-          %a.btn.btn-success.btn-block{style: 'padding-left: 0px; padding-right: 0px;min-width: 20px; border-top-left-radius:0px; border-bottom-left-radius:0px;', ng: {click: 'clearTo()'}}
-            %i.fa.fa-times.fa-lg{style:'color: white;'}
+        .col-md-8.col-md-offset-2.col-xs-12{'style' => 'line-height: 2em;'}
+          .input-group
+            %autocomplete{'inputclass' => 'clearable', 'disable-filter' => 'true', 'data' => 'locations', 'on-type'=> 'getLocations', 'on-select' => 'selectPlace', :ng => {:model => 'toChoice', 'attr-mobile' => '{{mobile}}'}}
+            .input-group-btn
+              %a.btn.btn-success.btn-block{style: 'padding-left: 0px; padding-right: 0px;min-width: 20px; border-top-left-radius:0px; border-bottom-left-radius:0px;', ng: {click: 'clearTo()'}}
+                %i.fa.fa-times.fa-lg{style:'color: white;'}
       .row
         .col-md-8.col-md-offset-2.col-xs-12
           %div.map-canvas{'ui-map' => 'toLocationMap', 'ui-options' => 'mapOptions', ng: {show: 'showMap'}}
@@ -559,9 +561,6 @@
                   .row
                     .col-xs-8
                       %h5.blue-text {{trip.startDesc}}
-                    .col-xs-4
-                      %h5.text-muted.text-right{ng: {show: 'trip.roundTrip'}} (round trip)
-                      %h5.text-muted.text-right{ng: {show: '!trip.roundTrip'}} (one way)
               .animate-show.myride-buttons{ng: {show: 'tripDivs.today[$index]'}}
                 .row.even-height-row
                   %span{ng: {include: "'views/emailOrCancel.html'"}}
@@ -579,8 +578,6 @@
                   .row
                     .col-xs-8
                       %h5.blue-text {{trip.startDesc}}
-                    .col-xs-4
-                      %h5.text-muted.text-right (round trip)
               .animate-show.myride-buttons{ng: {show: 'tripDivs.future[$index]'}}
                 .row.even-height-row
                   %span{ng: {include: "'views/emailOrCancel.html'"}}
@@ -598,8 +595,6 @@
                   .row
                     .col-xs-8
                       %h5.blue-text {{trip.startDesc}}
-                    .col-xs-4
-                      %h5.text-muted.text-right (round trip)
               .animate-show.myride-buttons{ng: {show: 'tripDivs.past[$index]'}}
                 .row.even-height-row
                   .col-xs-12.col-height-slave.text-center
