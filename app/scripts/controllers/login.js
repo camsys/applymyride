@@ -85,8 +85,6 @@ angular.module('applyMyRideApp')
           }else{
             ipCookie.remove('email');
             ipCookie.remove('authentication_token');
-            ipCookie('email', planService.email, {expires: 1, expirationUnit: 'seconds'});
-            ipCookie('authentication_token', planService.authentication_token, {expires: 1, expirationUnit: 'seconds'});
           }
           $location.path('/plan/fromDate');
         });

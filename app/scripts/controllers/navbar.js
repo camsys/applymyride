@@ -22,8 +22,13 @@ angular.module('applyMyRideApp')
     $scope.showNavbar = function() {
       that.$scope.email = ipCookie('email');
       that.$scope.authentication_token = ipCookie('authentication_token');
-      planService.email = $scope.email;
-      planService.authentication_token = $scope.authentication_token;
+      if(that.$scope.email){
+        planService.email = $scope.email;
+        planService.authentication_token = $scope.authentication_token;
+      }else{
+        that.$scope.email = planService.authentication_token;
+        that.$scope.authentication_token = planService.email;
+      }
       $scope.rideCount = ipCookie('rideCount');
       return true;
     };
