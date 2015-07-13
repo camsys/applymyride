@@ -640,6 +640,15 @@ only screen and (min-device-pixel-ratio : 1.5) {
   display: -webkit-inline-box;
 }
 
+.nav-tabs > li {
+  float: none;
+  display: block;
+  display: -moz-inline-box;
+}
+
+.discounts div.ng-isolate-scope { text-align: center; }
+.discounts div.tab-content { text-align: left; }
+
 .nav-tabs > li.active {
   border-bottom: 5px #238B00 solid;
   outline-width: 0;
