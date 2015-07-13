@@ -121,8 +121,8 @@
     .depart-time{ng: {show: 'step==="returnTimeType"'}}
       .col-md-8.col-md-offset-2.col-xs-12
         .row
-          .col-xs-12.pull-left
-            %h3
+          .col-xs-12.pull-left.no-padding
+            %h4
               %span.timeTypeSelection{ng: {show: 'returnTimeType == "depart"'}} When do you want to leave?
               %span.timeTypeSelection{ng: {show: 'returnTimeType == "arrive"'}} When do you want to get back?
               %span.dropdown{dropdown: '', style: 'cursor: pointer;'}
@@ -151,7 +151,7 @@
     .confirm{ng: {show: 'step==="confirm"'}}
       .row.row-eq-height.rounded-border{style: "border: 0px;"}
         .col-xs-12.col-md-6.col-md-offset-3
-          %h3
+          %h3{style: 'font-weight:600;margin-left:5px;'}
             My ride request
       .row.truncate
         .col-xs-12.col-md-6.col-md-offset-3
@@ -221,12 +221,12 @@
           %a.btn-block{"ng-href" => "#/plan/fromDate"}
             No, change my request
 
-    .list_itineraries.col-xs-12.col-sm-8.col-sm-offset-2{ng: {show: 'step==="list_itineraries" && noresults == true'}}
+    .list_itineraries.col-xs-12.col-sm-8.col-sm-offset-2.no-padding{ng: {show: 'step==="list_itineraries" && noresults == true'}}
       %h2 We did not find any rides matching your request
       %a.btn-block{"ng-href" => "#/plan/fromDate"}
         Change my request
 
-    .list_itineraries.col-xs-12.col-sm-8.col-sm-offset-2{ng: {show: 'step==="list_itineraries" && noresults == false'}}
+    .list_itineraries.col-xs-12.col-sm-8.col-sm-offset-2.no-padding{ng: {show: 'step==="list_itineraries" && noresults == false'}}
       %h2 Your options:
 
       %a.no_underline.row.row-eq-height.rounded-border{ng: {href: '#/transitoptions/0', show: 'fare_info["mode_transit"] && transitInfos[0].length >  1'}}
@@ -543,7 +543,7 @@
                 Sign in to book a ride
 
     .discounts{ng: {show: 'step==="my_rides"'}}
-      .col-md-8.col-md-offset-2.col-xs-12
+      .col-md-8.col-md-offset-2.col-xs-12.no-padding
         %tabset
           %tab{'heading' => 'Today ({{trips.today.length}})'}
             .myride{index: '{{$index}}', ng: {init: 'tab = "today"', click: 'toggleMyRideButtonBar("today", $index)', repeat: 'trip in trips.today'}}

@@ -153,7 +153,7 @@ h3,
 h4,
 h5,
 h6 {
-  margin: 5px;
+  margin: 5px 5px 5px 0;
 }
 
 .no_underline{
@@ -637,6 +637,7 @@ only screen and (min-device-pixel-ratio : 1.5) {
 
 .nav-tabs {
   border: hidden;
+  display: -webkit-inline-box;
 }
 
 .nav-tabs > li.active {
