@@ -247,7 +247,7 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
         remainder = Math.abs(remainder - 15);
         $scope.fromTime.setMinutes($scope.fromTime.getMinutes() + remainder);
       }else{
-        now.add(9, 'hours');
+        now.add(10, 'hours');
         $scope.fromTime = now.toDate();
       }
       $scope.fromTimeType = 'arrive';
@@ -263,9 +263,9 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
         if(moment(fromDate).format('M/D/YYYY') == moment(returnDate).format('M/D/YYYY')) {
           var fromTimeType = planService.fromTimeType;
           var fromTime = planService.fromTime
-          if(fromTimeType == 'asap'){
-            $scope.returnTime = new Date();
-            $scope.returnTime.setHours($scope.returnTime.getHours() + 4);
+          if(planService.asap == true){
+            $scope.returnTime = new Date(fromTime);
+            $scope.returnTime.setHours($scope.returnTime.getHours() + 2);
           } else if(fromTimeType == 'depart'){
             $scope.returnTime = new Date(fromTime);
             $scope.returnTime.setHours($scope.returnTime.getHours() + 4);
@@ -275,7 +275,7 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
           }
         }else{
           var now = moment().startOf('day');
-          now.add(9, 'hours');
+          now.add(10, 'hours');
           $scope.returnTime = now.toDate();
         }
       }
@@ -396,6 +396,8 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
         if($scope.fromTimeType == 'asap'){
           planService.fromTime = new Date();
           planService.fromTimeType = 'depart';
+          planService.asap = true;
+          $scope.fromTime.setMinutes($scope.fromTime.setMinutes() + 10);
         }
         $location.path('/plan/start_current');
         break;
@@ -466,6 +468,8 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
   $scope.specifyFromTimeType = function(type){
     $scope.fromTimeType = type;
     if(type == 'asap'){
+      $scope.fromTime = new Date();
+      $scope.fromTime.setMinutes($scope.fromTime.getMinutes() + 10);
       $scope.next();
     }
   }
