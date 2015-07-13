@@ -16,7 +16,7 @@
             %img.walk-time-icon{ng: {src: 'images/modes/walk.png'}}
             {{itinerary.walkTimeDesc}})
         .col-xs-2.text-right
-          %h4{style: 'float:right; vertical-align: bottom;'} ${{itinerary.cost}}
+          %h4{style: 'float:right; vertical-align: bottom;'} {{itinerary.cost | currency}}
   .row
     .col-xs-12.col-md-8.col-md-offset-2.transit-container
       .row.row-eq-height.transit-header

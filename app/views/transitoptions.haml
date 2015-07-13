@@ -27,7 +27,7 @@
                 %span{style: "font-size: large; vertical-align: bottom;"} {{transitInfo.route}}
           .row{style: "margin-top: .5em"}
             .col-xs-12.text-muted
-              Fare ${{transitInfo.cost}}
+              Fare {{transitInfo.cost | currency}}
           .row{style: "margin-top: .5em"}
             .col-xs-12.text-muted
               Leave {{transitInfo.startDesc}}

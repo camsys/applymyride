@@ -268,7 +268,7 @@
           .col-xs-4.col-height-slave
             .row.row-eq-height.table-compact.pull-right
               .col-xs-12
-                {{transitInfo.cost}}
+                {{transitInfo.cost | currency}}
             .route-badge
               %img{style: 'height: 20px;', ng: {src: 'images/modes/transit.png'}}
               %span {{transitInfo.route}}
@@ -366,7 +366,7 @@
           .row{style: "border: 0px; margin: 0px; padding: 0px"}
             .col-xs-12
               %p.text-left.text-muted{style: "border: 0px; margin: 0px; padding: 0px"}
-                Cost: ${{taxiItinerary.cost}}
+                Cost: {{taxiItinerary.cost | currency}}
         .col-xs-2{style: "font-size: large"}
           Free
 
@@ -393,7 +393,7 @@
                 %span{style: "font-size: large; vertical-align: bottom;"} {{transitInfo.route}}
           .row{style: "margin-top: .5em"}
             .col-xs-12.text-muted
-              Fare ${{transitInfo.cost}}
+              Fare {{transitInfo.cost | currency}}
           .row{style: "margin-top: .5em"}
             .col-xs-12.text-muted
               Leave {{transitInfo.startDesc}}
@@ -525,7 +525,7 @@
             .col-xs-6.pull-left
               %h3 {{discount.comment}}
             .col-xs-6.pull-right
-              %h3 ${{discount.fare}}
+              %h3 {{discount.fare | currency}}
         .row{style: 'margin-top: 2em; padding-bottom: 0px; border-bottom: hidden;'}
           .col-xs-12.discounts-row.pull-left{style: 'color: black;'}
             %h3 You must sign up in advance to use Shared Ride services
