@@ -40,8 +40,7 @@
     .col-xs-12.col-md-8.col-md-offset-2{style: 'padding: 0;'}
       .row
         .col-xs-12
-          %h2{ng: {show: 'itineraries.length > 1'}} Here is your round-trip itinerary
-          %h2{ng: {show: 'itineraries.length == 1'}} Here is your one-way itinerary
+          %h2 Here is your trip plan
   .transititinerary{index: '{{$index}}', ng: {repeat: 'itinerary in itineraries'}}
     .row{style: 'margin-bottom: 1em;', ng: {show: '$index == 0 && itineraries.length > 1'}}
       .col-xs-12.col-md-8.col-md-offset-2{style: 'padding: 0;'}

@@ -41,8 +41,7 @@
     .col-xs-12.col-md-8.col-md-offset-2{style: 'padding: 0;'}
       .row
         .col-xs-12
-          %h2{ng: {show: 'walkItineraries.length > 1'}} Here is your round-trip transit itinerary
-          %h2{ng: {show: 'walkItineraries.length == 1'}} Here is your one way transit itinerary
+          %h2 Here is your trip plan
 .walkitinerary{ng: {repeat: 'itinerary in walkItineraries'}}
   .row{style: 'margin-bottom: 1em;', ng: {show: '$index == 0'}}
     .col-xs-12.col-md-8.col-md-offset-2{style: 'padding: 0;'}
