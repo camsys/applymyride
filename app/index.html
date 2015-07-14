@@ -44,7 +44,7 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
               <ul class="nav navbar-nav navbar-right">
                 <li ng-show="email">
-                  <a class="navbar-icon" href="#/plan/my_rides" style="margin-top: .5em;">
+                  <a class="navbar-icon" href="#/plan/my_rides?navbar=true" style="margin-top: .5em;">
                     My rides <div class="badge alert-success">{{rideCount}}</div>
                   </a>
                 </li>
@@ -148,6 +148,7 @@
         <script src="scripts/controllers/transit.js"></script>
         <script src="scripts/controllers/paratransit.js"></script>
         <script src="scripts/controllers/walk.js"></script>
+        <script src="scripts/controllers/itinerary.js"></script>
         <script src="scripts/directives/clearinput.js"></script>
         <script src="scripts/directives/birthdaypicker.js"></script>
         <script src="scripts/services/section.js"></script>

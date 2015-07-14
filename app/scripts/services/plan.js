@@ -59,7 +59,7 @@ angular.module('applyMyRideApp')
 
       this.getRides = function($http, $scope, ipCookie) {
         var that = this;
-        $http.get('api/v1/trips/list', this.getHeaders()).
+        return $http.get('api/v1/trips/list', this.getHeaders()).
           success(function(data) {
             var sortable = [];
             angular.forEach(data.trips, function(trip, index) {
@@ -82,19 +82,33 @@ angular.module('applyMyRideApp')
             tripDivs.past = [];
             tripDivs.future = [];
 
+            var newestRecord = 0;
             angular.forEach($scope.trips, function(trip, index) {
               trip.mode = trip.itineraries[0].returned_mode_code;
               trip.roundTrip = trip.itineraries.length > 1 ? true : false;
               trip.startDesc = that.getDateDescription(trip.itineraries[0].start_time);
               trip.startDesc += " at " + moment(trip.itineraries[0].start_time).format('h:mm a');
               var dayDiff = moment(trip.itineraries[0].start_time).startOf('day').diff(moment().startOf('day'), 'days');
+              var createdAt = moment(trip.itineraries[0].created_at).unix();
               if(dayDiff == 0) {
+                if(createdAt > newestRecord){
+                  newestRecord = createdAt;
+                  $scope.tabToday = true;
+                }
                 trips.today.push(trip);
                 tripDivs.today.push(false);
               }else if(dayDiff < 0){
+                if(createdAt > newestRecord){
+                  newestRecord = createdAt;
+                  $scope.tabPast = true;
+                }
                 trips.past.push(trip);
                 tripDivs.past.push(false);
               }else{
+                if(createdAt > newestRecord){
+                  newestRecord = createdAt;
+                  $scope.tabFuture = true;
+                }
                 trips.future.push(trip);
                 tripDivs.future.push(false);
               }
@@ -351,7 +365,6 @@ angular.module('applyMyRideApp')
         this.setItineraryDescriptions(itinerary);
         if(itinerary.cost){
           itinerary.cost = parseFloat(Math.round(itinerary.cost * 100) / 100).toFixed(2);
-
         }
         if(itinerary.json_legs){
           var that = this;

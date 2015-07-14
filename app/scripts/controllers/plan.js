@@ -77,6 +77,22 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
     });
   };
 
+  $scope.selectTrip = function($event, tab, index) {
+    $event.stopPropagation();
+    var trip = $scope.trips[tab][index];
+    planService.selectedTrip = trip;
+    switch(trip.mode) {
+      case 'mode_paratransit':
+        break;
+      case 'mode_transit':
+        console.log('transit')
+        break;
+      case 'mode_walk':
+        break;
+    }
+    $location.path('/itinerary');
+  };
+
   $scope.sendEmail = function($event) {
     $event.stopPropagation();
     angular.forEach(Object.keys($scope.trips), function(key, index) {
@@ -369,8 +385,17 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
       break;
     case 'my_rides':
       planService.reset();
-      planService.getRides($http, $scope, ipCookie);
+      var ridesPromise = planService.getRides($http, $scope, ipCookie);
       $scope.hideButtonBar = true;
+      ridesPromise.then(function(result) {
+        var navbar = $routeParams.navbar;
+        if(navbar){
+          $scope.tabFuture = true;
+          if($scope.trips.today.length > 0){
+            $scope.tabToday = true;
+          }
+        }
+      });
       break;
     case 'sharedride_options_1':
       $scope.showNext = false;

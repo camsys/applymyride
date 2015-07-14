@@ -117,35 +117,29 @@ angular.module('applyMyRideApp')
           if(segmentid == "0"){
             planService.outboundTripId = tripid;
             $location.path("/transitoptions/1");
+            return;
           }else{
             planService.returnTripId = tripid;
-            $location.path("/transitconfirm/");
           }
         }else{
           planService.outboundTripId = tripid;
-          $location.path("/transitconfirm");
         }
+        $scope.saveTransitItinerary()
       }
 
-      $scope.saveTransitItinerary = function(itineraryid){
+      $scope.saveTransitItinerary = function(){
         var tripId = planService.tripId;
         planService.outboundTripId
         var selectedItineraries = [];
 
-        if(!itineraryid){
-          selectedItineraries.push({"trip_id":tripId, "itinerary_id":planService.outboundTripId});
-
-          if(planService.fare_info.roundtrip == true){
-            selectedItineraries.push({"trip_id":tripId, "itinerary_id":planService.returnTripId});
-          }
-        }else{
-          selectedItineraries.push({"trip_id":tripId, "itinerary_id":itineraryid});
+        selectedItineraries.push({"trip_id":tripId, "itinerary_id":planService.outboundTripId});
+        if(planService.fare_info.roundtrip == true){
+          selectedItineraries.push({"trip_id":tripId, "itinerary_id":planService.returnTripId});
         }
-
         var selectedItineraries = {"select_itineraries": selectedItineraries};
         var promise = planService.selectItineraries($http, selectedItineraries);
         promise.then(function(result) {
-          $location.path('/plan/my_rides');
+          $location.path("/transitconfirm");
         });
       }
 

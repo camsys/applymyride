@@ -1,14 +1,15 @@
 .container{style: 'padding: 0;', index: '{{$index}}', ng: {show: '!booking_failed', repeat: 'itinerary in paratransitItineraries'}}
-  .row{style: 'margin-bottom: 1em;'}
-    .col-xs-12.col-md-8.col-md-offset-2{style: 'padding: 0;'}
-      %h1 Good news!
-      %h2.text-muted Your trip has been saved
-  .row{style: 'margin-bottom: 1em;'}
-    .col-xs-4.col-xs-offset-4{style: 'padding: 0;'}
-      %a.btn.btn-success.btn-block{"ng-href" => "#/plan/fromDate"}
-        Plan another ride
-      %a.btn-block.text-center{"ng-href" => "#/plan/my_rides"}
-        View my saved rides
+  %div{ng:{show: '$index == 0'}}
+    .row{style: 'margin-bottom: 1em;'}
+      .col-xs-12.col-md-8.col-md-offset-2{style: 'padding: 0;'}
+        %h1 Good news!
+        %h2.text-muted Your trip has been saved
+    .row{style: 'margin-bottom: 1em;'}
+      .col-xs-4.col-xs-offset-4{style: 'padding: 0;'}
+        %a.btn.btn-success.btn-block{"ng-href" => "#/plan/fromDate"}
+          Plan another ride
+        %a.btn-block.text-center{"ng-href" => "#/plan/my_rides"}
+          View my saved rides
   .row{style: 'margin-bottom: 1em;'}
     .col-xs-12.col-md-8.col-md-offset-2{style: 'padding: 0;'}
       .row
@@ -16,7 +17,7 @@
           {{itinerary.dayAndDateDesc}}
       .row
         .col-xs-10.text-left
-          %h4 Approx. {{itinerary.travelTime}}
+          %h4 {{itinerary.travelTime}}
         .col-xs-2.text-right
           %h4{style: 'float:right; vertical-align: bottom;'} {{itinerary.cost | currency}}
   .row

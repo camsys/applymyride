@@ -1,0 +1,326 @@
+.container{style: 'padding: 0;', ng: {show: 'mode==="mode_transit"'}}
+  .row{style: 'margin-top: 1em;'}
+    .col-md-8.col-md-offset-2.col-xs-12
+      .row{ng: {show: 'email'}}
+        .col-xs-12.col-md-6.text-left
+          %a.btn.btn-success.btn-block{ng: {click: 'reset()'}}
+            Plan a new trip
+        .col-xs-12.col-md-6.text-right
+          %a.btn.btn-success.btn-block{ng: {href: '#/plan/my_rides'}}
+            View my saved rides
+      .row{ng: {show: '!email'}}
+        .col-xs-12.col-md-6.text-left
+          %a.btn.btn-success.btn-block{ng: {href: '#/plan/fromDate'}}
+            Plan a new trip
+        .col-xs-12.col-md-6.text-right
+          %a.btn.btn-success.btn-block{ng: {click: 'toggleEmail()'}}
+            Email
+
+  %div{style: 'margin-top: 1em', ng: {show: 'showEmail'}}
+    .row
+      .col-xs-12.col-sm-8.col-sm-offset-2.text-left
+        Email your ride details to a friend (or yourself).
+    .row
+      .col-xs-12.col-sm-8.col-sm-offset-2.text-left.text-muted
+        Use a comma to separate multiple addresses
+    .row
+      .col-xs-10.col-sm-6.col-sm-offset-2{'style' => 'line-height: 2em; padding-right: 0px;'}
+        %input.form-control{style: 'font-size: .9em; border-top-right-radius:0px; border-bottom-right-radius:0px;', ng: {model: 'emailString'}}
+      .col-xs-2.col-sm-2{'style' => 'line-height: 2em; padding-left: 0px;'}
+        %a.btn.btn-success.btn-block{style: 'padding-left: 0px; padding-right: 0px;min-width: 20px; border-top-left-radius:0px; border-bottom-left-radius:0px;', ng: {click: 'sendEmail()'}}
+          %i.fa.fa-envelope-o.fa-lg{style:'color: white;'}
+            %span
+              Send
+    .row{ng: {show: 'invalidEmail == true'}}
+      .col-xs-12.col-sm-8.col-sm-offset-2.text-left{style: 'color: red'}
+        Please enter only valid email addresses
+
+
+  .row{style: 'margin-bottom: 1em;'}
+    .col-xs-12.col-md-8.col-md-offset-2{style: 'padding: 0;'}
+      .row
+        .col-xs-12
+          %h2 Here is your trip plan
+  .transititinerary{index: '{{$index}}', ng: {repeat: 'itinerary in itineraries'}}
+    .row{style: 'margin-bottom: 1em;', ng: {show: '$index == 0 && itineraries.length > 1'}}
+      .col-xs-12.col-md-8.col-md-offset-2{style: 'padding: 0;'}
+        .row
+          .col-xs-12
+            %h2 Outbound Trip
+    .row{style: 'margin-bottom: 1em;', ng: {show: '$index == 1'}}
+      .col-xs-12.col-md-8.col-md-offset-2{style: 'padding: 0;'}
+        .row
+          .col-xs-12
+            %h2 Return Trip
+    .row{style: 'margin-bottom: 1em;'}
+      .col-xs-12.col-md-8.col-md-offset-2{style: 'padding: 0;'}
+        .row
+          .col-xs-12.text-muted
+            {{itinerary.dayAndDateDesc}}
+        .row
+          .col-xs-10.text-left
+            %h4
+              Approx. {{itinerary.travelTime}} (
+              %img.walk-time-icon{ng: {src: 'images/modes/walk.png'}}
+              {{itinerary.walkTimeDesc}})
+          .col-xs-2.text-right
+            %h4{style: 'float:right; vertical-align: bottom;'} {{itinerary.cost | currency}}
+    .row
+      .col-xs-12.col-md-8.col-md-offset-2.transit-container
+        .row.row-eq-height.transit-header
+          .blah{ng: {repeat: 'leg in itinerary.json_legs track by $index'}}
+            %img{ng: {if: 'leg.mode == "WALK"', src: 'images/modes/walk.png'}}
+            %img{ng: {if: 'leg.mode == "BUS"', src: 'images/modes/transit.png'}}
+            %i.fa.fa-lg.fa-chevron-right{ng: {if: '!$last'}}
+      .col-xs-12.col-md-8.col-md-offset-2.transit-body
+        .border-between.timeline{'index' => '{{$index}}', ng: {click: 'show()', repeat: 'leg in itinerary.json_legs track by $index', class: '{"mode_bus": leg.mode == "BUS", "mode_walk": leg.mode == "WALK"}'}}
+          .row.even-height-row
+            .col-xs-2.right-side
+              %h4 {{leg.startTimeDesc}}
+            .col-xs-1.right-side
+              %i.fa.fa-circle-o.fa-lg.waypoint
+            .col-xs-9.leg-info.pull-left.left-side
+              .bus-info{ng: {show: 'leg.mode == "BUS"'}}
+                .row
+                  .leg-info.col-xs-12.leg-header
+                    %h5.text-muted{ng: {show: '!$first'}} Get on
+                    %h4{ng: {show: '!$first'}}  Bus {{leg.route}} @ {{leg.from.name}}
+                    %h5.text-muted{ng: {show: '$first'}} Begin at
+                    %h4{ng: {show: '$first'}}  Bus {{leg.route}} @ {{itinerary.start_location.name}}
+                .row
+                  .leg-info.col-xs-12
+                    %h5.text-muted Towards {{leg.headsign}}
+                .row
+                  .leg-info.col-xs-12
+                    %h5.text-muted {{leg.distanceDesc}} Miles ({{leg.travelTime}})
+              .walk-info{ng: {show: 'leg.mode == "WALK"'}}
+                .row
+                  .leg-info.col-xs-12.leg-header
+                    %h5.text-muted{ng: {show: '!$first'}} Get off
+                    %h4{ng: {show: '!$first'}} {{leg.from.name}}
+                    %h5.text-muted{ng: {show: '$first'}} Begin at
+                    %h4{ng: {show: '$first'}}  {{itinerary.start_location.name}}
+                .row
+                  .leg-info.col-xs-12
+                    %h5.text-muted {{leg.distanceDesc}} Miles ({{leg.travelTime}})
+                .animate-show.blah{ng: {show: 'showDiv[$index]'}}
+                  .row{ng: {repeat: 'step in leg.steps'}}
+                    .leg-info.col-xs-12{style: 'padding-left: 50px;'}
+                      %img.walk-arrow{height: '30px', width: '30px', ng: {src: 'images/transit/{{step.arrow}}.png'}}
+                      .row
+                        .leg-info.col-xs-12
+                          {{step.description}}
+                      .row.text-muted
+                        .leg-info.col-xs-12
+                          .walk-step{ng: {show: '!$last'}}
+                            {{step.distanceDesc}} miles
+                          %div{ng: {show: '$last'}}
+                            {{step.distanceDesc}} miles
+        .border-between.timeline{style: 'margin-bottom: 1em;'}
+          .row.even-height-row
+            .col-xs-2.right-side
+              %h4 {{itinerary.destinationTimeDesc}}
+            .col-xs-1.right-side
+              %i.destination.fa.fa-dot-circle-o.fa-lg.waypoint{style: 'margin-left: -16px;'}
+            .col-xs-9.leg-info.pull-left.left-side
+              .bus-info
+                .row
+                  .leg-info.col-xs-12.leg-header
+                    %h5.text-muted Arrive at
+                    %h4 {{itinerary.end_location.name}}
+
+.container{style: 'padding: 0;', index: '{{$index}}', ng: {show: 'mode==="mode_paratransit"', repeat: 'itinerary in paratransitItineraries'}}
+  .row{style: 'margin-bottom: 1em;'}
+    .col-xs-12.col-md-8.col-md-offset-2{style: 'padding: 0;'}
+      .row
+        .col-xs-12.text-muted
+          {{itinerary.dayAndDateDesc}}
+      .row
+        .col-xs-10.text-left
+          %h4 {{itinerary.travelTime}}
+        .col-xs-2.text-right
+          %h4{style: 'float:right; vertical-align: bottom;'} {{itinerary.cost | currency}}
+  .row
+    .col-xs-12.col-md-8.col-md-offset-2.paratransit-body
+      .border-between.timeline.mode_wait
+        .row.even-height-row
+          .col-xs-2.right-side.no-padding
+            %h4 {{itinerary.startTimeDesc}}
+          .col-xs-1.right-side
+          .col-xs-9.leg-info.left-side
+            .wait-info
+              .row
+                .leg-info.col-xs-12
+                  %h5.text-muted WAIT for Shared Ride
+              .row
+                .leg-info.col-xs-12
+                  %h4.text-muted {{itinerary.start_location.name}}
+              .row
+                .leg-info.col-xs-12
+                  %h5.text-muted Confirm #: {{booking_results[$index].confirmation_id}}
+      .border-between.timeline.mode_paratransit
+        .row.even-height-row
+          .col-xs-2.right-side.no-padding
+            %h4 {{booking_results[$index].wait_endDesc}}
+          .col-xs-1.right-side
+            %i.fa.fa-circle-o.fa-lg.waypoint{style: 'color: #0E5302;'}
+          .col-xs-9.leg-info.left-side
+            .bus-info
+              .row{style: 'height: 100px'}
+      .border-between.timeline.mode_paratransit
+        .row.even-height-row
+          .col-xs-2.right-side.no-padding
+            %h4 {{itinerary.endTimeDesc}}
+          .col-xs-1.right-side.no-pseudo
+            %i.fa.fa-circle-o.fa-lg.waypoint{style: 'color: #0E5302;'}
+          .col-xs-9.leg-info.left-side
+            .bus-info
+              .row
+                .leg-info.col-xs-12.leg-header
+                  %h5.text-muted ARRIVE
+                  %h4.text-muted {{itinerary.end_location.name}}
+.container{style: 'padding: 0;', ng: {show: 'booking_failed'}}
+  .row{style: 'margin-bottom: 1em;'}
+    .col-xs-12.col-md-8.col-md-offset-2{style: 'padding: 0;'}
+      .row
+        .col-xs-12.col-md-8.col-md-offset-2{style: 'background-color: #FFFFDC'}
+          %h3{style: 'opacity: 1'} Sorry! There is a problem with your request
+      .row
+        .col-xs-12.col-md-8.col-md-offset-2
+          %h3
+            .fa.fa-phone
+            Call to learn more
+            %a.btn-next{href: "tel://1-844-724-7433"}
+              1-844-PA4-RIDE
+
+
+.container{style: 'padding: 0;', ng: {show: 'mode==="mode_walk"'}}
+  .row{style: 'margin-top: 1em;'}
+    .col-md-8.col-md-offset-2.col-xs-12
+      .row{ng: {show: 'email'}}
+        .col-xs-12.col-md-6.text-left
+          %a.btn.btn-success.btn-block{ng: {click: 'reset()'}}
+            Plan a new trip
+        .col-xs-12.col-md-6.text-right
+          %a.btn.btn-success.btn-block{ng: {href: '#/plan/my_rides'}}
+            View my saved rides
+      .row{ng: {show: '!email'}}
+        .col-xs-12.col-md-6.text-left
+          %a.btn.btn-success.btn-block{ng: {click: 'reset()'}}
+            Plan a new trip
+        .col-xs-12.col-md-6.text-right
+          %a.btn.btn-success.btn-block{ng: {click: 'toggleEmail()'}}
+            Email
+  %div{style: 'margin-top: 1em', ng: {show: 'showEmail'}}
+    .row
+      .col-xs-12.col-sm-8.col-sm-offset-2.text-left
+        Email your ride details to a friend (or yourself).
+    .row
+      .col-xs-12.col-sm-8.col-sm-offset-2.text-left.text-muted
+        Use a comma to separate multiple addresses
+    .row
+      .col-xs-10.col-sm-6.col-sm-offset-2{'style' => 'line-height: 2em; padding-right: 0px;'}
+        %input.form-control{style: 'font-size: .9em; border-top-right-radius:0px; border-bottom-right-radius:0px;', ng: {model: 'emailString'}}
+      .col-xs-2.col-sm-2{'style' => 'line-height: 2em; padding-left: 0px;'}
+        %a.btn.btn-success.btn-block{style: 'padding-left: 0px; padding-right: 0px;min-width: 20px; border-top-left-radius:0px; border-bottom-left-radius:0px;', ng: {click: 'sendEmail()'}}
+          %i.fa.fa-envelope-o.fa-lg{style:'color: white;'}
+            %span
+              Send
+    .row{ng: {show: 'invalidEmail == true'}}
+      .col-xs-12.col-sm-8.col-sm-offset-2.text-left{style: 'color: red'}
+        Please enter only valid email addresses
+  .row{style: 'margin-bottom: 1em;'}
+    .col-xs-12.col-md-8.col-md-offset-2{style: 'padding: 0;'}
+      .row
+        .col-xs-12
+          %h2 Here is your trip plan
+.walkitinerary{ng: {repeat: 'itinerary in walkItineraries'}}
+  .row{style: 'margin-bottom: 1em;', ng: {show: '$index == 0'}}
+    .col-xs-12.col-md-8.col-md-offset-2{style: 'padding: 0;'}
+      .row
+        .col-xs-12
+          %h2 Outbound Trip
+  .row{style: 'margin-bottom: 1em;', ng: {show: '$index == 1'}}
+    .col-xs-12.col-md-8.col-md-offset-2{style: 'padding: 0;'}
+      .row
+        .col-xs-12
+          %h2 Return Trip
+  .row{style: 'margin-bottom: 1em;'}
+    .col-xs-12.col-md-8.col-md-offset-2{style: 'padding: 0;'}
+      .row
+        .col-xs-12.text-muted
+          {{itinerary.dayAndDateDesc}}
+      .row
+        .col-xs-10.text-left
+          %h4
+            Approx. {{itinerary.travelTime}} (
+            %img.walk-time-icon{ng: {src: 'images/modes/walk.png'}}
+            {{itinerary.walkTimeDesc}})
+        .col-xs-2.text-right
+          %h4{style: 'float:right; vertical-align: bottom;'} Free
+  .row
+    .col-xs-12.col-md-8.col-md-offset-2.walk-body
+      .border-between.timeline{'index' => '{{$index}}', ng: {click: 'test()', repeat: 'leg in itinerary.json_legs track by $index', class: '{"mode_bus": leg.mode == "BUS", "mode_walk": leg.mode == "WALK"}'}}
+        .row.even-height-row
+          .col-xs-2.right-side
+            %h4 {{leg.startTimeDesc}}
+          .col-xs-1.right-side
+            %i.fa.fa-circle-o.fa-lg.waypoint
+          .col-xs-9.leg-info.pull-left.left-side
+            .walk-info{ng: {show: 'leg.mode == "WALK"'}}
+              .row
+                .leg-info.col-xs-12.leg-header
+                  %h4 {{leg.from.name}}
+              .row
+                .leg-info.col-xs-12
+                  %h4.text-muted Walk
+                  %h4.text-muted {{leg.distanceDesc}} Miles ({{leg.travelTime}})
+              .animate-show.blah{ng: {hide: 'showDiv[$index]'}}
+                .row{ng: {repeat: 'step in leg.steps'}}
+                  .leg-info.col-xs-12{style: 'padding-left: 50px;'}
+                    %img.walk-arrow{height: '30px', width: '30px', ng: {src: 'images/transit/{{step.arrow}}.png'}}
+                    .row
+                      .leg-info.col-xs-12
+                        .walk-step
+                          {{step.description}}
+                    .row.text-muted
+                      .leg-info.col-xs-12
+                        .walk-step{ng: {show: '!$last'}}
+                          {{step.distanceDesc}} miles
+                        %div{ng: {show: '$last'}}
+                          {{step.distanceDesc}} miles
+      .border-between.timeline{style: 'margin-bottom: 1em;'}
+        .row.even-height-row
+          .col-xs-2.right-side
+            %h4 {{itinerary.destinationTimeDesc}}
+          .col-xs-1.right-side
+            %i.destination.fa.fa-dot-circle-o.fa-lg.waypoint{style: 'margin-left: -18px;'}
+          .col-xs-9.leg-info.pull-left.left-side
+            .bus-info
+              .row
+                .leg-info.col-xs-12.leg-header
+                  %h4 {{itinerary.destinationDesc}}
+
+.row{style: 'margin-top: 1em;'}
+  .col-md-8.col-md-offset-2.col-xs-12
+    .row{ng:{show: 'email'}}
+      .col-xs-6.text-left
+        %a.btn.btn-success.btn-block{ng: {click: 'saveWalkItinerary()'}}
+          Save this Ride
+      .col-xs-6.text-right
+        %a.btn.btn-success.btn-block{ng: {click: 'emailWalkItinerary()'}}
+          %i.fa.fa-share-square-o
+          Email
+    .row{ng:{show: '!email'}}
+      .col-xs-6.col-xs-offset-3.text-center
+        %a.btn.btn-success.btn-block{ng: {click: 'emailWalkItinerary()'}}
+          %i.fa.fa-share-square-o
+          Email
+
+.container.sticky-footer
+  .row{style: 'margin-top: 10px'}
+    .col-md-8.col-md-offset-2.col-xs-6.col-xs-offset-3
+      .pull-left
+        %a.btn-back{back: '', ng: {click: "back()"}}
+          %span{ng: {include: "'views/button-chevron-left.html'"}}
+          Back

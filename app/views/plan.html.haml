@@ -458,61 +458,6 @@
           %a{"ng-href" => "#/plan/fromDate"}
             No, change it
 
-    .depart-time{ng: {show: 'step==="confirm_shared_ride"'}}
-      .alert.alert-success
-        %h4 Success!
-        %h5 Your trip is booked
-      .row.card
-        .col-xs-12
-          .row
-            .col-xs-3.title
-              From
-            .col-xs-9
-              {{ planService.from }}
-              .pull-right
-                %i.fa.fa-map-marker
-
-      .row.card
-        .col-xs-12
-          .row
-            .col-xs-3.title
-              To
-            .col-xs-9
-              {{ planService.to }}
-              .pull-right
-                %i.fa.fa-map-marker
-
-      .row.card
-        .col-xs-12
-          .row
-            .col-xs-3.title
-              Depart At
-            .col-xs-9
-              {{ getFromDateString() }}
-
-      .row.card
-        .col-xs-12
-          .row
-            .col-xs-3.title
-              Type
-            .col-xs-9
-              Shared Ride
-
-      .row.card
-        .col-xs-12
-          .row
-            .col-xs-3.title
-              Fare
-            .col-xs-9
-              $4.35
-
-      .row
-        .col-md-6.col-md-offset-3.col-xs-12
-          %a.btn.btn-success.btn-block{ng: {click: ''}}
-            Email my itinerary
-          %a.center-block.btn.btn-success{"ng-href" => "#/"}
-            Return to home screen
-
 
     .discounts{ng: {show: 'step==="discounts"'}}
       .discounts-body.col-md-8.col-md-offset-2.col-xs-12
@@ -546,7 +491,7 @@
     .discounts{ng: {show: 'step==="my_rides"'}}
       .col-md-8.col-md-offset-2.col-xs-12.no-padding
         %tabset
-          %tab{'heading' => 'Today ({{trips.today.length}})'}
+          %tab{'heading' => 'Today ({{trips.today.length}})', 'active' => 'tabToday'}
             .myride{index: '{{$index}}', ng: {init: 'tab = "today"', click: 'toggleMyRideButtonBar("today", $index)', repeat: 'trip in trips.today'}}
               .row
                 .col-xs-2.col-height-slave
@@ -560,10 +505,13 @@
                   .row
                     .col-xs-8
                       %h5.blue-text {{trip.startDesc}}
+                    .col-xs-4
+                      %h5.text-muted.text-right{ng: {show: 'trip.itineraries.length > 1'}} (round trip)
+                      %h5.text-muted.text-right{ng: {show: 'trip.itineraries.length == 1'}} (one way)
               .animate-show.myride-buttons{ng: {show: 'tripDivs.today[$index]'}}
                 .row.even-height-row
                   %span{ng: {include: "'views/emailOrCancel.html'"}}
-          %tab{'heading' => 'Future ({{trips.future.length}})'}
+          %tab{'heading' => 'Future ({{trips.future.length}})', 'active' => 'tabFuture'}
             .myride{'index' => '{{$index}}', ng: {init: 'tab = "future"', click: 'toggleMyRideButtonBar("future", $index)', repeat: 'trip in trips.future'}}
               .row
                 .col-xs-2.col-height-slave
@@ -577,10 +525,13 @@
                   .row
                     .col-xs-8
                       %h5.blue-text {{trip.startDesc}}
+                    .col-xs-4
+                      %h5.text-muted.text-right{ng: {show: 'trip.itineraries.length > 1'}} (round trip)
+                      %h5.text-muted.text-right{ng: {show: 'trip.itineraries.length == 1'}} (one way)
               .animate-show.myride-buttons{ng: {show: 'tripDivs.future[$index]'}}
                 .row.even-height-row
                   %span{ng: {include: "'views/emailOrCancel.html'"}}
-          %tab{'heading' => 'Past ({{trips.past.length}})'}
+          %tab{'heading' => 'Past ({{trips.past.length}})', 'active' => 'tabPast'}
             .myride{'index' => '{{$index}}', ng: {init: 'tab = "past"', click: 'toggleMyRideButtonBar("past", $index);', repeat: 'trip in trips.past'}}
               .row
                 .col-xs-2.col-height-slave
@@ -594,6 +545,9 @@
                   .row
                     .col-xs-8
                       %h5.blue-text {{trip.startDesc}}
+                    .col-xs-4
+                      %h5.text-muted.text-right{ng: {show: 'trip.itineraries.length > 1'}} (round trip)
+                      %h5.text-muted.text-right{ng: {show: 'trip.itineraries.length == 1'}} (one way)
               .animate-show.myride-buttons{ng: {show: 'tripDivs.past[$index]'}}
                 .row.even-height-row
                   .col-xs-12.col-height-slave.text-center
