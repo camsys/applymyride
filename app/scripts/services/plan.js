@@ -94,6 +94,8 @@ angular.module('applyMyRideApp')
                 if(createdAt > newestRecord){
                   newestRecord = createdAt;
                   $scope.tabToday = true;
+                  delete $scope.tabPast;
+                  delete $scope.tabFuture;
                 }
                 trips.today.push(trip);
                 tripDivs.today.push(false);
@@ -101,6 +103,8 @@ angular.module('applyMyRideApp')
                 if(createdAt > newestRecord){
                   newestRecord = createdAt;
                   $scope.tabPast = true;
+                  delete $scope.tabToday;
+                  delete $scope.tabFuture;
                 }
                 trips.past.push(trip);
                 tripDivs.past.push(false);
@@ -108,6 +112,8 @@ angular.module('applyMyRideApp')
                 if(createdAt > newestRecord){
                   newestRecord = createdAt;
                   $scope.tabFuture = true;
+                  delete $scope.tabToday;
+                  delete $scope.tabPast;
                 }
                 trips.future.push(trip);
                 tripDivs.future.push(false);
