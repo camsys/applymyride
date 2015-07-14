@@ -171,7 +171,7 @@ angular.module('applyMyRideApp')
               var lowestFare = Math.min.apply(null, fares).toFixed(2);
               var highestFare = Math.max.apply(null, fares).toFixed(2);
               if(lowestFare == highestFare || (mode_code == 'mode_paratransit' && that.email)){
-                fare_info[[mode_code]] = "$" + lowestFare;  //if the user is registered, show the lowest paratransit fare
+                fare_info[[mode_code]] = lowestFare;  //if the user is registered, show the lowest paratransit fare
               }else{
                 fare_info[[mode_code]] = "$" + lowestFare + "-$" + highestFare;
               }

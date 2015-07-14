@@ -146,7 +146,8 @@ div:focus {outline:0 !important;}
   text-overflow: ellipsis;
 }
 
-.confirm p,
+.confirm p { margin: 5px; }
+
 h1,
 h2,
 h3,

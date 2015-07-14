@@ -242,7 +242,7 @@
           .col-xs-2.col-height-master
             .row.row-eq-height.table-compact
               .col-xs-12{style: "font-size: large"}
-                {{fare_info["mode_transit"]}}
+                {{fare_info["mode_transit"] | currency}}
           .col-xs-4.col-height-slave
             .row.row-eq-height.table-compact.pull-right
               .col-xs-12
@@ -302,7 +302,7 @@
           .col-xs-4.col-height-slave
             .row.row-eq-height.table-compact.pull-right
               .col-xs-12{style: "font-size: large"}
-                {{fare_info["mode_paratransit"]}}
+                {{fare_info["mode_paratransit"] | currency}}
 
       %a.no_underline.row.row-eq-height.rounded-border{ng: {href: '#/plan/discounts', show: 'fare_info["mode_paratransit"] && !email'}}
         .row.even-height-row.table-compact
