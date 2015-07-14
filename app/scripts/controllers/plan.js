@@ -28,6 +28,11 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
   $scope.returnDate = new Date();
 
 
+  $scope.reset = function() {
+    planService.reset();
+    $location.path("/plan/fromDate");
+  };
+
   $scope.toggleMyRideButtonBar = function(type, index) {
     $scope.showEmail = false;
     angular.forEach(Object.keys($scope.tripDivs), function(key, index) {
@@ -363,6 +368,7 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
       $scope.showNext = false;
       break;
     case 'my_rides':
+      planService.reset();
       planService.getRides($http, $scope, ipCookie);
       $scope.hideButtonBar = true;
       break;
@@ -397,7 +403,6 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
           planService.fromTime = new Date();
           planService.fromTimeType = 'depart';
           planService.asap = true;
-          $scope.fromTime.setMinutes($scope.fromTime.setMinutes() + 10);
         }
         $location.path('/plan/start_current');
         break;

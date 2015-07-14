@@ -540,7 +540,7 @@
           .col-xs-12.pull-left.no-padding
             %h4 Already signed up?
             %h4
-              %a.btn-next{ng: {href: '#/plan/from'}}
+              %a.btn-next{ng: {href: '#/'}}
                 Sign in
 
     .discounts{ng: {show: 'step==="my_rides"'}}
@@ -600,7 +600,7 @@
                     %span{ng: {include: "'views/emailOrCancel.html'"}}
         .row{style: 'margin-top: 10px'}
           .col-md-4.col-md-offset-4.col-xs-12.text-center
-            %a.btn.btn-success.btn-block{ng: {href: '#/plan/fromDate'}}
+            %a.btn.btn-success.btn-block{ng: {click: 'reset()'}}
               Plan a new trip
   .container.sticky-footer{ng: {hide: 'hideButtonBar'}}
     .row{style: 'margin-top: 10px'}

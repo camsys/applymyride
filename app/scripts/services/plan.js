@@ -3,6 +3,17 @@
 angular.module('applyMyRideApp')
     .service('planService', function() {
 
+      this.reset = function(){
+        delete this.fromDate;
+        delete this.fromTime;
+        delete this.fromTimeType;
+        delete this.fromDetails;
+        delete this.toDetails;
+        delete this.returnDate;
+        delete this.returnTime;
+        delete this.returnTimeType;
+      }
+
       this.getPrebookingQuestions = function(){
         var questions = this.paratransitItineraries[0].prebooking_questions;
         var questionObj = {};

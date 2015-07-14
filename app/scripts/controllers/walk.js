@@ -9,6 +9,11 @@ angular.module('applyMyRideApp')
 
       $scope.showEmail = false;
 
+      $scope.reset = function() {
+        planService.reset();
+        $location.path("/plan/fromDate");
+      };
+
       $scope.toggleEmail = function() {
         $scope.invalidEmail = false;
         $scope.showEmail = !$scope.showEmail;

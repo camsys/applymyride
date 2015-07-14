@@ -19,6 +19,12 @@ angular.module('applyMyRideApp')
 
     var that = this;
     that.$scope = $scope;
+
+    $scope.reset = function() {
+      planService.reset();
+      $location.path("/plan/fromDate");
+    };
+
     $scope.showNavbar = function() {
       that.$scope.email = ipCookie('email');
       that.$scope.authentication_token = ipCookie('authentication_token');

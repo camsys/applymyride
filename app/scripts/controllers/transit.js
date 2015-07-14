@@ -12,6 +12,11 @@ angular.module('applyMyRideApp')
       $scope.showDiv = {};
       $scope.showEmail = false;
 
+      $scope.reset = function() {
+        planService.reset();
+        $location.path("/plan/fromDate");
+      };
+
       $scope.toggleEmail = function() {
         $scope.invalidEmail = false;
         $scope.showEmail = !$scope.showEmail;
@@ -57,6 +62,17 @@ angular.module('applyMyRideApp')
         angular.forEach(planService.searchResults.itineraries, function(itinerary, index) {
           if(itinerary.id == $scope.tripid){
             $scope.transitInfos = planService.transitInfos[$scope.segmentid];
+            var priorMode = '';
+            var priorEndTime;
+            angular.forEach(itinerary.json_legs, function(leg, index) {
+              /*if(leg.mode = priorMode && priorMode == 'BUS'){
+                var waitTime = leg.startTime - priorEndTime;
+                waitTime = humanizeDuration(waitTime * 1000,  { units: ["hours", "minutes"], round: true });
+                console.log(waitTime);
+              }
+              priorMode = leg.mode;
+              priorEndTime = leg.endTime;*/
+            });
             $scope.itinerary = itinerary;
             $scope.tripid = itinerary.id;
           }
