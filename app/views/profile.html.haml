@@ -1,0 +1,86 @@
+.profile
+  .col-xs-12.col-md-6.col-md-offset-3
+    .row
+      %h3
+        {{first_name}} {{last_name}}'s Profile
+    .row{style: 'margin-top: 1em'}
+      %h4.text-muted
+        ACCOUNT
+    .row{style: 'border: 1px solid grey;'}
+      .row{style: 'margin: 0px;'}
+        .col-xs-3.text-right.text-muted
+          %h4
+            Ride ID:
+        .col-xs-9
+          %h4
+            {{sharedRideId}}
+      .row{style: 'border-top: 1px solid grey; margin: 0px;'}
+        .col-xs-3.text-right.text-muted
+          %h4
+            DOB:
+        .col-xs-9
+          %span
+            %i.fa.fa-circle
+            %i.fa.fa-circle
+            \/
+            %i.fa.fa-circle
+            %i.fa.fa-circle
+            \/
+            %i.fa.fa-circle
+            %i.fa.fa-circle
+            %i.fa.fa-circle
+            %i.fa.fa-circle
+      .row{style: 'border-top: 1px solid grey; margin: 0px;'}
+        .col-xs-3.text-right.text-muted
+          %h4
+            Email:
+        .col-xs-9
+          %h4{ng: {show: '!editable'}}
+            {{email}}
+          %input.form-control{ng: {model: 'email', show: 'editable'}}
+      .row{ng: {show: 'invalidEmail == true'}}
+        .col-xs-12.col-sm-8.col-sm-offset-2.text-left{style: 'color: red'}
+          Please enter only valid email addresses
+
+    .row{style: 'margin-top: 1em'}
+      %h4.text-muted
+        WALKING PREFERENCES
+    .row{style: 'border: 1px solid grey;'}
+      .row{style: 'margin: 0px;'}
+        .col-xs-3.text-right.text-muted
+          %h4
+            Speed:
+        .col-xs-9
+          %h4
+            %span{ng: {show: '!editable && !walkingSpeed'}}
+              Walking speed not specified
+            %span{ng: {show: '!editable && walkingSpeed'}}
+              {{walkingSpeed}}
+            %select{style: 'width: 100%', ng: {show: 'editable', model: 'walkingSpeed', options: 'speed for speed in speeds'}}
+              %option{value: '', disabled: '', selected: ''}
+                Select your walking speed
+      .row{ng: {show: 'invalidSpeed == true'}}
+        .col-xs-12.col-sm-8.col-sm-offset-2.text-left{style: 'color: red'}
+          Please specify a walking speed
+      .row{style: 'border-top: 1px solid grey; margin: 0px;'}
+        .col-xs-3.text-right.text-muted
+          %h4
+            Distance:
+        .col-xs-9
+          %h4
+            %span{ng: {show: '!editable && !walkingDistance'}}
+              Maximum walking distance not specified
+            %span{ng: {show: '!editable && walkingDistance'}}
+              {{walkingDistance}} miles
+            %select{style: 'width: 100%', ng: {show: 'editable', model: 'walkingDistance', options: 'distance + " miles"  for distance in distances'}}
+              %option{value: '', disabled: '', selected: ''}
+                Select your maximum walking distance
+      .row{ng: {show: 'invalidDistance == true'}}
+        .col-xs-12.col-sm-8.col-sm-offset-2.text-left{style: 'color: red'}
+          Please specify a maximum walking distance
+    .row{style: 'margin-top: 1em'}
+      .col-xs-12.col-md-6.col-md-offset-3
+        %a.btn.btn-success.btn-block{ng: {click: 'toggleEdit()', show: '!editable'}}
+          Edit profile
+        %a.btn.btn-success.btn-block{ng: {click: 'toggleEdit()', show: 'editable'}}
+          Save changes

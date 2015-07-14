@@ -504,6 +504,14 @@ angular.module('applyMyRideApp')
         return $http.post('api/v1/itineraries/plan', this.itineraryRequestObject, this.getHeaders());
       }
 
+      this.postProfileUpdate = function($http) {
+        return $http.post('api/v1/users/update', this.profileUpdateObject, this.getHeaders());
+      }
+
+      this.getProfile = function($http) {
+        return $http.get('api/v1/users/profile', this.getHeaders());
+      }
+
       this.bookSharedRide = function($http) {
         var requestHolder = {};
         requestHolder.booking_request = [];

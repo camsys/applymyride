@@ -101,8 +101,14 @@
                     %h5.text-muted{ng: {show: '$first'}} Begin at
                     %h4{ng: {show: '$first'}}  {{itinerary.start_location.name}}
                 .row
-                  .leg-info.col-xs-12
-                    %h5.text-muted {{leg.distanceDesc}} Miles ({{leg.travelTime}})
+                .leg-info.col-xs-12
+                  .row.even-height-row
+                    .col-height-slave{style: 'width: 20px'}
+                      %i.fa.fa-chevron-down.fa-lg{style: 'color: grey', ng: {show: '!showDiv[$index] || showDiv[$index] == false'}}
+                      %i.fa.fa-chevron-up.fa-lg{style: 'color: grey', ng: {show: 'showDiv[$index] == true'}}
+                    .col-height-master
+                      %h5.text-muted Walk
+                      %h5.text-muted {{leg.distanceDesc}} Miles ({{leg.travelTime}})
                 .animate-show.blah{ng: {show: 'showDiv[$index]'}}
                   .row{ng: {repeat: 'step in leg.steps'}}
                     .leg-info.col-xs-12{style: 'padding-left: 50px;'}

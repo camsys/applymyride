@@ -84,6 +84,10 @@ angular.module('applyMyRideApp', [
         templateUrl: 'views/about.html',
         controller: 'AboutController'
       })
+      .when('/profile', {
+        templateUrl: 'views/profile.html',
+        controller: 'ProfileController'
+      })
       .otherwise({
         redirectTo: '/'
       });

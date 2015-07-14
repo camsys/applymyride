@@ -49,6 +49,11 @@
                   </a>
                 </li>
                 <li ng-show="email">
+                  <a class="navbar-icon" href="#/profile" style="margin-top: .5em;">
+                    {{first_name}} {{last_name}}
+                  </a>
+                </li>
+                <li ng-show="email">
                   <a class="navbar-icon" ng-click="logout()" href="" style="margin-top: .5em;">
                     Sign out
                   </a>
@@ -59,7 +64,7 @@
                   </a>
                 </li>
                 <li>
-                  <a class="navbar-icon" ng-click="reset()" style="margin-top: .5em;">
+                  <a class="navbar-icon" ng-click="reset()" style="cursor: pointer; margin-top: .5em;">
                     New trip
                   </a>
                 </li>
@@ -149,6 +154,7 @@
         <script src="scripts/controllers/paratransit.js"></script>
         <script src="scripts/controllers/walk.js"></script>
         <script src="scripts/controllers/itinerary.js"></script>
+        <script src="scripts/controllers/profile.js"></script>
         <script src="scripts/directives/clearinput.js"></script>
         <script src="scripts/directives/birthdaypicker.js"></script>
         <script src="scripts/services/section.js"></script>

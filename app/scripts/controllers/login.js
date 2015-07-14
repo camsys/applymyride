@@ -78,15 +78,27 @@ angular.module('applyMyRideApp')
         promise.then(function(result) {
           planService.authentication_token = result.data.authentication_token;
           planService.email = result.data.email;
+          planService.first_name = result.data.first_name;
+          planService.last_name = result.data.last_name;
           planService.getRides($http, $scope, ipCookie);
           if($scope.rememberme == true){
             ipCookie('email', planService.email, {expires: 7, expirationUnit: 'days'});
             ipCookie('authentication_token', planService.authentication_token, {expires: 7, expirationUnit: 'days'});
+            ipCookie('first_name', planService.first_name, {expires: 7, expirationUnit: 'days'});
+            ipCookie('last_name', planService.last_name, {expires: 7, expirationUnit: 'days'});
+            ipCookie('sharedRideId', planService.sharedRideId, {expires: 7, expirationUnit: 'days'});
           }else{
             ipCookie.remove('email');
             ipCookie.remove('authentication_token');
+            ipCookie.remove('first_name');
+            ipCookie.remove('last_name');
+            ipCookie.remove('sharedRideId');
           }
-          $location.path('/plan/fromDate');
+          promise = planService.getProfile($http);
+          promise.then(function(result) {
+            planService.profile = result.data;
+            $location.path('/plan/fromDate');
+          })
         });
       }
     }
