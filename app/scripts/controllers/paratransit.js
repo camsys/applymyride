@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('applyMyRideApp')
-  .controller('ParatransitController', ['$scope','$routeParams', '$location', 'flash', 'planService', '$http',
-    function ($scope, $routeParams, $location, flash, planService, $http) {
+  .controller('ParatransitController', ['$scope','$routeParams', '$location', 'flash', 'planService', '$http', 'ipCookie',
+    function ($scope, $routeParams, $location, flash, planService, $http, ipCookie) {
 
       $scope.location = $location.path();
       $scope.disableNext = true;
@@ -26,9 +26,13 @@ angular.module('applyMyRideApp')
           }
         });
 
+        if(!$scope.booking_failed){
+          ipCookie('rideCount', ipCookie('rideCount') + 1);
+          $scope.rideCount = ipCookie('rideCount');
+        }
+
         $scope.booking_results = planService.booking_results;
         $scope.paratransitItineraries = planService.paratransitItineraries;
-
       }
 
       $scope.prepareTrip();

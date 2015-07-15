@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('applyMyRideApp')
-  .controller('TransitController', ['$scope','$routeParams', '$location', 'flash', 'planService', '$http',
-    function ($scope, $routeParams, $location, flash, planService, $http) {
+  .controller('TransitController', ['$scope','$routeParams', '$location', 'flash', 'planService', '$http','ipCookie',
+    function ($scope, $routeParams, $location, flash, planService, $http, ipCookie) {
 
       $scope.segmentid = $routeParams.segmentid;
       $scope.tripid = $routeParams.tripid;
@@ -139,6 +139,8 @@ angular.module('applyMyRideApp')
         var selectedItineraries = {"select_itineraries": selectedItineraries};
         var promise = planService.selectItineraries($http, selectedItineraries);
         promise.then(function(result) {
+          ipCookie('rideCount', ipCookie('rideCount') + 1);
+          $scope.rideCount = ipCookie('rideCount');
           $location.path("/transitconfirm");
         });
       }
