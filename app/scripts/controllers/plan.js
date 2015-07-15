@@ -259,28 +259,38 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
       var fromDate = planService.fromDate;
       var now = moment().startOf('day'); ;
       var dayDiff = now.diff(fromDate, 'days');
-      if(Math.abs(dayDiff) < 1){
-        $scope.fromTime = new Date();
-        $scope.fromTime.setHours($scope.fromTime.getHours() + 2);
-        $scope.showAsap = true;
-        //now round to 15 min interval
-        var start = moment($scope.fromTime);
-        var remainder = (start.minute()) % 15;
-        remainder = Math.abs(remainder - 15);
-        $scope.fromTime.setMinutes($scope.fromTime.getMinutes() + remainder);
+
+      if(planService.fromTime && planService.fromTimeType){
+        $scope.fromTime = planService.fromTime;
+        $scope.fromTimeType = planService.fromTimeType;
+        if(Math.abs(dayDiff) < 1){
+          $scope.showAsap = true;
+        }
       }else{
-        now.add(10, 'hours');
-        $scope.fromTime = now.toDate();
+        if(Math.abs(dayDiff) < 1){
+          $scope.fromTime = new Date();
+          $scope.fromTime.setHours($scope.fromTime.getHours() + 2);
+          $scope.showAsap = true;
+          //now round to 15 min interval
+          var start = moment($scope.fromTime);
+          var remainder = (start.minute()) % 15;
+          remainder = Math.abs(remainder - 15);
+          $scope.fromTime.setMinutes($scope.fromTime.getMinutes() + remainder);
+        }else{
+          now.add(10, 'hours');
+          $scope.fromTime = now.toDate();
+        }
+        $scope.fromTimeType = 'arrive';
+        planService.fromTimeType = 'arrive';
       }
-      $scope.fromTimeType = 'arrive';
-      planService.fromTimeType = 'arrive';
       $scope.showNext = true;
       break;
     case 'returnTimeType':
       var fromDate = planService.fromDate;
       var returnDate = planService.returnDate;
-      if(planService.returnTime != null){
+      if(planService.returnTime && planService.returnTimeType){
         $scope.returnTime = planService.returnTime;
+        $scope.returnTimeType = planService.returnTimeType;
       }else{
         if(moment(fromDate).format('M/D/YYYY') == moment(returnDate).format('M/D/YYYY')) {
           var fromTimeType = planService.fromTimeType;
@@ -300,15 +310,15 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
           now.add(10, 'hours');
           $scope.returnTime = now.toDate();
         }
-      }
-      //now round up to 15 min interval
-      var start = moment($scope.returnTime);
-      var remainder = (start.minute()) % 15;
-      remainder = Math.abs(remainder - 15);
-      $scope.returnTime.setMinutes($scope.returnTime.getMinutes() + remainder);
+        //now round up to 15 min interval
+        var start = moment($scope.returnTime);
+        var remainder = (start.minute()) % 15;
+        remainder = Math.abs(remainder - 15);
+        $scope.returnTime.setMinutes($scope.returnTime.getMinutes() + remainder);
 
-      $scope.disableNext = false;
-      $scope.returnTimeType = 'depart';
+        $scope.disableNext = false;
+        $scope.returnTimeType = 'depart';
+      }
       $scope.showNext = true;
       break;
     case 'from_confirm':
