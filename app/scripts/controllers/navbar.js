@@ -3,8 +3,8 @@
 var app = angular.module('applyMyRideApp');
 
 angular.module('applyMyRideApp')
-  .controller('NavbarController', ['$scope', '$location', 'flash', 'planService', 'deviceDetector', 'ipCookie',
-    function ($scope, $location, flash, planService, deviceDetector, ipCookie) {
+  .controller('NavbarController', ['$scope', '$location', 'flash', 'planService', 'deviceDetector', 'ipCookie', '$window',
+    function ($scope, $location, flash, planService, deviceDetector, ipCookie, $window) {
 
       var input = document.createElement('input');
       input.setAttribute('type','date');
@@ -53,7 +53,7 @@ angular.module('applyMyRideApp')
       $scope.logout = function() {
         delete ipCookie.remove('email');
         delete ipCookie.remove('authentication_token');
-        $location.path('/');
+        $window.location.href = "/";
       };
 
     }]);

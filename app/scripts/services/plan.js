@@ -20,7 +20,7 @@ angular.module('applyMyRideApp')
         angular.forEach(questions, function(question, index) {
           if(question.code == 'assistant'){
             questionObj.assistant = question.question;
-          }else if(question.code == 'children'){
+          }else if(question.code == 'children' || question.code == 'companions'){
             questionObj.children = question.question;
             questionObj.limit = question.choices;
             if(questionObj.limit[0] == '0'){
