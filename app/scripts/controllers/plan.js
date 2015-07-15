@@ -72,6 +72,7 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
           bootbox.alert('Your trip has been dropped.');
           $scope.tripDivs[tab].splice(index, 1);
           $scope.trips[tab].splice(index, 1);
+          ipCookie('rideCount', ipCookie('rideCount') - 1);
         })
       }
     });
