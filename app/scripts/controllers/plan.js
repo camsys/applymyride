@@ -387,12 +387,16 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
       planService.reset();
       var ridesPromise = planService.getRides($http, $scope, ipCookie);
       $scope.hideButtonBar = true;
-      ridesPromise.then(function(result) {
+      ridesPromise.then(function() {
         var navbar = $routeParams.navbar;
         if(navbar){
           $scope.tabFuture = true;
+          delete $scope.tabPast;
+          delete $scope.tabToday;
           if($scope.trips.today.length > 0){
             $scope.tabToday = true;
+            delete $scope.tabPast;
+            delete $scope.tabFuture;
           }
         }
       });
