@@ -276,7 +276,7 @@
       %a.no_underline.row.row-eq-height.rounded-border{ng: {href: '#/plan/sharedride_options_1', show: 'fare_info["mode_paratransit"] && email'}}
         .row.even-height-row.table-compact
           .col-xs-2.col-height-slave
-            %img.img-responsive{ng: {src: 'images/modes/paratransit.png'}}
+            %img.img-responsive{style: "height:80%;", ng: {src: 'images/modes/paratransit.png'}}
           .col-xs-6.col-height-master
 
             .row.row-eq-height.table-compact{style: "font-size: large"}
@@ -307,7 +307,7 @@
       %a.no_underline.row.row-eq-height.rounded-border{ng: {href: '#/plan/discounts', show: 'fare_info["mode_paratransit"] && !email'}}
         .row.even-height-row.table-compact
           .col-xs-2.col-height-slave
-            %img.img-responsive{ng: {src: 'images/modes/paratransit.png'}}
+            %img.img-responsive{style: "height:80%;", ng: {src: 'images/modes/paratransit.png'}}
           .col-xs-6.col-height-master
             .row.row-eq-height.table-compact
               .col-xs-12
@@ -495,7 +495,7 @@
             .myride{index: '{{$index}}', ng: {init: 'tab = "today"', click: 'toggleMyRideButtonBar("today", $index)', repeat: 'trip in trips.today'}}
               .row
                 .col-xs-2.col-height-slave
-                  %img.img-responsive{ng: {src: 'images/modes/paratransit.png', show: 'trip.mode == "mode_paratransit"'}}
+                  %img.img-responsive{style: "height:80%;", ng: {src: 'images/modes/paratransit.png', show: 'trip.mode == "mode_paratransit"'}}
                   %img.img-responsive{ng: {src: 'images/modes/transit.png', show: 'trip.mode == "mode_transit"'}}
                   %img.img-responsive{ng: {src: 'images/modes/walk.png', show: 'trip.mode == "mode_walk"'}}
                 .col-xs-10.col-height-master{style: 'width: 60em !important;'}
@@ -515,7 +515,7 @@
             .myride{'index' => '{{$index}}', ng: {init: 'tab = "future"', click: 'toggleMyRideButtonBar("future", $index)', repeat: 'trip in trips.future'}}
               .row
                 .col-xs-2.col-height-slave
-                  %img.img-responsive{ng: {src: 'images/modes/paratransit.png', show: 'trip.mode == "mode_paratransit"'}}
+                  %img.img-responsive{style: "height:80%;", ng: {src: 'images/modes/paratransit.png', show: 'trip.mode == "mode_paratransit"'}}
                   %img.img-responsive{ng: {src: 'images/modes/transit.png', show: 'trip.mode == "mode_transit"'}}
                   %img.img-responsive{ng: {src: 'images/modes/walk.png', show: 'trip.mode == "mode_walk"'}}
                 .col-xs-10.col-height-master{style: 'width: 60em !important;'}
@@ -535,7 +535,7 @@
             .myride{'index' => '{{$index}}', ng: {init: 'tab = "past"', click: 'toggleMyRideButtonBar("past", $index);', repeat: 'trip in trips.past'}}
               .row
                 .col-xs-2.col-height-slave
-                  %img.img-responsive{ng: {src: 'images/modes/paratransit.png', show: 'trip.mode == "mode_paratransit"'}}
+                  %img.img-responsive{style: "height:80%;", ng: {src: 'images/modes/paratransit.png', show: 'trip.mode == "mode_paratransit"'}}
                   %img.img-responsive{ng: {src: 'images/modes/transit.png', show: 'trip.mode == "mode_transit"'}}
                   %img.img-responsive{ng: {src: 'images/modes/walk.png', show: 'trip.mode == "mode_walk"'}}
                 .col-xs-10.col-height-master{style: 'width: 60em !important;'}
