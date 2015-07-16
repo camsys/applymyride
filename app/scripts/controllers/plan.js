@@ -35,9 +35,11 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
 
   $scope.toggleMyRideButtonBar = function(type, index) {
     $scope.showEmail = false;
+    var selectionIndex = index;
     angular.forEach(Object.keys($scope.tripDivs), function(key, index) {
       var divs = $scope.tripDivs[key];
       angular.forEach(divs, function(div, index) {
+        if(key != type || index != selectionIndex)
         divs[index] = false;
       });
     });
