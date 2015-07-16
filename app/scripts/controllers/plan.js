@@ -66,7 +66,7 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
         });
         var cancelPromise = planService.cancelTrip($http, cancel)
         cancelPromise.error(function(data) {
-          bootbox.alert("An error occured on the server, your trip was not dropped.");
+          bootbox.alert("An error occurred, your trip was not cancelled.  Please call 1-844-PA4-RIDE for more information.");
         });
         cancelPromise.success(function(data) {
           bootbox.alert('Your trip has been dropped.');
