@@ -37,7 +37,7 @@ angular.module('applyMyRideApp')
           planService.email = $scope.email;
           planService.authentication_token = $scope.authentication_token;
         }else{
-          that.$scope.email = planService.authentication_token;
+          that.$scope.email = planService.email;
           that.$scope.authentication_token = planService.authentication_token;
           that.$scope.first_name = planService.first_name;
           that.$scope.last_name = planService.last_name;
