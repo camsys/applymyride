@@ -3,8 +3,10 @@
     %span.fa-stack
       %i.fa.fa-circle.fa-stack-2x
       %i.fa.fa-times.fa-stack-1x{style: 'color: white;'}
-    %a.blue-text
+    %a.blue-text{ng: {show: 'trip.mode != "mode_paratransit"'}}
       Drop this ride
+    %a.blue-text{ng: {show: 'trip.mode == "mode_paratransit"'}}
+      Cancel this ride
   .col-xs-4{style: 'text-align: center;'}
     .row{ng: {click: 'toggleEmail($event)'}}
       %span.fa-stack

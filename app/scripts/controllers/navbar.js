@@ -53,7 +53,10 @@ angular.module('applyMyRideApp')
       $scope.logout = function() {
         delete ipCookie.remove('email');
         delete ipCookie.remove('authentication_token');
+        delete $scope.email;
+        delete planService.email;
         $window.location.href = "#/";
+        $window.location.reload();
       };
 
     }]);

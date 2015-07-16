@@ -54,10 +54,15 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
 
   $scope.cancelTrip = function($event, tab, index) {
     $event.stopPropagation();
-    bootbox.confirm("Are you sure you want to cancel this trip?", function(result) {
+    $scope.tripDivs[tab][index] = false;
+    var trip = $scope.trips[tab][index];
+    var mode = trip.mode;
+    var message = "Are you sure you want to drop this ride?";
+    if(mode == 'mode_paratransit'){
+      message = "Are you sure you want to cancel this ride?";
+    }
+    bootbox.confirm(message, "x", "y", function(result) {
       if(result == true){
-        $scope.tripDivs[tab][index] = false;
-        var trip = $scope.trips[tab][index];
         var cancel = {};
         cancel.bookingcancellation_request = [];
 
