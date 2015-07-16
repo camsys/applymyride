@@ -8,7 +8,9 @@ angular.module('applyMyRideApp')
         delete this.fromTime;
         delete this.fromTimeType;
         delete this.fromDetails;
+        delete this.from;
         delete this.toDetails;
+        delete this.to;
         delete this.returnDate;
         delete this.returnTime;
         delete this.returnTimeType;
