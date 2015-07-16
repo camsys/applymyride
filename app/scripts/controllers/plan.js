@@ -353,7 +353,6 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
             if($scope.paratransitItineraries.length < 1 && $scope.transitItineraries.length < 1 && $scope.walkItineraries.length < 1){
               $scope.noresults = true;
             }else if($scope.paratransitItineraries.length < 1 && $scope.transitItineraries.length < 1 && $scope.walkItineraries.length > 0){
-              $location.path("/plan/alternative_options");
               $scope.step = 'alternative_options';
             }else if($scope.walkItineraries.length > 0){
               $scope.showAlternativeOption = true;
@@ -370,7 +369,6 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
         if($scope.paratransitItineraries.length < 1 && $scope.transitItineraries.length < 1 && $scope.walkItineraries.length < 1){
           $scope.noresults = true;
         }else if($scope.paratransitItineraries.length < 1 && $scope.transitItineraries.length < 1 && $scope.walkItineraries.length > 0){
-          $location.path("/plan/alternative_options");
           $scope.step = 'alternative_options';
         }else if($scope.walkItineraries.length > 0){
           $scope.showAlternativeOption = true;

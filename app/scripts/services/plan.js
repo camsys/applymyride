@@ -181,6 +181,8 @@ angular.module('applyMyRideApp')
                 itinerary.cost = fare;
                 fares.push(fare);
               } else if (itinerary.discounts){
+                itinerary.travelTime = humanizeDuration(itinerary.duration * 1000,  { units: ["hours", "minutes"], round: true });
+                itinerary.startTime = moment(itinerary.start_time).format('h:mm a')
                 that.guestParatransitItinerary = itinerary;
                 angular.forEach(itinerary.discounts, function(discount, index) {
                   var fare = parseFloat(Math.round(discount.fare * 100) / 100).toFixed(2);
