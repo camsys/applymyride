@@ -111,14 +111,6 @@
 
 .row{style: 'margin-top: 1em;'}
   .col-md-8.col-md-offset-2.col-xs-12
-    .row{ng:{show: 'email'}}
-      .col-xs-6.text-left
-        %a.btn.btn-success.btn-block{ng: {click: 'saveWalkItinerary()'}}
-          Save this Ride
-      .col-xs-6.text-right
-        %a.btn.btn-success.btn-block{ng: {click: 'emailWalkItinerary()'}}
-          %i.fa.fa-share-square-o
-          Email
     .row{ng:{show: '!email'}}
       .col-xs-6.col-xs-offset-3.text-center
         %a.btn.btn-success.btn-block{ng: {click: 'emailWalkItinerary()'}}
