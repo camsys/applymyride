@@ -449,7 +449,12 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
           planService.fromTimeType = 'depart';
           planService.asap = true;
         }
-        $location.path('/plan/start_current');
+        if(planService.mobile == true){
+          $location.path('/plan/start_current');
+        }else{
+          $location.path('/plan/from');
+        }
+
         break;
       case 'from':
         $location.path('/plan/to');
