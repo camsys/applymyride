@@ -326,8 +326,8 @@ angular.module('applyMyRideApp')
           transitInfo.id = itinerary.id;
           transitInfo.cost = itinerary.cost;
           transitInfo.startTime = itinerary.start_time;
-          transitInfo.startDesc = itinerary.startDesc
-          transitInfo.endDesc = itinerary.endDesc;
+          transitInfo.startDesc = itinerary.startTimeDesc;
+          transitInfo.endDesc = itinerary.endTimeDesc;
           transitInfo.travelTime = itinerary.travelTime;
           transitInfo.duration = itinerary.duration;
           var found = false;
@@ -337,7 +337,7 @@ angular.module('applyMyRideApp')
               found = true;
             }
           });
-          transitInfo.walkTime = itinerary.walk_time;
+          transitInfo.walkTime = itinerary.walkTimeDesc;
           transitInfos.push(transitInfo);
         }, transitInfos);
 
