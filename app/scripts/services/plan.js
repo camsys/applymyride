@@ -476,8 +476,10 @@ angular.module('applyMyRideApp')
         var dayDiff = now.diff(then, 'days');
         if(dayDiff == 0) {
           description = "Today";
-        } else if (dayDiff == 1) {
+        }else if (dayDiff == -1) {
           description = "Tomorrow";
+        }else if (dayDiff == 1) {
+          description = "Yesterday";
         }else{
           description = moment(date).format('dddd MMM DD, YYYY');
         }
