@@ -27,7 +27,7 @@ angular.module('applyMyRideApp')
         if(path == '/'){
           if($scope.sharedRideId && $scope.county){
             var sharedRideId = $scope.sharedRideId;
-            if(sharedRideId.toString().length > 3){
+            if(sharedRideId.toString().length > 0){
               if(!isNaN(sharedRideId)){
                 $scope.disableNext = false;
               }
