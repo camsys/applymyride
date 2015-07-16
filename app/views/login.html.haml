@@ -1,5 +1,5 @@
 .row{ng: {show: "location == '/'"}}
-  .col-md-4.col-md-offset-4.col-xs-12
+  .col-md-4.col-md-offset-4.col-sm-6.col-sm-offset-3.col-sm-6.col-sm-offset-3.col-xs-12
     .row
       %h1{style: 'font-weight:600;'} Let's get started
     .row{style: 'margin-top: 2em'}
@@ -21,7 +21,7 @@
           Next
           %span{ng: {include: "'views/button-chevron-right.html'"}}
 .row{ng: {show: "location == '/loginError'"}}
-  .col-md-4.col-md-offset-4.col-xs-10.col-xs-offset-1
+  .col-md-4.col-md-offset-4.col-sm-6.col-sm-offset-3.col-xs-10.col-xs-offset-1
     .row{style: 'background-color: #FFFFDC'}
       %h3{style: 'opacity: 1'} Sorry! We do not see a match
     .row{style: 'background-color: #FFFFDC'}
@@ -57,7 +57,7 @@
 %div{ng: {show: "location == '/authenticateSharedRideId'"}}
   .row
     %form{name: 'sharedRideForm'}
-      .col-md-4.col-md-offset-4.col-xs-10.col-xs-offset-1
+      .col-md-4.col-md-offset-4.col-sm-6.col-sm-offset-3.col-xs-10.col-xs-offset-1
         .row
           %h1 What is your birth date?
           %birthdaypicker{ng: {show: "!html5"}}
@@ -71,7 +71,7 @@
             Remember me for 7 days
 
   .row.action-button
-    .col-md-4.col-md-offset-4.col-xs-12
+    .col-md-4.col-md-offset-4.col-sm-6.col-sm-offset-3.col-xs-12
       %a.pull-left.btn-back{type: 'submit', ng: {click: "back()"}}
         %span{ng: {include: "'views/button-chevron-left.html'"}}
         Back

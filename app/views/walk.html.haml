@@ -1,6 +1,6 @@
-.container{style: 'padding: 0;'}
+.container#walk{style: 'padding: 0;'}
   .row{style: 'margin-top: 1em;', ng: {show: '!selected'}}
-    .col-md-4.col-md-offset-4.col-xs-12.text-center
+    .col-md-4.col-md-offset-4.col-sm-6.col-sm-offset-3.col-xs-12.text-center
       %a.btn.btn-success.btn-block{ng: {click: 'selectWalkingTrip()'}}
         Select this walk
   .row{style: 'margin-top: 1em;', ng: {show: 'selected == true'}}

@@ -352,8 +352,13 @@ $kioskfonts: "Avenir Next", "Helvetica Neue", Helvetica, sans-serif;
   }
 }
 
-
-
-  // @media(min-width:$screen-md-min) {
-
-
+#walk, #transit, #transit-confirm { 
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    margin: 5px;
+  }
+}

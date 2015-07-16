@@ -1,18 +1,18 @@
-.container{style: 'padding: 0;'}
+.container#transit-confirm{style: 'padding: 0;'}
   .row{style: 'margin-top: 1em;'}
     .col-md-8.col-md-offset-2.col-xs-12
       .row{ng: {show: 'email'}}
-        .col-xs-12.col-md-6.text-left
+        .col-xs-12.col-md-6.col-sm-6.text-left
           %a.btn.btn-success.btn-block{ng: {click: 'reset()'}}
             Plan a new trip
-        .col-xs-12.col-md-6.text-right
+        .col-xs-12.col-md-6.col-sm-6.text-right
           %a.btn.btn-success.btn-block{ng: {href: '#/plan/my_rides'}}
             View my saved rides
       .row{ng: {show: '!email'}}
-        .col-xs-12.col-md-6.text-left
+        .col-xs-12.col-md-6.col-sm-6.text-left
           %a.btn.btn-success.btn-block{ng: {href: '#/plan/fromDate'}}
             Plan a new trip
-        .col-xs-12.col-md-6.text-right
+        .col-xs-12.col-md-6.col-sm-6.text-right
           %a.btn.btn-success.btn-block{ng: {click: 'toggleEmail()'}}
             Email
 
