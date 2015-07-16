@@ -1,0 +1,31 @@
+.row.even-height-row
+  .col-xs-6{style: 'text-align: right;'}
+    .row{ng: {click: 'toggleEmail($event)'}}
+      %span.fa-stack
+        %i.fa.fa-share-square-o.fa-stack-2x
+      %a.blue-text
+        Email
+  .col-xs-6{style: 'text-align: left;'}
+    .row{ng: {click: 'selectTrip($event, tab, $index)'}}
+      %span.fa-stack{style: 'margin-left: 1em; width: 1em !important;'}
+        %i.fa.fa-chevron-right.fa-lg
+      %a.blue-text
+        View trip
+.row{ng: {show: 'showEmail'}}
+  .row
+    .col-xs-12.col-sm-8.col-sm-offset-2.text-left
+      Email your ride details to a friend (or yourself).
+  .row
+    .col-xs-12.col-sm-8.col-sm-offset-2.text-left.text-muted
+      Use a comma to separate multiple addresses
+  .row
+    .col-xs-10.col-sm-6.col-sm-offset-2{'style' => 'line-height: 2em; padding-right: 0px;'}
+      %input.form-control{style: 'font-size: .9em; border-top-right-radius:0px; border-bottom-right-radius:0px;', ng: {model: 'trip.emailString', click: '$event.stopPropagation();'}}
+    .col-xs-2.col-sm-2{'style' => 'line-height: 2em; padding-left: 0px;'}
+      %a.btn.btn-success.btn-block{style: 'padding-left: 0px; padding-right: 0px;min-width: 20px; border-top-left-radius:0px; border-bottom-left-radius:0px;', ng: {click: 'sendEmail($event)'}}
+        %i.fa.fa-envelope-o.fa-lg{style:'color: white;'}
+          %span
+            Send
+  .row{ng: {show: 'invalidEmail == true'}}
+    .col-xs-12.col-sm-8.col-sm-offset-2.text-left{style: 'color: red'}
+      Please enter only valid email addresses
