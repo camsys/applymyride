@@ -68,12 +68,10 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
       message: message,
       buttons: {
         'cancel': {
-          label: 'Keep Ride',
-          className: 'btn-default pull-left'
+          label: 'Keep Ride'
         },
         'confirm': {
-          label: 'Cancel Ride',
-          className: 'btn-danger pull-right'
+          label: 'Cancel Ride'
         }
       },
       callback: function(result) {
