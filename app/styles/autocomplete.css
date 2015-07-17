@@ -727,3 +727,7 @@ and (max-device-width : 480px) {
   max-width: 16.6666666667%;
   min-width: 90px;
 }
+
+.autocomplete {
+  line-height: 2.2em;
+}

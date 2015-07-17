@@ -46,7 +46,7 @@ angular.module('applyMyRideApp')
             });
             var emailPromise = planService.emailItineraries($http, emailRequest);
             emailPromise.error(function(data) {
-              alert(data);
+              bootbox.alert("An error occurred on the server, your email was not sent.");
             });
             flash.setMessage('Your email was sent');
           }else{

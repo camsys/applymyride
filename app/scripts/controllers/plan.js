@@ -140,7 +140,7 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
             });
             var emailPromise = planService.emailItineraries($http, emailRequest);
             emailPromise.error(function(data) {
-              alert("An error occurred on the server, your email was not sent.");
+              bootbox.alert("An error occurred on the server, your email was not sent.");
             });
             delete trip.emailString;
             flash.setMessage('Your email was sent');
