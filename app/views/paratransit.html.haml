@@ -9,7 +9,7 @@
           Plan another ride
         %a.btn-block.text-center{"ng-href" => "#/plan/my_rides"}
           View my saved rides
-  .row
+  .row{ng:{show: '$index == 0'}}
     .col-xs-12.no-padding
       %h2 Trip Details
   .row{style: 'margin-bottom: 1em;'}
