@@ -6,18 +6,16 @@
   .row{style: 'margin-top: 1em;', ng: {show: 'selected == true'}}
     .col-md-8.col-md-offset-2.col-xs-12
       .row{ng: {show: 'email'}}
-        .col-xs-12.col-md-6.text-left
+        .col-xs-12.col-md-6.col-md-offset-3.col-sm-6.col-sm-offset-3.text-left
           %a.btn.btn-success.btn-block{ng: {click: 'reset()'}}
             Plan a new trip
-        .col-xs-12.col-md-6.text-right
-          %a.btn.btn-success.btn-block{ng: {href: '#/plan/my_rides'}}
-            View my saved rides
+          %a.btn-block.text-center{ng: {href: '#/plan/my_rides'}}
+            View my saved rides 
       .row{ng: {show: '!email'}}
-        .col-xs-12.col-md-6.text-left
+        .col-xs-12.col-md-6.col-md-offset-3.col-sm-6.col-sm-offset-3.text-left
           %a.btn.btn-success.btn-block{ng: {click: 'reset()'}}
             Plan a new trip
-        .col-xs-12.col-md-6.text-right
-          %a.btn.btn-success.btn-block{ng: {click: 'toggleEmail()'}}
+          %a.btn-block.text-center{ng: {click: 'toggleEmail()'}}
             Email
   %div{style: 'margin-top: 1em', ng: {show: 'showEmail'}}
     .row
@@ -37,16 +35,12 @@
     .row{ng: {show: 'invalidEmail == true'}}
       .col-xs-12.col-sm-8.col-sm-offset-2.text-left{style: 'color: red'}
         Please enter only valid email addresses
-  .row{style: 'margin-bottom: 1em;'}
-    .col-xs-12.col-md-8.col-md-offset-2{style: 'padding: 0;'}
-      .row
-        .col-xs-12
-          %h2 Here is your trip plan
-.walkitinerary{ng: {repeat: 'itinerary in walkItineraries'}}
+.walkitinerary#walk{ng: {repeat: 'itinerary in walkItineraries'}}
   .row{style: 'margin-bottom: 1em;', ng: {show: '$index == 0'}}
     .col-xs-12.col-md-8.col-md-offset-2{style: 'padding: 0;'}
       .row
         .col-xs-12
+          %h2{style: "margin-bottom:1em;"} Trip Details
           %h2 Outbound Trip
   .row{style: 'margin-bottom: 1em;', ng: {show: '$index == 1'}}
     .col-xs-12.col-md-8.col-md-offset-2{style: 'padding: 0;'}

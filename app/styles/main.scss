@@ -352,13 +352,14 @@ $kioskfonts: "Avenir Next", "Helvetica Neue", Helvetica, sans-serif;
   }
 }
 
-#walk, #transit, #transit-confirm { 
+#walk, #transit, #transit-confirm, #itinerary { 
   h1,
   h2,
   h3,
   h4,
   h5,
-  h6 {
+  h6,
+  .col-xs-12.text-muted.ng-binding {
     margin: 5px;
   }
 }
