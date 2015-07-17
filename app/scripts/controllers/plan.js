@@ -58,29 +58,45 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
     var trip = $scope.trips[tab][index];
     var mode = trip.mode;
     var message = "Are you sure you want to drop this ride?";
+    var successMessage = 'Your trip has been dropped.'
     if(mode == 'mode_paratransit'){
       message = "Are you sure you want to cancel this ride?";
+      var successMessage = 'Your trip has been cancelled.'
     }
-    bootbox.confirm(message, "x", "y", function(result) {
-      if(result == true){
-        var cancel = {};
-        cancel.bookingcancellation_request = [];
 
-        angular.forEach(trip.itineraries, function(itinerary, index) {
-          var itineraryCancellation = {};
-          itineraryCancellation.itinerary_id = itinerary.id;
-          cancel.bookingcancellation_request.push(itineraryCancellation);
-        });
-        var cancelPromise = planService.cancelTrip($http, cancel)
-        cancelPromise.error(function(data) {
-          bootbox.alert("An error occurred, your trip was not cancelled.  Please call 1-844-PA4-RIDE for more information.");
-        });
-        cancelPromise.success(function(data) {
-          bootbox.alert('Your trip has been dropped.');
-          $scope.tripDivs[tab].splice(index, 1);
-          $scope.trips[tab].splice(index, 1);
-          ipCookie('rideCount', ipCookie('rideCount') - 1);
-        })
+    bootbox.confirm({
+      message: message,
+      buttons: {
+        'cancel': {
+          label: 'Keep Ride',
+          className: 'btn-default pull-left'
+        },
+        'confirm': {
+          label: 'Cancel Ride',
+          className: 'btn-danger pull-right'
+        }
+      },
+      callback: function(result) {
+        if(result == true){
+          var cancel = {};
+          cancel.bookingcancellation_request = [];
+
+          angular.forEach(trip.itineraries, function(itinerary, index) {
+            var itineraryCancellation = {};
+            itineraryCancellation.itinerary_id = itinerary.id;
+            cancel.bookingcancellation_request.push(itineraryCancellation);
+          });
+          var cancelPromise = planService.cancelTrip($http, cancel)
+          cancelPromise.error(function(data) {
+            bootbox.alert("An error occurred, your trip was not cancelled.  Please call 1-844-PA4-RIDE for more information.");
+          });
+          cancelPromise.success(function(data) {
+            bootbox.alert(successMessage);
+            $scope.tripDivs[tab].splice(index, 1);
+            $scope.trips[tab].splice(index, 1);
+            ipCookie('rideCount', ipCookie('rideCount') - 1);
+          })
+        }
       }
     });
   };
