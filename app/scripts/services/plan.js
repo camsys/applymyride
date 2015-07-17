@@ -1,5 +1,6 @@
 'use strict';
 
+
 angular.module('applyMyRideApp')
     .service('planService', function() {
 
@@ -753,3 +754,4 @@ angular.module('applyMyRideApp')
 
     return LocationSearch;
   });
+

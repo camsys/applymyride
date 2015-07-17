@@ -27,7 +27,7 @@
                 %span{style: "font-size: large; vertical-align: bottom;"} {{transitInfo.route}}
           .row{style: "margin-top: .5em"}
             %h4.col-xs-12.text-muted.text-right
-              {{transitInfo.cost | currency}}
+              {{transitInfo.cost | currency | free}}
           .row{style: "margin-top: .5em"}
             .col-xs-12.text-muted
               {{transitInfo.startDesc}}
