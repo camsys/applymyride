@@ -334,9 +334,10 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
         //now round up to 15 min interval
         var start = moment($scope.returnTime);
         var remainder = (start.minute()) % 15;
-        remainder = Math.abs(remainder - 15);
-        $scope.returnTime.setMinutes($scope.returnTime.getMinutes() + remainder);
-
+        if(remainder != 0){
+          remainder = Math.abs(remainder - 15);
+          $scope.returnTime.setMinutes($scope.returnTime.getMinutes() + remainder);
+        }
         $scope.disableNext = false;
         $scope.returnTimeType = 'depart';
       }
