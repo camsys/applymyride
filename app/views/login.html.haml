@@ -17,7 +17,7 @@
         Or, continue as a guest
     .row{style: 'margin-top: 1em'}
       .pull-right
-        %a.btn-next{ng: {click: 'next()', hide: 'disableNext'}}
+        %a.btn-next{href: "", ng: {click: 'next()', hide: 'disableNext'}}
           Next
           %span{ng: {include: "'views/button-chevron-right.html'"}}
 .row{ng: {show: "location == '/loginError'"}}
@@ -49,7 +49,7 @@
         Remember me for 7 days
     .row{style: 'margin-top: 2em'}
       .pull-right
-        %a.btn-next{style: 'font-size: 1em', ng: {click: 'next()', hide: 'disableNext'}}
+        %a.btn-next{href: "", style: 'font-size: 1em', ng: {click: 'next()', hide: 'disableNext'}}
           Next
           %span{ng: {include: "'views/button-chevron-right.html'"}}
 
@@ -72,9 +72,9 @@
 
   .row.action-button
     .col-md-4.col-md-offset-4.col-sm-6.col-sm-offset-3.col-xs-12
-      %a.pull-left.btn-back{type: 'submit', ng: {click: "back()"}}
+      %a.pull-left.btn-back{href: "", type: 'submit', ng: {click: "back()"}}
         %span{ng: {include: "'views/button-chevron-left.html'"}}
         Back
-      %a.pull-right.btn-next{type: 'submit', ng: {click: "authenticate()", hide: 'disableNext'}}
+      %a.pull-right.btn-next{href: "", type: 'submit', ng: {click: "authenticate()", hide: 'disableNext'}}
         Next
         %span{ng: {include: "'views/button-chevron-right.html'"}}

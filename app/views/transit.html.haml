@@ -2,7 +2,7 @@
   .buttonwrapper
     .row{style: 'margin-top: 1em;', ng: {show: 'roundtrip == false || segmentid == 1'}}
       .col-md-4.col-md-offset-4.col-sm-6.col-sm-offset-3.col-xs-12.text-center
-        %a.btn.btn-success.btn-block{ng: {click: 'selectTransitTrip(itinerary.id, segmentid)'}}
+        %a.btn.btn-success.btn-block{href: "", ng: {click: 'selectTransitTrip(itinerary.id, segmentid)'}}
           Select this ride
   .row{style: 'margin-bottom: 1em;'}
     .col-xs-12.col-md-8.col-md-offset-2
@@ -90,10 +90,10 @@
     .row{style: 'margin-top: 1em'}
       .col-md-8.col-md-offset-2.col-xs-6.col-xs-offset-3
         .pull-left
-          %a.btn-back{back: '', ng: {click: "back()"}}
+          %a.btn-back{href: "", back: '', ng: {click: "back()"}}
             %span{ng: {include: "'views/button-chevron-left.html'"}}
             Back
         .pull-right{ng: {show: 'roundtrip && segmentid == 0'}}
-          %a.btn-next{ng: {click: 'selectTransitTrip(tripid,segmentid)'}}
+          %a.btn-next{href: "", ng: {click: 'selectTransitTrip(tripid,segmentid)'}}
             %span Select and continue
             %span{ng: {include: "'views/button-chevron-right.html'"}}

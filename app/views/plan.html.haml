@@ -59,9 +59,9 @@
       %h5 {{ planService.from }}
       %div.map-canvas{'ui-map' => 'confirmFromLocationMap', 'ui-options' => 'mapOptions', 'style' => 'margin-bottom: 10px'}
       .col-md-4.col-md-offset-4.col-sm-6.col-sm-offset-3.col-xs-12
-        %a.btn.btn-success.btn-block{ng: {click: 'next()'}}
+        %a.btn.btn-success.btn-block{href: "", ng: {click: 'next()'}}
           Yes, use this address
-        %a.btn.btn-success.btn-block{ng: {click: 'overrideCurrentLocation()'}}
+        %a.btn.btn-success.btn-block{href: "", ng: {click: 'overrideCurrentLocation()'}}
           No, I'll enter the address myself
 
       %p
@@ -76,7 +76,7 @@
           .input-group
             %autocomplete.autocomplete{'inputclass' => 'clearable', 'disable-filter' => 'true', 'data' => 'locations', 'on-type'=> 'getLocations', 'on-select' => 'selectPlace', ng: {model: 'fromChoice', 'attr-mobile' => '{{mobile}}'}}
             .input-group-btn
-              %a.btn.btn-success.btn-block{style: 'padding-left: 0px; padding-right: 0px;min-width: 20px; border-top-left-radius:0px; border-bottom-left-radius:0px;', ng: {click: 'clearFrom()'}}
+              %a.btn.btn-success.btn-block{href: "", style: 'padding-left: 0px; padding-right: 0px;min-width: 20px; border-top-left-radius:0px; border-bottom-left-radius:0px;', ng: {click: 'clearFrom()'}}
                 %i.fa.fa-times.fa-lg{style:'color: white;'}
       .row
         .col-md-8.col-md-offset-2.col-xs-12
@@ -91,7 +91,7 @@
           .input-group
             %autocomplete.autocomplete{'inputclass' => 'clearable', 'disable-filter' => 'true', 'data' => 'locations', 'on-type'=> 'getLocations', 'on-select' => 'selectPlace', :ng => {:model => 'toChoice', 'attr-mobile' => '{{mobile}}'}}
             .input-group-btn
-              %a.btn.btn-success.btn-block{style: 'padding-left: 0px; padding-right: 0px;min-width: 20px; border-top-left-radius:0px; border-bottom-left-radius:0px;', ng: {click: 'clearTo()'}}
+              %a.btn.btn-success.btn-block{href: "", style: 'padding-left: 0px; padding-right: 0px;min-width: 20px; border-top-left-radius:0px; border-bottom-left-radius:0px;', ng: {click: 'clearTo()'}}
                 %i.fa.fa-times.fa-lg{style:'color: white;'}
       .row
         .col-md-8.col-md-offset-2.col-xs-12
@@ -149,7 +149,7 @@
       .row
         .col-md-8.col-md-offset-2.col-sm-8.col-sm-offset-2
           .col-xs-12.col-md-6{ng: {repeat: 'purpose in purposes'}}
-            %a.btn.btn-success.btn-block{style: 'white-space: normal; margin-bottom:4px;', ng: {click: 'specifyTripPurpose("{{ purpose.name }}")'}}
+            %a.btn.btn-success.btn-block{href: "", style: 'white-space: normal; margin-bottom:4px;', ng: {click: 'specifyTripPurpose("{{ purpose.name }}")'}}
               {{ purpose.name }}
 
     .confirm{ng: {show: 'step==="confirm"'}}
@@ -220,7 +220,7 @@
                 {{request.purpose}}
       .row
         .col-xs-8.col-xs-offset-2.col-md-4.col-md-offset-4.col-sm-8.col-sm-offset-2.text-center
-          %a.btn.btn-success.btn-block{ng: {click: 'next()'}}
+          %a.btn.btn-success.btn-block{href: "", ng: {click: 'next()'}}
             Search for ride!
           %a.btn-block{"ng-href" => "#/plan/fromDate"}
             No, change my request
@@ -453,7 +453,7 @@
           %h1 Ready to book this?
       .row
         .col-md-4.col-md-offset-4
-          %a.btn.btn-success.btn-block{ng: {click: 'next()'}}
+          %a.btn.btn-success.btn-block{href: "", ng: {click: 'next()'}}
             Book this shared ride
       .row
         .col-md-4.col-md-offset-4.text-center
@@ -562,11 +562,11 @@
     .row{style: 'margin-top: 10px'}
       .col-md-8.col-md-offset-2.col-xs-6.col-xs-offset-3
         .pull-left
-          %a.btn-back{back: '', ng: {click: "back()"}}
+          %a.btn-back{href: "", back: '', ng: {click: "back()"}}
             %span{ng: {include: "'views/button-chevron-left.html'"}}
             Back
         .pull-right
-          %a.btn-next{ng: {show: 'showNext', click: 'next()'}}
+          %a.btn-next{href: "", ng: {show: 'showNext', click: 'next()'}}
             %span{ng: {show: 'step!=="sharedride_options_3" || driverInstructions'}} Next
             %span{ng: {show: 'step==="sharedride_options_3" && !driverInstructions'}} Skip
             %span{ng: {include: "'views/button-chevron-right.html'"}}
