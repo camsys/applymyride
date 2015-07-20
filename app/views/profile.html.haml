@@ -1,11 +1,14 @@
 .profile
   .col-xs-12.col-md-6.col-md-offset-3
     .row
+      %h5.text-muted
+        My Profile
+    .row
       %h3
-        {{first_name}} {{last_name}}'s Profile
+        {{first_name}} {{last_name}}
     .row{style: 'margin-top: 1em'}
       %h4.text-muted
-        ACCOUNT
+        Account
     .row{style: 'border: 1px solid grey;'}
       .row{style: 'margin: 0px;'}
         .col-xs-3.text-right.text-muted
@@ -44,7 +47,7 @@
 
     .row{style: 'margin-top: 1em'}
       %h4.text-muted
-        WALKING PREFERENCES
+        Walking Preferences
     .row{style: 'border: 1px solid grey;'}
       .row{style: 'margin: 0px;'}
         .col-xs-3.text-right.text-muted
@@ -53,7 +56,7 @@
         .col-xs-9
           %h4
             %span{ng: {show: '!editable && !walkingSpeed'}}
-              Walking speed not specified
+              Average
             %span{ng: {show: '!editable && walkingSpeed'}}
               {{walkingSpeed}}
             %select{style: 'width: 100%', ng: {show: 'editable', model: 'walkingSpeed', options: 'speed for speed in speeds'}}
@@ -69,7 +72,7 @@
         .col-xs-9
           %h4
             %span{ng: {show: '!editable && !walkingDistance'}}
-              Maximum walking distance not specified
+              2 miles
             %span{ng: {show: '!editable && walkingDistance'}}
               {{walkingDistance}} miles
             %select{style: 'width: 100%', ng: {show: 'editable', model: 'walkingDistance', options: 'distance + " miles"  for distance in distances'}}
