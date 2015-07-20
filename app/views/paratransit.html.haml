@@ -3,7 +3,7 @@
     .row{style: 'margin-bottom: 1em;'}
       .col-xs-12.text-center{style: 'padding: 0;'}
         %h2 Your trip has been saved
-    .row{style: 'margin-bottom: 1em;'}
+    .row{style: 'margin-bottom: 1em; margin-top: 1em;'}
       .col-xs-12.col-md-6.col-md-offset-3.col-sm-6.col-sm-offset-3.text-left.no-padding
         %a.btn.btn-success.btn-block{"ng-href" => "#/plan/fromDate"}
           Plan another ride
@@ -12,10 +12,10 @@
   .row{ng:{show: '$index == 0'}}
     .col-xs-12.col-md-8.col-md-offset-2.no-padding
       %h2 Trip Details
-  .row{style: 'margin-bottom: 1em;'}
+  .row
     .col-xs-12.col-md-8.col-md-offset-2{style: 'padding: 0;'}
       .row
-        .col-xs-12.text-muted
+        .col-xs-12.text-muted{ng: {style: "$index == 1 ? {'margin-top': '2em'} : {}"}}
           {{itinerary.dayAndDateDesc}}
       .row
         .col-xs-10.text-left

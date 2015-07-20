@@ -4,6 +4,9 @@
       %a.btn.btn-success.btn-block{ng: {click: 'selectWalkingTrip()'}}
         Select this walk
   .row{style: 'margin-top: 1em;', ng: {show: 'selected == true'}}
+    .row{style: 'margin-bottom: 1em;'}
+      .col-xs-12.text-center{style: 'padding: 0;'}
+        %h2 Your trip has been saved
     .col-md-8.col-md-offset-2.col-xs-12
       .row{ng: {show: 'email'}}
         .col-xs-12.col-md-6.col-md-offset-3.col-sm-6.col-sm-offset-3.text-left
@@ -36,18 +39,18 @@
       .col-xs-12.col-sm-8.col-sm-offset-2.text-left{style: 'color: red'}
         Please enter only valid email addresses
 .walkitinerary#walk{ng: {repeat: 'itinerary in walkItineraries'}}
-  .row{style: 'margin-bottom: 1em;', ng: {show: '$index == 0'}}
+  .row{ng: {show: '$index == 0'}}
     .col-xs-12.col-md-8.col-md-offset-2{style: 'padding: 0;'}
       .row
         .col-xs-12
           %h2{style: "margin-bottom:1em;"} Trip Details
           %h2 Outbound Trip
-  .row{style: 'margin-bottom: 1em;', ng: {show: '$index == 1'}}
+  .row{style: 'margin-top: 1em;', ng: {show: '$index == 1'}}
     .col-xs-12.col-md-8.col-md-offset-2{style: 'padding: 0;'}
       .row
         .col-xs-12
           %h2 Return Trip
-  .row{style: 'margin-bottom: 1em;'}
+  .row
     .col-xs-12.col-md-8.col-md-offset-2{style: 'padding: 0;'}
       .row
         .col-xs-12.text-muted
