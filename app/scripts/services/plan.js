@@ -8,13 +8,16 @@ angular.module('applyMyRideApp')
         delete this.fromDate;
         delete this.fromTime;
         delete this.fromTimeType;
-        delete this.fromDetails;
         delete this.from;
-        delete this.toDetails;
+        delete this.fromDetails;
         delete this.to;
+        delete this.toDetails;
         delete this.returnDate;
         delete this.returnTime;
         delete this.returnTimeType;
+        delete this.numberOfCompanions;
+        delete this.hasEscort;
+        delete this.driverInstructions;
       }
 
       this.getPrebookingQuestions = function(){

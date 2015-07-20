@@ -189,15 +189,6 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
         otherRidersString += 's';
       }
     }
-    if(planService.numberOfFamily){
-      if(otherRidersString.length > 0){
-        otherRidersString += ', ';
-      }
-      otherRidersString += planService.numberOfFamily + ' family member';
-      if(planService.numberOfFamily > 1){
-        otherRidersString += 's';
-      }
-    }
     return otherRidersString;
   }
 
@@ -437,6 +428,10 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
       break;
     case 'sharedride_options_2':
       $scope.questions = planService.getPrebookingQuestions();
+      $scope.hasEscort = planService.hasEscort;
+      $scope.numberOfCompanions = planService.numberOfCompanions;
+      if($scope.numberOfCompanions)
+        $scope.hasCompanion = true;
       $scope.showNext = true;
       $scope.disableNext = false;
       break;
@@ -510,8 +505,11 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
         break;
       case 'sharedride_options_2':
         planService.hasEscort = $scope.hasEscort;
-        planService.numberOfCompanions = $scope.numberOfCompanions;
-        planService.numberOfFamily = $scope.numberOfFamily;
+        if($scope.hasCompanion){
+          planService.numberOfCompanions = $scope.numberOfCompanions;
+        }else{
+          delete planService.numberOfCompanions;
+        }
         $location.path('/plan/sharedride_options_3');
         break;
       case 'sharedride_options_3':
