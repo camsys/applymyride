@@ -343,6 +343,7 @@ angular.module('applyMyRideApp')
             }
           });
           transitInfo.walkTime = itinerary.walkTimeDesc;
+          transitInfo.walkTimeInSecs = itinerary.walk_time;
           transitInfos.push(transitInfo);
         }, transitInfos);
 
@@ -357,7 +358,7 @@ angular.module('applyMyRideApp')
             transitInfo.label = "Cheaper"
           } else if (transitInfo.duration < best.duration){
             transitInfo.label = "Faster"
-          } else if (transitInfo.walkTime < best.walkTime){
+          } else if (transitInfo.walkTimeInSecs < best.walkTimeInSecs){
             transitInfo.label = "Less Walking"
           }else if(transitInfo.cost > best.cost){
             transitInfo.label = "More Expensive"
