@@ -359,11 +359,13 @@ angular.module('applyMyRideApp')
           var best = transitInfos[0];
           if(transitInfo.cost < best.cost){
             transitInfo.label = "Cheaper"
-          } else if (transitInfo.duration < best.duration){
+          } else if (transitInfo.walkTimeInSecs < best.walkTimeInSecs / 2){
+            transitInfo.label = "Less Walking"
+          }else if (transitInfo.duration < best.duration){
             transitInfo.label = "Faster"
           } else if (transitInfo.walkTimeInSecs < best.walkTimeInSecs){
             transitInfo.label = "Less Walking"
-          }else if(transitInfo.cost > best.cost){
+          } else if(transitInfo.cost > best.cost){
             transitInfo.label = "More Expensive"
           } else if (transitInfo.startTime < best.startTime){
             transitInfo.label = "Earlier"
