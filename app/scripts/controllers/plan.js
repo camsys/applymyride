@@ -856,15 +856,28 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
           var now = moment().startOf('day');
           var datediff = now.diff(n, 'days');
           if(datediff < 1){
-            $scope.returnDate = n;
-            $scope.disableNext = false;
+            var then = moment(planService.fromDate).startOf('day');
+            var to = moment(n).startOf('day');
+            datediff = then.diff(to, 'days');
+            if(datediff < 1){
+              $scope.returnDate = n;
+              $scope.showNext = true;
+              $scope.message = null;
+            }else{
+              planService.returnDate = null;
+              $scope.showNext = false;
+              var fromDateString = moment(planService.fromDate).format('M/D/YYYY');
+              $scope.message = 'You must return on a date no earlier than ' + fromDateString;
+            }
           }else{
             planService.returnDate = null;
-            $scope.disableNext = true;
+            $scope.showNext = false;
+            var fromDateString = moment(planService.fromDate).format('M/D/YYYY');
+            $scope.message = 'You must return on a date no earlier than ' + fromDateString;
           }
         }else{
           planService.returnDate = null;
-          $scope.disableNext = true;
+          $scope.showNext = false;
         }
       }
     }
