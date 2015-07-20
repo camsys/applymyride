@@ -48,10 +48,11 @@
       .row
         .text-center
           %h4 Start at your current location?
-          %a.btn.btn-success{ng: {click: 'getCurrentLocation()'}}
-            Yes
-          %a.btn.btn-success{ng: {href: '#/plan/from'}}
-            No
+          .col-xs-12.col-md-4.col-md-offset-4.col-sm-6.col-sm-offset-3
+            %a.btn.btn-success.btn-block{ng: {click: 'getCurrentLocation()'}}
+              Yes
+            %a.btn-block{ng: {href: '#/plan/from'}}
+              No
 
     .map-wrapper.text-center{ng: {show: 'step==="from_confirm" && showConfirmLocationMap'}}
       %h5 Here's the address we found for your location:
@@ -99,10 +100,11 @@
     .need-return-trip{ng: {show: 'step==="needReturnTrip"'}}
       .text-center
         %h4 Do you need a return trip?
-        %a.btn.btn-success{ng: {href: '#/plan/returnDate'}}
-          Yes
-        %a.btn.btn-success{ng: {click: 'setNoReturnTrip()'}}
-          No
+        .col-xs-12.col-md-4.col-md-offset-4.col-sm-6.col-sm-offset-3
+          %a.btn.btn-success.btn-block{ng: {href: '#/plan/returnDate'}}
+            Yes
+          %a.btn-block{ng: {click: 'setNoReturnTrip()'}}
+            No
 
     .return-date{ng: {show: 'step==="returnDate"'}}
       %form
