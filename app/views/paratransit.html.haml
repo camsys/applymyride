@@ -12,10 +12,20 @@
   .row{ng:{show: '$index == 0'}}
     .col-xs-12.col-md-8.col-md-offset-2.no-padding
       %h2 Trip Details
-  .row
-    .col-xs-12.col-md-8.col-md-offset-2{style: 'padding: 0;'}
+  .row{style: 'margin-top: 1em;', ng: {show: '$index == 0'}}
+    .col-xs-12.col-md-8.col-md-offset-2.no-padding
       .row
-        .col-xs-12.text-muted{ng: {style: "$index == 1 ? {'margin-top': '2em'} : {}"}}
+        .col-xs-12
+          %h2 Outbound Trip
+  .row{ng: {show: '$index == 1', style: "$index == 1 ? {'margin-top': '2em'} : {}"}}
+    .col-xs-12.col-md-8.col-md-offset-2.no-padding
+      .row
+        .col-xs-12
+          %h2 Return Trip
+  .row
+    .col-xs-12.col-md-8.col-md-offset-2.no-padding
+      .row
+        .col-xs-12.text-muted
           {{itinerary.dayAndDateDesc}}
       .row
         .col-xs-10.text-left

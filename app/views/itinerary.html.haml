@@ -1,4 +1,4 @@
-.container{style: 'padding: 0;'}
+.container.no-padding
   .row{style: 'margin-top: 1em;'}
     .col-md-8.col-md-offset-2.col-xs-12
       .row{ng: {show: 'email'}}
@@ -29,23 +29,23 @@
 
 
   .row{style: 'margin-bottom: 1em;'}
-    .col-xs-12.col-md-8.col-md-offset-2{style: 'padding: 0;'}
+    .col-xs-12.col-md-8.col-md-offset-2.no-padding
       .row
         .col-xs-12
           %h2 Here is your transit trip plan
   .transititinerary{index: '{{$index}}', ng: {repeat: 'itinerary in itineraries'}}
     .row{ng: {show: '$index == 0 && itineraries.length > 1'}}
-      .col-xs-12.col-md-8.col-md-offset-2{style: 'padding: 0;'}
+      .col-xs-12.col-md-8.col-md-offset-2.no-padding
         .row
           .col-xs-12
             %h2 Outbound Trip
     .row{style: 'margin-top: 2em;', ng: {show: '$index == 1'}}
-      .col-xs-12.col-md-8.col-md-offset-2{style: 'padding: 0;'}
+      .col-xs-12.col-md-8.col-md-offset-2.no-padding
         .row
           .col-xs-12
             %h2 Return Trip
     .row{style: 'margin-bottom: 1em;'}
-      .col-xs-12.col-md-8.col-md-offset-2{style: 'padding: 0;'}
+      .col-xs-12.col-md-8.col-md-offset-2.no-padding
         .row
           .col-xs-12.text-muted
             {{itinerary.dayAndDateDesc}}
@@ -127,14 +127,24 @@
                     %h5.text-muted Arrive at
                     %h4 {{itinerary.end_location.name}}
 
-.container#itinerary{style: 'padding: 0;', index: '{{$index}}', ng: {show: 'mode==="mode_paratransit"', repeat: 'itinerary in paratransitItineraries'}}
+#itinerary{style: 'padding: 0;', index: '{{$index}}', ng: {show: 'mode==="mode_paratransit"', repeat: 'itinerary in paratransitItineraries'}}
   .row{style: 'margin-bottom: 1em;', ng: {show: '$index == 0'}}
-    .col-xs-12.col-md-8.col-md-offset-2{style: 'padding: 0;'}
+    .col-xs-12.col-md-8.col-md-offset-2.no-padding
       .row
         .col-xs-12
           %h2 Here is your shared ride trip plan
+  .row{ng: {show: '$index == 0'}}
+    .col-xs-12.col-md-8.col-md-offset-2.no-padding
+      .row
+        .col-xs-12
+          %h2 Outbound Trip
+  .row{ng: {show: '$index == 1', style: "$index == 1 ? {'margin-top': '2em'} : {}"}}
+    .col-xs-12.col-md-8.col-md-offset-2.no-padding
+      .row
+        .col-xs-12
+          %h2 Return Trip
   .row
-    .col-xs-12.col-md-8.col-md-offset-2{style: 'padding: 0;', ng: {style: "$index == 1 ? {'margin-top': '2em'} : {}"}}
+    .col-xs-12.col-md-8.col-md-offset-2.no-padding
       .row
         .col-xs-12.text-muted
           {{itinerary.dayAndDateDesc}}
@@ -185,23 +195,23 @@
 
 .walkitinerary#walk{style: 'padding: 0;', ng: {show: 'mode==="mode_walk"', repeat: 'itinerary in walkItineraries'}}
   .row{style: 'margin-bottom: 1em;', ng: {show: '$index == 0'}}
-    .col-xs-12.col-md-8.col-md-offset-2{style: 'padding: 0;'}
+    .col-xs-12.col-md-8.col-md-offset-2.no-padding
       .row
         .col-xs-12
           %h2 Here is your walking trip plan
 .walkitinerary#walk{index: '{{$index}}', ng: {repeat: 'itinerary in walkItineraries'}}
   .row{ng: {show: '$index == 0'}}
-    .col-xs-12.col-md-8.col-md-offset-2{style: 'padding: 0;'}
+    .col-xs-12.col-md-8.col-md-offset-2.no-padding
       .row
         .col-xs-12
           %h2 Outbound Trip
   .row{style: 'margin-top: 2em;', ng: {show: '$index == 1'}}
-    .col-xs-12.col-md-8.col-md-offset-2{style: 'padding: 0;'}
+    .col-xs-12.col-md-8.col-md-offset-2.no-padding
       .row
         .col-xs-12
           %h2 Return Trip
   .row
-    .col-xs-12.col-md-8.col-md-offset-2{style: 'padding: 0;'}
+    .col-xs-12.col-md-8.col-md-offset-2.no-padding
       .row
         .col-xs-12.text-muted
           {{itinerary.dayAndDateDesc}}
