@@ -29,13 +29,13 @@
               %span.timeTypeSelection{ng: {show: 'fromTimeType == "depart"'}} When do you want to start out?
               %span.timeTypeSelection{ng: {show: 'fromTimeType == "arrive"'}} When do you want to arrive?
               %span.dropdown{dropdown: '', style: 'cursor: pointer;'}
-                %i.fa.fa-lg.fa-sort-desc{dropdown_toggle: '', style: 'vertical-align: 15%; color: #2781FF;'}
+                %a.fa.fa-lg.fa-sort-desc{href: '', dropdown_toggle: '', style: 'vertical-align: 15%; color: #2781FF; text-decoration: none;'}
                 %ul.dropdown-menu.pull-right{dropdown_menu: ''}
                   %li{ng: {show: 'fromTimeType != "depart"'}}
-                    %a{ng: {click: 'specifyFromTimeType("depart")'}}
+                    %a{href: '', ng: {click: 'specifyFromTimeType("depart")'}}
                       When do you want to start out?
                   %li{ng: {show: 'fromTimeType != "arrive"'}}
-                    %a{ng: {click: 'specifyFromTimeType("arrive")'}}
+                    %a{href: '', ng: {click: 'specifyFromTimeType("arrive")'}}
                       When do you want to arrive?
         .row{ng: {show: 'showAsap'}}
           .col-xs-12.pull-left{style: 'color: #2781FF; padding: 0px;'}
@@ -74,7 +74,7 @@
       .row
         .col-md-8.col-md-offset-2.col-xs-12{'style' => 'line-height: 2em;'}
           .input-group
-            %autocomplete.autocomplete{'inputclass' => 'clearable', 'disable-filter' => 'true', 'data' => 'locations', 'on-type'=> 'getLocations', 'on-select' => 'selectPlace', ng: {model: 'fromChoice', 'attr-mobile' => '{{mobile}}'}}
+            %autocomplete.autocomplete{tabindex: 'null', 'inputclass' => 'clearable', 'disable-filter' => 'true', 'data' => 'locations', 'on-type'=> 'getLocations', 'on-select' => 'selectPlace', ng: {model: 'fromChoice', 'attr-mobile' => '{{mobile}}'}}
             .input-group-btn
               %a.btn.btn-success.btn-block{href: "", style: 'padding-left: 0px; padding-right: 0px;min-width: 20px; border-top-left-radius:0px; border-bottom-left-radius:0px;', ng: {click: 'clearFrom()'}}
                 %i.fa.fa-times.fa-lg{style:'color: white;'}
@@ -89,7 +89,7 @@
       .row
         .col-md-8.col-md-offset-2.col-xs-12{'style' => 'line-height: 2em;'}
           .input-group
-            %autocomplete.autocomplete{'inputclass' => 'clearable', 'disable-filter' => 'true', 'data' => 'locations', 'on-type'=> 'getLocations', 'on-select' => 'selectPlace', :ng => {:model => 'toChoice', 'attr-mobile' => '{{mobile}}'}}
+            %autocomplete.autocomplete{tabindex: 'null', 'inputclass' => 'clearable', 'disable-filter' => 'true', 'data' => 'locations', 'on-type'=> 'getLocations', 'on-select' => 'selectPlace', :ng => {:model => 'toChoice', 'attr-mobile' => '{{mobile}}'}}
             .input-group-btn
               %a.btn.btn-success.btn-block{href: "", style: 'padding-left: 0px; padding-right: 0px;min-width: 20px; border-top-left-radius:0px; border-bottom-left-radius:0px;', ng: {click: 'clearTo()'}}
                 %i.fa.fa-times.fa-lg{style:'color: white;'}
@@ -130,13 +130,13 @@
               %span.timeTypeSelection{ng: {show: 'returnTimeType == "depart"'}} When do you want to leave?
               %span.timeTypeSelection{ng: {show: 'returnTimeType == "arrive"'}} When do you want to get back?
               %span.dropdown{dropdown: '', style: 'cursor: pointer;'}
-                %i.fa.fa-lg.fa-sort-desc{dropdown_toggle: '', style: 'vertical-align: 15%; color: #2781FF;'}
+                %a.fa.fa-lg.fa-sort-desc{href: '', dropdown_toggle: '', style: 'vertical-align: 15%; color: #2781FF; text-decoration: none;'}
                 %ul.dropdown-menu.pull-right{dropdown_menu: ''}
                   %li{ng: {show: 'returnTimeType != "depart"'}}
-                    %a{ng: {click: 'specifyReturnTimeType("depart")'}}
+                    %a{href: '', ng: {click: 'specifyReturnTimeType("depart")'}}
                       When do you want to leave?
                   %li{ng: {show: 'returnTimeType != "arrive"'}}
-                    %a{ng: {click: 'specifyReturnTimeType("arrive")'}}
+                    %a{href: '', ng: {click: 'specifyReturnTimeType("arrive")'}}
                       When do you want to get back?
         .row.text-center
           %timepicker.timepicker{'minute-step' => '5', ng: {model: 'returnTime', show: '!mobile'}}
@@ -413,9 +413,9 @@
           %h2 Will anyone be riding with you?
         .row
           .col-md-4.col-md-offset-4.col-xs-12
-            %a.btn.btn-success.btn-block{ng: {click: 'specifySharedRideCompanion("false")'}, style: 'white-space: normal; margin-bottom:4px;'}
+            %a.btn.btn-success.btn-block{href: '', ng: {click: 'specifySharedRideCompanion("false")'}, style: 'white-space: normal; margin-bottom:4px;'}
               No, I'm on my own
-            %a.text-center.btn-block{ng: {click: 'specifySharedRideCompanion("true")'}, style: 'white-space: normal; margin-bottom:4px; cursor:pointer;'}
+            %a.text-center.btn-block{href: '', ng: {click: 'specifySharedRideCompanion("true")'}, style: 'white-space: normal; margin-bottom:4px; cursor:pointer;'}
               Yes, I have a companion or escort with me
 
     .depart-time{ng: {show: 'step==="sharedride_options_2"'}}
@@ -449,7 +449,7 @@
 
     .depart-time{ng: {show: 'step==="book_shared_ride"'}}
       .row
-        .col-md-4.col-md-offset-4
+        .col-md-4.col-md-offset-4.text-center
           %h1 Ready to book this?
       .row
         .col-md-4.col-md-offset-4
@@ -556,7 +556,7 @@
                     %span{ng: {include: "'views/emailOrView.html'"}}
         .row{style: 'margin-top: 10px'}
           .col-md-4.col-md-offset-4.col-xs-12.text-center
-            %a.btn.btn-success.btn-block{ng: {click: 'reset()'}}
+            %a.btn.btn-success.btn-block{href: '', ng: {click: 'reset()'}}
               Plan a new trip
   .container.sticky-footer{ng: {hide: 'hideButtonBar'}}
     .row{style: 'margin-top: 10px'}

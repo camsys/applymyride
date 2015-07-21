@@ -1,7 +1,7 @@
 .container#walk{style: 'padding: 0;'}
   .row{style: 'margin-top: 1em;', ng: {show: '!selected'}}
     .col-md-4.col-md-offset-4.col-sm-6.col-sm-offset-3.col-xs-12.text-center
-      %a.btn.btn-success.btn-block{ng: {click: 'selectWalkingTrip()'}}
+      %a.btn.btn-success.btn-block{href: '', ng: {click: 'selectWalkingTrip()'}}
         Select this walk
   .row{style: 'margin-top: 1em;', ng: {show: 'selected == true'}}
     .row{style: 'margin-bottom: 1em;'}
@@ -10,15 +10,15 @@
     .col-md-8.col-md-offset-2.col-xs-12
       .row{ng: {show: 'email'}}
         .col-xs-12.col-md-6.col-md-offset-3.col-sm-6.col-sm-offset-3.text-left
-          %a.btn.btn-success.btn-block{ng: {click: 'reset()'}}
+          %a.btn.btn-success.btn-block{href: '', ng: {click: 'reset()'}}
             Plan a new trip
           %a.btn-block.text-center{ng: {href: '#/plan/my_rides'}}
             View my saved rides 
       .row{ng: {show: '!email'}}
         .col-xs-12.col-md-6.col-md-offset-3.col-sm-6.col-sm-offset-3.text-left
-          %a.btn.btn-success.btn-block{ng: {click: 'reset()'}}
+          %a.btn.btn-success.btn-block{href: '', ng: {click: 'reset()'}}
             Plan a new trip
-          %a.btn-block.text-center{ng: {click: 'toggleEmail()'}}
+          %a.btn-block.text-center{href: '', ng: {click: 'toggleEmail()'}}
             Email
   %div{style: 'margin-top: 1em', ng: {show: 'showEmail'}}
     .row
