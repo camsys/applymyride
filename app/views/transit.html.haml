@@ -35,9 +35,8 @@
             .bus-info{ng: {show: 'leg.mode == "BUS"'}}
               .row
                 .leg-info.col-xs-12.leg-header
-                  %h5.text-muted{ng: {show: '!$first'}} Get on {{leg.service_name}}
+                  %h5.text-muted Get on {{leg.service_name}}
                   %h4{ng: {show: '!$first'}}  Bus {{leg.route}} @ {{leg.from.name}}
-                  %h5.text-muted{ng: {show: '$first'}} Begin at
                   %h4{ng: {show: '$first'}}  Bus {{leg.route}} @ {{itinerary.start_location.name}}
               .row
                 .leg-info.col-xs-12
