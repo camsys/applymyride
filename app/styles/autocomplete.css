@@ -34,9 +34,6 @@
   opacity: 0;
 }
 
-
-div:focus {outline:0 !important;}
-
 .autocomplete{
   width: 100%;
   position: relative;
