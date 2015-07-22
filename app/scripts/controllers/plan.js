@@ -18,7 +18,6 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
   };
   $scope.step = $routeParams.step;
   $scope.disableNext = false;
-  $scope.showUndo = false;
   $scope.showNext = true;
   $scope.showEmail = false;
   $scope.invalidEmail = false;
@@ -26,6 +25,7 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
   $scope.planService = planService;
   $scope.fromDate = new Date();
   $scope.returnDate = new Date();
+  $scope.showMap = false;
 
 
   $scope.reset = function() {
@@ -548,10 +548,14 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
   }
 
   $scope.clearFrom = function(){
+    $scope.showMap = false;
+    $scope.showNext = false;
     $scope.fromChoice = null;
   }
 
   $scope.clearTo = function(){
+    $scope.showMap = false;
+    $scope.showNext = false;
     $scope.toChoice = null;
   }
 
@@ -608,74 +612,93 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
   }
 
   $scope.selectPlace = function(place){
-    var map;
+    $scope.place = place;
+    $scope.poi = null;
+    $scope.showMap = true;
     if($routeParams.step == 'from'){
-      map = $scope.fromLocationMap;
+      $scope.map = $scope.fromLocationMap;
     }else if($routeParams.step == 'to'){
-      map = $scope.toLocationMap;
+      $scope.map = $scope.toLocationMap;
     }
     var placeIdPromise = $q.defer();
     var selectedIndex = $scope.placeLabels.indexOf(place);
     if(selectedIndex < $scope.poiData.length){
       //this is a POI result, get the 1Click location name
       $scope.poi = $scope.poiData[selectedIndex];
-    }
-    var placeId = $scope.placeIds[selectedIndex];
-    if(placeId) {
-      placeIdPromise.resolve(placeId);
+      $scope.checkServiceArea($scope.poi);
     }else{
-      var labelIndex = $scope.placeLabels.indexOf(place);
-      var address = $scope.placeAddresses[labelIndex];
-      var autocompleteService = new google.maps.places.AutocompleteService();
-      autocompleteService.getPlacePredictions(
-        {
-          input: address,
-          offset: 0,
-          componentRestrictions: {country: 'us'}
-        }, function(list, status) {
-          if(status == "ZERO_RESULTS" || list == null){
-            bootbox.alert("We were unable to geocode the address you selected.");
-          }else{
-            var placeId = list[0].place_id;
-            placeIdPromise.resolve(placeId);
+      var placeId = $scope.placeIds[selectedIndex];
+      if(placeId) {
+        placeIdPromise.resolve(placeId);
+      }else{
+        var labelIndex = $scope.placeLabels.indexOf(place);
+        var address = $scope.placeAddresses[labelIndex];
+        var autocompleteService = new google.maps.places.AutocompleteService();
+        autocompleteService.getPlacePredictions(
+          {
+            input: address,
+            offset: 0,
+            componentRestrictions: {country: 'us'}
+          }, function(list, status) {
+            if(status == "ZERO_RESULTS" || list == null){
+              bootbox.alert("We were unable to geocode the address you selected.");
+            }else{
+              var placeId = list[0].place_id;
+              placeIdPromise.resolve(placeId);
+            }
+          });
+      }
+
+      placeIdPromise.promise.then(function(placeId) {
+        var placesService = new google.maps.places.PlacesService($scope.map);
+        placesService.getDetails( { 'placeId': placeId}, function(result, status) {
+          if (status == google.maps.GeocoderStatus.OK) {
+
+            //verify the location has a street address
+            var datatypes = [];
+            angular.forEach(result.address_components, function(component, index) {
+              angular.forEach(component.types, function(type, index) {
+                datatypes.push(type)
+              });
+            });
+
+            if(datatypes.indexOf('street_number') < 0 || datatypes.indexOf('route') < 0){
+              bootbox.alert("The location you selected does not have a valid street address, please select another location.");
+              return;
+            }
+
+            $scope.checkServiceArea(result);
+
+          } else {
+            alert('Geocode was not successful for the following reason: ' + status);
           }
         });
+      })
     }
+  }
 
-    placeIdPromise.promise.then(function(placeId) {
-      var placesService = new google.maps.places.PlacesService(map);
-      placesService.getDetails( { 'placeId': placeId}, function(result, status) {
-        if (status == google.maps.GeocoderStatus.OK) {
-
-          //verify the location has a street address
-          var datatypes = [];
-          angular.forEach(result.address_components, function(component, index) {
-            angular.forEach(component.types, function(type, index) {
-              datatypes.push(type)
-            });
-          });
-
-          if(datatypes.indexOf('street_number') < 0 || datatypes.indexOf('route') < 0){
-            bootbox.alert("The location you selected does not have a valid street address, please select another location.");
-            return;
-          }
+  $scope.checkServiceArea = function(result){
+    var serviceAreaPromise = planService.checkServiceArea($http, result);
+    serviceAreaPromise.
+      success(function(serviceAreaResult) {
+        if(serviceAreaResult.result == true){
 
           var recentSearches = localStorageService.get('recentSearches');
           if(!recentSearches){
             recentSearches = {};
           }
-          if (typeof(recentSearches[place]) == 'undefined'){
-            recentSearches[place] = result;
+          if (typeof(recentSearches[$scope.place]) == 'undefined'){
+            recentSearches[$scope.place] = result;
             localStorageService.set('recentSearches', JSON.stringify(recentSearches));
           }
 
-          result.poi = $scope.poi;
           if($routeParams.step == 'from'){
             planService.fromDetails = result;
           }else if($routeParams.step == 'to'){
             planService.toDetails = result;
           }
 
+          var map = $scope.map;
           if($scope.marker){
             $scope.marker.setMap(null);
           }
@@ -684,47 +707,31 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
           $scope.showUndo = true;
           $scope.disableNext = false;
           $scope.showNext = true;
-          $scope.$apply();
 
-          var serviceAreaPromise = planService.checkServiceArea($http, result);
-          serviceAreaPromise.
-            success(function(serviceAreaResult) {
-              if(serviceAreaResult.result == true){
-                if($scope.marker){
-                  $scope.marker.setMap(null);
-                }
+          google.maps.event.trigger(map, 'resize');
+          var location = result.geometry.location;//$.extend(true, [], result.geometry.location); //new google.maps.LatLng(result.geometry.location.lat, result.geometry.location.lng);
+          if($scope.poi){
+            var poilocation = $scope.poi.geometry.location;
+            location = new google.maps.LatLng(Number(poilocation.lat), Number(poilocation.lng));
+          }
+          delete location.lat;
+          delete location.lng;
+          map.setCenter(location);
 
-                $scope.showMap = true;
-                $scope.showUndo = true;
-                $scope.disableNext = false;
-                $scope.showNext = true;
-
-                google.maps.event.trigger(map, 'resize');
-                var location = result.geometry.location;//$.extend(true, [], result.geometry.location); //new google.maps.LatLng(result.geometry.location.lat, result.geometry.location.lng);
-                delete location.lat;
-                delete location.lng;
-                map.setCenter(location);
-
-                $scope.marker = new google.maps.Marker({
-                  map: map,
-                  position: location,
-                  animation: google.maps.Animation.DROP
-                });
-              }else{
-                $scope.showMap = false;
-                $scope.showNext = false;
-                bootbox.alert("The location you selected is outside the service area.");
-              }
-            }).
-            error(function(serviceAreaResult) {
-              bootbox.alert("An error occured on the server, please retry your search or try again later.");
-            });
-
-        } else {
-          alert('Geocode was not successful for the following reason: ' + status);
+          $scope.marker = new google.maps.Marker({
+            map: map,
+            position: location,
+            animation: google.maps.Animation.DROP
+          });
+        }else{
+          $scope.showMap = false;
+          $scope.showNext = false;
+          bootbox.alert("The location you selected is outside the service area.");
         }
+      }).
+      error(function(serviceAreaResult) {
+        bootbox.alert("An error occured on the server, please retry your search or try again later.");
       });
-    })
   }
 
   $scope.getCurrentLocation = function() {
@@ -803,16 +810,11 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
   }
 
   $scope.overrideCurrentLocation = function() {
-    $scope.restartPlan();
+    planService.from = null;
+    planService.fromDetails = null;
     $location.path("/plan/from");
     $scope.step = 'from';
   };
-
-  $scope.restartPlan = function() {
-    planService.from = null;
-    planService.fromDetails = null;
-  };
-
 
   $scope.toggleRidePanelVisible = function(type, divIndex) {
     $scope.showEmail = false;
@@ -882,50 +884,6 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
     }
   );
 
-  $scope.$watch('fromChoice', function(n) {
-      if($scope.step == 'from'){
-        planService.from = n;
-        $scope.showMap = false;
-        if(!n){
-          $scope.showNext = false;
-        }
-      }
-    }
-  );
-
-  $scope.$watch('fromDetails', function(n) {
-      if($scope.step == 'from'){
-        if (n) {
-          $scope.showNext = true;
-        }else{
-          $scope.showNext = false;
-        }
-      }
-    }
-  );
-
-  $scope.$watch('toChoice', function(n) {
-      if($scope.step == 'to'){
-        planService.to = n;
-        $scope.showMap = false;
-        if(!n){
-          $scope.showNext = false;
-        }
-      }
-    }
-  );
-
-  $scope.$watch('toDetails', function(n) {
-      if($scope.step == 'to'){
-        if (n) {
-          $scope.showNext = true;
-        }else{
-          $scope.showNext = false;
-        }
-      }
-    }
-  );
-
   $scope.$watch('fromTime', function(n) {
       if($scope.step == 'fromTimeType'){
         var fromDate = planService.fromDate;
@@ -983,50 +941,6 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
     }
   );
 
-  $scope.$watch('fromLocationMap', function(map) {
-    if(map && $routeParams.step == 'from' && planService.from){
-        $scope.fromChoice = planService.from;
-        var result = planService.fromDetails;
-        delete result.geometry.location.lat;
-        delete result.geometry.location.lng;
-        if($scope.marker){
-          $scope.marker.setMap(null);
-        }
-        map.setCenter(result.geometry.location);
-        $scope.marker = new google.maps.Marker({
-          map: map,
-          position: result.geometry.location,
-          animation: google.maps.Animation.DROP
-        });
-        $scope.showMap = true;
-        $scope.disableNext = false;
-        $scope.showNext = true;
-        $scope.showUndo = true;
-    }
-  })
-
-  $scope.$watch('toLocationMap', function(map) {
-    if(map && $routeParams.step == 'to' && planService.to){
-      $scope.toChoice = planService.to;
-      var result = planService.toDetails;
-      delete result.geometry.location.lat;
-      delete result.geometry.location.lng;
-      if($scope.marker){
-        $scope.marker.setMap(null);
-      }
-      map.setCenter(result.geometry.location);
-      $scope.marker = new google.maps.Marker({
-        map: map,
-        position: result.geometry.location,
-        animation: google.maps.Animation.DROP
-      });
-      $scope.showMap = true;
-      $scope.disableNext = false;
-      $scope.showNext = true;
-      $scope.showUndo = true;
-    }
-  })
-
   $scope.$watch('confirmFromLocationMap', function(n) {
       if (n) {
         if(planService.fromDetails && $scope.step == 'from_confirm'){
@@ -1042,11 +956,6 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
             position: result.geometry.location,
             animation: google.maps.Animation.DROP
           });
-          var bounds = new google.maps.LatLngBounds(result.geometry.location, result.geometry.location);
-
-          var contentString = '' + result.name;
-          var infoWindow = new google.maps.InfoWindow({content: contentString, position: result.geometry.location});
-          //infoWindow.open(map);
 
           google.maps.event.trigger(n, 'resize');
           n.setCenter(result.geometry.location);
