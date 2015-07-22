@@ -656,15 +656,36 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
 
             //verify the location has a street address
             var datatypes = [];
+            var route;
             angular.forEach(result.address_components, function(component, index) {
               angular.forEach(component.types, function(type, index) {
-                datatypes.push(type)
+                datatypes.push(type);
+                if(type == 'route'){
+                  route = component.long_name;
+                }
               });
             });
 
             if(datatypes.indexOf('street_number') < 0 || datatypes.indexOf('route') < 0){
-              bootbox.alert("The location you selected does not have a valid street address, please select another location.");
-              return;
+              if(datatypes.indexOf('route') < 0){
+                bootbox.alert("The location you selected does not have have a street associated with it, please select another location.");
+                return;
+              }else if(datatypes.indexOf('street_number') < 0){
+                var streetNameIndex = $scope.place.indexOf(route);
+                if(streetNameIndex > -1){
+                  var prefix = $scope.place.substr(0, streetNameIndex);
+                  prefix = prefix.trim();
+                  var streetComponent = {};
+                  streetComponent.short_name = prefix;
+                  streetComponent.long_name = prefix;
+                  streetComponent.types = [];
+                  streetComponent.types.push('street_number');
+                  result.address_components.push(streetComponent);
+                }else{
+                  bootbox.alert("The location you selected does not have a street number associated, please select another location.");
+                  return;
+                }
+              }
             }
 
             $scope.checkServiceArea(result);
