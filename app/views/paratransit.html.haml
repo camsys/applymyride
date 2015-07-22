@@ -1,6 +1,6 @@
 .container#paratransit{style: 'padding: 0;', index: '{{$index}}', ng: {show: '!booking_failed', repeat: 'itinerary in paratransitItineraries'}}
   %div{ng:{show: '$index == 0'}}
-    .row{style: 'margin-bottom: 1em;'}
+    .row{style: 'margin-bottom: 1em;', ng: {show: 'email'}}
       .col-xs-12.text-center{style: 'padding: 0;'}
         %h2 Your trip has been saved
     .row{style: 'margin-bottom: 1em; margin-top: 1em;'}
