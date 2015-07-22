@@ -41,9 +41,8 @@ angular.module('applyMyRideApp')
               if(planService.returnTripId){
                 ids.push(planService.returnTripId);
               }
-
               angular.forEach(ids, function(id, index) {
-                emailRequestPart.itineraries.push({"trip_id":planService.selectedTripId,"itinerary_id":id})
+                emailRequestPart.itineraries.push({"trip_id":planService.searchResults.trip_id,"itinerary_id":id})
               });
               emailRequest.email_itineraries.push(emailRequestPart)
             });
