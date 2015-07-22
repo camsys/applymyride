@@ -496,7 +496,7 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
         promise.
           success(function(result) {
             planService.searchResults = result;
-            $location.path('/plan/list_itineraries');ca
+            $location.path('/plan/list_itineraries');
           }).
           error(function(result) {
             bootbox.alert("An error occured on the server, please retry your search or try again later.");
