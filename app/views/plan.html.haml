@@ -49,7 +49,7 @@
         .text-center
           %h4 Start at your current location?
           .col-xs-12.col-md-4.col-md-offset-4.col-sm-6.col-sm-offset-3
-            %a.btn.btn-success.btn-block{ng: {click: 'getCurrentLocation()'}}
+            %a.btn.btn-success.btn-block{href: '', ng: {click: 'getCurrentLocation()'}}
               Yes
             %a.btn-block{ng: {href: '#/plan/from'}}
               No
@@ -103,7 +103,7 @@
         .col-xs-12.col-md-4.col-md-offset-4.col-sm-6.col-sm-offset-3
           %a.btn.btn-success.btn-block{ng: {href: '#/plan/returnDate'}}
             Yes
-          %a.btn-block{ng: {click: 'setNoReturnTrip()'}}
+          %a.btn-block{href: '', ng: {click: 'setNoReturnTrip()'}}
             No
 
     .return-date{ng: {show: 'step==="returnDate"'}}
