@@ -2,12 +2,11 @@
 
 var app = angular.module('applyMyRideApp');
 
-app.controller('PlanController', ['$scope', '$http','$routeParams', '$location', 'planService', 'flash', 'usSpinnerService', '$q', 'LocationSearch', 'localStorageService', 'ipCookie',
+app.controller('PlanController', ['$scope', '$http','$routeParams', '$location', 'planService', 'flash', 'usSpinnerService', '$q', 'LocationSearch', 'localStorageService', 'ipCookie', '$timeout',
 
-function($scope, $http, $routeParams, $location, planService, flash, usSpinnerService, $q, LocationSearch, localStorageService, ipCookie) {
+function($scope, $http, $routeParams, $location, planService, flash, usSpinnerService, $q, LocationSearch, localStorageService, ipCookie, $timeout) {
 
   $scope.minReturnDate = new Date();
-
   $scope.marker = null;
   $scope.locations = [];
   $scope.placeIds = [];
@@ -219,7 +218,7 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
     case 'from':
       if(planService.from != null){
         $scope.fromDetails = planService.fromDetails;
-        $scope.fromChoice = planService.from;
+        $scope.from = planService.from;
       }
       $scope.showNext = false;
       break;
@@ -550,7 +549,7 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
   $scope.clearFrom = function(){
     $scope.showMap = false;
     $scope.showNext = false;
-    $scope.fromChoice = null;
+    $scope.from = null;
   }
 
   $scope.clearTo = function(){
@@ -713,12 +712,6 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
             localStorageService.set('recentSearches', JSON.stringify(recentSearches));
           }
 
-          if($routeParams.step == 'from'){
-            planService.fromDetails = result;
-          }else if($routeParams.step == 'to'){
-            planService.toDetails = result;
-          }
-
           var map = $scope.map;
           if($scope.marker){
             $scope.marker.setMap(null);
@@ -744,6 +737,17 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
             position: location,
             animation: google.maps.Animation.DROP
           });
+
+
+          if($routeParams.step == 'from'){
+            planService.fromDetails = result;
+            planService.from = $scope.place;
+            planService.fromLocationMap = $scope.fromLocationMap;
+          }else if($routeParams.step == 'to'){
+            planService.toDetails = result;
+            planService.to = $scope.place;
+          }
+
         }else{
           $scope.showMap = false;
           $scope.showNext = false;
@@ -961,6 +965,48 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
       }
     }
   );
+
+  $scope.$watch('fromLocationMap', function(map) {
+    if(map && $routeParams.step == 'from' && planService.from){
+        $scope.from = planService.from;
+        var result = planService.fromDetails;
+        if($scope.marker){
+          $scope.marker.setMap(null);
+        }
+        var location = new google.maps.LatLng(result.geometry.location.lat, result.geometry.location.lng);
+        map.setCenter(location);
+        $scope.marker = new google.maps.Marker({
+          map: map,
+          position: location,
+          animation: google.maps.Animation.DROP
+        });
+        $scope.showMap = true;
+        $scope.disableNext = false;
+        $scope.showNext = true;
+        $scope.showUndo = true;
+    }
+  })
+
+  $scope.$watch('toLocationMap', function(map) {
+    if(map && $routeParams.step == 'to' && planService.to){
+      $scope.to = planService.to;
+      var result = planService.toDetails;
+      if($scope.marker){
+        $scope.marker.setMap(null);
+      }
+      var location = new google.maps.LatLng(result.geometry.location.lat, result.geometry.location.lng);
+      map.setCenter(location);
+      $scope.marker = new google.maps.Marker({
+        map: map,
+        position: location,
+        animation: google.maps.Animation.DROP
+      });
+      $scope.showMap = true;
+      $scope.disableNext = false;
+      $scope.showNext = true;
+      $scope.showUndo = true;
+    }
+  })
 
   $scope.$watch('confirmFromLocationMap', function(n) {
       if (n) {
