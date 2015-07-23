@@ -557,7 +557,7 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
   $scope.getLocations = function(typed){
     if(typed){
       var config = planService.getHeaders();
-      $scope.suggestions = LocationSearch.getLocations(typed, config);
+      $scope.suggestions = LocationSearch.getLocations(typed, config, planService.email != null);
       $scope.suggestions.then(function(data){
 
         var choices = [];
@@ -579,15 +579,17 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
         }
 
 
-        var recentSearchData = data[2].recentsearches;
-        if(recentSearchData && recentSearchData.length > 0){
-          choices.push({label:'Recently Searched', option: false});
-          angular.forEach(recentSearchData, function(recentSearch, index) {
-            choices.push({label:recentSearch, option: true});
-          }, choices);
-          $scope.placeLabels = $scope.placeLabels.concat(recentSearchData);
-          $scope.placeIds = $scope.placeIds.concat(data[2].placeIds);
-          $scope.placeAddresses = $scope.placeAddresses.concat(recentSearchData);
+        if(data.length > 2){
+          var recentSearchData = data[2].recentsearches;
+          if(recentSearchData && recentSearchData.length > 0){
+            choices.push({label:'Recently Searched', option: false});
+            angular.forEach(recentSearchData, function(recentSearch, index) {
+              choices.push({label:recentSearch, option: true});
+            }, choices);
+            $scope.placeLabels = $scope.placeLabels.concat(recentSearchData);
+            $scope.placeIds = $scope.placeIds.concat(data[2].placeIds);
+            $scope.placeAddresses = $scope.placeAddresses.concat(recentSearchData);
+          }
         }
 
         var googlePlaceData = data[0].googleplaces;

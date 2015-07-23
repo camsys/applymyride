@@ -665,13 +665,20 @@ angular.module('applyMyRideApp')
 
     var LocationSearch = new Object();
 
-    LocationSearch.getLocations = function(text, config) {
+    LocationSearch.getLocations = function(text, config, includeRecentSearches) {
 
       var compositePromise = $q.defer();
 
-      $q.all([LocationSearch.getGooglePlaces(text), LocationSearch.getSavedPlaces(text, config), LocationSearch.getRecentSearches(text)]).then(function(results){
-        compositePromise.resolve(results);
-      });
+      if(includeRecentSearches == true){
+        $q.all([LocationSearch.getGooglePlaces(text), LocationSearch.getSavedPlaces(text, config), LocationSearch.getRecentSearches(text)]).then(function(results){
+          compositePromise.resolve(results);
+        });
+      }else{
+        $q.all([LocationSearch.getGooglePlaces(text), LocationSearch.getSavedPlaces(text, config)]).then(function(results){
+          compositePromise.resolve(results);
+        });
+      }
+
 
       return compositePromise.promise;
 
