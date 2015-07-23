@@ -429,8 +429,8 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
       $scope.questions = planService.getPrebookingQuestions();
       $scope.hasEscort = planService.hasEscort;
       $scope.numberOfCompanions = planService.numberOfCompanions;
-      if($scope.numberOfCompanions)
-        $scope.hasCompanion = true;
+      if($scope.numberOfCompanions == null)
+        $scope.numberOfCompanions = 0;
       $scope.showNext = true;
       $scope.disableNext = false;
       break;
@@ -504,11 +504,7 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
         break;
       case 'sharedride_options_2':
         planService.hasEscort = $scope.hasEscort;
-        if($scope.hasCompanion){
-          planService.numberOfCompanions = $scope.numberOfCompanions;
-        }else{
-          delete planService.numberOfCompanions;
-        }
+        planService.numberOfCompanions = $scope.numberOfCompanions;
         $location.path('/plan/sharedride_options_3');
         break;
       case 'sharedride_options_3':
