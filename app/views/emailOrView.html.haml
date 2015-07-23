@@ -3,14 +3,14 @@
     .row{ng: {click: 'toggleEmail($event)'}}
       %span.fa-stack
         %i.fa.fa-share-square-o.fa-stack-2x
-      %a.blue-text
+      %a.blue-text{ng: {show: '!mobile'}}
         Email
   .col-xs-4{style: 'text-align: center;'}
     .row{ng: {click: 'selectTrip($event, tab, $index)'}}
       %span.fa-stack{style: 'margin-left: 1em; width: 1em !important;'}
         %i.fa.fa-chevron-right.fa-lg
-      %a.blue-text
-        View trip
+      %a.blue-text{ng: {show: '!mobile'}}
+        View
 .row{ng: {show: 'showEmail'}}
   .row
     .col-xs-12.col-sm-8.col-sm-offset-2.text-left

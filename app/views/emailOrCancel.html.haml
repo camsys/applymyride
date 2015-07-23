@@ -3,22 +3,22 @@
     %span.fa-stack
       %i.fa.fa-circle.fa-stack-2x
       %i.fa.fa-times.fa-stack-1x{style: 'color: white;'}
-    %a.blue-text{ng: {show: 'trip.mode != "mode_paratransit"'}}
-      Drop this ride
-    %a.blue-text{ng: {show: 'trip.mode == "mode_paratransit"'}}
-      Cancel this ride
+    %a.blue-text{ng: {show: 'trip.mode != "mode_paratransit" && !mobile'}}
+      Drop
+    %a.blue-text{ng: {show: 'trip.mode == "mode_paratransit" && !mobile'}}
+      Cancel
   .col-xs-4{style: 'text-align: center;'}
     .row{ng: {click: 'toggleEmail($event)'}}
       %span.fa-stack
         %i.fa.fa-share-square-o.fa-stack-2x
-      %a.blue-text
+      %a.blue-text{ng: {show: '!mobile'}}
         Email
   .col-xs-4{style: 'text-align: left;'}
     .row{ng: {click: 'selectTrip($event, tab, $index)'}}
       %span.fa-stack
         %i.fa.fa-chevron-right.fa-lg
-      %a.blue-text
-        View trip
+      %a.blue-text{ng: {show: '!mobile'}}
+        View
 .row{ng: {show: 'showEmail'}}
   .row
     .col-xs-12.col-sm-8.col-sm-offset-2.text-left
