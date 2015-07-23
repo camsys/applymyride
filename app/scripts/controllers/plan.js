@@ -231,7 +231,7 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
       break;
     case 'to':
       if(planService.to != null){
-        $scope.toChoice = planService.to;
+        $scope.to = planService.to;
         $scope.toDetails = planService.toDetails;
       }
       $scope.showNext = false;
@@ -555,7 +555,7 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
   $scope.clearTo = function(){
     $scope.showMap = false;
     $scope.showNext = false;
-    $scope.toChoice = null;
+    $scope.to = null;
   }
 
   $scope.getLocations = function(typed){
