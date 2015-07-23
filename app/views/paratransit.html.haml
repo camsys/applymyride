@@ -5,7 +5,7 @@
         %h2 Your trip has been saved
     .row{style: 'margin-bottom: 1em; margin-top: 1em;'}
       .col-xs-12.col-md-6.col-md-offset-3.col-sm-6.col-sm-offset-3.text-left.no-padding
-        %a.btn.btn-success.btn-block{"ng-href" => "#/plan/fromDate"}
+        %a.btn.btn-success.btn-block{href: '', ng: {click: 'reset()'}}
           Plan another ride
         %a.btn-block.text-center.link-btn{"ng-href" => "#/plan/my_rides"}
           View my saved rides

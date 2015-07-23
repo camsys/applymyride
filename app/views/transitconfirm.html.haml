@@ -12,7 +12,7 @@
             View my saved rides
       .row{ng: {show: '!email'}}
         .col-xs-12.col-md-6.col-md-offset-3.col-sm-6.col-sm-offset-3.text-left
-          %a.btn.btn-success.btn-block{ng: {href: '#/plan/fromDate'}}
+          %a.btn.btn-success.btn-block{href: '', ng: {click: 'reset()'}}
             Plan a new trip
           %a.btn-block.text-center.link-btn{href: '', ng: {click: 'toggleEmail()'}}
             Email this ride

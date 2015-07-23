@@ -9,6 +9,11 @@ angular.module('applyMyRideApp')
       $scope.tripid = $routeParams.tripid;
       $scope.showDiv = {};
 
+      $scope.reset = function() {
+        planService.reset();
+        $location.path("/plan/fromDate");
+      };
+
       $scope.prepareTrip = function(){
 
         angular.forEach(planService.paratransitItineraries, function(result, index) {
