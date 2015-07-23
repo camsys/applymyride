@@ -51,7 +51,7 @@
           .col-xs-12.col-md-4.col-md-offset-4.col-sm-6.col-sm-offset-3
             %a.btn.btn-success.btn-block{href: '', ng: {click: 'getCurrentLocation()'}}
               Yes
-            %a.btn-block{ng: {href: '#/plan/from'}}
+            %a.btn-block.link-btn{ng: {href: '#/plan/from'}}
               No
 
     .map-wrapper.text-center{ng: {show: 'step==="from_confirm" && showConfirmLocationMap'}}
@@ -61,7 +61,7 @@
       .col-md-4.col-md-offset-4.col-sm-6.col-sm-offset-3.col-xs-12
         %a.btn.btn-success.btn-block{href: "", ng: {click: 'next()'}}
           Yes, use this address
-        %a.btn.btn-success.btn-block{href: "", ng: {click: 'overrideCurrentLocation()'}}
+        %a.btn-block.link-btn{href: "", ng: {click: 'overrideCurrentLocation()'}}
           No, I'll enter the address myself
 
       %p
@@ -103,7 +103,7 @@
         .col-xs-12.col-md-4.col-md-offset-4.col-sm-6.col-sm-offset-3
           %a.btn.btn-success.btn-block{ng: {href: '#/plan/returnDate'}}
             Yes
-          %a.btn-block{href: '', ng: {click: 'setNoReturnTrip()'}}
+          %a.btn-block.link-btn{href: '', ng: {click: 'setNoReturnTrip()'}}
             No
 
     .return-date{ng: {show: 'step==="returnDate"'}}
@@ -222,7 +222,7 @@
         .col-xs-8.col-xs-offset-2.col-md-4.col-md-offset-4.col-sm-8.col-sm-offset-2.text-center
           %a.btn.btn-success.btn-block{href: "", ng: {click: 'next()'}}
             Search for ride!
-          %a.btn-block{"ng-href" => "#/plan/fromDate"}
+          %a.btn-block.link-btn{"ng-href" => "#/plan/fromDate"}
             No, change my request
 
     .list_itineraries.col-xs-12.col-sm-8.col-sm-offset-2.no-padding{ng: {show: 'step==="list_itineraries" && noresults == true'}}
@@ -415,7 +415,7 @@
           .col-md-4.col-md-offset-4.col-xs-12
             %a.btn.btn-success.btn-block{href: '', ng: {click: 'specifySharedRideCompanion("false")'}, style: 'white-space: normal; margin-bottom:4px;'}
               No, I'm on my own
-            %a.text-center.btn-block{href: '', ng: {click: 'specifySharedRideCompanion("true")'}, style: 'white-space: normal; margin-bottom:4px; cursor:pointer;'}
+            %a.text-center.btn-block.link-btn{href: '', ng: {click: 'specifySharedRideCompanion("true")'}, style: 'white-space: normal; margin-bottom:4px; cursor:pointer;'}
               Yes, I have a companion or escort with me
 
     .depart-time{ng: {show: 'step==="sharedride_options_2"'}}
@@ -457,7 +457,7 @@
             Book this shared ride
       .row
         .col-md-4.col-md-offset-4.text-center
-          %a{"ng-href" => "#/plan/fromDate"}
+          %a.btn-block.link-btn{"ng-href" => "#/plan/fromDate"}
             No, change it
 
 
