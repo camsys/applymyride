@@ -39,6 +39,27 @@ angular.module('applyMyRideApp')
 
         $scope.booking_results = planService.booking_results;
         $scope.paratransitItineraries = planService.paratransitItineraries;
+        $scope.driverInstructions = planService.driverInstructions;
+        if($scope.driverInstructions == null)
+          $scope.driverInstructions = 'N/A';
+
+        if(planService.hasEscort == true){
+          $scope.escort = "1 Escort";
+        }
+
+        if(planService.numberOfCompanions != null && planService.numberOfCompanions > 0){
+          if($scope.escort){
+            $scope.escort += ', ';
+          }
+          $scope.escort += planService.numberOfCompanions + ' Companion';
+          if(planService.numberOfCompanions > 1){
+            $scope.escort += 's';
+          }
+        }
+
+        if(!$scope.escort)
+          $scope.escort = 'N/A';
+
       }
 
       $scope.prepareTrip();
