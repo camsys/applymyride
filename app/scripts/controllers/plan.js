@@ -861,14 +861,14 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
           var datediff = now.diff(n, 'days');
           if(datediff < 1){
             $scope.fromDate = n;
-            $scope.disableNext = false;
+            $scope.showNext = true;
           }else{
-            $scope.disableNext = true;
             planService.fromDate = null;
+            $scope.showNext = false;
           }
         }else{
-          $scope.disableNext = true;
           planService.fromDate = null;
+          $scope.showNext = false;
         }
       }
     }
