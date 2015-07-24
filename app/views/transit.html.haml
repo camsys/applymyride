@@ -1,4 +1,4 @@
-.container#transit{style: 'padding: 0;'}
+.container#transit.no-padding
   .buttonwrapper
     .row{style: 'margin-top: 1em;', ng: {show: 'roundtrip == false || segmentid == 1'}}
       .col-md-4.col-md-offset-4.col-sm-6.col-sm-offset-3.col-xs-12.text-center
@@ -7,15 +7,15 @@
   .row{style: 'margin-bottom: 1em;'}
     .col-xs-12.col-md-8.col-md-offset-2
       .row
-        .col-xs-12.text-muted
+        .col-xs-12.text-muted.no-padding
           {{itinerary.dayAndDateDesc}}
       .row
-        .col-xs-10.text-left
+        .col-xs-10.text-left.no-padding
           %h4
             {{itinerary.travelTime}} (
             %img.walk-time-icon{ng: {src: 'images/modes/walk.png'}}
             {{itinerary.walkTimeDesc}})
-        .col-xs-2.text-right
+        .col-xs-2.text-right.no-padding
           %h4{style: 'float:right; vertical-align: bottom;'} {{itinerary.cost | currency | free}}
   .row
     .col-xs-12.col-md-8.col-md-offset-2.transit-container
@@ -87,7 +87,7 @@
                   %h4 {{itinerary.end_location.name}}
   .container.sticky-footer
     .row{style: 'margin-top: 1em'}
-      .col-md-8.col-md-offset-2.col-xs-6.col-xs-offset-3
+      .col-md-8.col-md-offset-2.col-xs-12
         .pull-left
           %a.btn-back{href: "", back: '', ng: {click: "back()"}}
             %span{ng: {include: "'views/button-chevron-left.html'"}}
