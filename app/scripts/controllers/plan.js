@@ -243,7 +243,7 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
       }else{
         $scope.returnDate = planService.fromDate;
       }
-      $scope.minReturnDate = planService.fromDate
+      $scope.minReturnDate = planService.fromDate;
       $scope.disableNext = false;
       break;
     case 'returnTime':
@@ -862,6 +862,13 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
           if(datediff < 1){
             $scope.fromDate = n;
             $scope.showNext = true;
+            $scope.minReturnDate = n;
+            if(planService.returnDate){
+              planService.returnDate = n;
+              delete planService.returnTime;
+              delete planService.returnTimeType;
+            }
+
           }else{
             planService.fromDate = null;
             $scope.showNext = false;
