@@ -972,6 +972,9 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
           $scope.marker.setMap(null);
         }
         var location = new google.maps.LatLng(result.geometry.location.lat, result.geometry.location.lng);
+        if(isNaN(location.lat())){
+          location = result.geometry.location;
+        }
         map.setCenter(location);
         $scope.marker = new google.maps.Marker({
           map: map,
@@ -993,6 +996,9 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
         $scope.marker.setMap(null);
       }
       var location = new google.maps.LatLng(result.geometry.location.lat, result.geometry.location.lng);
+      if(isNaN(location.lat())){
+        location = result.geometry.location;
+      }
       map.setCenter(location);
       $scope.marker = new google.maps.Marker({
         map: map,
