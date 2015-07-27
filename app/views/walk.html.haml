@@ -13,7 +13,7 @@
           %a.btn.btn-success.btn-block{href: '', ng: {click: 'reset()'}}
             Plan a new trip
           %a.btn-block.text-center.link-btn{ng: {href: '#/plan/my_rides'}}
-            View my saved rides 
+            View my saved rides
       .row{ng: {show: '!email'}}
         .col-xs-12.col-md-6.col-md-offset-3.col-sm-6.col-sm-offset-3.text-left
           %a.btn.btn-success.btn-block{href: '', ng: {click: 'reset()'}}
@@ -75,7 +75,8 @@
             .walk-info{ng: {show: 'leg.mode == "WALK"'}}
               .row
                 .leg-info.col-xs-12.leg-header
-                  %h4 {{leg.from.name}}
+                  %h4{ng: {show: '!$first'}} {{leg.from.name}}
+                  %h4{ng: {show: '$first'}}  {{itinerary.start_location.name}}
               .row
                 .leg-info.col-xs-12
                   %h4.text-muted Walk
@@ -104,7 +105,7 @@
             .bus-info
               .row
                 .leg-info.col-xs-12.leg-header
-                  %h4 {{itinerary.destinationDesc}}
+                  %h4 {{itinerary.end_location.name}}
 
 .row{style: 'margin-top: 1em;'}
   .col-md-8.col-md-offset-2.col-xs-12
