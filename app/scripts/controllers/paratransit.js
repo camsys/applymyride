@@ -43,8 +43,9 @@ angular.module('applyMyRideApp')
         if($scope.driverInstructions == null)
           $scope.driverInstructions = 'N/A';
 
+        $scope.escort = "";
         if(planService.hasEscort == true){
-          $scope.escort = "1 Escort";
+          $scope.escort += "1 Escort";
         }
 
         if(planService.numberOfCompanions != null && planService.numberOfCompanions > 0){
@@ -57,7 +58,7 @@ angular.module('applyMyRideApp')
           }
         }
 
-        if(!$scope.escort)
+        if($scope.escort.length == 0)
           $scope.escort = 'N/A';
 
       }
