@@ -855,11 +855,13 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
   };
 
   $scope.$watch('fromDate', function(n) {
+      var fromDateString = moment(new Date()).format('M/D/YYYY');
       if($scope.step == 'fromDate'){
         if (n) {
           var now = moment().startOf('day');
           var datediff = now.diff(n, 'days');
           if(datediff < 1){
+            $scope.message = null;
             $scope.fromDate = n;
             $scope.showNext = true;
             $scope.minReturnDate = n;
@@ -868,14 +870,15 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
               delete planService.returnTime;
               delete planService.returnTimeType;
             }
-
           }else{
             planService.fromDate = null;
             $scope.showNext = false;
+            $scope.message = 'Please select a departure date no earlier than ' + fromDateString;
           }
         }else{
           planService.fromDate = null;
           $scope.showNext = false;
+          $scope.message = 'Please select a departure date no earlier than ' + fromDateString;
         }
       }
     }

@@ -19,6 +19,7 @@
                   %span.input-group-btn
                     %button.btn.btn-default{'type' => 'button', 'ng-click' => 'openCalendar($event)'}
                       %i.glyphicon.glyphicon-calendar
+              %span{style: 'color: red;'} {{message}}
 
     .depart-time{ng: {show: 'step==="fromTimeType"'}}
       .col-md-8.col-md-offset-2.col-sm-6.col-sm-offset-3.col-xs-12
