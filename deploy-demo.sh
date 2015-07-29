@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
-git checkout $
+git checkout $1
 git pull
 bower install
-datetag=$(date "+%Y%m%d%H%M").'_DEMO_deploy'
+datetag=$1
 git tag -a $datetag -m 'Demo deploy'
 grunt build
 perl -pi.bak -e 's/\<head\>/\<head\> <base href="\/findmyride-demo\/" target="_blank" \/> /g' dist/index.html
