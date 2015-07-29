@@ -133,21 +133,22 @@
       .row
         .col-xs-12
           %h2 Here is your shared ride trip plan
-  .row
-    .col-xs-6.text-right.text-muted
-      Escorts/Companions:
-    .col-xs-6.text-left
-      {{escort}}
-  .row{style: 'margin-bottom: 1em;'}
-    .col-xs-6.text-right.text-muted
-      Instructions to Driver:
-    .col-xs-6.text-left
-      {{driverInstructions}}
-  .row{ng: {show: '$index == 0'}}
-    .col-xs-12.col-md-8.col-md-offset-2.no-padding
-      .row
-        .col-xs-12
-          %h2 Outbound Trip
+  .headerwrap{ng: {show: '$index == 0'}}
+    .row
+      .col-xs-6.text-right.text-muted
+        Escorts/Companions:
+      .col-xs-6.text-left
+        {{escort}}
+    .row{style: 'margin-bottom: 1em;'}
+      .col-xs-6.text-right.text-muted
+        Instructions to Driver:
+      .col-xs-6.text-left
+        {{driverInstructions}}
+    .row
+      .col-xs-12.col-md-8.col-md-offset-2.no-padding
+        .row
+          .col-xs-12
+            %h2 Outbound Trip
   .row{ng: {show: '$index == 1', style: "$index == 1 ? {'margin-top': '2em'} : {}"}}
     .col-xs-12.col-md-8.col-md-offset-2.no-padding
       .row

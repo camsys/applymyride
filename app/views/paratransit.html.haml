@@ -9,19 +9,20 @@
           Plan another ride
         %a.btn-block.text-center.link-btn{"ng-href" => "#/plan/my_rides"}
           View my saved rides
-  .row
-    .col-xs-6.text-right.text-muted
-      Escorts/Companions:
-    .col-xs-6.text-left
-      {{escort}}
-  .row{style: 'margin-bottom: 1em;'}
-    .col-xs-6.text-right.text-muted
-      Instructions to Driver:
-    .col-xs-6.text-left
-      {{driverInstructions}}
-  .row{ng:{show: '$index == 0'}}
-    .col-xs-12.col-md-8.col-md-offset-2.no-padding
-      %h2 Trip Details
+  .headerwrap{ng:{show: '$index == 0'}}
+    .row
+      .col-xs-6.text-right.text-muted
+        Escorts/Companions:
+      .col-xs-6.text-left
+        {{escort}}
+    .row{style: 'margin-bottom: 1em;'}
+      .col-xs-6.text-right.text-muted
+        Instructions to Driver:
+      .col-xs-6.text-left
+        {{driverInstructions}}
+    .row
+      .col-xs-12.col-md-8.col-md-offset-2.no-padding
+        %h2 Trip Details
   .row{style: 'margin-top: 1em;', ng: {show: '$index == 0'}}
     .col-xs-12.col-md-8.col-md-offset-2.no-padding
       .row
