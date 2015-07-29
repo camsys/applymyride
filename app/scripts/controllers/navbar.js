@@ -31,8 +31,6 @@ angular.module('applyMyRideApp')
         that.$scope.first_name = ipCookie('first_name');
         that.$scope.last_name = ipCookie('last_name');
         that.$scope.sharedRideId = ipCookie('sharedRideId');
-        that.$scope.walkingSpeed = ipCookie('walkingSpeed');
-        that.$scope.walkingDistance = ipCookie('walkingDistance');
         if(that.$scope.email){
           planService.email = $scope.email;
           planService.authentication_token = $scope.authentication_token;

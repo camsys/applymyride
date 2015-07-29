@@ -4,9 +4,18 @@ angular.module('applyMyRideApp')
   .controller('ProfileController', ['$scope', '$location', 'flash', 'planService', '$http', 'ipCookie', '$window',
     function ($scope, $location, flash, planService, $http, ipCookie, $window) {
       $scope.location = $location.path();
-      $scope.speeds = ['Slow', 'Average', 'Fast'];
+      $scope.speeds = ['slow', 'average', 'fast'];
       $scope.distances = ['.25', '.5', '.75', '1', '2'];
       $scope.editable = false;
+      var profilePromise = planService.getProfile($http);
+      profilePromise.then(function(results){
+        console.log(results.data);
+        $scope.profile = results.data;
+        $scope.email = $scope.profile.email;
+        $scope.walkingSpeed = $scope.profile.walking_speed;
+        $scope.walkingDistance = $scope.profile.walking_distance;
+      });
+
 
       $scope.toggleEdit = function() {
         if($scope.editable == true){
@@ -22,14 +31,11 @@ angular.module('applyMyRideApp')
             $scope.invalidSpeed = false;
           }
           if($scope.invalidEmail == false && $scope.invalidDistance == false && $scope.invalidSpeed == false ) {
-            ipCookie('email', $scope.email, {expires: 7, expirationUnit: 'days'});
-            ipCookie('walkingDistance', $scope.walkingDistance, {expires: 7, expirationUnit: 'days'});
-            ipCookie('walkingSpeed', $scope.walkingSpeed, {expires: 7, expirationUnit: 'days'});
             var profileUpdate = {
               "attributes": {
                 "email": $scope.email,
                 "walking_speed": $scope.walkingSpeed.toLowerCase(),
-                "walking_distance": $scope.walkingDistance.substr($scope.walkingDistance.indexOf(' Miles'))
+                "walking_distance": $scope.walkingDistance
               }
             }
             planService.profileUpdateObject = profileUpdate;
