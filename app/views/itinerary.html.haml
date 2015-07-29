@@ -32,7 +32,7 @@
     .col-xs-12.col-md-8.col-md-offset-2.no-padding
       .row
         .col-xs-12
-          %h2 Here is your transit trip plan
+          %h2 Trip Details
   .transititinerary{index: '{{$index}}', ng: {repeat: 'itinerary in itineraries'}}
     .row{ng: {show: '$index == 0 && itineraries.length > 1'}}
       .col-xs-12.col-md-8.col-md-offset-2.no-padding
@@ -132,7 +132,7 @@
     .col-xs-12.col-md-8.col-md-offset-2.no-padding
       .row
         .col-xs-12
-          %h2 Here is your shared ride trip plan
+          %h2 Trip Details
   .headerwrap{ng: {show: '$index == 0'}}
     .row
       .col-xs-6.text-right.text-muted
@@ -209,7 +209,7 @@
     .col-xs-12.col-md-8.col-md-offset-2.no-padding
       .row
         .col-xs-12
-          %h2 Here is your walking trip plan
+          %h2 Trip Details
 .walkitinerary#walk{index: '{{$index}}', ng: {repeat: 'itinerary in walkItineraries'}}
   .row{ng: {show: '$index == 0'}}
     .col-xs-12.col-md-8.col-md-offset-2.no-padding
