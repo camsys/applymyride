@@ -5,15 +5,14 @@ angular.module('applyMyRideApp')
     function ($scope, $location, flash, planService, $http, ipCookie, $window) {
       $scope.location = $location.path();
       $scope.speeds = ['slow', 'average', 'fast'];
-      $scope.distances = ['.25', '.5', '.75', '1', '2'];
+      $scope.distances = ['.25 miles', '.5 miles', '.75 miles', '1 mile', '2 miles'];
       $scope.editable = false;
       var profilePromise = planService.getProfile($http);
       profilePromise.then(function(results){
-        console.log(results.data);
         $scope.profile = results.data;
         $scope.email = $scope.profile.email;
         $scope.walkingSpeed = $scope.profile.walking_speed;
-        $scope.walkingDistance = $scope.profile.walking_distance;
+        $scope.walkingDistance = $scope.profile.walking_distance + " miles";
       });
 
 
@@ -31,10 +30,13 @@ angular.module('applyMyRideApp')
             $scope.invalidSpeed = false;
           }
           if($scope.invalidEmail == false && $scope.invalidDistance == false && $scope.invalidSpeed == false ) {
+
+            $scope.walkingDistance = $scope.walkingDistance.substr(0, $scope.walkingDistance.indexOf(" "));
+
             var profileUpdate = {
               "attributes": {
                 "email": $scope.email,
-                "walking_speed": $scope.walkingSpeed.toLowerCase(),
+                "walking_speed": $scope.walkingSpeed,
                 "walking_distance": $scope.walkingDistance
               }
             }

@@ -74,8 +74,8 @@
             %span{ng: {show: '!editable && !walkingDistance'}}
               2 miles
             %span{ng: {show: '!editable && walkingDistance'}}
-              {{walkingDistance}} miles
-            %select{style: 'width: 100%', ng: {show: 'editable', model: 'walkingDistance', options: 'distance + " miles"  for distance in distances'}}
+              {{walkingDistance}}
+            %select{style: 'width: 100%', ng: {show: 'editable', model: 'walkingDistance', options: 'distance for distance in distances'}}
               %option{value: '', disabled: '', selected: ''}
                 Select your maximum walking distance
       .row{ng: {show: 'invalidDistance == true'}}
