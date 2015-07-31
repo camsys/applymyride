@@ -5,14 +5,19 @@ angular.module('applyMyRideApp')
     function ($scope, $location, flash, planService, $http, ipCookie, $window) {
       $scope.location = $location.path();
       $scope.speeds = ['slow', 'average', 'fast'];
-      $scope.distances = ['.25 miles', '.5 miles', '.75 miles', '1 mile', '2 miles'];
+      $scope.distances = ['0.25 miles', '0.5 miles', '0.75 miles', '1 mile', '2 miles'];
       $scope.editable = false;
       var profilePromise = planService.getProfile($http);
       profilePromise.then(function(results){
         $scope.profile = results.data;
         $scope.email = $scope.profile.email;
         $scope.walkingSpeed = $scope.profile.walking_speed;
-        $scope.walkingDistance = $scope.profile.walking_distance + " miles";
+        if($scope.profile.walking_distance == '1'){
+          $scope.walkingDistance = $scope.profile.walking_distance + " mile";
+        }else{
+          $scope.walkingDistance = $scope.profile.walking_distance + " miles";
+        }
+
       });
 
 
