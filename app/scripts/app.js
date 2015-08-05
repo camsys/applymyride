@@ -82,7 +82,7 @@ angular.module('applyMyRideApp', [
       })
       .when('/about', {
         templateUrl: 'views/about.html',
-        controller: 'AboutController'
+        controller: 'PlanController'
       })
       .when('/profile', {
         templateUrl: 'views/profile.html',
