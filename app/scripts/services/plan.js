@@ -579,11 +579,10 @@ angular.module('applyMyRideApp')
         }else{
           fromTime = moment(this.fromTime).toDate();
         }
-        var fromDate = moment(this.fromDate).toDate();
-        fromTime.setYear(fromDate.getFullYear());
-        fromTime.setMonth(fromDate.getMonth());
-        fromTime.setDate(fromDate.getDate());
-        var fromTimeString = moment.utc(fromTime).format();
+        var fromDate = moment(this.fromDate).startOf('day').toDate();
+        fromDate.setHours(fromTime.getHours());
+        fromDate.setMinutes(fromDate.getMinutes());
+        var fromTimeString = moment.utc(fromDate).format();
         outboundTrip.trip_time = fromTimeString;
         if(this.fromTimeType == 'asap'){
           outboundTrip.departure_type = 'depart';
@@ -604,11 +603,10 @@ angular.module('applyMyRideApp')
           }else{
             returnTime = moment(this.returnTime).toDate()
           }
-          var returnDate = moment(this.returnDate).toDate();
-          returnTime.setYear(returnDate.getFullYear());
-          returnTime.setMonth(returnDate.getMonth());
-          returnTime.setDate(returnDate.getDate());
-          var returnTimeString = moment.utc(returnTime).format();
+          var returnDate = moment(this.returnDate).startOf('day').toDate();
+          returnDate.setHours(returnTime.getHours());
+          returnDate.setMinutes(returnTime.getMinutes());
+          var returnTimeString = moment.utc(returnDate).format();
           returnTrip.trip_time = returnTimeString;
           request.itinerary_request.push(returnTrip);
         }
