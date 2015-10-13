@@ -726,8 +726,11 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
             var poilocation = $scope.poi.geometry.location;
             location = new google.maps.LatLng(Number(poilocation.lat), Number(poilocation.lng));
           }
-          delete location.lat;
-          delete location.lng;
+
+          if(typeof location.lat == "number"){
+            location = new google.maps.LatLng(Number(location.lat), Number(location.lng));
+          }
+
           map.setCenter(location);
 
           $scope.marker = new google.maps.Marker({
