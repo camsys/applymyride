@@ -51,6 +51,12 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
     $event.stopPropagation();
   };
 
+  $scope.rebook = function($event, tab, index) {
+    planService.rebookTrip = $scope.trips[tab][index];
+    $scope.step = 'rebook';
+    $location.path('/plan/rebook');
+  };
+
   $scope.cancelTrip = function($event, tab, index) {
     $event.stopPropagation();
     $scope.tripDivs[tab][index] = false;
@@ -155,6 +161,12 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
     $event.preventDefault();
     $event.stopPropagation();
     $scope.opened = true;
+  };
+
+  $scope.openReturnCalendar = function($event) {
+    $event.preventDefault();
+    $event.stopPropagation();
+    $scope.openedReturn = true;
   };
 
   $scope.setNoReturnTrip = function(){
@@ -436,6 +448,31 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
       break;
     case 'sharedride_options_3':
       $scope.driverInstructions = planService.driverInstructions;
+      break;
+    case 'rebook':
+      $scope.minDate = new Date();
+      $scope.trip = planService.rebookTrip;
+      if(planService.rebookTrip.itineraries.length > 1){
+        $scope.roundTrip = true;
+      }
+
+      $scope.fromTime = moment($scope.trip.itineraries[0].requested_time).toDate();
+      $scope.fromTimeType = $scope.trip.itineraries[0].requested_time_type;
+
+      if($scope.fromTime.getTime() > new Date().getTime()){
+        $scope.fromDate = moment($scope.fromTime).add(1, 'week').toDate();
+      }else{
+        $scope.fromDate = moment().add(1, 'week').toDate();
+      }
+
+      if($scope.trip.itineraries.length > 1){
+        $scope.minReturnDate = $scope.fromDate;
+        $scope.returnTime = moment($scope.trip.itineraries[1].requested_time).toDate();
+        $scope.returnTimeType = $scope.trip.itineraries[1].requested_time_type;
+        var datediff = Math.abs(moment($scope.trip.itineraries[0].end_time).diff(moment($scope.trip.itineraries[1].start_time), 'days'));
+        $scope.returnDate = moment($scope.fromDate).add(datediff, 'day').toDate();
+      }
+      $scope.hideButtonBar = true;
       break;
     default:
 
@@ -857,6 +894,105 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
     });
   };
 
+  $scope.submitRebookedTrip = function(){
+    $scope.message = null;
+    var fromDate = $scope.fromDate;
+    if(!fromDate){
+      $scope.message = 'Please enter a departure date.';
+      return;
+    }
+    var fromTime = $scope.fromTime;
+    if(!fromTime){
+      $scope.message = 'Please enter a departure time.';
+      return;
+    }
+    fromTime.setYear(fromDate.getFullYear());
+    fromTime.setMonth(fromDate.getMonth());
+    fromTime.setDate(fromDate.getDate());
+    if(planService.rebookTrip.itineraries.length > 1){
+      var returnTime = $scope.returnTime;
+      var returnDate = $scope.returnDate;
+
+      returnTime.setYear(returnDate.getFullYear());
+      returnTime.setMonth(returnDate.getMonth());
+      returnTime.setDate(returnDate.getDate());
+
+      if(!returnDate){
+        $scope.message = 'Please enter a return date.';
+        return;
+      }
+
+      if(!returnTime){
+        $scope.message = 'Please enter a return time.';
+        return;
+      }
+
+      if(returnTime.getTime() < fromTime.getTime()){
+        $scope.message = 'You requested a return trip that starts before your departure.  Please enter a valid return date and time.';
+        return;
+      }
+    }
+
+    var request = {};
+    var trip = planService.rebookTrip;
+    request.trip_purpose = trip.trip_purpose_raw;
+    request.itinerary_request = [];
+    var outboundTrip = {};
+    outboundTrip.segment_index = 0;
+    outboundTrip.start_location = trip.itineraries[0].start_location;
+    outboundTrip.end_location = trip.itineraries[0].end_location;
+    outboundTrip.assistant = trip.itineraries[0].assistant;
+    outboundTrip.companions = trip.itineraries[0].companions;
+    outboundTrip.note = trip.itineraries[0].note;
+
+    var fromTimeString = moment.utc(fromTime).format();
+    outboundTrip.trip_time = fromTimeString;
+    outboundTrip.departure_type = trip.itineraries[0].requested_time_type;
+    request.itinerary_request.push(outboundTrip);
+
+    if(trip.itineraries.length > 1){
+      var returnTrip = {};
+      returnTrip.segment_index = 1;
+      returnTrip.start_location = trip.itineraries[1].start_location;
+      returnTrip.end_location = trip.itineraries[1].end_location;
+      returnTrip.departure_type = trip.itineraries[1].requested_time_type;
+      returnTrip.assistant = trip.itineraries[0].assistant;
+      returnTrip.companions = trip.itineraries[0].companions;
+      returnTrip.note = trip.itineraries[0].note;
+      var returnTimeString = moment.utc(returnTime).format();
+      returnTrip.trip_time = returnTimeString;
+      request.itinerary_request.push(returnTrip);
+    }
+    planService.itineraryRequestObject = request;
+    usSpinnerService.spin('spinner-1');
+    var promise = planService.postItineraryRequest($http);
+    promise.
+      success(function(result) {
+        planService.searchResults = result;
+        var paratransitItineraries = [];
+
+        angular.forEach(result.itineraries, function(itinerary, index) {
+          if(itinerary.returned_mode_code == "mode_paratransit"){
+            paratransitItineraries.push(itinerary);
+          }
+        }, paratransitItineraries);
+        if(paratransitItineraries.length != trip.itineraries.length){
+          bootbox.alert("No shared ride is available for your request.");
+          usSpinnerService.stop('spinner-1');
+        }else{
+          planService.paratransitItineraries = paratransitItineraries;
+          var promise = planService.bookSharedRide($http);
+          promise.then(function(result) {
+            planService.booking_results = result.data.booking_results;
+            planService.hasEscort = trip.itineraries[0].assistant;
+            planService.numberOfCompanions = trip.itineraries[0].companions;
+            planService.driverInstructions = trip.itineraries[0].note;
+            $location.path('/paratransit/confirm_shared_ride');
+          });
+        }
+      })
+  }
+
   $scope.$watch('fromDate', function(n) {
       var fromDateString = moment(new Date()).format('M/D/YYYY');
       if($scope.step == 'fromDate'){
@@ -882,6 +1018,12 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
           planService.fromDate = null;
           $scope.showNext = false;
           $scope.message = 'Please select a departure date no earlier than ' + fromDateString;
+        }
+      }else if($scope.step == 'rebook'){
+        if($scope.returnDate != null && planService.rebookTrip && planService.rebookTrip.itineraries.length > 1){
+          if($scope.returnDate.getTime() < $scope.fromDate.getTime()){
+            $scope.returnDate = new Date($scope.fromDate.getTime());
+          }
         }
       }
     }

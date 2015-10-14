@@ -1,16 +1,36 @@
 .row.even-height-row
-  .col-xs-4.col-xs-offset-2{style: 'text-align: center;'}
-    .row{ng: {click: 'toggleEmail($event)'}}
-      %span.fa-stack
-        %i.fa.fa-share-square-o.fa-stack-2x
-      %a.blue-text{ng: {show: '!mobile'}}
-        Email
-  .col-xs-4{style: 'text-align: center;'}
-    .row{ng: {click: 'selectTrip($event, tab, $index)'}}
-      %span.fa-stack{style: 'margin-left: 1em; width: 1em !important;'}
-        %i.fa.fa-chevron-right.fa-lg
-      %a.blue-text{ng: {show: '!mobile'}}
-        View
+  .button_wrapper{ng: {show: 'trip.mode != "mode_paratransit"'}}
+    .col-xs-4.col-xs-offset-2{style: 'text-align: center;'}
+      .row{ng: {click: 'toggleEmail($event)'}}
+        %span.fa-stack
+          %i.fa.fa-share-square-o.fa-stack-2x
+        %a.blue-text{ng: {show: '!mobile'}}
+          Email
+    .col-xs-4{style: 'text-align: center;'}
+      .row{ng: {click: 'selectTrip($event, tab, $index)'}}
+        %span.fa-stack{style: 'margin-left: 1em; width: 1em !important;'}
+          %i.fa.fa-chevron-right.fa-lg
+        %a.blue-text{ng: {show: '!mobile'}}
+          View
+  .button_wrapper{ng: {show: 'trip.mode == "mode_paratransit"'}}
+    .col-xs-4{style: 'text-align: center;'}
+      .row{ng: {click: 'rebook($event, tab, $index)'}}
+        %span.fa-stack
+          %i.fa.fa-refresh.fa-stack-2x
+        %a.blue-text{ng: {show: '!mobile'}}
+          Rebook
+    .col-xs-4{style: 'text-align: center;'}
+      .row{ng: {click: 'toggleEmail($event)'}}
+        %span.fa-stack
+          %i.fa.fa-share-square-o.fa-stack-2x
+        %a.blue-text{ng: {show: '!mobile'}}
+          Email
+    .col-xs-4{style: 'text-align: center;'}
+      .row{ng: {click: 'selectTrip($event, tab, $index)'}}
+        %span.fa-stack{style: 'margin-left: 1em; width: 1em !important;'}
+          %i.fa.fa-chevron-right.fa-lg
+        %a.blue-text{ng: {show: '!mobile'}}
+          View
 .row{ng: {show: 'showEmail'}}
   .row
     .col-xs-12.col-sm-8.col-sm-offset-2.text-left
