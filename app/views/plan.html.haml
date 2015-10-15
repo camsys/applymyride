@@ -587,7 +587,8 @@
             %h5{ng: {click: 'specifyFromTimeType("asap")'}} As soon as possible
         .row.text-center{ng: {show: 'fromTimeType != "asap"'}}
           %timepicker.timepicker{'minute-step' => '5', ng: {model: 'fromTime', show: '!mobile'}}
-          %input#fromTime.form-control{type: 'time', step: '300', ng: {model: 'fromTime', required: 'true', show: 'mobile && html5'}}
+          .col-md-4.col-md-offset-4.col-sm-6.col-sm-offset-3.col-xs-12
+            %input#fromTime.form-control{type: 'time', step: '300', ng: {model: 'fromTime', required: 'true', show: 'mobile && html5'}}
         .returnWrapper{ng: {show: 'roundTrip'}}
           .row
             .col-md-4.col-md-offset-4.col-sm-6.col-sm-offset-3.col-xs-12
@@ -618,7 +619,8 @@
                         When do you want to get back?
           .row.text-center
             %timepicker.timepicker{'minute-step' => '5', ng: {model: 'returnTime', show: '!mobile'}}
-            %input#fromTime.form-control{type: 'time', step: '300', ng: {model: 'returnTime', required: 'true', show: 'mobile && html5'}}
+            .col-md-4.col-md-offset-4.col-sm-6.col-sm-offset-3.col-xs-12
+              %input#fromTime.form-control{type: 'time', step: '300', ng: {model: 'returnTime', required: 'true', show: 'mobile && html5'}}
 
         .row{style: 'margin-top: 10px', ng: {show: 'message'}}
           .col-md-4.col-md-offset-4.col-xs-12.text-center
