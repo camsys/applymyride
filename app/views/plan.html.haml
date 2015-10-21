@@ -115,13 +115,15 @@
           .col-md-4.col-md-offset-4.col-sm-6.col-sm-offset-3.col-xs-12
             %p.input-group{'ng-show' => 'html5', 'style' => 'width: 100%;'}
               %input#returnDate.form-control{min: "{{minReturnDate | date:'yyyy-MM-dd'}}", type: 'date', ng: {model: 'returnDate', required: 'true', enter: 'next()', show: 'mobile'}}
-              %input#returnDate.form-control{ focus: '', type: 'date', ng: {model: 'returnDate', required: 'true', enter: 'next()', show: '!mobile'}}
+              %input#returnDate.form-control{min: "{{minReturnDate | date:'yyyy-MM-dd'}}", type: 'date', ng: {model: 'returnDate', required: 'true', enter: 'next()', show: '!mobile',  focus: ''}}
             %p.input-group{'ng-show' => '!html5', }
-              %input.form-control{'type' => 'text', 'datepicker-popup' => "MMMM-dd-yyyy", 'min-date' => 'fromDate', 'is-open' => 'opened', 'datepicker-options' => 'dateOptions', 'close-text' => 'Close', 'ng-model' => 'returnDate',}
+              %input.form-control{'type' => 'text', 'datepicker-popup' => "MMMM-dd-yyyy", 'min-date' => 'minReturnDate', 'is-open' => 'opened', 'datepicker-options' => 'dateOptions', 'close-text' => 'Close', 'ng-model' => 'returnDate',}
                 %span.input-group-btn
                   %button.btn.btn-default{'type' => 'button', 'ng-click' => 'openCalendar($event)'}
                     %i.glyphicon.glyphicon-calendar
             %span{style: 'color: red;'} {{message}}
+
+
     .depart-time{ng: {show: 'step==="returnTimeType"'}}
       .col-md-8.col-md-offset-2.col-sm-6.col-sm-offset-3.col-xs-12
         .row
@@ -596,10 +598,10 @@
           .row
             .col-md-4.col-md-offset-4.col-sm-6.col-sm-offset-3.col-xs-12
               %p.input-group{'ng-show' => 'html5', 'style' => 'width: 100%;'}
-                %input#returnDate.form-control{min: "{{minDate | date:'yyyy-MM-dd'}}", type: 'date', ng: {model: 'returnDate', required: 'true', show: 'mobile'}}
-                %input#fromDate.form-control{min: "{{minDate | date:'yyyy-MM-dd'}}", focus: '', type: 'date', ng: {model: 'returnDate', required: 'true', show: '!mobile'}}
+                %input#returnDate.form-control{min: "{{minReturnDate | date:'yyyy-MM-dd'}}", type: 'date', ng: {model: 'returnDate', required: 'true', show: 'mobile'}}
+                %input#fromDate.form-control{min: "{{minReturnDate | date:'yyyy-MM-dd'}}", focus: '', type: 'date', ng: {model: 'returnDate', required: 'true', show: '!mobile'}}
               %p.input-group{'ng-show' => '!html5', }
-                %input.form-control{'type' => 'text', 'datepicker-popup' => "MMMM-dd-yyyy", 'min-date' => 'minDate', 'is-open' => 'openedReturn', 'datepicker-options' => 'dateOptions', 'close-text' => 'Close', 'ng-model' => 'returnDate',}
+                %input.form-control{'type' => 'text', 'datepicker-popup' => "MMMM-dd-yyyy", 'min-date' => 'minReturnDate', 'is-open' => 'openedReturn', 'datepicker-options' => 'dateOptions', 'close-text' => 'Close', 'ng-model' => 'returnDate',}
                   %span.input-group-btn
                     %button.btn.btn-default{'type' => 'button', 'ng-click' => 'openReturnCalendar($event)'}
                       %i.glyphicon.glyphicon-calendar
