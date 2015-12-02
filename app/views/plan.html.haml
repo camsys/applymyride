@@ -148,7 +148,6 @@
     .purpose{ng: {show: 'step==="purpose"'}}
       .text-center
         %h4 What is your trip purpose?
-        %h5{style: 'color: grey;'} * For some trip purposes, discounts may be available
       .row
         .col-md-8.col-md-offset-2.col-sm-8.col-sm-offset-2
           .col-xs-12.col-md-6{ng: {repeat: 'purpose in purposes'}}
@@ -484,7 +483,7 @@
           .col-xs-12.pull-left.no-padding
             %h4 Already signed up?
             %h4
-              %a.btn-next{ng: {href: '#/login'}}
+              %a.btn-next{ng: {href: '#/'}}
                 Sign in
 
     .discounts{ng: {show: 'step==="my_rides"'}}

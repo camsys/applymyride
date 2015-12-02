@@ -32,10 +32,6 @@ angular.module('applyMyRideApp', [
         templateUrl: 'views/login.html',
         controller: 'LoginController'
       })
-      .when('/login', {
-        templateUrl: 'views/login.html',
-        controller: 'LoginController'
-      })
       .when('/loginError', {
         templateUrl: 'views/login.html',
         controller: 'LoginController'

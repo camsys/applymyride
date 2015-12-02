@@ -24,7 +24,7 @@ angular.module('applyMyRideApp')
       $scope.checkId = function() {
         $scope.disableNext = true;
         var path = $location.path();
-        if(path == '/login'){
+        if(path == '/'){
           if($scope.sharedRideId && $scope.county){
             var sharedRideId = $scope.sharedRideId;
             if(sharedRideId.toString().length > 0){
@@ -45,7 +45,7 @@ angular.module('applyMyRideApp')
         planService.sharedRideId = $scope.sharedRideId;
         planService.county = $scope.county;
         planService.dateofbirth = $scope.dateofbirth;
-        if(path == '/login'){
+        if(path == '/'){
           $location.path('/authenticateSharedRideId');
         }else if(path == '/authenticateSharedRideId' || path == '/loginError'){
           $scope.authenticate();

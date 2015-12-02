@@ -1,59 +1,63 @@
-.col-md-6.col-md-offset-3.col-sm-8.col-sm-offset-2.col-xs-12
+.visible-xs-block
   %img{ng: {src: 'images/about/title.svg'}}
 
-  %p{style: "margin-top:1em;"}
-    = "Use FindMyRidePA to learn about your transportation options. FindMyRidePA helps you navigate Shared Ride and fixed route services to get you from point A to point B as simply and affordably as possible."
-  %p
-    = "Unlike fixed route buses, Shared Ride services pick you up right at your home and drop you off at your destination. Many people are eligible for discounted fares, including senior citizens, persons with disabilities, and persons with medical transportation needs."
+  .col-xs-12
+    %p{style: "margin-top:1em;"}
+      = "Use FindMyRidePA to learn about your transportation options. FindMyRidePA helps you navigate Shared Ride and fixed route services to get you from point A to point B as simply and affordably as possible."
+    %p
+      = "Unlike fixed route buses, Shared Ride services pick you up right at your home and drop you off at your destination. Many people are eligible for discounted fares, including senior citizens, persons with disabilities, and persons with medical transportation needs."
 
-  .row.text-center
-    %img{style: "margin-top:1em;", ng: {src: 'images/about/subtitle_how.svg'}}
+    .row.text-center
+      %img{style: "margin-top:1em;", ng: {src: 'images/about/subtitle_how.svg'}}
 
-  %p{style: "margin-top:1em;"}
-    = "If you are a "
-    %strong= "Shared Ride user:"
-    %ol
-      %li 
-        = "Go to "
-        %strong= "FindMyRidePA.com "
-        = "on your computer, tablet, or smartphone - or one of the kisks at many area locations."
-      %li
-        = "Sign in using your "
-        %strong= "Shared Ride ID"
-        = "county of residence, and date of birth."
-      %li
-        = "Enter the date, time, location, and purpose of your trip."
-      %li
-        = "Choose the option you want."
-      %li
-        = "Book in seconds."
-      %li
-        = "Use the My Rides page to see your planned trips, email the plan to yourself or a friend, or cancel your travel."
+    %p{style: "margin-top:1em;"}
+      = "If you are a "
+      %strong= "Shared Ride user:"
+      %ol
+        %li 
+          = "Go to "
+          %strong= "FindMyRidePA.com "
+          = "on your computer, tablet, or smartphone - or one of the kisks at many area locations."
+        %li
+          = "Sign in using your "
+          %strong= "Shared Ride ID"
+          = "county of residence, and date of birth."
+        %li
+          = "Enter the date, time, location, and purpose of your trip."
+        %li
+          = "Choose the option you want."
+        %li
+          = "Book in seconds."
+        %li
+          = "Use the My Rides page to see your planned trips, email the plan to yourself or a friend, or cancel your travel."
 
-  %p{style: "margin-top:1em;"}
-    = "If you are not yet a "
-    %strong= "Shared Ride user:"
-    %ol
-      %li
-        = "Go to "
-        %strong= "FindMyRidePA.com "
-        = "on your computer, tablet, or smartphone - or one of the kisks at many area locations."
-      %li
-        = "Enter the date, time, location, and purpose of your trip."
-      %li
-        = "Choose the option you want."
+    %p{style: "margin-top:1em;"}
+      = "If you are not yet a "
+      %strong= "Shared Ride user:"
+      %ol
+        %li
+          = "Go to "
+          %strong= "FindMyRidePA.com "
+          = "on your computer, tablet, or smartphone - or one of the kisks at many area locations."
+        %li
+          = "Enter the date, time, location, and purpose of your trip."
+        %li
+          = "Choose the option you want."
 
-  .row.text-center
-    %img{style: "margin-top:1em;", ng: {src: 'images/about/phone_info.svg'}}
+    .row.text-center
+      %img{style: "margin-top:1em;", ng: {src: 'images/about/phone_info.svg'}}
 
-  %p.text-muted{style: "margin-top:1em;"}
-    %strong
-      = "Available throughout York, Adams, Cambria, Cumberland, Dauphin, Franklin, and Lebanon counties."
+    %p.text-muted{style: "margin-top:1em;"}
+      %strong
+        = "Available throughout York, Adams, Cambria, Cumberland, Dauphin, Franklin, and Lebanon counties."
 
-  %p.text-muted
-    = "FindMyRidePA is sponsored through a joint effort between Pennsylvania Department of Transportation and rabbittransit, with support from the United States Department of Transportation, the United States Department of Veterans Affairs, and the Pennsylvania Department of Military and Veterans Affairs."
+    %p.text-muted
+      = "FindMyRidePA is sponsored through a joint effort between Pennsylvania Department of Transportation and rabbittransit, with support from the United States Department of Transportation, the United States Department of Veterans Affairs, and the Pennsylvania Department of Military and Veterans Affairs."
 
-  %p.text-muted
-    = "Discounted Shared Ride services are sponsored by the Commonwealth of Pennsylvania and paid for by Lottery and other funding sources."
+    %p.text-muted
+      = "Discounted Shared Ride services are sponsored by the Commonwealth of Pennsylvania and paid for by Lottery and other funding sources."
 
-  %img{style: "margin-top:1em; height:100%; width:100%;", ng: {src: 'images/about/PennDOTLogo_RGB.jpg'}}
+    %img{style: "margin-top:1em; height:100%; width:100%;", ng: {src: 'images/about/PennDOTLogo_RGB.jpg'}}
+
+.visible-sm-block.visible-md-block.visible-lg-block
+  %object{type: 'image/svg+xml', data: "images/about/FindMyRide_Guide_WEB.svg", style: "height:90vh; width:97vw;"}
