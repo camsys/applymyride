@@ -491,7 +491,7 @@ angular.module('applyMyRideApp')
       }
 
       this.getTripPurposes = function($scope, $http) {
-        //this.fixLatLon(this.fromDetails);
+        this.fixLatLon(this.fromDetails);
         return $http.post('api/v1/trip_purposes/list', this.fromDetails, this.getHeaders()).
           success(function(data) {
             $scope.purposes = data.trip_purposes;
@@ -506,7 +506,7 @@ angular.module('applyMyRideApp')
       }
 
       this.checkServiceArea = function($http, place) {
-        //this.fixLatLon(place);
+        this.fixLatLon(place);
         return $http.post('api/v1/places/within_area', place, this.getHeaders());
       }
 
@@ -639,11 +639,16 @@ angular.module('applyMyRideApp')
       }
 
       this.fixLatLon = function(location) {
-        //1click wants the json formatted differently than google places serves the data.  Replace lat() and lng() functions with numbers
+        /*
+
+        do nothing, previously we had to mess around with the lat/lons
+
         if(typeof location.geometry.location.lat != 'number'){
           location.geometry.location.lat = location.geometry.location.lat();
           location.geometry.location.lng = location.geometry.location.lng();
         }
+
+        */
       }
 
       this.getHeaders = function(){
