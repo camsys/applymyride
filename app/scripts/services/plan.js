@@ -491,7 +491,7 @@ angular.module('applyMyRideApp')
       }
 
       this.getTripPurposes = function($scope, $http) {
-        this.fixLatLon(this.fromDetails);
+        //this.fixLatLon(this.fromDetails);
         return $http.post('api/v1/trip_purposes/list', this.fromDetails, this.getHeaders()).
           success(function(data) {
             $scope.purposes = data.trip_purposes;
