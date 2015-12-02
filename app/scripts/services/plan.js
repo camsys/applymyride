@@ -506,7 +506,7 @@ angular.module('applyMyRideApp')
       }
 
       this.checkServiceArea = function($http, place) {
-        this.fixLatLon(place);
+        //this.fixLatLon(place);
         return $http.post('api/v1/places/within_area', place, this.getHeaders());
       }
 
