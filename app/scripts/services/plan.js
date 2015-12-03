@@ -495,6 +495,10 @@ angular.module('applyMyRideApp')
         return $http.post('api/v1/trip_purposes/list', this.fromDetails, this.getHeaders()).
           success(function(data) {
             $scope.purposes = data.trip_purposes;
+            if (data.default_trip_purpose != undefined && $scope.email == undefined){
+              $scope.default_trip_purpose = data.default_trip_purpose;
+              $scope.showNext = true;
+            }
           }).
           error(function(data) {
             alert(data);

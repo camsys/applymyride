@@ -269,7 +269,6 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
       break;
     case 'purpose':
       planService.getTripPurposes($scope, $http);
-      planService.purposes = $scope.purposes;
       $scope.showNext = false;
       break;
     case 'confirm':
@@ -513,6 +512,7 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
         $location.path('/plan/purpose');
         break;
       case 'purpose':
+        planService.purpose = $scope.default_trip_purpose;
         $location.path('/plan/needReturnTrip');
         break;
       case 'needReturnTrip':

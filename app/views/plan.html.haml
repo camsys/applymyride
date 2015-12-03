@@ -646,7 +646,8 @@
             Back
         .pull-right
           %a.btn-next{href: "", ng: {show: 'showNext', click: 'next()'}}
-            %span{ng: {show: 'step!=="sharedride_options_3" || driverInstructions'}} Next
+            %span{ng: {show: '(step!=="sharedride_options_3" && step!=="purpose") || driverInstructions'}} Next
             %span{ng: {show: 'step==="sharedride_options_3" && !driverInstructions'}} Skip
+            %span{ng: {show: 'step==="purpose" && default_trip_purpose'}} Skip
             %span{ng: {include: "'views/button-chevron-right.html'"}}
 
