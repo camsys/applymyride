@@ -1,63 +1,128 @@
-.visible-xs-block
-  %img{ng: {src: 'images/about/title.svg'}}
+.col-md-6.col-md-offset-3.col-sm-8.col-sm-offset-2.col-xs-12{ng: {show: "location == '/about'"}}
+  .row.text-center{style: "margin-bottom:1em;"}
+    %img{ng: {src: 'images/about/title_2.svg'}}
 
-  .col-xs-12
-    %p{style: "margin-top:1em;"}
-      = "Use FindMyRidePA to learn about your transportation options. FindMyRidePA helps you navigate Shared Ride and fixed route services to get you from point A to point B as simply and affordably as possible."
-    %p
-      = "Unlike fixed route buses, Shared Ride services pick you up right at your home and drop you off at your destination. Many people are eligible for discounted fares, including senior citizens, persons with disabilities, and persons with medical transportation needs."
+  %p{style: "margin-top:1em;"}
+    = "FindMyRidePA is a Pennsylvania-based service designed to help anyone identify and evaluate options to meet their transportation needs. In some cases, users can even book a trip directly."
+  %p
+    = "Currently, FindMyRidePA is available in seven counties (Adams, Cambria, Cumberland, Dauphin, Franklin, Lebanon and York) and will be available in additional counties in the near future. At this time, the transportation services available through FindMyRidePA are limited to local public transportation options (i.e., "
+    %a{href: "#/about/fixedroute", target: "_blank"}
+      = "fixed-route bus "
+    = "and "
+    = succeed ")" do
+      %a{href: "#/about/sharedride", target: "_blank"}
+        = "shared-ride services"
+    = " but will be expanded over time to include commercial services (e.g. taxi, train, private bus carriers etc.) and other non-profit transportation services."
+  %p
+    = "Regardless of whether you are traveling to an unfamiliar area or you are traveling in your own community, FindMyRidePA can help you identify the best options to meet your needs in terms of cost, travel time and accessibility."
+  %p
+    = "If you have special transportation needs, FindMyRidePA can help you explore "
+    = succeed "." do
+      %a{href: "#/about/sharedride", target: "_blank"}
+        = "shared-ride services"
+    = " Depending on your circumstances, these services may be available at a highly discounted rate or may even be free of charge."
+  %p
+    = "There are many public and private transportation options available throughout the Commonwealth. However, finding and comparing them can be complex. FindMyRidePA is intended to address this problem by providing access to these options through a single, easy to use website."
+  %p
+    = "FindMyRidePA was developed with funds from the Pennsylvania Department of Transportation and the Federal Transit Administration. The service grew out of an initiative to make transportation options more readily available to veterans, active military personnel and their families.  While our veterans and active military have been a special focus in the development of FindMyRidePA, the service benefits anyone who needs to identify transportation options in the Commonwealth. To learn more about the history of the project and the organizations who played a key role click "
+    = succeed "." do
+      %a{href: "#/about/projecthistory", target: "_blank"}
+        = "here"
+  %p
+    = "For more information or assistance using FindMyRidePA, call 1-844-PA4-RIDE."
 
-    .row.text-center
-      %img{style: "margin-top:1em;", ng: {src: 'images/about/subtitle_how.svg'}}
+  .row.text-center
+    %img{style: "margin-top:1em;", ng: {src: 'images/about/subtitle_how_2.svg'}}
 
-    %p{style: "margin-top:1em;"}
-      = "If you are a "
-      %strong= "Shared Ride user:"
-      %ol
-        %li 
-          = "Go to "
-          %strong= "FindMyRidePA.com "
-          = "on your computer, tablet, or smartphone - or one of the kisks at many area locations."
-        %li
-          = "Sign in using your "
-          %strong= "Shared Ride ID"
-          = "county of residence, and date of birth."
-        %li
-          = "Enter the date, time, location, and purpose of your trip."
-        %li
-          = "Choose the option you want."
-        %li
-          = "Book in seconds."
-        %li
-          = "Use the My Rides page to see your planned trips, email the plan to yourself or a friend, or cancel your travel."
+  %p{style: "margin-top:1em;"}
+    = "FindMyRidePA has been designed to be highly intuitive and easy to use. Simply enter your travel needs including your destination and desired date and time of departure and the system will present you with a list of potential travel options. To help you decide which option is best, FindMyRidePA includes an estimate of cost and travel time for each. You can then select the option which works best and print or email yourself an itinerary for the trip. In some cases, you can even book the trip directly."
 
-    %p{style: "margin-top:1em;"}
-      = "If you are not yet a "
-      %strong= "Shared Ride user:"
-      %ol
-        %li
-          = "Go to "
-          %strong= "FindMyRidePA.com "
-          = "on your computer, tablet, or smartphone - or one of the kisks at many area locations."
-        %li
-          = "Enter the date, time, location, and purpose of your trip."
-        %li
-          = "Choose the option you want."
+  .row.text-center{style: "margin-bottom:1em;"}
+    %img{style: "margin-top:1em;", ng: {src: 'images/about/shared_ride.svg'}}
 
-    .row.text-center
-      %img{style: "margin-top:1em;", ng: {src: 'images/about/phone_info.svg'}}
+  %p
+    = "When you use FindMyRidePA you can log in as a registered user or use the service as a guest. Some specialized transportation services require users to apply ahead of time. Pennsylvania offers highly discounted or free "
+    %a{href: "#/about/sharedride", target: "_blank"}
+      = "shared-ride services"
+    = " to seniors, persons with disabilities and low income individuals. If you are not eligible or not interested in these services you can simply use FindMyRidePA as a guest user. If you are eligible for these services, you can "
+    %a{href: "#/about/sharedride", target: "_blank"}
+      = "register"
+    = " for them. Once approved, you will be provided with an identification number which will allow you to use FindMyRidePA as a registered user. As a registered user, FindMyRidePA will include the specialized services you are eligible for in the list of transportation options it presents to you."
 
-    %p.text-muted{style: "margin-top:1em;"}
-      %strong
-        = "Available throughout York, Adams, Cambria, Cumberland, Dauphin, Franklin, and Lebanon counties."
+  %img{style: "margin-top:1em; height:100%; width:100%;", ng: {src: 'images/about/PennDOTLogo_RGB.jpg'}}
 
-    %p.text-muted
-      = "FindMyRidePA is sponsored through a joint effort between Pennsylvania Department of Transportation and rabbittransit, with support from the United States Department of Transportation, the United States Department of Veterans Affairs, and the Pennsylvania Department of Military and Veterans Affairs."
 
-    %p.text-muted
-      = "Discounted Shared Ride services are sponsored by the Commonwealth of Pennsylvania and paid for by Lottery and other funding sources."
+.col-md-6.col-md-offset-3.col-sm-8.col-sm-offset-2.col-xs-12{ng: {show: "location == '/about/fixedroute'"}}
+  %h2= "Fixed-route Bus"
+  %p= "Transportation services where buses travel along designated routes according to a published schedule."
 
-    %img{style: "margin-top:1em; height:100%; width:100%;", ng: {src: 'images/about/PennDOTLogo_RGB.jpg'}}
+.col-md-6.col-md-offset-3.col-sm-8.col-sm-offset-2.col-xs-12{ng: {show: "location == '/about/sharedride'"}}
+  %h2= "Shared-Ride Services"
+  %p
+    = "Every county in Pennsylvania offers on-demand curb to curb transportation services broadly known as shared-ride. Shared-ride service differs from taxi service in that it is a shared service. Shared-ride vehicles often carry multiple passengers at the same time and, consequently, the time required for a passenger to get to their destination is often longer than for a taxi. Since shared-ride services are more expensive to operate than fixed-route bus services, the fares for shared-ride service can be high. Fortunately in Pennsylvania, there are programs to help subsidize the cost of these services making it much more affordable, or in some cases even free, for individuals who meet certain eligibility requirements. There are three important statewide funding programs which help ensure those who need shared-ride services can afford them.  The first is the Shared-Ride Program for Senior Citizens, the second is the Rural Transportation for Persons with Disabilities Program (PwD) and the third is the Medical Assistance Transportation Program (MATP). It should be noted that anyone can use shared-ride services, but those who aren’t eligible for one of the funding programs will have to pay the full fare."
 
-.visible-sm-block.visible-md-block.visible-lg-block
-  %object{type: 'image/svg+xml', data: "images/about/FindMyRide_Guide_WEB.svg", style: "height:90vh; width:97vw;"}
+  %h2= "Shared-Ride Program for Senior Citizens"
+  %u= "What is the Shared-Ride Program for Senior Citizens?"
+  %p
+    = "Shared-Ride service will pick you up at your home and take you to your destination if you call a day in advance. Depending on the county and trip purpose, seniors may need to pay a portion of the fare."
+  %u= "How do you register for the program?"
+  %p
+    = "To register for the program, you need to contact your local shared-ride provider. Contact information for your local provider can be obtained by selecting your county of residence on the "
+    = succeed "." do
+      %a{href: "http://www.dot.state.pa.us/BPTMAP/index.htm", target: "_blank"}
+        = "Bureau of Public Transportation Services and Programs Map"
+    = " Proof of age is required for initial registration."
+  %u= "Who is eligible for a discount?"
+  %p
+    = "The Shared-Ride Program for Senior Citizens allows anyone over the age of 65 to use shared-ride transportation. This discount is applicable for all trip purposes provided that the trip is scheduled at least one business day in advance."
+  %u= "How much does it cost?"
+  %p
+    = "Each shared-ride provider has its own fare structure. Eighty-five percent (85%) of the full fare will be covered by the Shared-Ride Program for Senior Citizens through Lottery fund proceeds. The remaining 15% of the fare may be partially or fully covered by various local agencies. Any remaining portion of the fare must be paid by the passenger. For more information about the specific cost for the service in your area, please contact your local "
+    = succeed "." do
+      %a{href: "http://www.dot.state.pa.us/BPTMAP/index.htm", target: "_blank"}
+        = "shared-ride provider"
+
+  %h2= "Rural Transportation for Persons with Disabilities Program (PwD)"
+  %u= "What is the PwD Program?"
+  %p
+    = "The PwD Program offers discounted fares up to 85% of the general public shared-ride fares. The service is shared-ride, curb-to-curb, advance reservation transportation."
+  %u= "How do you register for the program?"
+  %p
+    = "To register for the program, you need to contact your local shared-ride provider. Contact information for your local provider can be obtained by selecting your county of residence on the "
+    = succeed "." do
+      %a{href: "http://www.dot.state.pa.us/BPTMAP/index.htm", target: "_blank"}
+        = "Bureau of Public Transportation Services and Programs Map"
+  %u= "Who is eligible for a discount?"
+  %p
+    = "PwD is available for individuals with a verified disability (ages 18-64), consistent with ADA. This discount is applicable for most trip purposes provided that the trip is scheduled at least one day in advance."
+  %u= "How much does it cost?"
+  %p
+    = "Each shared-ride provider has their own fare structure. Up to 85% of the full fare will be covered by the Rural Transportation Program for Persons with Disabilities. Any remaining portion of the fare must be paid by the passenger. For more information about trip eligibility and the specific cost for the service in your area, please contact your local shared-ride provider. Trips are eligible for reimbursement when there is no other funding source available."
+
+  %h2= "Medical Assistance Transportation Program (MATP)"
+  %u= "What is MATP?"
+  %p
+    = "The MATP offers free transportation to medical appointments for eligible low income persons."
+  %u= "How do you register for the program?"
+  %p
+    = "To register for the program, you need to contact your local MATP coordinator. The local MATP coordinator and the local shared-ride provider are often the same organization but not always. Contact information for your local MATP coordinator can be obtained by selecting your county of residence on the "
+    = succeed "." do
+      %a{href: "http://matp.pa.gov", target: "_blank"}
+        = "MATP Service Map"
+  %u= "Who is eligible for a discount?"
+  %p
+    = "Low income individuals who have applied to their local MATP coordinator and been approved for MATP."
+  %u= "How much does it cost?"
+  %p
+    = "Eligible trips are covered 100% by MATP."
+
+.col-md-6.col-md-offset-3.col-sm-8.col-sm-offset-2.col-xs-12{ng: {show: "location == '/about/projecthistory'"}}
+  %h2= "Project History"
+  %p
+    = "In December 2011, PennDOT was awarded a grant from the Federal Transit Administration as a part of the Veteran’s Transportation and Community Living Initiative (VTCLI). The purpose of the grant was to develop a “one-call / one-click” transportation information service (i.e., FindMyRidePA) which would make it easier for veterans, service members and military families to identify and utilize the transportation options to connect them with health care, work, education and other critical services. PennDOT matched the federal grant dollar for dollar with state funds."
+  %p
+    = "While the focus of the project has been on veterans, service members and military families, FindMyRidePA is a service which can be used by anyone to find options to meet their transportation needs."
+  %p
+    = "PennDOT has worked closely with the York Adams Transportation Authority (YATA) in planning and executing this project. The Pennsylvania Department of Military and Veterans Affairs has also been an important project partner."
+  %p
+    = "In the summer of 2013, PennDOT and YATA contracted with Cambridge Systematics, a consulting and software development firm in Cambridge Massachusetts, to develop FindMy RidePA. The service was piloted in York and Adams counties over a 5 month period in the latter half of 2014 in order to evaluate and improve the system before rolling it out to a larger audience. In the summer of 2015, FindMyRide PA was rolled out to seven counties (Adams, Cambria, Cumberland, Dauphin, Franklin, Lebanon and York). The service will continue to roll out to additional counties and gradually become statewide over the next few years."
