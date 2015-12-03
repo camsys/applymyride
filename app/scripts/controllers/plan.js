@@ -563,7 +563,6 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
   $scope.specifyTripPurpose = function(purpose){
     planService.purpose = purpose;
     $location.path("/plan/needReturnTrip");
-    $scope.next();
   }
 
   $scope.specifyFromTimeType = function(type){
