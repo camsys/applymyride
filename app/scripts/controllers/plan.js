@@ -25,6 +25,7 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
   $scope.fromDate = new Date();
   $scope.returnDate = new Date();
   $scope.showMap = false;
+  $scope.location = $location.path();
 
 
   $scope.reset = function() {
