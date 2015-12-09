@@ -88,10 +88,6 @@ angular.module('applyMyRideApp', [
         templateUrl: 'views/about.html',
         controller: 'PlanController'
       })
-      .when('/about/fixedroute', {
-        templateUrl: 'views/about.html',
-        controller: 'PlanController'
-      })
       .when('/about/sharedride', {
         templateUrl: 'views/about.html',
         controller: 'PlanController'
@@ -120,7 +116,7 @@ angular.module('applyMyRideApp', [
     });
 
     $window.$rootScope = $rootScope;
-    var exceptions = ["/plan/my_rides", "/about", "/about/fixedroute", "/about/sharedride", "/about/projecthistory"];
+    var exceptions = ["/plan/my_rides", "/about", "/about/sharedride", "/about/projecthistory"];
     $rootScope.$on('$routeChangeStart', function (event) {
       if(!$window.visited){
         if(exceptions.indexOf($location.$$path) < 0){
