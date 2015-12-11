@@ -589,6 +589,7 @@ angular.module('applyMyRideApp')
         outboundTrip.trip_time = moment.utc(fromDate).format();
         if(this.asap){
           outboundTrip.trip_time = moment.utc(new Date()).format();
+          outboundTrip.departure_type = 'depart';
         }else{
           outboundTrip.departure_type = this.fromTimeType;
         }
