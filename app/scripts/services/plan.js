@@ -585,11 +585,10 @@ angular.module('applyMyRideApp')
         }
         var fromDate = moment(this.fromDate).startOf('day').toDate();
         fromDate.setHours(fromTime.getHours());
-        fromDate.setMinutes(fromDate.getMinutes());
-        var fromTimeString = moment.utc(fromDate).format();
-        outboundTrip.trip_time = fromTimeString;
-        if(this.fromTimeType == 'asap'){
-          outboundTrip.departure_type = 'depart';
+        fromDate.setMinutes(fromTime.getMinutes());
+        outboundTrip.trip_time = moment.utc(fromDate).format();
+        if(this.asap){
+          outboundTrip.trip_time = moment.utc(new Date()).format();
         }else{
           outboundTrip.departure_type = this.fromTimeType;
         }
