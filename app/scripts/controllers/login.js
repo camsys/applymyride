@@ -3,10 +3,20 @@
 angular.module('applyMyRideApp')
   .controller('LoginController', ['$scope', '$location', 'flash', 'planService', '$http', 'ipCookie', '$window',
     function ($scope, $location, flash, planService, $http, ipCookie, $window) {
-
+      
+      //this should probably be in a service if there's anything more
+      $http({
+        method: 'GET',
+        url: '/api/v1/services/ids_humanized' //'http://oneclick-pa-qa.camsys-apps.com/api/v1/services/ids_humanized'
+      }).then(function successCallback(response) {
+        //update the counties
+        $scope.counties = response.data.service_ids;
+      }, function errorCallback(response) {
+            console.error(response);
+      });
       $scope.location = $location.path();
       $scope.disableNext = true;
-      $scope.counties = ['Adams', 'Cambria', 'Cumberland', 'Dauphin', 'Franklin', 'Lebanon', 'York'];
+      $scope.counties = [];
       $scope.sharedRideId = planService.sharedRideId;
       $scope.county = planService.county;
       $scope.dateofbirth = planService.dateofbirth;
@@ -24,16 +34,12 @@ angular.module('applyMyRideApp')
       $scope.checkId = function() {
         $scope.disableNext = true;
         var path = $location.path();
-        if(path == '/login'){
-          if($scope.sharedRideId && $scope.county){
+        if(path == '/'){
+          if($scope.sharedRideId && $scope.county && $scope.dateofbirth){
             var sharedRideId = $scope.sharedRideId;
             if(sharedRideId.toString().length > 0){
               $scope.disableNext = false;
             }
-          }
-        }else{
-          if($scope.dateofbirth){
-            $scope.disableNext = false;
           }
         }
       };

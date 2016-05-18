@@ -1,36 +1,32 @@
 .row{ng: {show: "location == '/'"}}
-  .col-lg-6.col-lg-offset-3.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1.col-xs-12.text-center
-    .visible-xs-block
-      %h2
-        %strong
-          Planning trips just got a whole lot simpler.
-      %img{style: "height: 4em; margin-top: 0.5em;", ng: {src: 'images/ped.svg'}}
-
-    .hidden-xs
-      %h1
-        %strong
-          Planning trips just got a whole lot simpler.
-
-      %img{style: "height: 6em; margin: 1em;", ng: {src: 'images/ped.svg'}}
-
-    %a.login-btns{href: "#/login"}
-      %button.btn-block.form-control.btn-branded.btn-blue
-        Log In
-
-    %a.login-btns{href: "#/plan/fromDate"}
-      %button.btn-block.form-control.btn-branded.btn-green
-        Enter as Guest
-
-    %a.login-btns{href: "#/about"}
-      %button.btn-block.form-control.btn-branded.btn-grey
-        What is FindMyRidePA?
-
-    #logo-footer.text-center.row
-      #flex-container.col-xs-12
-        %img.official-logo{ng: {src: 'images/about/PennDOTLogo_RGB.jpg'}}
-        %img.official-logo{ng: {src: "images/FTA_Logo.png"}}
-        %img.official-logo{ng: {src: "images/Dept_of_Veterans_Logo.svg.png"}}
-
+  .col-md-4.col-md-offset-4.col-sm-6.col-sm-offset-3.col-sm-6.col-sm-offset-3.col-xs-12
+    .row
+      %h1{style: 'font-weight:600;'} Book a ride
+      with just 3 things:
+    .row{style: 'margin-top: 2em'}
+      %h3 Your Shared Ride ID
+      %h4.text-muted
+        Look on your para transit card.
+    .row
+      %input.form-control{style: 'font-size: .9em; width: 50%;', placeholder: '00000', ng: {model: 'sharedRideId', required: 'true', change: 'checkId()', enter: 'next()'}}
+    .row{style: 'margin-top: 1em'}
+      %h3 Your County
+    .row
+      %select.btn-lg{style: 'width: 100%', ng: {model: 'county', change: 'checkId()', options: 'county for county in counties', enter: 'next()'}}
+        %option{value: '', disabled: '', selected: ''}
+          Select your county
+    .row
+      %h3 Your birth date
+    .row
+      %input.form-control{type:'tel', placeholder: 'mm/dd/yyyy', ng: {model: 'dateofbirth', required: 'true'}, pattern:'\d'}
+    .row{style: 'margin-top: 1em'}
+      %a.btn-block{"ng-href" => "#/plan/fromDate"}
+        Or, continue as a guest
+    .row{style: 'margin-top: 1em'}
+      .pull-right
+        %a.btn-next{href: "", ng: {click: 'next()', hide: 'disableNext'}}
+          Next
+          %span{ng: {include: "'views/button-chevron-right.html'"}}
 .row{ng: {show: "location == '/login'"}}
   .col-md-4.col-md-offset-4.col-sm-6.col-sm-offset-3.col-sm-6.col-sm-offset-3.col-xs-12
     .row
