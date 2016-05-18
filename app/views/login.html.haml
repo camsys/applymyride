@@ -16,9 +16,9 @@
         %option{value: '', disabled: '', selected: ''}
           Select your county
     .row
-      %h3 Your birth date
+      %h3 Your birthdate
     .row
-      %input.form-control{type:'tel', placeholder: 'mm/dd/yyyy', ng: {model: 'dateofbirth', required: 'true'}, pattern:'\d'}
+      %input.form-control{type:'tel', placeholder: 'mm/dd/yyyy', ng: {model: 'dateofbirth', required: 'true'}, pattern:'(0?[1-9]|1[012])[- /.](0?[1-9]|[12][0-9]|3[01])[- /.](19|20)\d\d'}
     .row{style: 'margin-top: 1em'}
       %a.btn-block{"ng-href" => "#/plan/fromDate"}
         Or, continue as a guest
