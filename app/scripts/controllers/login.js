@@ -5,9 +5,12 @@ angular.module('applyMyRideApp')
     function ($scope, $location, flash, planService, $http, ipCookie, $window) {
       
       //this should probably be in a service if there's anything more
+      var countiesURL = ('findmyridepa2-qa.camsys-apps.com' == document.location.hostname)
+                      ? 'http://oneclick-pa-qa.camsys-apps.com/api/v1/services/ids_humanized'
+                      : '/api/v1/services/ids_humanized';
       $http({
         method: 'GET',
-        url: '/api/v1/services/ids_humanized' //'http://oneclick-pa-qa.camsys-apps.com/api/v1/services/ids_humanized'
+        url: countiesURL
       }).then(function successCallback(response) {
         //update the counties
         $scope.counties = response.data.service_ids;
@@ -51,7 +54,7 @@ angular.module('applyMyRideApp')
         planService.sharedRideId = $scope.sharedRideId;
         planService.county = $scope.county;
         planService.dateofbirth = $scope.dateofbirth;
-        if(path == '/login'){
+        if(path == '/'){
           $location.path('/authenticateSharedRideId');
         }else if(path == '/authenticateSharedRideId' || path == '/loginError'){
           $scope.authenticate();
@@ -62,7 +65,16 @@ angular.module('applyMyRideApp')
         $location.path('/');
       }
 
-      $scope.$watch('dateofbirth', function(n) {
+      $scope.$watch('birthdate', function(n) {
+          var dob = new Date($scope.birthdate);
+          //return if dob is invalid
+          if( isNaN( dob.getYear() ) ){
+              $scope.disableNext = true;
+              $scope.dateofbirth = undefined;
+              return;
+          }
+          //if date is valid, save for later
+          $scope.dateofbirth = dob;
           $scope.checkId();
         }
       );
