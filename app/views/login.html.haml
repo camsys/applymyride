@@ -18,13 +18,13 @@
     .row
       %h3 Your birthdate
     .row
-      %input.form-control{type:'tel', placeholder: 'mm/dd/yyyy', ng: {model: 'dateofbirth', required: 'true'}, pattern:'(0?[1-9]|1[012])[- /.](0?[1-9]|[12][0-9]|3[01])[- /.](19|20)\d\d'}
+      %input.form-control{type:'tel', placeholder: 'mm/dd/yyyy', ng: {model: 'birthdate', required: 'true'}, pattern:'(0?[1-9]|1[012])[- /.](0?[1-9]|[12][0-9]|3[01])[- /.](19|20)\d\d'}
     .row{style: 'margin-top: 1em'}
       %a.btn-block{"ng-href" => "#/plan/fromDate"}
         Or, continue as a guest
     .row{style: 'margin-top: 1em'}
       .pull-right
-        %a.btn-next{href: "", ng: {click: 'next()', hide: 'disableNext'}}
+        %a.btn.btn-primary.btn-next{href: "", ng: {click: 'next()', hide: 'disableNext'}}
           Next
           %span{ng: {include: "'views/button-chevron-right.html'"}}
 .row{ng: {show: "location == '/login'"}}
@@ -46,7 +46,7 @@
         Or, continue as a guest
     .row{style: 'margin-top: 1em'}
       .pull-right
-        %a.btn-next{href: "", ng: {click: 'next()', hide: 'disableNext'}}
+        %abtn-next{href: "", ng: {click: 'next()', hide: 'disableNext'}}
           Next
           %span{ng: {include: "'views/button-chevron-right.html'"}}
 .row{ng: {show: "location == '/loginError'"}}
