@@ -4,13 +4,17 @@ angular.module('applyMyRideApp')
   .controller('LoginController', ['$scope', '$location', 'flash', 'planService', '$http', 'ipCookie', '$window',
     function ($scope, $location, flash, planService, $http, ipCookie, $window) {
       
+      //setup the backend url depending on environment (local, dev, qa)
+      $scope.apiHost = document.location.hostname;
+      if( document.location.hostname.match(/findmyridepa2-dev\.camsys-apps\.com/) ){
+        $scope.apiHost = 'oneclick-pa-dev.camsys-apps.com';
+      }else if( document.location.hostname.match(/findmyridepa2-qa\.camsys-apps\.com/) ){
+        $scope.apiHost = 'oneclick-pa-qa.camsys-apps.com';
+      }
       //this should probably be in a service if there's anything more
-      var countiesURL = ('findmyridepa2-qa.camsys-apps.com' == document.location.hostname)
-                      ? 'http://oneclick-pa-qa.camsys-apps.com/api/v1/services/ids_humanized'
-                      : '/api/v1/services/ids_humanized';
       $http({
         method: 'GET',
-        url: countiesURL
+        url: 'http://' + $scope.apiHost + '/api/v1/services/ids_humanized'
       }).then(function successCallback(response) {
         //update the counties
         $scope.counties = response.data.service_ids;
@@ -18,11 +22,12 @@ angular.module('applyMyRideApp')
             console.error(response);
       });
       $scope.location = $location.path();
+      $scope.rememberme = true;
       $scope.disableNext = true;
       $scope.counties = [];
-      $scope.sharedRideId = planService.sharedRideId;
-      $scope.county = planService.county;
-      $scope.dateofbirth = planService.dateofbirth;
+      $scope.sharedRideId = ipCookie('sharedRideId');
+      $scope.county = ipCookie('county');
+      $scope.birthdate = ipCookie('dateofbirth');
 
       var authentication_token = ipCookie('authentication_token');
       var email = ipCookie('email');
@@ -37,7 +42,7 @@ angular.module('applyMyRideApp')
       $scope.checkId = function() {
         $scope.disableNext = true;
         var path = $location.path();
-        if(path == '/'){
+        if(path == '/' || path == '/loginError' ){
           if($scope.sharedRideId && $scope.county && $scope.dateofbirth){
             var sharedRideId = $scope.sharedRideId;
             if(sharedRideId.toString().length > 0){
@@ -54,11 +59,7 @@ angular.module('applyMyRideApp')
         planService.sharedRideId = $scope.sharedRideId;
         planService.county = $scope.county;
         planService.dateofbirth = $scope.dateofbirth;
-        if(path == '/'){
-          $location.path('/authenticateSharedRideId');
-        }else if(path == '/authenticateSharedRideId' || path == '/loginError'){
-          $scope.authenticate();
-        }
+        $scope.authenticate();
       }
 
       $scope.back = function(){
@@ -87,7 +88,11 @@ angular.module('applyMyRideApp')
         login.session.county = planService.county;
         login.session.dob = moment($scope.dateofbirth).format('M/D/YYYY');
 
-        var promise = $http.post('api/v1/sign_in', login);
+        ipCookie('sharedRideId', login.session.ecolane_id, {expires: 7, expirationUnit: 'days'});
+        ipCookie('county', login.session.county, {expires: 7, expirationUnit: 'days'});
+        ipCookie('dateofbirth', login.session.dob, {expires: 7, expirationUnit: 'days'});
+
+        var promise = $http.post('http://'+$scope.apiHost+'/api/v1/sign_in', login);
         promise.error(function(result) {
           $location.path('/loginError');
         });
@@ -102,13 +107,14 @@ angular.module('applyMyRideApp')
             ipCookie('authentication_token', planService.authentication_token, {expires: 7, expirationUnit: 'days'});
             ipCookie('first_name', planService.first_name, {expires: 7, expirationUnit: 'days'});
             ipCookie('last_name', planService.last_name, {expires: 7, expirationUnit: 'days'});
-            ipCookie('sharedRideId', planService.sharedRideId, {expires: 7, expirationUnit: 'days'});
           }else{
             ipCookie.remove('email');
             ipCookie.remove('authentication_token');
             ipCookie.remove('first_name');
             ipCookie.remove('last_name');
             ipCookie.remove('sharedRideId');
+            ipCookie.remove('county');
+            ipCookie.remove('dateofbirth');
           }
           promise = planService.getProfile($http);
           promise.then(function(result) {
