@@ -204,34 +204,37 @@ angular.module('applyMyRideApp')
           });
         });
 
-        var itinerariesByModeOutbound = itinerariesBySegmentThenMode[0];
-        var itinerariesByModeReturn = itinerariesBySegmentThenMode[1];
+        var itinerariesByModeOutbound = itinerariesBySegmentThenMode ? itinerariesBySegmentThenMode[0] : null;
+        var itinerariesByModeReturn = itinerariesBySegmentThenMode ? itinerariesBySegmentThenMode[1] : null;
 
-        if(itinerariesByModeOutbound.mode_paratransit){
-          var lowestPricedParatransitTrip = this.getLowestPricedParatransitTrip(itinerariesByModeOutbound.mode_paratransit);
-          if(!this.email){
-            //guest user, just use the first paratransit itinerary since the prices are unknown
-            lowestPricedParatransitTrip = this.guestParatransitItinerary;
-          }
-          if(lowestPricedParatransitTrip){
-            this.paratransitItineraries.push(lowestPricedParatransitTrip);
-            fare_info.paratransitTravelTime = lowestPricedParatransitTrip.travelTime;
-            fare_info.paratransitStartTime = lowestPricedParatransitTrip.startTime;
-          }
-        }
+        if(itinerariesByModeOutbound){
+        	if(itinerariesByModeOutbound.mode_paratransit){
+          		var lowestPricedParatransitTrip = this.getLowestPricedParatransitTrip(itinerariesByModeOutbound.mode_paratransit);
+          		if(!this.email){
+            		//guest user, just use the first paratransit itinerary since the prices are unknown
+            		lowestPricedParatransitTrip = this.guestParatransitItinerary;
+          		}
+          		if(lowestPricedParatransitTrip){
+            		this.paratransitItineraries.push(lowestPricedParatransitTrip);
+            		fare_info.paratransitTravelTime = lowestPricedParatransitTrip.travelTime;
+            		fare_info.paratransitStartTime = lowestPricedParatransitTrip.startTime;
+         	 	}
+        	}
+        
 
-        if(itinerariesByModeOutbound.mode_transit){
-          this.transitItineraries.push(itinerariesByModeOutbound.mode_transit);
-        }
+        	if(itinerariesByModeOutbound.mode_transit){
+          		this.transitItineraries.push(itinerariesByModeOutbound.mode_transit);
+        	}
 
 
-        if(itinerariesByModeOutbound.mode_walk){
-          this.walkItineraries.push(itinerariesByModeOutbound.mode_walk[0]);
+        	if(itinerariesByModeOutbound.mode_walk){
+          		this.walkItineraries.push(itinerariesByModeOutbound.mode_walk[0]);
+        	}
         }
 
         //if a mode doesn't appear in both outbound and return itinerary lists, remove it
 
-        if(fare_info.roundtrip == true){
+        if(itinerariesByModeReturn && fare_info.roundtrip == true){
           if(itinerariesByModeReturn.mode_transit){
             this.transitItineraries.push(itinerariesByModeReturn.mode_transit);
           }else{
@@ -255,11 +258,11 @@ angular.module('applyMyRideApp')
         }
 
         this.transitInfos = [];
-        if(itinerariesBySegmentThenMode[0] && itinerariesBySegmentThenMode[0].mode_transit){
+        if(itinerariesByModeOutbound && itinerariesByModeOutbound.mode_transit){
           this.transitInfos.push(this.prepareTransitOptionsPage(itinerariesBySegmentThenMode[0].mode_transit));
         }
 
-        if(itinerariesBySegmentThenMode[1] && itinerariesBySegmentThenMode[1].mode_transit){
+        if(itinerariesByModeReturn && itinerariesByModeReturn.mode_transit){
           //for round trips, show the fare as the sum of the two recommended fares
           this.transitInfos.push(this.prepareTransitOptionsPage(itinerariesBySegmentThenMode[1].mode_transit));
           var fare1 = this.transitInfos[0][0].cost;
@@ -560,10 +563,10 @@ angular.module('applyMyRideApp')
       }
 
       this.createItineraryRequest = function() {
-        if(this.fromDetails.poi){
+        if(this.fromDetails && this.fromDetails.poi){
           this.fromDetails.name = this.fromDetails.poi.name
         }
-        if(this.toDetails.poi){
+        if(this.toDetails && this.toDetails.poi){
           this.toDetails.name = this.toDetails.poi.name
         }
         var request = {};
