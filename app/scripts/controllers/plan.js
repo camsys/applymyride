@@ -8,6 +8,9 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
 
   $scope.minReturnDate = new Date();
   $scope.marker = null;
+  $scope.toFromMarkers = {};
+  $scope.toFromIcons={'to' : 'http://maps.google.com/mapfiles/marker_greenA.png',
+                      'from' : 'http://maps.google.com/mapfiles/markerB.png' };
   $scope.locations = [];
   $scope.placeIds = [];
   $scope.showConfirmLocationMap = false;
@@ -483,6 +486,9 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
     if($scope.disableNext)
       return;
     switch($scope.step) {
+      case 'where':
+        $location.path('/plan/when');
+        break;
       case 'fromDate':
         planService.fromDate = $scope.fromDate;
         $location.path('/plan/fromTimeType');
@@ -645,21 +651,24 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
     }
   }
 
-  $scope.selectPlace = function(place){
-    $scope.place = place;
+  $scope.selectFrom = function(place){
+    $scope.selectPlace(place, 'from');
+  }
+
+  $scope.selectTo = function(place){
+    $scope.selectPlace(place, 'to');
+  }
+
+  $scope.selectPlace = function(place, toFrom){
+    //when a place is selected, update the map
     $scope.poi = null;
     $scope.showMap = true;
-    if($routeParams.step == 'from'){
-      $scope.map = $scope.fromLocationMap;
-    }else if($routeParams.step == 'to'){
-      $scope.map = $scope.toLocationMap;
-    }
     var placeIdPromise = $q.defer();
     var selectedIndex = $scope.placeLabels.indexOf(place);
     if(selectedIndex < $scope.poiData.length){
       //this is a POI result, get the 1Click location name
       $scope.poi = $scope.poiData[selectedIndex];
-      $scope.checkServiceArea($scope.poi);
+      $scope.checkServiceArea($scope.poi, null, toFrom);
     }else{
       var placeId = $scope.placeIds[selectedIndex];
       if(placeId) {
@@ -684,7 +693,7 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
       }
 
       placeIdPromise.promise.then(function(placeId) {
-        var placesService = new google.maps.places.PlacesService($scope.map);
+        var placesService = new google.maps.places.PlacesService($scope.whereToMap);
         placesService.getDetails( { 'placeId': placeId}, function(result, status) {
           if (status == google.maps.GeocoderStatus.OK) {
 
@@ -705,9 +714,9 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
                 bootbox.alert("The location you selected does not have have a street associated with it, please select another location.");
                 return;
               }else if(datatypes.indexOf('street_number') < 0){
-                var streetNameIndex = $scope.place.indexOf(route);
+                var streetNameIndex = place.indexOf(route);
                 if(streetNameIndex > -1){
-                  var prefix = $scope.place.substr(0, streetNameIndex);
+                  var prefix = place.substr(0, streetNameIndex);
                   prefix = prefix.trim();
                   var streetComponent = {};
                   streetComponent.short_name = prefix;
@@ -722,7 +731,7 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
               }
             }
 
-            $scope.checkServiceArea(result);
+            $scope.checkServiceArea(result, place, toFrom);
 
           } else {
             alert('Geocode was not successful for the following reason: ' + status);
@@ -732,7 +741,7 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
     }
   }
 
-  $scope.checkServiceArea = function(result){
+  $scope.checkServiceArea = function(result, place, toFrom){
     var serviceAreaPromise = planService.checkServiceArea($http, result);
     serviceAreaPromise.
       success(function(serviceAreaResult) {
@@ -742,14 +751,14 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
           if(!recentSearches){
             recentSearches = {};
           }
-          if (typeof(recentSearches[$scope.place]) == 'undefined'){
-            recentSearches[$scope.place] = result;
+          if (typeof(recentSearches[place]) == 'undefined'){
+            recentSearches[place] = result;
             localStorageService.set('recentSearches', JSON.stringify(recentSearches));
           }
 
-          var map = $scope.map;
-          if($scope.marker){
-            $scope.marker.setMap(null);
+          var map = $scope.whereToMap;
+          if($scope.toFromMarkers[toFrom]){
+            $scope.toFromMarkers[toFrom].setMap(null);
           }
 
           $scope.showMap = true;
@@ -768,22 +777,26 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
             location = new google.maps.LatLng(Number(location.lat), Number(location.lng));
           }
 
-          map.setCenter(location);
-
-          $scope.marker = new google.maps.Marker({
+          $scope.toFromMarkers[toFrom] = new google.maps.Marker({
             map: map,
             position: location,
-            animation: google.maps.Animation.DROP
+            animation: google.maps.Animation.DROP,
+            icon: $scope.toFromIcons[toFrom]
           });
 
+          var bounds = new google.maps.LatLngBounds();
+          angular.forEach($scope.toFromMarkers, function(marker, k){
+            bounds.extend(marker.position);
+          });
+          map.setCenter(bounds.getCenter());
+          map.fitBounds(bounds);
 
-          if($routeParams.step == 'from'){
+          if(toFrom == 'from'){
             planService.fromDetails = result;
-            planService.from = $scope.place;
-            planService.fromLocationMap = $scope.fromLocationMap;
-          }else if($routeParams.step == 'to'){
+            planService.from = place;
+          }else if(toFrom == 'to'){
             planService.toDetails = result;
-            planService.to = $scope.place;
+            planService.to = place;
           }
 
         }else{

@@ -36,7 +36,7 @@ angular.module('applyMyRideApp')
       if(authentication_token && email){
         planService.authentication_token = authentication_token;
         planService.email = email;
-        $location.path('/plan/fromDate');
+//        $location.path('/plan/where');
       }
 
       $scope.checkId = function() {
@@ -119,7 +119,7 @@ angular.module('applyMyRideApp')
           promise = planService.getProfile($http);
           promise.then(function(result) {
             planService.profile = result.data;
-            $location.path('/plan/fromDate');
+            $location.path('/plan/where');
           })
         });
       }

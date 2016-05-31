@@ -1,133 +1,664 @@
-.plan
-  .container
-    %span{'us-spinner' => '', 'spinner-key' => "spinner-1"}
-    .alert.alert-danger.text-center{"ng-show" => "apiError", :role => "alert"}
-      %b API Error :
-      %span {{ apiStatus }}
-
-    .depart-date{ng: {show: 'step==="fromDate"'}}
-      %form
-        .form-group
-          .row
-            .col-md-4.col-md-offset-4.col-sm-6.col-sm-offset-3.col-xs-12
-              %h4 What day do you want to leave?
-              %p.input-group{'ng-show' => 'html5', 'style' => 'width: 100%;'}
-                %input#fromDate.form-control{min: "{{minDate | date:'yyyy-MM-dd'}}", type: 'date', ng: {model: 'fromDate', required: 'true', enter: 'next()', show: 'mobile'}}
-                %input#fromDate.form-control{min: "{{minDate | date:'yyyy-MM-dd'}}", focus: '', type: 'date', ng: {model: 'fromDate', required: 'true', enter: 'next()', show: '!mobile'}}
-              %p.input-group{'ng-show' => '!html5', }
-                %input.form-control{'type' => 'text', 'datepicker-popup' => "MMMM-dd-yyyy", 'min-date' => 'minDate', 'is-open' => 'opened', 'datepicker-options' => 'dateOptions', 'close-text' => 'Close', 'ng-model' => 'fromDate',}
-                  %span.input-group-btn
-                    %button.btn.btn-default{'type' => 'button', 'ng-click' => 'openCalendar($event)'}
-                      %i.glyphicon.glyphicon-calendar
-              %span{style: 'color: red;'} {{message}}
-
-    .depart-time{ng: {show: 'step==="fromTimeType"'}}
-      .col-md-8.col-md-offset-2.col-sm-6.col-sm-offset-3.col-xs-12
+#PlanTemplate.container
+  %span{'us-spinner' => '', 'spinner-key' => "spinner-1"}
+  .alert.alert-danger.text-center{"ng-show" => "apiError", :role => "alert"}
+    %b API Error :
+    %span {{ apiStatus }}
+  .fromToWhere{ng: {show: 'step==="where"'}}
+    %form
+      .form-group
         .row
-          .col-xs-12.pull-left.no-padding
-            %h4
-              %span.timeTypeSelection{ng: {show: 'fromTimeType == "depart"'}} When do you want to start out?
-              %span.timeTypeSelection{ng: {show: 'fromTimeType == "arrive"'}} When do you want to arrive?
-              %span.dropdown{dropdown: '', style: 'cursor: pointer;'}
-                %a.fa.fa-lg.fa-sort-desc{href: '', dropdown_toggle: '', style: 'vertical-align: 15%; color: #2781FF; text-decoration: none;'}
-                %ul.dropdown-menu.pull-right{dropdown_menu: ''}
-                  %li{ng: {show: 'fromTimeType != "depart"'}}
-                    %a{href: '', ng: {click: 'specifyFromTimeType("depart")'}}
-                      When do you want to start out?
-                  %li{ng: {show: 'fromTimeType != "arrive"'}}
-                    %a{href: '', ng: {click: 'specifyFromTimeType("arrive")'}}
-                      When do you want to arrive?
-        .row{ng: {show: 'showAsap'}}
-          .col-xs-12.pull-left{style: 'color: #2781FF; padding: 0px;'}
-            %h5{ng: {click: 'specifyFromTimeType("asap")'}} As soon as possible
-        .row.text-center{ng: {show: 'fromTimeType != "asap"'}}
-          %timepicker.timepicker{'minute-step' => '5', ng: {model: 'fromTime', show: '!mobile'}}
-          %input#fromTime.form-control{type: 'time', step: '300', ng: {model: 'fromTime', required: 'true', show: 'mobile && html5'}}
-          %span{style: 'color: red;'} {{message}}
-    .use-current-location{ng: {show: 'step==="start_current"'}}
-      .row
-        .text-center
-          %h4 Start at your current location?
-          .col-xs-12.col-md-4.col-md-offset-4.col-sm-6.col-sm-offset-3
-            %a.btn.btn-success.btn-block{href: '', ng: {click: 'getCurrentLocation()'}}
-              Yes
-            %a.btn-block.link-btn{ng: {href: '#/plan/from'}}
-              No
+          .col-lg-6.col-lg-offset-3.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1.col-xs-12
+            %h2
+              %strong
+                Where To?
+          .col-lg-6.col-lg-offset-3.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1.col-xs-12
+            %autocomplete{ 'attr-placeholder'=> 'Start typing a name or address',
+                                        class: 'autocompleteWrapper',
+                                        id: 'toInput',
+                                        tabindex: 'null',
+                                        required: 'true',
+                                        'inputclass' => 'clearable tripplanner__location form__input',
+                                        'disable-filter' => 'true',
+                                        'data' => 'locations',
+                                        'on-type'=> 'getLocations',
+                                        'on-select' => 'selectTo', 
+                                        'autocomplete-required' => 'true',
+                                        ng: { model: 'to',
+                                          'attr-mobile' => '{{mobile}}' } }
+          .col-lg-6.col-lg-offset-3.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1.col-xs-12
+            %h2
+              %strong
+                Starting From?
+          .col-lg-6.col-lg-offset-3.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1.col-xs-12
+            %autocomplete{ 'attr-placeholder'=> 'Where from?',
+                                        class: 'autocompleteWrapper',
+                                        id: 'fromInput',
+                                        tabindex: 'null',
+                                        required: 'true',
+                                        'inputclass' => 'clearable tripplanner__location form__input',
+                                        'disable-filter' => 'true',
+                                        'data' => 'locations',
+                                        'on-type'=> 'getLocations',
+                                        'on-select' => 'selectFrom',
+                                        'autocomplete-required' => 'true',
+                                        ng: { model: 'from',
+                                          'attr-mobile' => '{{mobile}}' } }
+        .row
+          .col-md-8.col-md-offset-2.col-xs-12
+            %div.map-canvas{'ui-map' => 'whereToMap', 'ui-options' => 'mapOptions', ng: {show: 'showMap'}}
+        .row.sticky-footer{style: 'margin-top: 30px'}
+          .col-md-8.col-md-offset-2.col-xs-12
+            .pull-left
+              %a.btn{href: "", back: '', ng: {click: "back()"}}
+                Start over
+            .pull-right
+              %a.btn.btn-primary.btn-next{href: "", ng: {show: 'showNext', click: 'next()'}}
+                %span
+                  Yes, looks good!
 
-    .map-wrapper.text-center{ng: {show: 'step==="from_confirm" && showConfirmLocationMap'}}
-      %h5 Here's the address we found for your location:
-      %h5 {{ planService.from }}
-      %div.map-canvas{'ui-map' => 'confirmFromLocationMap', 'ui-options' => 'mapOptions', 'style' => 'margin-bottom: 10px'}
-      .col-md-4.col-md-offset-4.col-sm-6.col-sm-offset-3.col-xs-12
-        %a.btn.btn-success.btn-block{href: "", ng: {click: 'next()'}}
-          Yes, use this address
-        %a.btn-block.link-btn{href: "", ng: {click: 'overrideCurrentLocation()'}}
-          No, I'll enter the address myself
-
-      %p
-        {{greeting}}
-
-    %form.from-location{name: 'from_location', ng: {show: 'step==="from"'}}
-      .row
-        .col-md-8.col-md-offset-2.col-xs-12
-          %h4 Where are you starting from?
-      .row
-        .col-md-8.col-md-offset-2.col-xs-12{'style' => 'line-height: 2em;'}
-          .input-group
-            %autocomplete.autocomplete{tabindex: 'null', 'inputclass' => 'clearable', 'disable-filter' => 'true', 'data' => 'locations', 'on-type'=> 'getLocations', 'on-select' => 'selectPlace', ng: {model: 'from', 'attr-mobile' => '{{mobile}}'}}
-            .input-group-btn
-              %a.btn.btn-success.btn-block{href: "", style: 'padding-left: 0px; padding-right: 0px;min-width: 20px; border-top-left-radius:0px; border-bottom-left-radius:0px;', ng: {click: 'clearFrom()'}}
-                %i.fa.fa-times.fa-lg{style:'color: white;'}
-      .row
-        .col-md-8.col-md-offset-2.col-xs-12
-          %div.map-canvas{'ui-map' => 'fromLocationMap', 'ui-options' => 'mapOptions', ng: {show: 'showMap'}}
-
-    %form.to-location{ng: {show: 'step==="to"'}}
-      .row
-        .col-md-8.col-md-offset-2.col-xs-12
-          %h4 Where are you going?
-      .row
-        .col-md-8.col-md-offset-2.col-xs-12{'style' => 'line-height: 2em;'}
-          .input-group
-            %autocomplete.autocomplete{tabindex: 'null', 'inputclass' => 'clearable', 'disable-filter' => 'true', 'data' => 'locations', 'on-type'=> 'getLocations', 'on-select' => 'selectPlace', :ng => {:model => 'to', 'attr-mobile' => '{{mobile}}'}}
-            .input-group-btn
-              %a.btn.btn-success.btn-block{href: "", style: 'padding-left: 0px; padding-right: 0px;min-width: 20px; border-top-left-radius:0px; border-bottom-left-radius:0px;', ng: {click: 'clearTo()'}}
-                %i.fa.fa-times.fa-lg{style:'color: white;'}
-      .row
-        .col-md-8.col-md-offset-2.col-xs-12
-          %div.map-canvas{'ui-map' => 'toLocationMap', 'ui-options' => 'mapOptions', ng: {show: 'showMap'}}
-
-    .need-return-trip{ng: {show: 'step==="needReturnTrip"'}}
-      .text-center
-        %h4 Do you need a return trip?
-        .col-xs-12.col-md-4.col-md-offset-4.col-sm-6.col-sm-offset-3
-          %a.btn.btn-success.btn-block{ng: {href: '#/plan/returnDate'}}
-            Yes
-          %a.btn-block.link-btn{href: '', ng: {click: 'setNoReturnTrip()'}}
-            No
-
-    .return-date{ng: {show: 'step==="returnDate"'}}
-      %form
+  .depart-date{ng: {show: 'step==="fromDate"'}}
+    %form
+      .form-group
         .row
           .col-md-4.col-md-offset-4.col-sm-6.col-sm-offset-3.col-xs-12
-            %h4 What day do you want to return?
-        .row
-          .col-md-4.col-md-offset-4.col-sm-6.col-sm-offset-3.col-xs-12
+            %h4 What day do you want to leave?
             %p.input-group{'ng-show' => 'html5', 'style' => 'width: 100%;'}
-              %input#returnDate.form-control{min: "{{minReturnDate | date:'yyyy-MM-dd'}}", type: 'date', ng: {model: 'returnDate', required: 'true', enter: 'next()', show: 'mobile'}}
-              %input#returnDate.form-control{min: "{{minReturnDate | date:'yyyy-MM-dd'}}", type: 'date', ng: {model: 'returnDate', required: 'true', enter: 'next()', show: '!mobile',  focus: ''}}
+              %input#fromDate.form-control{min: "{{minDate | date:'yyyy-MM-dd'}}", type: 'date', ng: {model: 'fromDate', required: 'true', enter: 'next()', show: 'mobile'}}
+              %input#fromDate.form-control{min: "{{minDate | date:'yyyy-MM-dd'}}", focus: '', type: 'date', ng: {model: 'fromDate', required: 'true', enter: 'next()', show: '!mobile'}}
             %p.input-group{'ng-show' => '!html5', }
-              %input.form-control{'type' => 'text', 'datepicker-popup' => "MMMM-dd-yyyy", 'min-date' => 'minReturnDate', 'is-open' => 'opened', 'datepicker-options' => 'dateOptions', 'close-text' => 'Close', 'ng-model' => 'returnDate',}
+              %input.form-control{'type' => 'text', 'datepicker-popup' => "MMMM-dd-yyyy", 'min-date' => 'minDate', 'is-open' => 'opened', 'datepicker-options' => 'dateOptions', 'close-text' => 'Close', 'ng-model' => 'fromDate',}
                 %span.input-group-btn
                   %button.btn.btn-default{'type' => 'button', 'ng-click' => 'openCalendar($event)'}
                     %i.glyphicon.glyphicon-calendar
             %span{style: 'color: red;'} {{message}}
 
+  .depart-time{ng: {show: 'step==="fromTimeType"'}}
+    .col-md-8.col-md-offset-2.col-sm-6.col-sm-offset-3.col-xs-12
+      .row
+        .col-xs-12.pull-left.no-padding
+          %h4
+            %span.timeTypeSelection{ng: {show: 'fromTimeType == "depart"'}} When do you want to start out?
+            %span.timeTypeSelection{ng: {show: 'fromTimeType == "arrive"'}} When do you want to arrive?
+            %span.dropdown{dropdown: '', style: 'cursor: pointer;'}
+              %a.fa.fa-lg.fa-sort-desc{href: '', dropdown_toggle: '', style: 'vertical-align: 15%; color: #2781FF; text-decoration: none;'}
+              %ul.dropdown-menu.pull-right{dropdown_menu: ''}
+                %li{ng: {show: 'fromTimeType != "depart"'}}
+                  %a{href: '', ng: {click: 'specifyFromTimeType("depart")'}}
+                    When do you want to start out?
+                %li{ng: {show: 'fromTimeType != "arrive"'}}
+                  %a{href: '', ng: {click: 'specifyFromTimeType("arrive")'}}
+                    When do you want to arrive?
+      .row{ng: {show: 'showAsap'}}
+        .col-xs-12.pull-left{style: 'color: #2781FF; padding: 0px;'}
+          %h5{ng: {click: 'specifyFromTimeType("asap")'}} As soon as possible
+      .row.text-center{ng: {show: 'fromTimeType != "asap"'}}
+        %timepicker.timepicker{'minute-step' => '5', ng: {model: 'fromTime', show: '!mobile'}}
+        %input#fromTime.form-control{type: 'time', step: '300', ng: {model: 'fromTime', required: 'true', show: 'mobile && html5'}}
+        %span{style: 'color: red;'} {{message}}
+  .use-current-location{ng: {show: 'step==="start_current"'}}
+    .row
+      .text-center
+        %h4 Start at your current location?
+        .col-xs-12.col-md-4.col-md-offset-4.col-sm-6.col-sm-offset-3
+          %a.btn.btn-success.btn-block{href: '', ng: {click: 'getCurrentLocation()'}}
+            Yes
+          %a.btn-block.link-btn{ng: {href: '#/plan/from'}}
+            No
 
-    .depart-time{ng: {show: 'step==="returnTimeType"'}}
-      .col-md-8.col-md-offset-2.col-sm-6.col-sm-offset-3.col-xs-12
+  .map-wrapper.text-center{ng: {show: 'step==="from_confirm" && showConfirmLocationMap'}}
+    %h5 Here's the address we found for your location:
+    %h5 {{ planService.from }}
+    %div.map-canvas{'ui-map' => 'confirmFromLocationMap', 'ui-options' => 'mapOptions', 'style' => 'margin-bottom: 10px'}
+    .col-md-4.col-md-offset-4.col-sm-6.col-sm-offset-3.col-xs-12
+      %a.btn.btn-success.btn-block{href: "", ng: {click: 'next()'}}
+        Yes, use this address
+      %a.btn-block.link-btn{href: "", ng: {click: 'overrideCurrentLocation()'}}
+        No, I'll enter the address myself
+
+    %p
+      {{greeting}}
+
+  %form.from-location{name: 'from_location', ng: {show: 'step==="from"'}}
+    .row
+      .col-md-8.col-md-offset-2.col-xs-12
+        %h4 Where are you starting from?
+    .row
+      .col-md-8.col-md-offset-2.col-xs-12{'style' => 'line-height: 2em;'}
+        .input-group
+          %autocomplete.autocomplete{tabindex: 'null', 'inputclass' => 'clearable', 'disable-filter' => 'true', 'data' => 'locations', 'on-type'=> 'getLocations', 'on-select' => 'selectPlace', ng: {model: 'from', 'attr-mobile' => '{{mobile}}'}}
+          .input-group-btn
+            %a.btn.btn-success.btn-block{href: "", style: 'padding-left: 0px; padding-right: 0px;min-width: 20px; border-top-left-radius:0px; border-bottom-left-radius:0px;', ng: {click: 'clearFrom()'}}
+              %i.fa.fa-times.fa-lg{style:'color: white;'}
+    .row
+      .col-md-8.col-md-offset-2.col-xs-12
+        %div.map-canvas{'ui-map' => 'fromLocationMap', 'ui-options' => 'mapOptions', ng: {show: 'showMap'}}
+
+  %form.to-location{ng: {show: 'step==="to"'}}
+    .row
+      .col-md-8.col-md-offset-2.col-xs-12
+        %h4 Where are you going?
+    .row
+      .col-md-8.col-md-offset-2.col-xs-12{'style' => 'line-height: 2em;'}
+        .input-group
+          %autocomplete.autocomplete{tabindex: 'null', 'inputclass' => 'clearable', 'disable-filter' => 'true', 'data' => 'locations', 'on-type'=> 'getLocations', 'on-select' => 'selectPlace', :ng => {:model => 'to', 'attr-mobile' => '{{mobile}}'}}
+          .input-group-btn
+            %a.btn.btn-success.btn-block{href: "", style: 'padding-left: 0px; padding-right: 0px;min-width: 20px; border-top-left-radius:0px; border-bottom-left-radius:0px;', ng: {click: 'clearTo()'}}
+              %i.fa.fa-times.fa-lg{style:'color: white;'}
+    .row
+      .col-md-8.col-md-offset-2.col-xs-12
+        %div.map-canvas{'ui-map' => 'toLocationMap', 'ui-options' => 'mapOptions', ng: {show: 'showMap'}}
+
+  .need-return-trip{ng: {show: 'step==="needReturnTrip"'}}
+    .text-center
+      %h4 Do you need a return trip?
+      .col-xs-12.col-md-4.col-md-offset-4.col-sm-6.col-sm-offset-3
+        %a.btn.btn-success.btn-block{ng: {href: '#/plan/returnDate'}}
+          Yes
+        %a.btn-block.link-btn{href: '', ng: {click: 'setNoReturnTrip()'}}
+          No
+
+  .return-date{ng: {show: 'step==="returnDate"'}}
+    %form
+      .row
+        .col-md-4.col-md-offset-4.col-sm-6.col-sm-offset-3.col-xs-12
+          %h4 What day do you want to return?
+      .row
+        .col-md-4.col-md-offset-4.col-sm-6.col-sm-offset-3.col-xs-12
+          %p.input-group{'ng-show' => 'html5', 'style' => 'width: 100%;'}
+            %input#returnDate.form-control{min: "{{minReturnDate | date:'yyyy-MM-dd'}}", type: 'date', ng: {model: 'returnDate', required: 'true', enter: 'next()', show: 'mobile'}}
+            %input#returnDate.form-control{min: "{{minReturnDate | date:'yyyy-MM-dd'}}", type: 'date', ng: {model: 'returnDate', required: 'true', enter: 'next()', show: '!mobile',  focus: ''}}
+          %p.input-group{'ng-show' => '!html5', }
+            %input.form-control{'type' => 'text', 'datepicker-popup' => "MMMM-dd-yyyy", 'min-date' => 'minReturnDate', 'is-open' => 'opened', 'datepicker-options' => 'dateOptions', 'close-text' => 'Close', 'ng-model' => 'returnDate',}
+              %span.input-group-btn
+                %button.btn.btn-default{'type' => 'button', 'ng-click' => 'openCalendar($event)'}
+                  %i.glyphicon.glyphicon-calendar
+          %span{style: 'color: red;'} {{message}}
+
+
+  .depart-time{ng: {show: 'step==="returnTimeType"'}}
+    .col-md-8.col-md-offset-2.col-sm-6.col-sm-offset-3.col-xs-12
+      .row
+        .col-xs-12.pull-left.no-padding
+          %h4
+            %span.timeTypeSelection{ng: {show: 'returnTimeType == "depart"'}} When do you want to leave?
+            %span.timeTypeSelection{ng: {show: 'returnTimeType == "arrive"'}} When do you want to get back?
+            %span.dropdown{dropdown: '', style: 'cursor: pointer;'}
+              %a.fa.fa-lg.fa-sort-desc{href: '', dropdown_toggle: '', style: 'vertical-align: 15%; color: #2781FF; text-decoration: none;'}
+              %ul.dropdown-menu.pull-right{dropdown_menu: ''}
+                %li{ng: {show: 'returnTimeType != "depart"'}}
+                  %a{href: '', ng: {click: 'specifyReturnTimeType("depart")'}}
+                    When do you want to leave?
+                %li{ng: {show: 'returnTimeType != "arrive"'}}
+                  %a{href: '', ng: {click: 'specifyReturnTimeType("arrive")'}}
+                    When do you want to get back?
+      .row.text-center
+        %timepicker.timepicker{'minute-step' => '5', ng: {model: 'returnTime', show: '!mobile'}}
+        %input#fromTime.form-control{type: 'time', step: '300', ng: {model: 'returnTime', required: 'true', show: 'mobile && html5'}}
+        %span{style: 'color: red;'} {{message}}
+
+  .purpose{ng: {show: 'step==="purpose"'}}
+    .text-center
+      %h4 What is your trip purpose?
+      %h5{style: 'color: grey;'} * For some trip purposes, discounts may be available
+    .row
+      .col-md-8.col-md-offset-2.col-sm-8.col-sm-offset-2
+        .col-xs-12.col-md-6{ng: {repeat: 'purpose in purposes'}}
+          %a.btn.btn-success.btn-block{href: "", style: 'white-space: normal; margin-bottom:4px;', ng: {click: 'specifyTripPurpose("{{ purpose.name }}")'}}
+            {{ purpose.name }}
+
+  .confirm{ng: {show: 'step==="confirm"'}}
+    .row.row-eq-height.rounded-border{style: "border: 0px;"}
+      .col-xs-12.col-md-6.col-md-offset-3.col-sm-8.col-sm-offset-2
+        %h3{style: 'font-weight:600;'}
+          My ride request
+    .row.truncate
+      .col-xs-12.col-md-6.col-md-offset-3.col-sm-8.col-sm-offset-2
+        .row.row-eq-height.rounded-border
+          .col-xs-3.col-md-2
+            %p.text-left.text-muted
+              From
+          .col-xs-9.col-md-10
+            %h4.text-left
+              {{request.fromLine1}}
+            %h5.text-muted.text-left
+              {{request.fromLine2}}
+
+        .row.row-eq-height.rounded-border
+          .col-xs-3.col-md-2
+            %p.text-left.text-muted
+              To
+          .col-xs-9.col-md-10
+            %h4.text-left
+              {{request.toLine1}}
+            %h5.text-muted.text-left
+              {{request.toLine2}}
+
+        .row.row-eq-height.rounded-border{ng: {show: '!request.roundtrip || request.sameday'}}
+          .col-xs-3.col-md-2
+            %p.text-left.text-muted
+              When
+          .col-xs-9.col-md-10
+            %h4.text-left
+              {{request.when1}}
+              %h5.text-muted.text-left
+                {{request.when2}}
+              %h5.text-muted.text-left{ng: {show: 'request.when4'}}
+                {{request.when4}}
+
+        %div.rounded-border{style: "margin-left: -15px; margin-right: -15px;", ng: {show: 'request.roundtrip && !request.sameday'}}
+          .row.row-eq-height{style: "margin-left: 0px; margin-right: 0px;"}
+            .col-xs-3.col-md-2
+              %p.text-left.text-muted
+                Depart
+            .col-xs-9.col-md-10
+              %h4.text-left
+                {{request.when1}}
+              %h5.text-muted.text-left
+                {{request.when2}}
+          .row.row-eq-height{style: "margin-left: 0px; margin-right: 0px;"}
+            .col-xs-3.col-md-2
+              %p.text-left.text-muted
+                Return
+            .col-xs-9.col-md-10
+              %h4.text-left
+                {{request.when3}}
+              %h5.text-muted.text-left
+                {{request.when4}}
+
+        .row.row-eq-height.rounded-border
+          .col-xs-3.col-md-2
+            %p.text-left.text-muted
+              Purpose
+          .col-xs-9.col-md-10
+            %h4.text-left
+              {{request.purpose}}
+    .row
+      .col-xs-8.col-xs-offset-2.col-md-4.col-md-offset-4.col-sm-8.col-sm-offset-2.text-center
+        %a.btn.btn-success.btn-block{href: "", ng: {click: 'next()'}}
+          Search for ride!
+        %a.btn-block.link-btn{"ng-href" => "#/plan/fromDate"}
+          No, change my request
+
+  .list_itineraries.col-xs-12.col-sm-8.col-sm-offset-2.no-padding{ng: {show: 'step==="list_itineraries" && noresults == true'}}
+    %h2 We did not find any rides matching your request
+    %a.btn-block{"ng-href" => "#/plan/fromDate"}
+      Change my request
+
+  .list_itineraries.col-xs-12.col-sm-8.col-sm-offset-2.no-padding{ng: {show: 'step==="list_itineraries" && noresults == false'}}
+    %h2 Your options:
+
+    %a.no_underline.row.row-eq-height.rounded-border{ng: {href: '#/transitoptions/0', show: 'fare_info["mode_transit"] && transitInfos[0].length >  1'}}
+      .row.even-height-row.table-compact
+        .col-xs-2.col-height-slave
+          %img.img-responsive{ng: {src: 'images/modes/transit.png'}}
+        .col-xs-4.col-height-master
+          .row.row-eq-height.table-compact
+            .col-xs-12{style: "font-size: large"}
+              Bus
+        .col-xs-2.col-height-master
+          .row.row-eq-height.table-compact
+            .col-xs-12{style: "font-size: large"}
+              {{fare_info["mode_transit"] | currency | free}}
+        .col-xs-4.col-height-slave
+          .row.row-eq-height.table-compact.pull-right
+            .col-xs-12
+              %span.fa-lg.pull-right
+                %i.fa.fa-chevron-circle-right.fa-lg
+
+    %a.no_underline.row.row-eq-height.rounded-border{ng: {show: 'transitInfos[0].length == 1', href: '#/transit/0/{{transitInfo.id}}', repeat: 'transitInfo in transitInfos[0]'}}
+      .row.even-height-row.table-compact
+        .col-xs-2.col-height-slave
+          %img.img-responsive{ng: {src: 'images/modes/transit.png'}}
+        .col-xs-6.col-height-master
+          .row.row-eq-height.table-compact
+            .col-xs-12
+              Bus
+          .row.row-eq-height.table-compact
+            .col-xs-12
+              %p.text-left.text-muted
+                Travel time: {{transitInfo.travelTime}}
+          .row.row-eq-height.table-compact
+            .col-xs-12
+              %p.text-left.text-muted
+                Start time: {{transitInfo.startDesc}}
+        .col-xs-4.col-height-slave
+          .row.row-eq-height.table-compact.pull-right
+            .col-xs-12
+              {{transitInfo.cost | currency | free}}
+          .route-badge
+            %img{style: 'height: 20px;', ng: {src: 'images/modes/transit.png'}}
+            %span {{transitInfo.route}}
+
+    %a.no_underline.row.row-eq-height.rounded-border{ng: {href: '#/plan/sharedride_options_1', show: 'fare_info["mode_paratransit"] && email'}}
+      .row.even-height-row.table-compact
+        .col-xs-2.col-height-slave
+          %img.img-responsive{ng: {src: 'images/modes/paratransit.png'}}
+        .col-xs-6.col-height-master
+
+          .row.row-eq-height.table-compact{style: "font-size: large"}
+            .col-xs-12
+              Shared Ride
+          .sharedridesegment{ng: {repeat: 'itinerary in paratransitItineraries'}}
+            .row.table-compact{ng: {show: '$first && paratransitItineraries.length > 1'}}
+              .col-xs-12
+                %p.text-left{style: 'text-decoration: underline;'}
+                  Outbound trip
+            .row.table-compact{ng: {show: '$last && paratransitItineraries.length > 1'}}
+              .col-xs-12
+                %p.text-left{style: 'text-decoration: underline;'}
+                  Return trip
+            .row.table-compact
+              .col-xs-12
+                %p.text-left.text-muted
+                  Travel time: {{itinerary.travelTime}}
+            .row.table-compact
+              .col-xs-12
+                %p.text-left.text-muted
+                  Start: {{itinerary.startDesc}}
+        .col-xs-4.col-height-slave
+          .row.row-eq-height.table-compact.pull-right
+            .col-xs-12{style: "font-size: large"}
+              {{fare_info["mode_paratransit"] | currency | free}}
+
+    %a.no_underline.row.row-eq-height.rounded-border{ng: {href: '#/plan/discounts', show: 'fare_info["mode_paratransit"] && !email'}}
+      .row.even-height-row.table-compact
+        .col-xs-2.col-height-slave
+          %img.img-responsive{ng: {src: 'images/modes/paratransit.png'}}
+        .col-xs-6.col-height-master
+          .row.row-eq-height.table-compact
+            .col-xs-12
+              Shared Ride
+          .row.table-compact
+            .col-xs-12
+              %p.text-left.text-muted
+                Travel time: {{fare_info.paratransitTravelTime}}
+            .col-xs-12
+              %p.text-left.text-muted
+                Start time: {{fare_info.paratransitStartTime}}
+        .col-xs-4.col-height-slave
+          .row.row-eq-height.table-compact.pull-right
+            .col-xs-12
+              {{fare_info["mode_paratransit"]}}
+
+
+    %a.text-center.btn-block{ng: {href: '#/plan/alternative_options', show: 'showAlternativeOption'}}
+      More options
+
+  .col-xs-12.col-sm-8.col-sm-offset-2{ng: {show: 'step==="alternative_options"'}}
+    %h2 Your alternative options:
+    %a.no_underline.row.row-eq-height.rounded-border{ng: {href: '#/walk/confirm', show: 'walkItineraries'}}
+      .col-xs-2
+        %img.img-responsive{ng: {src: 'images/modes/walk.png'}}
+      .col-xs-4
+        .row.row-eq-height{style: "border: 0px; margin: 0px; padding: 0px"}
+          .col-xs-9{style: "font-size: large"}
+            Walk
+        .walkitinerary#walk{index: '{{$index}}', ng: {repeat: 'itinerary in walkItineraries'}}
+          .row.table-compact{ng: {show: '$first && walkItineraries.length > 1'}}
+            .col-xs-12
+              %p.text-left{style: 'text-decoration: underline;'}
+                Outbound trip
+          .row.table-compact{ng: {show: '$last && walkItineraries.length > 1'}}
+            .col-xs-12
+              %p.text-left{style: 'text-decoration: underline;'}
+                Return trip
+          .row{style: "border: 0px; margin: 0px; padding: 0px"}
+            .col-xs-12
+              %p.text-left.text-muted{style: "border: 0px; margin: 0px; padding: 0px"}
+                Distance: {{itinerary.walkDistanceDesc}} miles
+            .col-xs-12
+              %p.text-left.text-muted{style: "border: 0px; margin: 0px; padding: 0px"}
+                Travel time: {{itinerary.walkTimeDesc}}
+      .col-xs-2{style: "font-size: large"}
+        Free
+
+    %a.no_underline.row.row-eq-height.rounded-border{ng: {href: '#/plan/sharedride_options_1', show: 'fare_info["mode_taxi"]'}}
+      .col-xs-2
+        %img.img-responsive{ng: {src: 'images/modes/taxi.png'}}
+      .col-xs-4
+        .row.row-eq-height{style: "border: 0px; margin: 0px; padding: 0px"}
+          .col-xs-9{style: "font-size: large"}
+            Taxi
+        .row{style: "border: 0px; margin: 0px; padding: 0px"}
+          .col-xs-12
+            %p.text-left.text-muted{style: "border: 0px; margin: 0px; padding: 0px"}
+              Cost: {{taxiItinerary.cost | currency | free}}
+      .col-xs-2{style: "font-size: large"}
+        Free
+
+  .bus_options{ng: {show: 'step==="bus_options"'}}
+    .row{style: "margin: 0px; padding: 0px"}
+      .col-xs-2.col-lg-1
+        %img{style: '', ng: {src: 'images/modes/transit.png'}}
+      .col-xs-10.col-lg-11{style: 'margin-left: -.5em; margin-top: -.5em;'}
         .row
-          .col-xs-12.pull-left.no-padding
+          .col-xs-12
+            %h3 Bus Options:
+        .row
+          .col-xs-12.text-muted
+            %h4 Click for details
+
+    .row
+      .bus.rounded-border{style: "padding: 1em", ng: {repeat: 'transitInfo in transitInfos[0]', click: 'selectTransitTrip(transitInfo.id);'}}
+        .row
+          .col-xs-8
+            .badge.alert-success{style: "font-size: large"} {{transitInfo.label}}
+          .col-xs-3.pull-right{style: 'border-left: 1px solid grey; border-bottom: 1px solid grey;  padding: .5em; margin-top: -1em; width: auto'}
+            .pull-right.blah{style: 'height: 2em;'}
+              %img{style: 'max-height:100%; ', ng: {src: 'images/modes/transit.png'}}
+              %span{style: "font-size: large; vertical-align: bottom;"} {{transitInfo.route}}
+        .row{style: "margin-top: .5em"}
+          .col-xs-12.text-muted
+            Fare {{transitInfo.cost | currency | free}}
+        .row{style: "margin-top: .5em"}
+          .col-xs-12.text-muted
+            Leave {{transitInfo.startDesc}}
+        .row
+          .col-xs-12.text-muted
+            Arrive {{transitInfo.endDesc}}
+        .row
+          .col-xs-12.text-muted{style: 'font-size: 1em'}
+            Total trip time is {{transitInfo.travelTime}}
+
+
+  .depart-time{ng: {show: 'step==="sharedride_options_1"'}}
+    %form
+      .form-group.text-center
+        %h2 Will anyone be riding with you?
+      .row
+        .col-md-4.col-md-offset-4.col-xs-12
+          %a.btn.btn-success.btn-block{href: '', ng: {click: 'specifySharedRideCompanion("false")'}, style: 'white-space: normal; margin-bottom:4px;'}
+            No, I'm on my own
+          %a.text-center.btn-block.link-btn{href: '', ng: {click: 'specifySharedRideCompanion("true")'}, style: 'white-space: normal; margin-bottom:4px; cursor:pointer;'}
+            Yes, I have a companion or escort with me
+
+  .depart-time{ng: {show: 'step==="sharedride_options_2"'}}
+    .col-md-8.col-md-offset-2.col-xs-12
+      .row{ng: {show: 'questions.assistant'}}
+        .col-xs-12
+          %h4
+            {{questions.assistant}}
+            %input{type: 'checkbox', ng: {model: 'hasEscort'}}
+      .row{ng: {show: 'questions.children'}}
+        .col-xs-12
+          %h4
+            {{questions.children}}
+            %select{ng: {model: 'numberOfCompanions', options: 'number for number in questions.limit'}}
+
+
+  .depart-time{ng: {show: 'step==="sharedride_options_3"'}}
+    .col-md-8.col-md-offset-2.col-xs-12
+      .form-group
+        %h4 If you have any special instructions for the driver, please enter them below
+        %h4c This is optional
+      .row
+        .form-group
+          %textarea.form-control{placeholder: 'Dear Driver, please...', rows: '5', ng: {model: 'driverInstructions'}}
+
+  .depart-time{ng: {show: 'step==="book_shared_ride"'}}
+    .row
+      .col-md-4.col-md-offset-4.text-center
+        %h1 Ready to book this?
+    .row
+      .col-md-4.col-md-offset-4
+        %a.btn.btn-success.btn-block{href: "", ng: {click: 'next()'}}
+          Book this shared ride
+    .row
+      .col-md-4.col-md-offset-4.text-center
+        %a.btn-block.link-btn{"ng-href" => "#/plan/fromDate"}
+          No, change it
+
+
+  .discounts{ng: {show: 'step==="discounts"'}}
+    .discounts-body.col-md-8.col-md-offset-2.col-xs-12
+      .row.discounts-header
+        .col-xs-12.pull-left
+          %h1 Shared Rides
+          %h3 Provided by the Commonwealth of PA
+      .row{index: '{{$index}}', ng: {repeat: 'discount in paratransitItinerary.discounts'}}
+        .col-xs-12.discounts-row
+          .col-xs-6.pull-left
+            %h3 {{discount.comment}}
+          .col-xs-6.pull-right
+            %h3 {{discount.fare | currency | free}}
+      .row{style: 'margin-top: 2em; padding-bottom: 0px; border-bottom: hidden;'}
+        .col-xs-12.discounts-row.pull-left{style: 'color: black;'}
+          %h3 You must sign up in advance to use Shared Ride services
+      .row
+        .col-xs-12.discounts-row.pull-left{style: 'color: black; border-top: hidden;'}
+          %h4
+            .fa.fa-phone
+            Call to learn more
+            %a.btn-next{href: "tel://1-844-724-7433"}
+              1-844-PA4-RIDE
+      .row
+        .col-xs-12.pull-left.no-padding
+          %h4 Already signed up?
+          %h4
+            %a.btn-next{ng: {href: '#/login'}}
+              Sign in
+
+  .discounts{ng: {show: 'step==="my_rides"'}}
+    .col-md-8.col-md-offset-2.col-xs-12.no-padding
+      %tabset
+        %tab{'heading' => 'Today ({{trips.today.length}})', 'active' => 'tabToday'}
+          .myride{index: '{{$index}}', ng: {init: 'tab = "today"', click: 'toggleMyRideButtonBar("today", $index)', repeat: 'trip in trips.today'}}
+            .row
+              .col-xs-2.col-height-slave
+                %img.img-responsive{ng: {src: 'images/modes/paratransit.png', show: 'trip.mode == "mode_paratransit"'}}
+                %img.img-responsive{ng: {src: 'images/modes/transit.png', show: 'trip.mode == "mode_transit"'}}
+                %img.img-responsive{ng: {src: 'images/modes/walk.png', show: 'trip.mode == "mode_walk"'}}
+              .col-xs-10.col-height-master{style: 'width: 60em !important;'}
+                .row
+                  .col-xs-12
+                    %h4 {{trip.from_place}} to {{trip.to_place}}
+                .row
+                  .col-xs-8
+                    %h5.blue-text {{trip.startDesc}}
+                  .col-xs-4
+                    %h5.text-muted.text-right{ng: {show: 'trip.itineraries.length > 1'}} (round trip)
+                    %h5.text-muted.text-right{ng: {show: 'trip.itineraries.length == 1'}} (one way)
+            .animate-show.myride-buttons{ng: {show: 'tripDivs.today[$index]'}}
+              .row.even-height-row
+                %span{ng: {include: "'views/emailOrCancel.html'"}}
+        %tab{'heading' => 'Future ({{trips.future.length}})', 'active' => 'tabFuture'}
+          .myride{'index' => '{{$index}}', ng: {init: 'tab = "future"', click: 'toggleMyRideButtonBar("future", $index)', repeat: 'trip in trips.future'}}
+            .row
+              .col-xs-2.col-height-slave
+                %img.img-responsive{ng: {src: 'images/modes/paratransit.png', show: 'trip.mode == "mode_paratransit"'}}
+                %img.img-responsive{ng: {src: 'images/modes/transit.png', show: 'trip.mode == "mode_transit"'}}
+                %img.img-responsive{ng: {src: 'images/modes/walk.png', show: 'trip.mode == "mode_walk"'}}
+              .col-xs-10.col-height-master{style: 'width: 60em !important;'}
+                .row
+                  .col-xs-12
+                    %h4 {{trip.from_place}} to {{trip.to_place}}
+                .row
+                  .col-xs-8
+                    %h5.blue-text {{trip.startDesc}}
+                  .col-xs-4
+                    %h5.text-muted.text-right{ng: {show: 'trip.itineraries.length > 1'}} (round trip)
+                    %h5.text-muted.text-right{ng: {show: 'trip.itineraries.length == 1'}} (one way)
+            .animate-show.myride-buttons{ng: {show: 'tripDivs.future[$index]'}}
+              .row.even-height-row
+                %span{ng: {include: "'views/emailOrCancel.html'"}}
+        %tab{'heading' => 'Past ({{trips.past.length}})', 'active' => 'tabPast'}
+          .myride{'index' => '{{$index}}', ng: {init: 'tab = "past"', click: 'toggleMyRideButtonBar("past", $index);', repeat: 'trip in trips.past'}}
+            .row
+              .col-xs-2.col-height-slave
+                %img.img-responsive{ng: {src: 'images/modes/paratransit.png', show: 'trip.mode == "mode_paratransit"'}}
+                %img.img-responsive{ng: {src: 'images/modes/transit.png', show: 'trip.mode == "mode_transit"'}}
+                %img.img-responsive{ng: {src: 'images/modes/walk.png', show: 'trip.mode == "mode_walk"'}}
+              .col-xs-10.col-height-master{style: 'width: 60em !important;'}
+                .row
+                  .col-xs-12
+                    %h4 {{trip.from_place}} to {{trip.to_place}}
+                .row
+                  .col-xs-8
+                    %h5.blue-text {{trip.startDesc}}
+                  .col-xs-4
+                    %h5.text-muted.text-right{ng: {show: 'trip.itineraries.length > 1'}} (round trip)
+                    %h5.text-muted.text-right{ng: {show: 'trip.itineraries.length == 1'}} (one way)
+            .animate-show.myride-buttons{ng: {show: 'tripDivs.past[$index]'}}
+              .row.even-height-row
+                .col-xs-12.col-height-slave.text-center
+                  %span{ng: {include: "'views/emailOrView.html'"}}
+      .row{style: 'margin-top: 10px'}
+        .col-md-4.col-md-offset-4.col-xs-12.text-center
+          %a.btn.btn-success.btn-block{href: '', ng: {click: 'reset()'}}
+            Plan a new trip
+
+  .depart-time{ng: {show: 'step==="rebook"'}}
+    %form
+      .row.text-center
+        %h2 Rebook: {{trip.from_place}} to {{trip.to_place}}
+      .row
+        .col-md-4.col-md-offset-4.col-sm-6.col-sm-offset-3.col-xs-12
+          %h4 Date of Travel
+          %p.input-group{'ng-show' => 'html5', 'style' => 'width: 100%;'}
+            %input#fromDate.form-control{min: "{{minDate | date:'yyyy-MM-dd'}}", type: 'date', ng: {model: 'fromDate', required: 'true', show: 'mobile'}}
+            %input#fromDate.form-control{min: "{{minDate | date:'yyyy-MM-dd'}}", focus: '', type: 'date', ng: {model: 'fromDate', required: 'true', show: '!mobile'}}
+          %p.input-group{'ng-show' => '!html5', }
+            %input.form-control{'type' => 'text', 'datepicker-popup' => "MMMM-dd-yyyy", 'min-date' => 'minDate', 'is-open' => 'opened', 'datepicker-options' => 'dateOptions', 'close-text' => 'Close', 'ng-model' => 'fromDate',}
+              %span.input-group-btn
+                %button.btn.btn-default{'type' => 'button', 'ng-click' => 'openCalendar($event)'}
+                  %i.glyphicon.glyphicon-calendar
+      .row
+        .col-md-4.col-md-offset-4.col-sm-6.col-sm-offset-3.col-xs-12
+          %h4
+            %span.timeTypeSelection{ng: {show: 'fromTimeType == "depart"'}} When do you want to start out?
+            %span.timeTypeSelection{ng: {show: 'fromTimeType == "arrive"'}} When do you want to arrive?
+            %span.dropdown{dropdown: '', style: 'cursor: pointer;'}
+              %a.fa.fa-lg.fa-sort-desc{href: '', dropdown_toggle: '', style: 'vertical-align: 15%; color: #2781FF; text-decoration: none;'}
+              %ul.dropdown-menu.pull-right{dropdown_menu: ''}
+                %li{ng: {show: 'fromTimeType != "depart"'}}
+                  %a{href: '', ng: {click: 'specifyFromTimeType("depart")'}}
+                    When do you want to start out?
+                %li{ng: {show: 'fromTimeType != "arrive"'}}
+                  %a{href: '', ng: {click: 'specifyFromTimeType("arrive")'}}
+                    When do you want to arrive?
+      .row{ng: {show: 'showAsap'}}
+        .col-xs-12.pull-left{style: 'color: #2781FF; padding: 0px;'}
+          %h5{ng: {click: 'specifyFromTimeType("asap")'}} As soon as possible
+      .row.text-center{ng: {show: 'fromTimeType != "asap"'}}
+        %timepicker.timepicker{'minute-step' => '5', ng: {model: 'fromTime', show: '!mobile'}}
+        .col-md-4.col-md-offset-4.col-sm-6.col-sm-offset-3.col-xs-12
+          %input#fromTime.form-control{type: 'time', step: '300', ng: {model: 'fromTime', required: 'true', show: 'mobile && html5'}}
+      .returnWrapper{ng: {show: 'roundTrip'}}
+        .row
+          .col-md-4.col-md-offset-4.col-sm-6.col-sm-offset-3.col-xs-12
+            %h4 Date of Return Trip
+        .row
+          .col-md-4.col-md-offset-4.col-sm-6.col-sm-offset-3.col-xs-12
+            %p.input-group{'ng-show' => 'html5', 'style' => 'width: 100%;'}
+              %input#returnDate.form-control{min: "{{minReturnDate | date:'yyyy-MM-dd'}}", type: 'date', ng: {model: 'returnDate', required: 'true', show: 'mobile'}}
+              %input#fromDate.form-control{min: "{{minReturnDate | date:'yyyy-MM-dd'}}", focus: '', type: 'date', ng: {model: 'returnDate', required: 'true', show: '!mobile'}}
+            %p.input-group{'ng-show' => '!html5', }
+              %input.form-control{'type' => 'text', 'datepicker-popup' => "MMMM-dd-yyyy", 'min-date' => 'minReturnDate', 'is-open' => 'openedReturn', 'datepicker-options' => 'dateOptions', 'close-text' => 'Close', 'ng-model' => 'returnDate',}
+                %span.input-group-btn
+                  %button.btn.btn-default{'type' => 'button', 'ng-click' => 'openReturnCalendar($event)'}
+                    %i.glyphicon.glyphicon-calendar
+        .row
+          .col-md-4.col-md-offset-4.col-sm-6.col-sm-offset-3.col-xs-12
             %h4
               %span.timeTypeSelection{ng: {show: 'returnTimeType == "depart"'}} When do you want to leave?
               %span.timeTypeSelection{ng: {show: 'returnTimeType == "arrive"'}} When do you want to get back?
@@ -142,512 +673,19 @@
                       When do you want to get back?
         .row.text-center
           %timepicker.timepicker{'minute-step' => '5', ng: {model: 'returnTime', show: '!mobile'}}
-          %input#fromTime.form-control{type: 'time', step: '300', ng: {model: 'returnTime', required: 'true', show: 'mobile && html5'}}
+          .col-md-4.col-md-offset-4.col-sm-6.col-sm-offset-3.col-xs-12
+            %input#fromTime.form-control{type: 'time', step: '300', ng: {model: 'returnTime', required: 'true', show: 'mobile && html5'}}
+
+      .row{style: 'margin-top: 10px', ng: {show: 'message'}}
+        .col-md-4.col-md-offset-4.col-xs-12.text-center
           %span{style: 'color: red;'} {{message}}
-
-    .purpose{ng: {show: 'step==="purpose"'}}
-      .text-center
-        %h4 What is your trip purpose?
-        %h5{style: 'color: grey;'} * For some trip purposes, discounts may be available
-      .row
-        .col-md-8.col-md-offset-2.col-sm-8.col-sm-offset-2
-          .col-xs-12.col-md-6{ng: {repeat: 'purpose in purposes'}}
-            %a.btn.btn-success.btn-block{href: "", style: 'white-space: normal; margin-bottom:4px;', ng: {click: 'specifyTripPurpose("{{ purpose.name }}")'}}
-              {{ purpose.name }}
-
-    .confirm{ng: {show: 'step==="confirm"'}}
-      .row.row-eq-height.rounded-border{style: "border: 0px;"}
-        .col-xs-12.col-md-6.col-md-offset-3.col-sm-8.col-sm-offset-2
-          %h3{style: 'font-weight:600;'}
-            My ride request
-      .row.truncate
-        .col-xs-12.col-md-6.col-md-offset-3.col-sm-8.col-sm-offset-2
-          .row.row-eq-height.rounded-border
-            .col-xs-3.col-md-2
-              %p.text-left.text-muted
-                From
-            .col-xs-9.col-md-10
-              %h4.text-left
-                {{request.fromLine1}}
-              %h5.text-muted.text-left
-                {{request.fromLine2}}
-
-          .row.row-eq-height.rounded-border
-            .col-xs-3.col-md-2
-              %p.text-left.text-muted
-                To
-            .col-xs-9.col-md-10
-              %h4.text-left
-                {{request.toLine1}}
-              %h5.text-muted.text-left
-                {{request.toLine2}}
-
-          .row.row-eq-height.rounded-border{ng: {show: '!request.roundtrip || request.sameday'}}
-            .col-xs-3.col-md-2
-              %p.text-left.text-muted
-                When
-            .col-xs-9.col-md-10
-              %h4.text-left
-                {{request.when1}}
-                %h5.text-muted.text-left
-                  {{request.when2}}
-                %h5.text-muted.text-left{ng: {show: 'request.when4'}}
-                  {{request.when4}}
-
-          %div.rounded-border{style: "margin-left: -15px; margin-right: -15px;", ng: {show: 'request.roundtrip && !request.sameday'}}
-            .row.row-eq-height{style: "margin-left: 0px; margin-right: 0px;"}
-              .col-xs-3.col-md-2
-                %p.text-left.text-muted
-                  Depart
-              .col-xs-9.col-md-10
-                %h4.text-left
-                  {{request.when1}}
-                %h5.text-muted.text-left
-                  {{request.when2}}
-            .row.row-eq-height{style: "margin-left: 0px; margin-right: 0px;"}
-              .col-xs-3.col-md-2
-                %p.text-left.text-muted
-                  Return
-              .col-xs-9.col-md-10
-                %h4.text-left
-                  {{request.when3}}
-                %h5.text-muted.text-left
-                  {{request.when4}}
-
-          .row.row-eq-height.rounded-border
-            .col-xs-3.col-md-2
-              %p.text-left.text-muted
-                Purpose
-            .col-xs-9.col-md-10
-              %h4.text-left
-                {{request.purpose}}
-      .row
-        .col-xs-8.col-xs-offset-2.col-md-4.col-md-offset-4.col-sm-8.col-sm-offset-2.text-center
-          %a.btn.btn-success.btn-block{href: "", ng: {click: 'next()'}}
-            Search for ride!
-          %a.btn-block.link-btn{"ng-href" => "#/plan/fromDate"}
-            No, change my request
-
-    .list_itineraries.col-xs-12.col-sm-8.col-sm-offset-2.no-padding{ng: {show: 'step==="list_itineraries" && noresults == true'}}
-      %h2 We did not find any rides matching your request
-      %a.btn-block{"ng-href" => "#/plan/fromDate"}
-        Change my request
-
-    .list_itineraries.col-xs-12.col-sm-8.col-sm-offset-2.no-padding{ng: {show: 'step==="list_itineraries" && noresults == false'}}
-      %h2 Your options:
-
-      %a.no_underline.row.row-eq-height.rounded-border{ng: {href: '#/transitoptions/0', show: 'fare_info["mode_transit"] && transitInfos[0].length >  1'}}
-        .row.even-height-row.table-compact
-          .col-xs-2.col-height-slave
-            %img.img-responsive{ng: {src: 'images/modes/transit.png'}}
-          .col-xs-4.col-height-master
-            .row.row-eq-height.table-compact
-              .col-xs-12{style: "font-size: large"}
-                Bus
-          .col-xs-2.col-height-master
-            .row.row-eq-height.table-compact
-              .col-xs-12{style: "font-size: large"}
-                {{fare_info["mode_transit"] | currency | free}}
-          .col-xs-4.col-height-slave
-            .row.row-eq-height.table-compact.pull-right
-              .col-xs-12
-                %span.fa-lg.pull-right
-                  %i.fa.fa-chevron-circle-right.fa-lg
-
-      %a.no_underline.row.row-eq-height.rounded-border{ng: {show: 'transitInfos[0].length == 1', href: '#/transit/0/{{transitInfo.id}}', repeat: 'transitInfo in transitInfos[0]'}}
-        .row.even-height-row.table-compact
-          .col-xs-2.col-height-slave
-            %img.img-responsive{ng: {src: 'images/modes/transit.png'}}
-          .col-xs-6.col-height-master
-            .row.row-eq-height.table-compact
-              .col-xs-12
-                Bus
-            .row.row-eq-height.table-compact
-              .col-xs-12
-                %p.text-left.text-muted
-                  Travel time: {{transitInfo.travelTime}}
-            .row.row-eq-height.table-compact
-              .col-xs-12
-                %p.text-left.text-muted
-                  Start time: {{transitInfo.startDesc}}
-          .col-xs-4.col-height-slave
-            .row.row-eq-height.table-compact.pull-right
-              .col-xs-12
-                {{transitInfo.cost | currency | free}}
-            .route-badge
-              %img{style: 'height: 20px;', ng: {src: 'images/modes/transit.png'}}
-              %span {{transitInfo.route}}
-
-      %a.no_underline.row.row-eq-height.rounded-border{ng: {href: '#/plan/sharedride_options_1', show: 'fare_info["mode_paratransit"] && email'}}
-        .row.even-height-row.table-compact
-          .col-xs-2.col-height-slave
-            %img.img-responsive{ng: {src: 'images/modes/paratransit.png'}}
-          .col-xs-6.col-height-master
-
-            .row.row-eq-height.table-compact{style: "font-size: large"}
-              .col-xs-12
-                Shared Ride
-            .sharedridesegment{ng: {repeat: 'itinerary in paratransitItineraries'}}
-              .row.table-compact{ng: {show: '$first && paratransitItineraries.length > 1'}}
-                .col-xs-12
-                  %p.text-left{style: 'text-decoration: underline;'}
-                    Outbound trip
-              .row.table-compact{ng: {show: '$last && paratransitItineraries.length > 1'}}
-                .col-xs-12
-                  %p.text-left{style: 'text-decoration: underline;'}
-                    Return trip
-              .row.table-compact
-                .col-xs-12
-                  %p.text-left.text-muted
-                    Travel time: {{itinerary.travelTime}}
-              .row.table-compact
-                .col-xs-12
-                  %p.text-left.text-muted
-                    Start: {{itinerary.startDesc}}
-          .col-xs-4.col-height-slave
-            .row.row-eq-height.table-compact.pull-right
-              .col-xs-12{style: "font-size: large"}
-                {{fare_info["mode_paratransit"] | currency | free}}
-
-      %a.no_underline.row.row-eq-height.rounded-border{ng: {href: '#/plan/discounts', show: 'fare_info["mode_paratransit"] && !email'}}
-        .row.even-height-row.table-compact
-          .col-xs-2.col-height-slave
-            %img.img-responsive{ng: {src: 'images/modes/paratransit.png'}}
-          .col-xs-6.col-height-master
-            .row.row-eq-height.table-compact
-              .col-xs-12
-                Shared Ride
-            .row.table-compact
-              .col-xs-12
-                %p.text-left.text-muted
-                  Travel time: {{fare_info.paratransitTravelTime}}
-              .col-xs-12
-                %p.text-left.text-muted
-                  Start time: {{fare_info.paratransitStartTime}}
-          .col-xs-4.col-height-slave
-            .row.row-eq-height.table-compact.pull-right
-              .col-xs-12
-                {{fare_info["mode_paratransit"]}}
-
-
-      %a.text-center.btn-block{ng: {href: '#/plan/alternative_options', show: 'showAlternativeOption'}}
-        More options
-
-    .col-xs-12.col-sm-8.col-sm-offset-2{ng: {show: 'step==="alternative_options"'}}
-      %h2 Your alternative options:
-      %a.no_underline.row.row-eq-height.rounded-border{ng: {href: '#/walk/confirm', show: 'walkItineraries'}}
-        .col-xs-2
-          %img.img-responsive{ng: {src: 'images/modes/walk.png'}}
-        .col-xs-4
-          .row.row-eq-height{style: "border: 0px; margin: 0px; padding: 0px"}
-            .col-xs-9{style: "font-size: large"}
-              Walk
-          .walkitinerary#walk{index: '{{$index}}', ng: {repeat: 'itinerary in walkItineraries'}}
-            .row.table-compact{ng: {show: '$first && walkItineraries.length > 1'}}
-              .col-xs-12
-                %p.text-left{style: 'text-decoration: underline;'}
-                  Outbound trip
-            .row.table-compact{ng: {show: '$last && walkItineraries.length > 1'}}
-              .col-xs-12
-                %p.text-left{style: 'text-decoration: underline;'}
-                  Return trip
-            .row{style: "border: 0px; margin: 0px; padding: 0px"}
-              .col-xs-12
-                %p.text-left.text-muted{style: "border: 0px; margin: 0px; padding: 0px"}
-                  Distance: {{itinerary.walkDistanceDesc}} miles
-              .col-xs-12
-                %p.text-left.text-muted{style: "border: 0px; margin: 0px; padding: 0px"}
-                  Travel time: {{itinerary.walkTimeDesc}}
-        .col-xs-2{style: "font-size: large"}
-          Free
-
-      %a.no_underline.row.row-eq-height.rounded-border{ng: {href: '#/plan/sharedride_options_1', show: 'fare_info["mode_taxi"]'}}
-        .col-xs-2
-          %img.img-responsive{ng: {src: 'images/modes/taxi.png'}}
-        .col-xs-4
-          .row.row-eq-height{style: "border: 0px; margin: 0px; padding: 0px"}
-            .col-xs-9{style: "font-size: large"}
-              Taxi
-          .row{style: "border: 0px; margin: 0px; padding: 0px"}
-            .col-xs-12
-              %p.text-left.text-muted{style: "border: 0px; margin: 0px; padding: 0px"}
-                Cost: {{taxiItinerary.cost | currency | free}}
-        .col-xs-2{style: "font-size: large"}
-          Free
-
-    .bus_options{ng: {show: 'step==="bus_options"'}}
-      .row{style: "margin: 0px; padding: 0px"}
-        .col-xs-2.col-lg-1
-          %img{style: '', ng: {src: 'images/modes/transit.png'}}
-        .col-xs-10.col-lg-11{style: 'margin-left: -.5em; margin-top: -.5em;'}
-          .row
-            .col-xs-12
-              %h3 Bus Options:
-          .row
-            .col-xs-12.text-muted
-              %h4 Click for details
-
-      .row
-        .bus.rounded-border{style: "padding: 1em", ng: {repeat: 'transitInfo in transitInfos[0]', click: 'selectTransitTrip(transitInfo.id);'}}
-          .row
-            .col-xs-8
-              .badge.alert-success{style: "font-size: large"} {{transitInfo.label}}
-            .col-xs-3.pull-right{style: 'border-left: 1px solid grey; border-bottom: 1px solid grey;  padding: .5em; margin-top: -1em; width: auto'}
-              .pull-right.blah{style: 'height: 2em;'}
-                %img{style: 'max-height:100%; ', ng: {src: 'images/modes/transit.png'}}
-                %span{style: "font-size: large; vertical-align: bottom;"} {{transitInfo.route}}
-          .row{style: "margin-top: .5em"}
-            .col-xs-12.text-muted
-              Fare {{transitInfo.cost | currency | free}}
-          .row{style: "margin-top: .5em"}
-            .col-xs-12.text-muted
-              Leave {{transitInfo.startDesc}}
-          .row
-            .col-xs-12.text-muted
-              Arrive {{transitInfo.endDesc}}
-          .row
-            .col-xs-12.text-muted{style: 'font-size: 1em'}
-              Total trip time is {{transitInfo.travelTime}}
-
-
-    .depart-time{ng: {show: 'step==="sharedride_options_1"'}}
-      %form
-        .form-group.text-center
-          %h2 Will anyone be riding with you?
-        .row
-          .col-md-4.col-md-offset-4.col-xs-12
-            %a.btn.btn-success.btn-block{href: '', ng: {click: 'specifySharedRideCompanion("false")'}, style: 'white-space: normal; margin-bottom:4px;'}
-              No, I'm on my own
-            %a.text-center.btn-block.link-btn{href: '', ng: {click: 'specifySharedRideCompanion("true")'}, style: 'white-space: normal; margin-bottom:4px; cursor:pointer;'}
-              Yes, I have a companion or escort with me
-
-    .depart-time{ng: {show: 'step==="sharedride_options_2"'}}
-      .col-md-8.col-md-offset-2.col-xs-12
-        .row{ng: {show: 'questions.assistant'}}
-          .col-xs-12
-            %h4
-              {{questions.assistant}}
-              %input{type: 'checkbox', ng: {model: 'hasEscort'}}
-        .row{ng: {show: 'questions.children'}}
-          .col-xs-12
-            %h4
-              {{questions.children}}
-              %select{ng: {model: 'numberOfCompanions', options: 'number for number in questions.limit'}}
-
-
-    .depart-time{ng: {show: 'step==="sharedride_options_3"'}}
-      .col-md-8.col-md-offset-2.col-xs-12
-        .form-group
-          %h4 If you have any special instructions for the driver, please enter them below
-          %h4c This is optional
-        .row
-          .form-group
-            %textarea.form-control{placeholder: 'Dear Driver, please...', rows: '5', ng: {model: 'driverInstructions'}}
-
-    .depart-time{ng: {show: 'step==="book_shared_ride"'}}
-      .row
-        .col-md-4.col-md-offset-4.text-center
-          %h1 Ready to book this?
-      .row
-        .col-md-4.col-md-offset-4
-          %a.btn.btn-success.btn-block{href: "", ng: {click: 'next()'}}
-            Book this shared ride
-      .row
-        .col-md-4.col-md-offset-4.text-center
-          %a.btn-block.link-btn{"ng-href" => "#/plan/fromDate"}
-            No, change it
-
-
-    .discounts{ng: {show: 'step==="discounts"'}}
-      .discounts-body.col-md-8.col-md-offset-2.col-xs-12
-        .row.discounts-header
-          .col-xs-12.pull-left
-            %h1 Shared Rides
-            %h3 Provided by the Commonwealth of PA
-        .row{index: '{{$index}}', ng: {repeat: 'discount in paratransitItinerary.discounts'}}
-          .col-xs-12.discounts-row
-            .col-xs-6.pull-left
-              %h3 {{discount.comment}}
-            .col-xs-6.pull-right
-              %h3 {{discount.fare | currency | free}}
-        .row{style: 'margin-top: 2em; padding-bottom: 0px; border-bottom: hidden;'}
-          .col-xs-12.discounts-row.pull-left{style: 'color: black;'}
-            %h3 You must sign up in advance to use Shared Ride services
-        .row
-          .col-xs-12.discounts-row.pull-left{style: 'color: black; border-top: hidden;'}
-            %h4
-              .fa.fa-phone
-              Call to learn more
-              %a.btn-next{href: "tel://1-844-724-7433"}
-                1-844-PA4-RIDE
-        .row
-          .col-xs-12.pull-left.no-padding
-            %h4 Already signed up?
-            %h4
-              %a.btn-next{ng: {href: '#/login'}}
-                Sign in
-
-    .discounts{ng: {show: 'step==="my_rides"'}}
-      .col-md-8.col-md-offset-2.col-xs-12.no-padding
-        %tabset
-          %tab{'heading' => 'Today ({{trips.today.length}})', 'active' => 'tabToday'}
-            .myride{index: '{{$index}}', ng: {init: 'tab = "today"', click: 'toggleMyRideButtonBar("today", $index)', repeat: 'trip in trips.today'}}
-              .row
-                .col-xs-2.col-height-slave
-                  %img.img-responsive{ng: {src: 'images/modes/paratransit.png', show: 'trip.mode == "mode_paratransit"'}}
-                  %img.img-responsive{ng: {src: 'images/modes/transit.png', show: 'trip.mode == "mode_transit"'}}
-                  %img.img-responsive{ng: {src: 'images/modes/walk.png', show: 'trip.mode == "mode_walk"'}}
-                .col-xs-10.col-height-master{style: 'width: 60em !important;'}
-                  .row
-                    .col-xs-12
-                      %h4 {{trip.from_place}} to {{trip.to_place}}
-                  .row
-                    .col-xs-8
-                      %h5.blue-text {{trip.startDesc}}
-                    .col-xs-4
-                      %h5.text-muted.text-right{ng: {show: 'trip.itineraries.length > 1'}} (round trip)
-                      %h5.text-muted.text-right{ng: {show: 'trip.itineraries.length == 1'}} (one way)
-              .animate-show.myride-buttons{ng: {show: 'tripDivs.today[$index]'}}
-                .row.even-height-row
-                  %span{ng: {include: "'views/emailOrCancel.html'"}}
-          %tab{'heading' => 'Future ({{trips.future.length}})', 'active' => 'tabFuture'}
-            .myride{'index' => '{{$index}}', ng: {init: 'tab = "future"', click: 'toggleMyRideButtonBar("future", $index)', repeat: 'trip in trips.future'}}
-              .row
-                .col-xs-2.col-height-slave
-                  %img.img-responsive{ng: {src: 'images/modes/paratransit.png', show: 'trip.mode == "mode_paratransit"'}}
-                  %img.img-responsive{ng: {src: 'images/modes/transit.png', show: 'trip.mode == "mode_transit"'}}
-                  %img.img-responsive{ng: {src: 'images/modes/walk.png', show: 'trip.mode == "mode_walk"'}}
-                .col-xs-10.col-height-master{style: 'width: 60em !important;'}
-                  .row
-                    .col-xs-12
-                      %h4 {{trip.from_place}} to {{trip.to_place}}
-                  .row
-                    .col-xs-8
-                      %h5.blue-text {{trip.startDesc}}
-                    .col-xs-4
-                      %h5.text-muted.text-right{ng: {show: 'trip.itineraries.length > 1'}} (round trip)
-                      %h5.text-muted.text-right{ng: {show: 'trip.itineraries.length == 1'}} (one way)
-              .animate-show.myride-buttons{ng: {show: 'tripDivs.future[$index]'}}
-                .row.even-height-row
-                  %span{ng: {include: "'views/emailOrCancel.html'"}}
-          %tab{'heading' => 'Past ({{trips.past.length}})', 'active' => 'tabPast'}
-            .myride{'index' => '{{$index}}', ng: {init: 'tab = "past"', click: 'toggleMyRideButtonBar("past", $index);', repeat: 'trip in trips.past'}}
-              .row
-                .col-xs-2.col-height-slave
-                  %img.img-responsive{ng: {src: 'images/modes/paratransit.png', show: 'trip.mode == "mode_paratransit"'}}
-                  %img.img-responsive{ng: {src: 'images/modes/transit.png', show: 'trip.mode == "mode_transit"'}}
-                  %img.img-responsive{ng: {src: 'images/modes/walk.png', show: 'trip.mode == "mode_walk"'}}
-                .col-xs-10.col-height-master{style: 'width: 60em !important;'}
-                  .row
-                    .col-xs-12
-                      %h4 {{trip.from_place}} to {{trip.to_place}}
-                  .row
-                    .col-xs-8
-                      %h5.blue-text {{trip.startDesc}}
-                    .col-xs-4
-                      %h5.text-muted.text-right{ng: {show: 'trip.itineraries.length > 1'}} (round trip)
-                      %h5.text-muted.text-right{ng: {show: 'trip.itineraries.length == 1'}} (one way)
-              .animate-show.myride-buttons{ng: {show: 'tripDivs.past[$index]'}}
-                .row.even-height-row
-                  .col-xs-12.col-height-slave.text-center
-                    %span{ng: {include: "'views/emailOrView.html'"}}
-        .row{style: 'margin-top: 10px'}
-          .col-md-4.col-md-offset-4.col-xs-12.text-center
-            %a.btn.btn-success.btn-block{href: '', ng: {click: 'reset()'}}
-              Plan a new trip
-
-    .depart-time{ng: {show: 'step==="rebook"'}}
-      %form
-        .row.text-center
-          %h2 Rebook: {{trip.from_place}} to {{trip.to_place}}
-        .row
-          .col-md-4.col-md-offset-4.col-sm-6.col-sm-offset-3.col-xs-12
-            %h4 Date of Travel
-            %p.input-group{'ng-show' => 'html5', 'style' => 'width: 100%;'}
-              %input#fromDate.form-control{min: "{{minDate | date:'yyyy-MM-dd'}}", type: 'date', ng: {model: 'fromDate', required: 'true', show: 'mobile'}}
-              %input#fromDate.form-control{min: "{{minDate | date:'yyyy-MM-dd'}}", focus: '', type: 'date', ng: {model: 'fromDate', required: 'true', show: '!mobile'}}
-            %p.input-group{'ng-show' => '!html5', }
-              %input.form-control{'type' => 'text', 'datepicker-popup' => "MMMM-dd-yyyy", 'min-date' => 'minDate', 'is-open' => 'opened', 'datepicker-options' => 'dateOptions', 'close-text' => 'Close', 'ng-model' => 'fromDate',}
-                %span.input-group-btn
-                  %button.btn.btn-default{'type' => 'button', 'ng-click' => 'openCalendar($event)'}
-                    %i.glyphicon.glyphicon-calendar
-        .row
-          .col-md-4.col-md-offset-4.col-sm-6.col-sm-offset-3.col-xs-12
-            %h4
-              %span.timeTypeSelection{ng: {show: 'fromTimeType == "depart"'}} When do you want to start out?
-              %span.timeTypeSelection{ng: {show: 'fromTimeType == "arrive"'}} When do you want to arrive?
-              %span.dropdown{dropdown: '', style: 'cursor: pointer;'}
-                %a.fa.fa-lg.fa-sort-desc{href: '', dropdown_toggle: '', style: 'vertical-align: 15%; color: #2781FF; text-decoration: none;'}
-                %ul.dropdown-menu.pull-right{dropdown_menu: ''}
-                  %li{ng: {show: 'fromTimeType != "depart"'}}
-                    %a{href: '', ng: {click: 'specifyFromTimeType("depart")'}}
-                      When do you want to start out?
-                  %li{ng: {show: 'fromTimeType != "arrive"'}}
-                    %a{href: '', ng: {click: 'specifyFromTimeType("arrive")'}}
-                      When do you want to arrive?
-        .row{ng: {show: 'showAsap'}}
-          .col-xs-12.pull-left{style: 'color: #2781FF; padding: 0px;'}
-            %h5{ng: {click: 'specifyFromTimeType("asap")'}} As soon as possible
-        .row.text-center{ng: {show: 'fromTimeType != "asap"'}}
-          %timepicker.timepicker{'minute-step' => '5', ng: {model: 'fromTime', show: '!mobile'}}
-          .col-md-4.col-md-offset-4.col-sm-6.col-sm-offset-3.col-xs-12
-            %input#fromTime.form-control{type: 'time', step: '300', ng: {model: 'fromTime', required: 'true', show: 'mobile && html5'}}
-        .returnWrapper{ng: {show: 'roundTrip'}}
-          .row
-            .col-md-4.col-md-offset-4.col-sm-6.col-sm-offset-3.col-xs-12
-              %h4 Date of Return Trip
-          .row
-            .col-md-4.col-md-offset-4.col-sm-6.col-sm-offset-3.col-xs-12
-              %p.input-group{'ng-show' => 'html5', 'style' => 'width: 100%;'}
-                %input#returnDate.form-control{min: "{{minReturnDate | date:'yyyy-MM-dd'}}", type: 'date', ng: {model: 'returnDate', required: 'true', show: 'mobile'}}
-                %input#fromDate.form-control{min: "{{minReturnDate | date:'yyyy-MM-dd'}}", focus: '', type: 'date', ng: {model: 'returnDate', required: 'true', show: '!mobile'}}
-              %p.input-group{'ng-show' => '!html5', }
-                %input.form-control{'type' => 'text', 'datepicker-popup' => "MMMM-dd-yyyy", 'min-date' => 'minReturnDate', 'is-open' => 'openedReturn', 'datepicker-options' => 'dateOptions', 'close-text' => 'Close', 'ng-model' => 'returnDate',}
-                  %span.input-group-btn
-                    %button.btn.btn-default{'type' => 'button', 'ng-click' => 'openReturnCalendar($event)'}
-                      %i.glyphicon.glyphicon-calendar
-          .row
-            .col-md-4.col-md-offset-4.col-sm-6.col-sm-offset-3.col-xs-12
-              %h4
-                %span.timeTypeSelection{ng: {show: 'returnTimeType == "depart"'}} When do you want to leave?
-                %span.timeTypeSelection{ng: {show: 'returnTimeType == "arrive"'}} When do you want to get back?
-                %span.dropdown{dropdown: '', style: 'cursor: pointer;'}
-                  %a.fa.fa-lg.fa-sort-desc{href: '', dropdown_toggle: '', style: 'vertical-align: 15%; color: #2781FF; text-decoration: none;'}
-                  %ul.dropdown-menu.pull-right{dropdown_menu: ''}
-                    %li{ng: {show: 'returnTimeType != "depart"'}}
-                      %a{href: '', ng: {click: 'specifyReturnTimeType("depart")'}}
-                        When do you want to leave?
-                    %li{ng: {show: 'returnTimeType != "arrive"'}}
-                      %a{href: '', ng: {click: 'specifyReturnTimeType("arrive")'}}
-                        When do you want to get back?
-          .row.text-center
-            %timepicker.timepicker{'minute-step' => '5', ng: {model: 'returnTime', show: '!mobile'}}
-            .col-md-4.col-md-offset-4.col-sm-6.col-sm-offset-3.col-xs-12
-              %input#fromTime.form-control{type: 'time', step: '300', ng: {model: 'returnTime', required: 'true', show: 'mobile && html5'}}
-
-        .row{style: 'margin-top: 10px', ng: {show: 'message'}}
-          .col-md-4.col-md-offset-4.col-xs-12.text-center
-            %span{style: 'color: red;'} {{message}}
-        .row{style: 'margin-top: 10px'}
-          .col-md-4.col-md-offset-4.col-xs-12.text-center
-            %a.btn.btn-success.btn-block{href: '', ng: {click: 'submitRebookedTrip()'}}
-              Rebook Trip
-        .row{style: 'margin-top: 10px'}
-          .col-md-4.col-md-offset-4.col-xs-12.text-center
-            %a.btn-back{href: "", back: '', ng: {click: "back()"}}
-              %span{ng: {include: "'views/button-chevron-left.html'"}}
-              Back
-  .container.sticky-footer{ng: {hide: 'hideButtonBar'}}
-    .row{style: 'margin-top: 10px'}
-      .col-md-8.col-md-offset-2.col-xs-6.col-xs-offset-3
-        .pull-left
+      .row{style: 'margin-top: 10px'}
+        .col-md-4.col-md-offset-4.col-xs-12.text-center
+          %a.btn.btn-success.btn-block{href: '', ng: {click: 'submitRebookedTrip()'}}
+            Rebook Trip
+      .row{style: 'margin-top: 10px'}
+        .col-md-4.col-md-offset-4.col-xs-12.text-center
           %a.btn-back{href: "", back: '', ng: {click: "back()"}}
             %span{ng: {include: "'views/button-chevron-left.html'"}}
             Back
-        .pull-right
-          %a.btn-next{href: "", ng: {show: 'showNext', click: 'next()'}}
-            %span{ng: {show: '(step!=="sharedride_options_3" && step!=="purpose") || driverInstructions'}} Next
-            %span{ng: {show: 'step==="sharedride_options_3" && !driverInstructions'}} Skip
-            %span{ng: {show: 'step==="purpose" && default_trip_purpose'}} Skip
-            %span{ng: {include: "'views/button-chevron-right.html'"}}
 
