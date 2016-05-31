@@ -1,83 +1,82 @@
-.row{ng: {show: "location == '/'"}}
-  .col-md-4.col-md-offset-4.col-sm-6.col-sm-offset-3.col-sm-6.col-sm-offset-3.col-xs-12
+#LoginTemplate.container
+  .row{ng: {show: "location == '/'"}}
+    .col-md-4.col-md-offset-4.col-sm-6.col-sm-offset-3.col-sm-6.col-sm-offset-3.col-xs-12
+      .row
+        %h1{style: 'font-weight:600;'} Book a ride
+        with just 3 things:
+      .row{style: 'margin-top: 2em'}
+        %h3 Your Shared Ride ID
+        %h4.text-muted
+          Look on your para transit card.
+      .row
+        %input.form-control{style: 'font-size: .9em; width: 50%;', placeholder: '00000', ng: {model: 'sharedRideId', required: 'true', change: 'checkId()', enter: 'next()'}}
+      .row{style: 'margin-top: 1em'}
+        %h3 Your County
+      .row
+        %select.btn-lg{style: 'width: 100%', ng: {model: 'county', change: 'checkId()', options: 'county for county in counties', enter: 'next()'}}
+          %option{value: '', disabled: '', selected: ''}
+            Select your county
+      .row
+        %h3 Your birthdate
+      .row
+        %input.form-control{type:'tel', placeholder: 'mm/dd/yyyy', ng: {model: 'birthdate', required: 'true'}, pattern:'(0?[1-9]|1[012])[- /.](0?[1-9]|[12][0-9]|3[01])[- /.](19|20)\d\d'}
+      .row{style: 'margin-top: 1em'}
+        %a.btn-block{"ng-href" => "#/plan/fromDate"}
+          Or, continue as a guest
+      .row{style: 'margin-top: 1em'}
+        .pull-right
+          %a.btn.btn-primary.btn-next{href: "", ng: {click: 'next()', hide: 'disableNext'}}
+            Next
+  .row{ng: {show: "location == '/loginError'"}}
+    .col-md-4.col-md-offset-4.col-sm-6.col-sm-offset-3.col-sm-6.col-sm-offset-3.col-xs-12
+      .row
+        %h1{style: 'font-weight:600;'}Sorry! We do not see a match.
+        Your Shared Ride ID may be entered incorrectly.
+      .row{style: 'margin-top: 2em'}
+        %h3 Your Shared Ride ID
+        %h4.text-muted
+          Look on your para transit card.
+      .row
+        %input.form-control{style: 'font-size: .9em; width: 50%;', placeholder: '00000', ng: {model: 'sharedRideId', required: 'true', change: 'checkId()', enter: 'next()'}}
+      .row{style: 'margin-top: 1em'}
+        %h3 Your County
+      .row
+        %select.btn-lg{style: 'width: 100%', ng: {model: 'county', change: 'checkId()', options: 'county for county in counties', enter: 'next()'}}
+          %option{value: '', disabled: '', selected: ''}
+            Select your county
+      .row
+        %h3 Your birthdate
+      .row
+        %input.form-control{type:'tel', placeholder: 'mm/dd/yyyy', ng: {model: 'birthdate', required: 'true'}, pattern:'(0?[1-9]|1[012])[- /.](0?[1-9]|[12][0-9]|3[01])[- /.](19|20)\d\d'}
+      .row{style: 'margin-top: 1em'}
+        %a.btn-block{"ng-href" => "#/plan/fromDate"}
+          Or, continue as a guest
+      .row{style: 'margin-top: 1em'}
+        .pull-right
+          %a.btn.btn-primary.btn-next{href: "", ng: {click: 'next()', hide: 'disableNext'}}
+            Next
+
+  %div{ng: {show: "location == '/authenticateSharedRideId'"}}
     .row
-      %h1{style: 'font-weight:600;'} Book a ride
-      with just 3 things:
-    .row{style: 'margin-top: 2em'}
-      %h3 Your Shared Ride ID
-      %h4.text-muted
-        Look on your para transit card.
-    .row
-      %input.form-control{style: 'font-size: .9em; width: 50%;', placeholder: '00000', ng: {model: 'sharedRideId', required: 'true', change: 'checkId()', enter: 'next()'}}
-    .row{style: 'margin-top: 1em'}
-      %h3 Your County
-    .row
-      %select.btn-lg{style: 'width: 100%', ng: {model: 'county', change: 'checkId()', options: 'county for county in counties', enter: 'next()'}}
-        %option{value: '', disabled: '', selected: ''}
-          Select your county
-    .row
-      %h3 Your birthdate
-    .row
-      %input.form-control{type:'tel', placeholder: 'mm/dd/yyyy', ng: {model: 'birthdate', required: 'true'}, pattern:'(0?[1-9]|1[012])[- /.](0?[1-9]|[12][0-9]|3[01])[- /.](19|20)\d\d'}
-    .row{style: 'margin-top: 1em'}
-      %a.btn-block{"ng-href" => "#/plan/fromDate"}
-        Or, continue as a guest
-    .row{style: 'margin-top: 1em'}
-      .pull-right
-        %a.btn.btn-primary.btn-next{href: "", ng: {click: 'next()', hide: 'disableNext'}}
+      %form{name: 'sharedRideForm'}
+        .col-md-4.col-md-offset-4.col-sm-6.col-sm-offset-3.col-xs-10.col-xs-offset-1
+          .row
+            %h1 What is your birth date?
+            %birthdaypicker{ng: {show: "!html5"}}
+            %input.form-control{type: 'date', ng: {show: "html5", model: 'dateofbirth', required: 'true', change: 'checkId()'}}
+            %h4.text-muted This will help us prevent other people from using your account.
+          .row{style: 'margin-top: 2em'}
+            %h4
+              Your Shared Ride ID: {{sharedRideId}} in {{county}} county
+          .row
+            %input{type: 'checkbox',  ng: {model: 'rememberme'}}
+              Remember me for 7 days
+
+    .row.action-button
+      .col-md-4.col-md-offset-4.col-sm-6.col-sm-offset-3.col-xs-12
+        %a.pull-left.btn-back{href: "", type: 'submit', ng: {click: "back()"}}
+          %span{ng: {include: "'views/button-chevron-left.html'"}}
+          Back
+        %a.pull-right.btn-next{href: "", type: 'submit', ng: {click: "authenticate()", hide: 'disableNext'}}
           Next
           %span{ng: {include: "'views/button-chevron-right.html'"}}
-.row{ng: {show: "location == '/loginError'"}}
-  .col-md-4.col-md-offset-4.col-sm-6.col-sm-offset-3.col-sm-6.col-sm-offset-3.col-xs-12
-    .row
-      %h1{style: 'font-weight:600;'}Sorry! We do not see a match.
-      Your Shared Ride ID may be entered incorrectly.
-    .row{style: 'margin-top: 2em'}
-      %h3 Your Shared Ride ID
-      %h4.text-muted
-        Look on your para transit card.
-    .row
-      %input.form-control{style: 'font-size: .9em; width: 50%;', placeholder: '00000', ng: {model: 'sharedRideId', required: 'true', change: 'checkId()', enter: 'next()'}}
-    .row{style: 'margin-top: 1em'}
-      %h3 Your County
-    .row
-      %select.btn-lg{style: 'width: 100%', ng: {model: 'county', change: 'checkId()', options: 'county for county in counties', enter: 'next()'}}
-        %option{value: '', disabled: '', selected: ''}
-          Select your county
-    .row
-      %h3 Your birthdate
-    .row
-      %input.form-control{type:'tel', placeholder: 'mm/dd/yyyy', ng: {model: 'birthdate', required: 'true'}, pattern:'(0?[1-9]|1[012])[- /.](0?[1-9]|[12][0-9]|3[01])[- /.](19|20)\d\d'}
-    .row{style: 'margin-top: 1em'}
-      %a.btn-block{"ng-href" => "#/plan/fromDate"}
-        Or, continue as a guest
-    .row{style: 'margin-top: 1em'}
-      .pull-right
-        %a.btn.btn-primary.btn-next{href: "", ng: {click: 'next()', hide: 'disableNext'}}
-          Next
-          %span{ng: {include: "'views/button-chevron-right.html'"}}
-
-%div{ng: {show: "location == '/authenticateSharedRideId'"}}
-  .row
-    %form{name: 'sharedRideForm'}
-      .col-md-4.col-md-offset-4.col-sm-6.col-sm-offset-3.col-xs-10.col-xs-offset-1
-        .row
-          %h1 What is your birth date?
-          %birthdaypicker{ng: {show: "!html5"}}
-          %input.form-control{type: 'date', ng: {show: "html5", model: 'dateofbirth', required: 'true', change: 'checkId()'}}
-          %h4.text-muted This will help us prevent other people from using your account.
-        .row{style: 'margin-top: 2em'}
-          %h4
-            Your Shared Ride ID: {{sharedRideId}} in {{county}} county
-        .row
-          %input{type: 'checkbox',  ng: {model: 'rememberme'}}
-            Remember me for 7 days
-
-  .row.action-button
-    .col-md-4.col-md-offset-4.col-sm-6.col-sm-offset-3.col-xs-12
-      %a.pull-left.btn-back{href: "", type: 'submit', ng: {click: "back()"}}
-        %span{ng: {include: "'views/button-chevron-left.html'"}}
-        Back
-      %a.pull-right.btn-next{href: "", type: 'submit', ng: {click: "authenticate()", hide: 'disableNext'}}
-        Next
-        %span{ng: {include: "'views/button-chevron-right.html'"}}
