@@ -20,6 +20,13 @@ angular.module('applyMyRideApp')
         delete this.driverInstructions;
       }
 
+      this.apiHost = document.location.hostname;
+      if( document.location.hostname.match(/findmyridepa2-dev\.camsys-apps\.com/) ){
+        this.apiHost = 'oneclick-pa-dev.camsys-apps.com';
+      }else if( document.location.hostname.match(/findmyridepa2-qa\.camsys-apps\.com/) ){
+        this.apiHost = 'oneclick-pa-qa.camsys-apps.com';
+      }
+      var urlPrefix = 'http://' + this.apiHost + '/';
       this.getPrebookingQuestions = function(){
         var questions = this.paratransitItineraries[0].prebooking_questions;
         var questionObj = {};
@@ -35,11 +42,11 @@ angular.module('applyMyRideApp')
       }
 
       this.emailItineraries = function($http, emailRequest){
-        return $http.post('api/v1/itineraries/email', emailRequest, this.getHeaders())
+        return $http.post(urlPrefix + 'api/v1/itineraries/email', emailRequest, this.getHeaders())
       }
 
       this.cancelTrip = function($http, cancelRequest){
-        return $http.post('api/v1/itineraries/cancel', cancelRequest, this.getHeaders())
+        return $http.post(urlPrefix + 'api/v1/itineraries/cancel', cancelRequest, this.getHeaders())
       }
 
       this.validateEmail = function(emailString){
@@ -495,7 +502,7 @@ angular.module('applyMyRideApp')
 
       this.getTripPurposes = function($scope, $http) {
         this.fixLatLon(this.fromDetails);
-        return $http.post('api/v1/trip_purposes/list', this.fromDetails, this.getHeaders()).
+        return $http.post(urlPrefix + 'api/v1/trip_purposes/list', this.fromDetails, this.getHeaders()).
           success(function(data) {
             $scope.purposes = data.trip_purposes;
             if (data.default_trip_purpose != undefined && $scope.email == undefined){
@@ -509,20 +516,20 @@ angular.module('applyMyRideApp')
       }
 
       this.selectItineraries = function($http, itineraryObject) {
-        return $http.post('api/v1/itineraries/select', itineraryObject, this.getHeaders());
+        return $http.post(urlPrefix + 'api/v1/itineraries/select', itineraryObject, this.getHeaders());
       }
 
       this.checkServiceArea = function($http, place) {
         this.fixLatLon(place);
-        return $http.post('api/v1/places/within_area', place, this.getHeaders());
+        return $http.post(urlPrefix + 'api/v1/places/within_area', place, this.getHeaders());
       }
 
       this.postItineraryRequest = function($http) {
-        return $http.post('api/v1/itineraries/plan', this.itineraryRequestObject, this.getHeaders());
+        return $http.post(urlPrefix + 'api/v1/itineraries/plan', this.itineraryRequestObject, this.getHeaders());
       }
 
       this.postProfileUpdate = function($http) {
-        return $http.post('api/v1/users/update', this.profileUpdateObject, this.getHeaders());
+        return $http.post(urlPrefix + 'api/v1/users/update', this.profileUpdateObject, this.getHeaders());
       }
 
       this.getProfile = function($http) {
@@ -558,7 +565,7 @@ angular.module('applyMyRideApp')
 
         this.booking_request = requestHolder;
 
-        return $http.post('api/v1/itineraries/book', requestHolder, this.getHeaders());
+        return $http.post(urlPrefix + 'api/v1/itineraries/book', requestHolder, this.getHeaders());
 
       }
 
