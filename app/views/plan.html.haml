@@ -13,6 +13,8 @@
                 Where To?
           .col-lg-6.col-lg-offset-3.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1.col-xs-12
             %autocomplete{ 'attr-placeholder'=> 'Start typing a name or address',
+                                        'attr-input-id' => 'whereToInput',
+                                        'attr-autofocus' => 'true',
                                         class: 'autocompleteWrapper',
                                         id: 'toInput',
                                         tabindex: 'null',
@@ -21,16 +23,17 @@
                                         'disable-filter' => 'true',
                                         'data' => 'locations',
                                         'on-type'=> 'getLocations',
+                                        'on-blur'=> 'mapTo',
                                         'on-select' => 'selectTo', 
                                         'autocomplete-required' => 'true',
-                                        ng: { model: 'to',
-                                          'attr-mobile' => '{{mobile}}' } }
+                                        ng: { model: 'to'} }
           .col-lg-6.col-lg-offset-3.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1.col-xs-12
             %h2
               %strong
                 Starting From?
           .col-lg-6.col-lg-offset-3.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1.col-xs-12
             %autocomplete{ 'attr-placeholder'=> 'Where from?',
+                                        'attr-input-id' => 'whereFromInput',
                                         class: 'autocompleteWrapper',
                                         id: 'fromInput',
                                         tabindex: 'null',
@@ -38,11 +41,12 @@
                                         'inputclass' => 'clearable tripplanner__location form__input',
                                         'disable-filter' => 'true',
                                         'data' => 'locations',
+                                        'attr-input-class' => 'whereToFrom',
                                         'on-type'=> 'getLocations',
+                                        'on-blur'=> 'mapFrom',
                                         'on-select' => 'selectFrom',
                                         'autocomplete-required' => 'true',
-                                        ng: { model: 'from',
-                                          'attr-mobile' => '{{mobile}}' } }
+                                        ng: { model: 'from'} }
         .row
           .col-md-8.col-md-offset-2.col-xs-12
             %div.map-canvas{'ui-map' => 'whereToMap', 'ui-options' => 'mapOptions', ng: {show: 'showMap'}}

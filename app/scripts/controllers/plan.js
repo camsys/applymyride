@@ -9,13 +9,14 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
   $scope.minReturnDate = new Date();
   $scope.marker = null;
   $scope.toFromMarkers = {};
-  $scope.toFromIcons={'to' : 'http://maps.google.com/mapfiles/marker_greenA.png',
-                      'from' : 'http://maps.google.com/mapfiles/markerB.png' };
+  $scope.toFromIcons={'to' : 'http://maps.google.com/mapfiles/markerB.png',
+                      'from' : 'http://maps.google.com/mapfiles/marker_greenA.png' };
   $scope.locations = [];
   $scope.placeIds = [];
   $scope.showConfirmLocationMap = false;
   $scope.mapOptions = {
     zoom: 17,
+    draggable: false,
     mapTypeId: google.maps.MapTypeId.ROADMAP
   };
   $scope.step = $routeParams.step;
@@ -30,6 +31,8 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
   $scope.showMap = false;
   $scope.location = $location.path();
 
+  $scope.to = localStorageService.get('last_destination');
+  $scope.from = localStorageService.get('last_origin');
 
   $scope.reset = function() {
     planService.reset();
@@ -651,11 +654,40 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
     }
   }
 
+  var lastMappedPlaces = {};
+  var ignoreBlur=false;
+  function mapOnBlur( place, toFrom )
+  {
+    //blur handler runs each time the autocomplete input is blurred via selecting, or just blurring
+    //If it was blurred because of a selection, we don't want it to run -- let the selectTo or selectFrom run instead
+    //return if no change, return if place is empty, or we're supposed to ignore blur events
+    if( lastMappedPlaces[toFrom] === place || !place || true === ignoreBlur || 6 > place.length){
+      lastMappedPlaces[toFrom] = place;
+      ignoreBlur = false;
+      return;
+    }
+    lastMappedPlaces[toFrom] = place;
+    setTimeout(function selectPlace(){
+      //if $scope.to or $scope.from is different from place, the autocomplete input's select events are handling
+      if( $scope[toFrom] !== place){ return; }
+      //otherwise, run selectPlace
+      $scope.selectPlace(place, toFrom);
+    }, 500);
+  }
+  $scope.mapFrom = function(place){
+    mapOnBlur(place, 'from');
+  }
+  $scope.mapTo = function(place){
+    mapOnBlur(place, 'to');
+  }
+
   $scope.selectFrom = function(place){
+    ignoreBlur = true;
     $scope.selectPlace(place, 'from');
   }
 
   $scope.selectTo = function(place){
+    ignoreBlur = true;
     $scope.selectPlace(place, 'to');
   }
 
@@ -664,8 +696,9 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
     $scope.poi = null;
     $scope.showMap = true;
     var placeIdPromise = $q.defer();
+    $scope.placeLabels = $scope.placeLabels || [];
     var selectedIndex = $scope.placeLabels.indexOf(place);
-    if(selectedIndex < $scope.poiData.length){
+    if(-1 < selectedIndex && selectedIndex < $scope.poiData.length){
       //this is a POI result, get the 1Click location name
       $scope.poi = $scope.poiData[selectedIndex];
       $scope.checkServiceArea($scope.poi, null, toFrom);
@@ -675,8 +708,14 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
         placeIdPromise.resolve(placeId);
       }else{
         var labelIndex = $scope.placeLabels.indexOf(place);
-        var address = $scope.placeAddresses[labelIndex];
         var autocompleteService = new google.maps.places.AutocompleteService();
+        var address;
+        //if no place has been found, use place as address (manual input)
+        if(-1 === labelIndex){
+          address = place;
+        }else{
+          address = $scope.placeAddresses[labelIndex];
+        }
         autocompleteService.getPlacePredictions(
           {
             input: address,
@@ -1204,6 +1243,16 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
       }
     }
   );
+
+  //load the map origin/destination
+  if($scope.to){
+    $scope.selectPlace($scope.to, 'to');
+  }
+  if($scope.from){
+    $scope.selectPlace($scope.from, 'from');
+  }
+
+
 }
 ]);
 
