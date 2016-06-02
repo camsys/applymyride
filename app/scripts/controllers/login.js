@@ -62,6 +62,7 @@ angular.module('applyMyRideApp')
         planService.county = $scope.county;
         planService.dateofbirth = $scope.dateofbirth;
         $scope.authenticate();
+        $scope.disableNext=true;
       }
 
       $scope.back = function(){

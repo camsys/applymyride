@@ -27,6 +27,8 @@
         .pull-right
           %a.btn.btn-primary.btn-next{href: "", ng: {click: 'next()', hide: 'disableNext'}}
             Next
+          %a.btn.disabled.btn-next{href: "", ng: {show: 'disableNext'}}
+            Next
   .row{ng: {show: "location == '/loginError'"}}
     .col-md-4.col-md-offset-4.col-sm-6.col-sm-offset-3.col-sm-6.col-sm-offset-3.col-xs-12
       .row
