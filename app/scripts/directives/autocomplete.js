@@ -12,6 +12,7 @@ app.directive('autocomplete', function() {
       suggestions: '=data',
       onType: '=onType',
       onSelect: '=onSelect',
+      onBlur: '=onBlur',
       autocompleteRequired: '=',
       disableFilter: '=disableFilter'
     },
@@ -155,6 +156,10 @@ app.directive('autocomplete', function() {
       }, true)
 
       document.addEventListener("blur", function(e){
+        //run callback provided in view if the event target is this input's id
+        if(scope.onBlur && e.target.id === scope.attrs.inputid){
+          scope.onBlur( scope.searchParam );
+        }
         // disable suggestions on blur
         // we do a timeout to prevent hiding it before a click event is registered
         setTimeout(function() {
@@ -256,7 +261,7 @@ app.directive('autocomplete', function() {
         <div class="autocomplete {{ attrs.class }}" id="{{ attrs.id }}">\
           <input\
             type="text"\
-            "{{ attrs.mobile ? focus : \"\" }}"\
+            focus-me="{{ attrs.autofocus }}"\
             ng-model="searchParam"\
             placeholder="{{ attrs.placeholder }}"\
             class="clearable {{ attrs.inputclass }}"\
@@ -276,6 +281,20 @@ app.directive('autocomplete', function() {
   };
 });
 
+app.directive('focusMe', function($timeout) {
+  return {
+    scope: { trigger: '@focusMe' },
+    link: function(scope, element) {
+      scope.$watch('trigger', function(value) {
+        if(value === "true") { 
+          $timeout(function() {
+            element[0].focus(); 
+          });
+        }
+      });
+    }
+  };
+});
 app.filter('highlight', ['$sce', function ($sce) {
   return function (input, searchParam) {
     if (typeof input === 'function') return '';
