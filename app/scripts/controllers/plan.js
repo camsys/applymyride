@@ -30,6 +30,7 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
   $scope.returnDate = new Date();
   $scope.showMap = false;
   $scope.location = $location.path();
+  $scope.errors = {};
 
   $scope.to = localStorageService.get('last_destination');
   $scope.from = localStorageService.get('last_origin');
@@ -698,6 +699,7 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
     var placeIdPromise = $q.defer();
     $scope.placeLabels = $scope.placeLabels || [];
     var selectedIndex = $scope.placeLabels.indexOf(place);
+    $scope.errors['noResults'+toFrom] = false;
     if(-1 < selectedIndex && selectedIndex < $scope.poiData.length){
       //this is a POI result, get the 1Click location name
       $scope.poi = $scope.poiData[selectedIndex];
@@ -723,7 +725,7 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
             componentRestrictions: {country: 'us'}
           }, function(list, status) {
             if(status == "ZERO_RESULTS" || list == null){
-              bootbox.alert("We were unable to geocode the address you selected.");
+              $scope.errors['noResults'+toFrom] = true;
             }else{
               var placeId = list[0].place_id;
               placeIdPromise.resolve(placeId);

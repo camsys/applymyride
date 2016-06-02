@@ -27,6 +27,8 @@
                                         'on-select' => 'selectTo', 
                                         'autocomplete-required' => 'true',
                                         ng: { model: 'to'} }
+            .alert.alert-danger{role:'alert', ng:{show:'errors.noResultsto'}}
+              Address is not recognized.  Try entering it another way.
           .col-lg-6.col-lg-offset-3.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1.col-xs-12
             %h2
               %strong
@@ -47,6 +49,8 @@
                                         'on-select' => 'selectFrom',
                                         'autocomplete-required' => 'true',
                                         ng: { model: 'from'} }
+            .alert.alert-danger{role:'alert', ng:{show:'errors.noResultsfrom'}}
+              Address is not recognized.  Try entering it another way.
         .row
           .col-md-8.col-md-offset-2.col-xs-12
             %div.map-canvas{'ui-map' => 'whereToMap', 'ui-options' => 'mapOptions', ng: {show: 'showMap'}}
