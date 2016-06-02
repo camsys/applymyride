@@ -69,7 +69,7 @@ angular.module('applyMyRideApp')
 
       this.getRides = function($http, $scope, ipCookie) {
         var that = this;
-        return $http.get('api/v1/trips/list', this.getHeaders()).
+        return $http.get(urlPrefix + 'api/v1/trips/list', this.getHeaders()).
           success(function(data) {
             var sortable = [];
             angular.forEach(data.trips, function(trip, index) {
@@ -533,7 +533,7 @@ angular.module('applyMyRideApp')
       }
 
       this.getProfile = function($http) {
-        return $http.get('api/v1/users/profile', this.getHeaders());
+        return $http.get(urlPrefix + 'api/v1/users/profile', this.getHeaders());
       }
 
       this.bookSharedRide = function($http) {
@@ -666,9 +666,7 @@ angular.module('applyMyRideApp')
       }
 
       this.getHeaders = function(){
-        var headers = {headers:  {
-          "X-User-Email" : this.email,
-          "X-User-Token" : this.authentication_token}
+        var headers = {headers:  {}
         };
         return headers;
       }
@@ -763,7 +761,7 @@ angular.module('applyMyRideApp')
       this.savedPlaceResults = [];
       this.poiData = [];
       var that = this;
-      $http.get('api/v1/places/search?include_user_pois=true&search_string=%25' + text + '%25', config).
+      $http.get(urlPrefix + 'api/v1/places/search?include_user_pois=true&search_string=%25' + text + '%25', config).
         success(function(data) {
           var locations = data.places_search_results.locations;
           angular.forEach(locations, function(value, index) {
