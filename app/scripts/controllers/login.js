@@ -104,8 +104,19 @@ angular.module('applyMyRideApp')
           planService.first_name = result.data.first_name;
           planService.last_name = result.data.last_name;
           planService.getRides($http, $scope, ipCookie);
-          localStorageService.set('last_destination', result.data.last_destination);
-          localStorageService.set('last_origin', result.data.last_origin);
+          var lastDest, lastOrigin;
+          if(typeof '' !== typeof result.data.last_destination && result.data.last_destination.formatted_address){
+            lastDest = result.data.last_destination.formatted_address;
+          }else{
+            lastDest = result.data.last_destination || '';
+          }
+          if(typeof '' !== typeof result.data.last_origin && result.data.last_origin.formatted_address){
+            lastOrigin = result.data.last_origin.formatted_address;
+          }else{
+            lastOrigin = result.data.last_origin || '';
+          }
+          localStorageService.set('last_destination', lastDest);
+          localStorageService.set('last_origin', lastOrigin);
           if($scope.rememberme == true){
             ipCookie('email', planService.email, {expires: 7, expirationUnit: 'days'});
             ipCookie('authentication_token', planService.authentication_token, {expires: 7, expirationUnit: 'days'});
