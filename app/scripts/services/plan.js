@@ -675,6 +675,13 @@ angular.module('applyMyRideApp')
 
 angular.module('applyMyRideApp')
   .service('LocationSearch', function($http, $q, localStorageService){
+    this.apiHost = document.location.hostname;
+    if( document.location.hostname.match(/findmyridepa2-dev\.camsys-apps\.com/) ){
+      this.apiHost = 'oneclick-pa-dev.camsys-apps.com';
+    }else if( document.location.hostname.match(/findmyridepa2-qa\.camsys-apps\.com/) ){
+      this.apiHost = 'oneclick-pa-qa.camsys-apps.com';
+    }
+    var urlPrefix = 'http://' + this.apiHost + '/';
 
     var autocompleteService = new google.maps.places.AutocompleteService();
 
