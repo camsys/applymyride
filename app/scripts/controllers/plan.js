@@ -784,10 +784,11 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
 
   $scope.checkServiceArea = function(result, place, toFrom){
     var serviceAreaPromise = planService.checkServiceArea($http, result);
+    $scope.showNext = false;
     serviceAreaPromise.
       success(function(serviceAreaResult) {
         if(serviceAreaResult.result == true){
-
+          $scope.errors['rangeError'+toFrom] = false;
           var recentSearches = localStorageService.get('recentSearches');
           if(!recentSearches){
             recentSearches = {};
@@ -841,9 +842,11 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
           }
 
         }else{
-          $scope.showMap = false;
+          //$scope.showMap = false;
           $scope.showNext = false;
-          bootbox.alert("The location you selected is outside the service area.");
+          $scope.toFromMarkers[toFrom].setMap(null);
+          $scope.errors['rangeError'+toFrom] = true;
+          //bootbox.alert("The location you selected is outside the service area.");
         }
       }).
       error(function(serviceAreaResult) {

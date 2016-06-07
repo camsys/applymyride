@@ -29,6 +29,8 @@
                                         ng: { model: 'to'} }
             .alert.alert-danger{role:'alert', ng:{show:'errors.noResultsto'}}
               Address is not recognized.  Try entering it another way.
+            .alert.alert-danger{role:'alert', ng:{show:'errors.rangeErrorto'}}
+              The location you selected is outside the service area.
           .col-lg-6.col-lg-offset-3.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1.col-xs-12
             %h2
               %strong
@@ -51,6 +53,8 @@
                                         ng: { model: 'from'} }
             .alert.alert-danger{role:'alert', ng:{show:'errors.noResultsfrom'}}
               Address is not recognized.  Try entering it another way.
+            .alert.alert-danger{role:'alert', ng:{show:'errors.rangeErrorfrom'}}
+              The location you selected is outside the service area.
         .row
           .col-md-8.col-md-offset-2.col-xs-12
             %div.map-canvas{'ui-map' => 'whereToMap', 'ui-options' => 'mapOptions', ng: {show: 'showMap'}}
@@ -61,6 +65,9 @@
                 Start over
             .pull-right
               %a.btn.btn-primary.btn-next{href: "", ng: {show: 'showNext', click: 'next()'}}
+                %span
+                  Yes, looks good!
+              %a.btn.disabled.btn-primary.btn-next{href: "", ng: {hide: 'showNext'}}
                 %span
                   Yes, looks good!
 
