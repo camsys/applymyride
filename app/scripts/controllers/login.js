@@ -29,7 +29,7 @@ angular.module('applyMyRideApp')
       $scope.counties = [];
       $scope.sharedRideId = ipCookie('sharedRideId');
       $scope.county = ipCookie('county');
-      $scope.birthdate = ipCookie('dateofbirth');
+      $scope.birthdate = sessionStorage.getItem('dateofbirth') || '';
 
       var authentication_token = ipCookie('authentication_token');
       var email = ipCookie('email');
@@ -93,7 +93,7 @@ angular.module('applyMyRideApp')
 
         ipCookie('sharedRideId', login.session.ecolane_id, {expires: 7, expirationUnit: 'days'});
         ipCookie('county', login.session.county, {expires: 7, expirationUnit: 'days'});
-        ipCookie('dateofbirth', login.session.dob, {expires: 7, expirationUnit: 'days'});
+        sessionStorage.setItem('dateofbirth', login.session.dob);
 
         var promise = $http.post('http://'+$scope.apiHost+'/api/v1/sign_in', login);
         promise.error(function(result) {
@@ -130,7 +130,7 @@ angular.module('applyMyRideApp')
             ipCookie.remove('last_name');
             ipCookie.remove('sharedRideId');
             ipCookie.remove('county');
-            ipCookie.remove('dateofbirth');
+            sessionStorage.setItem('dateofbirth', null);
           }
           promise = planService.getProfile($http);
           promise.then(function(result) {
