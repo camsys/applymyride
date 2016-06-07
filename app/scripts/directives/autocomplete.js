@@ -261,6 +261,7 @@ app.directive('autocomplete', function() {
         <div class="autocomplete {{ attrs.class }}" id="{{ attrs.id }}">\
           <input\
             type="text"\
+            click-to-focus="{{ attrs.clicktofocus }}"\
             focus-me="{{ attrs.autofocus }}"\
             ng-model="searchParam"\
             placeholder="{{ attrs.placeholder }}"\
@@ -281,6 +282,20 @@ app.directive('autocomplete', function() {
   };
 });
 
+app.directive('clickToFocus', 
+  ['$window', function ($window) {
+      return {
+        link: function(scope, element) {
+            element.on('click', function () {
+                if (!$window.getSelection().toString()) {
+                    // Required for mobile Safari
+                    this.setSelectionRange(0, this.value.length)
+                }
+            });
+        }
+      };
+  }]
+);
 app.directive('focusMe', function($timeout) {
   return {
     scope: { trigger: '@focusMe' },
