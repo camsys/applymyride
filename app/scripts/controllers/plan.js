@@ -663,10 +663,15 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
     //If it was blurred because of a selection, we don't want it to run -- let the selectTo or selectFrom run instead
     //return if no change, return if place is empty, or we're supposed to ignore blur events
     if( lastMappedPlaces[toFrom] === place || !place || true === ignoreBlur || 6 > place.length){
+      //hide the place marker if place is empty or too short
+      if(!place || 6 > place.length){
+        $scope.toFromMarkers[toFrom].setMap(null);
+      }
       lastMappedPlaces[toFrom] = place;
       ignoreBlur = false;
       return;
     }
+    $scope.showNext = false;
     lastMappedPlaces[toFrom] = place;
     setTimeout(function selectPlace(){
       //if $scope.to or $scope.from is different from place, the autocomplete input's select events are handling
@@ -696,10 +701,14 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
     //when a place is selected, update the map
     $scope.poi = null;
     $scope.showMap = true;
+    $scope.showNext = false;
     var placeIdPromise = $q.defer();
     $scope.placeLabels = $scope.placeLabels || [];
     var selectedIndex = $scope.placeLabels.indexOf(place);
     $scope.errors['noResults'+toFrom] = false;
+    if($scope.toFromMarkers[toFrom]){
+      $scope.toFromMarkers[toFrom].setMap(null);
+    }
     if(-1 < selectedIndex && selectedIndex < $scope.poiData.length){
       //this is a POI result, get the 1Click location name
       $scope.poi = $scope.poiData[selectedIndex];
@@ -752,6 +761,7 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
 
             if(datatypes.indexOf('street_number') < 0 || datatypes.indexOf('route') < 0){
               if(datatypes.indexOf('route') < 0){
+                $scope.toFromMarkers[toFrom].setMap(null);
                 bootbox.alert("The location you selected does not have have a street associated with it, please select another location.");
                 return;
               }else if(datatypes.indexOf('street_number') < 0){
@@ -766,6 +776,7 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
                   streetComponent.types.push('street_number');
                   result.address_components.push(streetComponent);
                 }else{
+                  $scope.toFromMarkers[toFrom].setMap(null);
                   bootbox.alert("The location you selected does not have a street number associated, please select another location.");
                   return;
                 }
