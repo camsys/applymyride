@@ -417,10 +417,11 @@ img.official-logo {
   font-size: 18px;
   padding: 12px 16px;
 }
-.btn.btn-primary{
+.btn.btn-primary, .btn-primary:active:hover, .btn-primary:active:focus, .btn-primary:active.focus, .btn-primary.active:hover, .btn-primary.active:focus, .btn-primary.active.focus, .open > .btn-primary.dropdown-toggle:hover, .open > .btn-primary.dropdown-toggle:focus, .open > .btn-primary.dropdown-toggle.focus {
   color:#EEE;
   background-color: #14834D;
 }
+.btn.btn-primary:hover,
 .btn.btn-next:hover{
   text-decoration: none;
 }
