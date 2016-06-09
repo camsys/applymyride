@@ -3,9 +3,6 @@
 angular.module('applyMyRideApp')
   .controller('LoginController', ['$scope', '$location', 'flash', 'planService', '$http', 'ipCookie', '$window', 'localStorageService',
     function ($scope, $location, flash, planService, $http, ipCookie, $window, localStorageService) {
-      localStorageService.set('last_destination', '2378 Baltimore Pike Gettysburg PA');
-      localStorageService.set('last_origin', '120 N Duke St, Lancaster');
-
       //setup the backend url depending on environment (local, dev, qa)
       $scope.apiHost = document.location.hostname;
       if( document.location.hostname.match(/findmyridepa2-dev\.camsys-apps\.com/) ){
@@ -38,7 +35,7 @@ angular.module('applyMyRideApp')
       if(authentication_token && email){
         planService.authentication_token = authentication_token;
         planService.email = email;
-//        $location.path('/plan/where');
+        $location.path('/plan/where');
       }
 
       $scope.checkId = function() {
@@ -116,8 +113,8 @@ angular.module('applyMyRideApp')
           }else{
             lastOrigin = result.data.last_origin || '';
           }
-          localStorageService.set('last_destination', lastDest);
-          localStorageService.set('last_origin', lastOrigin);
+          localStorage.setItem('last_destination', lastDest);
+          localStorage.setItem('last_origin', lastOrigin);
           if($scope.rememberme == true){
             ipCookie('email', planService.email, {expires: 7, expirationUnit: 'days'});
             ipCookie('authentication_token', planService.authentication_token, {expires: 7, expirationUnit: 'days'});

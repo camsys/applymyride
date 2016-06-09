@@ -32,8 +32,8 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
   $scope.location = $location.path();
   $scope.errors = {};
 
-  $scope.to = localStorageService.get('last_destination');
-  $scope.from = localStorageService.get('last_origin');
+  $scope.to = localStorage.getItem('last_destination') || '';
+  $scope.from = localStorage.getItem('last_origin') || '';
 
   $scope.reset = function() {
     planService.reset();
@@ -489,6 +489,8 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
   $scope.next = function() {
     if($scope.disableNext)
       return;
+    
+    $scope.showNext = false;
     switch($scope.step) {
       case 'where':
         $location.path('/plan/when');
@@ -655,47 +657,63 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
     }
   }
 
-  var lastMappedPlaces = {};
-  var ignoreBlur=false;
-  function mapOnBlur( place, toFrom )
-  {
-    //blur handler runs each time the autocomplete input is blurred via selecting, or just blurring
-    //If it was blurred because of a selection, we don't want it to run -- let the selectTo or selectFrom run instead
-    //return if no change, return if place is empty, or we're supposed to ignore blur events
-    if( lastMappedPlaces[toFrom] === place || !place || true === ignoreBlur || 6 > place.length){
-      //hide the place marker if place is empty or too short
-      if(!place || 6 > place.length){
-        $scope.toFromMarkers[toFrom].setMap(null);
+  (function(){
+    //begin private scope for keeping track of last input, and mapping when appropriate
+    var lastFrom, lastTo;
+    var lastMappedPlaces = {};
+    var ignoreBlur=false;
+    function mapOnBlur( place, toFrom )
+    {
+      //blur handler runs each time the autocomplete input is blurred via selecting, or just blurring
+      //If it was blurred because of a selection, we don't want it to run -- let the selectTo or selectFrom run instead
+      //return if no change, return if place is empty, or we're supposed to ignore blur events
+      if( lastMappedPlaces[toFrom] === place || !place || true === ignoreBlur || 6 > place.length){
+        //hide the place marker if place is empty or too short
+        if(!place || 6 > place.length){
+          $scope.toFromMarkers[toFrom].setMap(null);
+        }
+        lastMappedPlaces[toFrom] = place;
+        ignoreBlur = false;
+        return;
       }
+      $scope.showNext = false;
       lastMappedPlaces[toFrom] = place;
-      ignoreBlur = false;
-      return;
+      setTimeout(function selectPlace(){
+        //if $scope.to or $scope.from is different from place, the autocomplete input's select events are handling
+        if( $scope[toFrom] !== place){ return; }
+        //otherwise, run selectPlace
+        $scope.selectPlace(place, toFrom);
+      }, 500);
     }
-    $scope.showNext = false;
-    lastMappedPlaces[toFrom] = place;
-    setTimeout(function selectPlace(){
-      //if $scope.to or $scope.from is different from place, the autocomplete input's select events are handling
-      if( $scope[toFrom] !== place){ return; }
-      //otherwise, run selectPlace
-      $scope.selectPlace(place, toFrom);
-    }, 500);
-  }
-  $scope.mapFrom = function(place){
-    mapOnBlur(place, 'from');
-  }
-  $scope.mapTo = function(place){
-    mapOnBlur(place, 'to');
-  }
 
-  $scope.selectFrom = function(place){
-    ignoreBlur = true;
-    $scope.selectPlace(place, 'from');
-  }
+    $scope.mapFrom = function(place){
+      if(lastFrom != place){
+        mapOnBlur(place, 'from');
+      }
+    }
+    $scope.mapTo = function(place){
+      if(lastTo != place){
+        mapOnBlur(place, 'to');
+      }
+    }
+    $scope.focusTo = function(e){
+      lastTo = e.srcElement.value;
+    }
+    $scope.focusFrom = function(e){
+      lastFrom = e.srcElement.value;
+    }
 
-  $scope.selectTo = function(place){
-    ignoreBlur = true;
-    $scope.selectPlace(place, 'to');
-  }
+    $scope.selectFrom = function(place){
+      ignoreBlur = true;
+      $scope.selectPlace(place, 'from');
+    }
+
+    $scope.selectTo = function(place){
+      ignoreBlur = true;
+      $scope.selectPlace(place, 'to');
+    }
+    //end private scope for keeping track of last input
+  }());
 
   $scope.selectPlace = function(place, toFrom){
     //when a place is selected, update the map
@@ -855,7 +873,9 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
         }else{
           //$scope.showMap = false;
           $scope.showNext = false;
-          $scope.toFromMarkers[toFrom].setMap(null);
+          if($scope.toFromMarkers[toFrom]){
+            $scope.toFromMarkers[toFrom].setMap(null);
+          }
           $scope.errors['rangeError'+toFrom] = true;
           //bootbox.alert("The location you selected is outside the service area.");
         }
