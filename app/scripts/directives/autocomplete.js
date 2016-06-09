@@ -13,6 +13,7 @@ app.directive('autocomplete', function() {
       onType: '=onType',
       onSelect: '=onSelect',
       onBlur: '=onBlur',
+      onFocus: '=onFocus',
       autocompleteRequired: '=',
       disableFilter: '=disableFilter'
     },
@@ -167,6 +168,12 @@ app.directive('autocomplete', function() {
           scope.setIndex(-1);
           scope.$apply();
         }, 150);
+      }, true);
+
+      element[0].addEventListener("focus", function (e){
+        if(scope.onFocus){
+          scope.onFocus(e, scope);
+        }
       }, true);
 
       element[0].addEventListener("keydown",function (e){
