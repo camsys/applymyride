@@ -51,7 +51,8 @@ angular.module('applyMyRideApp')
       $scope.logout = function() {
         delete ipCookie.remove('email');
         delete ipCookie.remove('authentication_token');
-        sessionStorage.setItem('dateofbirth', '');
+        sessionStorage.clear();
+        localStorage.clear();
         delete $scope.email;
         delete planService.email;
         $window.location.href = "#/";
