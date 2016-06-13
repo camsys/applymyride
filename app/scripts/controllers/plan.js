@@ -26,11 +26,20 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
   $scope.invalidEmail = false;
   $scope.showBack = false;
   $scope.planService = planService;
+  $scope.fromMoment = moment(new Date());
+  $scope.returnMoment = moment(new Date());
+  $scope.fromTime = '';
+  $scope.howLong = 0;
+  $scope.howLongOptions = [
+  {name:'0minutes', value:0},
+  {name:'15 minutes', value:1}
+  ];
   $scope.fromDate = new Date();
   $scope.returnDate = new Date();
   $scope.showMap = false;
   $scope.location = $location.path();
   $scope.errors = {};
+  $scope.showAllPurposes = false;
 
   $scope.to = localStorage.getItem('last_destination') || '';
   $scope.from = localStorage.getItem('last_origin') || '';
@@ -492,6 +501,9 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
     
     $scope.showNext = false;
     switch($scope.step) {
+      case 'when':
+        $location.path('/plan/purpose');
+        break;
       case 'where':
         $location.path('/plan/when');
         break;

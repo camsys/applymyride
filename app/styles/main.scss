@@ -431,3 +431,20 @@ img.official-logo {
   text-decoration: none;
 }
 
+.cs-two-week-date-picker .week{
+  display:flex;
+  flex-flow:row;
+}
+
+.cs-two-week-date-picker .day{
+  display:inline-block;
+  width:14.25%;
+  background-color: #DDD;
+  border: 1px solid #EEE;
+  padding: 15px 0px;
+  text-align:center;
+  font-weight:bold;
+}
+.cs-two-week-date-picker .week.names .day{
+  font-weight:initial;
+}

@@ -1,0 +1,4 @@
+%div{class:'cs-time-input {{class}}', id:'{{id}}'}
+  %input{class:'cs-hour', type:'tel', ng:{model:'hour', change:'updateTime()'}}
+  %input{class:'cs-minute', type:'tel', ng:{model:'minute', change:'updateTime()'}}
+  %input{class:'cs-ampm', type:'checkbox', name:'cstimeisam', ng:{ model:'isAM', change:'updateTime()' }}
