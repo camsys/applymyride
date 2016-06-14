@@ -11,6 +11,7 @@
       %span{class:"day"} Thu
       %span{class:"day"} Fri
       %span{class:"day"} Sat
-    .week{ng:{repeat:"week in month.weeks"}}
-      %span{class:"day", ng:{class:"{ today: day.isToday, 'different-month': !day.isCurrentMonth, selected: day.date.isSame(selected) }", click:"select(day)", repeat:"day in week.days"}} {{day.number}}
+    %div
+      .week{ng:{repeat:"week in month.weeks"}}
+        %span{class:"day", ng:{class:"{ today: day.isToday, disabled:($first || $last), 'different-month': !day.isCurrentMonth, selected: day.date.isSame(selected) }", click:"select(day)", repeat:"day in week.days"}} {{day.number}}
 

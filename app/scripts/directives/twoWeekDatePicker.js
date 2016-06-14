@@ -18,7 +18,7 @@ app.directive('twoWeekDatePicker', function() {
             _buildTwoWeeks(scope, start, month);
 
             scope.select = function(day) {
-                scope.selected = day.date;
+                scope.selected = day.date.clone();
             };
 
             scope.next = function() {
@@ -34,7 +34,6 @@ app.directive('twoWeekDatePicker', function() {
                 month.month(month.month()-1);
                 _buildMonth(scope, previous, month);
             };
-            console.log(scope.weeks);
         }
     };
 
@@ -57,6 +56,23 @@ app.directive('twoWeekDatePicker', function() {
         for(i=0; i < weeksToShow; i+=1){
             scope.months[monthI].weeks.push({ days: _buildWeek(date.clone(), month) });
             date.add(1, "w");
+            if(date.month() !== month.month() ){
+                scope.months.push({
+                    name: date.clone(),
+                    weeks: []
+                });
+                //clone to first day of month
+                month = date.clone().date(1);
+                monthI +=1;
+                //if the first falls on a sunday, no extra rows
+                if(1 !== date.date()){
+                    //redraw this week
+                    date.add(-1, "w");
+                    date.day(0);
+                    scope.months[monthI].weeks.push({ days: _buildWeek(date.clone(), month) });
+                    date.add(1, "w");
+                }
+            }
         }
     }
 
@@ -68,7 +84,7 @@ app.directive('twoWeekDatePicker', function() {
                 number: date.date(),
                 isCurrentMonth: date.month() === month.month(),
                 isToday: date.isSame(new Date(), "day"),
-                date: date
+                date: date.clone()
             });
             date = date.clone();
             date.add(1, "d");

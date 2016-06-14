@@ -448,14 +448,16 @@ img.official-logo {
 .cs-two-week-date-picker .week.names .day{
   font-weight:initial;
 }
+.cs-two-week-date-picker .day.selected{
+  color: #EEE;
+  background-color:#14834D;
+}
 .cs-two-week-date-picker .day.today,
 .cs-two-week-date-picker .day.disabled,
 .cs-two-week-date-picker .day.different-month{
   pointer-events:none;
   cursor:default;
   color:#AAA;
+  background-color:#DDD;
 }
-.cs-two-week-date-picker .day.selected{
-  color: #EEE;
-  background-color:#14834D;
-}
+
