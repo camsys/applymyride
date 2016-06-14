@@ -504,7 +504,17 @@ angular.module('applyMyRideApp')
         this.fixLatLon(this.fromDetails);
         return $http.post(urlPrefix + 'api/v1/trip_purposes/list', this.fromDetails, this.getHeaders()).
           success(function(data) {
-            $scope.purposes = data.trip_purposes;
+            $scope.top_purposes = data.top_trip_purposes;
+            data.trip_purposes = data.trip_purposes || [];
+            $scope.purposes = data.trip_purposes.filter(function(el){
+              var i;
+              for(i=0; i<$scope.top_purposes.length; i+=1){
+                if(el.code && $scope.top_purposes[i].code === el.code){
+                  return false;
+                }
+              }
+              return true;
+            });
             if (data.default_trip_purpose != undefined && $scope.email == undefined){
               $scope.default_trip_purpose = data.default_trip_purpose;
               $scope.showNext = true;

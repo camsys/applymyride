@@ -12,6 +12,7 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
   }else if( document.location.hostname.match(/findmyridepa2-qa\.camsys-apps\.com/) ){
     $scope.apiHost = 'oneclick-pa-qa.camsys-apps.com';
   }
+  var urlPrefix = 'http://' + $scope.apiHost + '/';
 
   $scope.minReturnDate = new Date();
   $scope.marker = null;
@@ -841,7 +842,7 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
       })
   }
   function _repopulateServiceHours(){
-    $http.get('http://oneclick-pa-dev.herokuapp.com/api/v1/services/hours').
+    $http.get(urlPrefix + '/api/v1/services/hours').
       success(function(data) {
         $scope.serviceHours = data;
       }
