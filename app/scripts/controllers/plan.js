@@ -1327,7 +1327,7 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
   );
 
   $scope.$watch('fromMoment', function(n){
-    var from, datestr, endOfDay, beginOfDay, time, diff, name;
+    var from, datestr, endOfDay, beginOfDay, time, diff, name, fromDiff;
     if( !n._isAMomentObject ){ return;}
     from = n.clone();
     //when fromMoment is selected, update the available times
@@ -1340,19 +1340,22 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
     time = $scope.serviceHours[datestr].open.split(':');
     beginOfDay = from.clone().hour(time[0]).minute(time[1]).seconds(0);
     if(from.isBefore(beginOfDay)){
-      from = beginOfDay;
+      fromDiff = beginOfDay;
+      from = beginOfDay.clone();
+    }else{
+      fromDiff = from.clone();
     }
     while( from.isBefore(endOfDay) ){
       name ='';
       from.add(15, 'm');
-      diff = from.diff(n, 'minutes');
+      diff = from.diff(fromDiff, 'minutes');
       if(diff < 60){
         name = '+'+ diff +' Minutes (' +from.format('h:mm') +')';
       }else if( 0 === (diff % 60)){
         //no minutes
-        name = '+' + from.diff(n, 'hours') + ' Hours (' +from.format('h:mm') + ')';
+        name = '+' + from.diff(fromDiff, 'hours') + ' Hours (' +from.format('h:mm') + ')';
       }else{
-        name = '+' + from.diff(n, 'hours') + ' Hours ' + (diff % 60) + ' Minutes (' + from.format('h:mm') + ')';
+        name = '+' + from.diff(fromDiff, 'hours') + ' Hours ' + (diff % 60) + ' Minutes (' + from.format('h:mm') + ')';
       }
       $scope.howLongOptions.push({
         name: name
