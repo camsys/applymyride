@@ -6,6 +6,13 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
 
 function($scope, $http, $routeParams, $location, planService, flash, usSpinnerService, $q, LocationSearch, localStorageService, ipCookie, $timeout) {
 
+  $scope.apiHost = document.location.hostname;
+  if( document.location.hostname.match(/findmyridepa2-dev\.camsys-apps\.com/) ){
+    $scope.apiHost = 'oneclick-pa-dev.camsys-apps.com';
+  }else if( document.location.hostname.match(/findmyridepa2-qa\.camsys-apps\.com/) ){
+    $scope.apiHost = 'oneclick-pa-qa.camsys-apps.com';
+  }
+
   $scope.minReturnDate = new Date();
   $scope.marker = null;
   $scope.toFromMarkers = {};
@@ -28,12 +35,10 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
   $scope.planService = planService;
   $scope.fromMoment = moment(new Date());
   $scope.returnMoment = moment(new Date());
+  $scope.serviceHours = {};
   $scope.fromTime = '';
   $scope.howLong = 0;
-  $scope.howLongOptions = [
-  {name:'0minutes', value:0},
-  {name:'15 minutes', value:1}
-  ];
+  $scope.howLongOptions = [];
   $scope.fromDate = new Date();
   $scope.returnDate = new Date();
   $scope.showMap = false;
@@ -836,6 +841,14 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
         }
       })
   }
+  function _repopulateServiceHours(){
+    $http.get('http://oneclick-pa-dev.herokuapp.com/api/v1/services/hours').
+      success(function(data) {
+        $scope.serviceHours = data;
+      }
+    );
+
+  }
 
 
 
@@ -850,6 +863,10 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
       if($scope.from){
         $scope.selectPlace($scope.from, 'from');
       }
+      break;
+    case 'when':
+      //re-populate service hours
+      _repopulateServiceHours();
       break;
     case 'start_current':
       $scope.showNext = false;
@@ -980,7 +997,7 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
       break;
     case 'list_itineraries':
       if($routeParams.test){
-        $http.get('data/bookingresult.json').
+        $http.get('http://' + $scope.apiHost + '/data/bookingresult.json').
           success(function(data) {
             planService.itineraryRequestObject = data.itinerary_request;
             planService.searchResults = data.itinerary_response;
@@ -1308,6 +1325,40 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
       }
     }
   );
+
+  $scope.$watch('fromMoment', function(n){
+    var from, datestr, endOfDay, beginOfDay, time, diff, name;
+    if( !n._isAMomentObject ){ return;}
+    from = n.clone();
+    //when fromMoment is selected, update the available times
+    //http://oneclick-pa-dev.herokuapp.com/api/v1/services/hours
+    datestr = from.format('YYYY-MM-DD');
+    $scope.howLongOptions = [];
+    if( !$scope.serviceHours[datestr] ){ return; }
+    time = $scope.serviceHours[datestr].close.split(':');
+    endOfDay = from.clone().hour(time[0]).minute(time[1]).seconds(0);
+    time = $scope.serviceHours[datestr].open.split(':');
+    beginOfDay = from.clone().hour(time[0]).minute(time[1]).seconds(0);
+    if(from.isBefore(beginOfDay)){
+      from = beginOfDay;
+    }
+    while( from.isBefore(endOfDay) ){
+      name ='';
+      from.add(15, 'm');
+      diff = from.diff(n, 'minutes');
+      if(diff < 60){
+        name = '+'+ diff +' Minutes (' +from.format('h:mm') +')';
+      }else if( 0 === (diff % 60)){
+        //no minutes
+        name = '+' + from.diff(n, 'hours') + ' Hours (' +from.format('h:mm') + ')';
+      }else{
+        name = '+' + from.diff(n, 'hours') + ' Hours ' + (diff % 60) + ' Minutes (' + from.format('h:mm') + ')';
+      }
+      $scope.howLongOptions.push({
+        name: name
+      });
+    }
+  });
 
 }
 ]);
