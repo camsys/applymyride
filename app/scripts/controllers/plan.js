@@ -46,8 +46,10 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
   $scope.errors = {};
   $scope.showAllPurposes = false;
 
-  $scope.to = localStorage.getItem('last_destination') || '';
-  $scope.from = localStorage.getItem('last_origin') || '';
+  $scope.toDefault = localStorage.getItem('last_destination') || '';
+  $scope.to = $scope.toDefault;
+  $scope.fromDefault = localStorage.getItem('last_origin') || '';
+  $scope.from = $scope.fromDefault;
 
   $scope.reset = function() {
     planService.reset();
@@ -417,64 +419,64 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
       });
     }
   }
-
-  (function(){
-    //begin private scope for keeping track of last input, and mapping when appropriate
-    var lastFrom, lastTo;
-    var lastMappedPlaces = {};
-    var ignoreBlur=false;
-    function mapOnBlur( place, toFrom )
-    {
-      //blur handler runs each time the autocomplete input is blurred via selecting, or just blurring
-      //If it was blurred because of a selection, we don't want it to run -- let the selectTo or selectFrom run instead
-      //return if no change, return if place is empty, or we're supposed to ignore blur events
-      if( lastMappedPlaces[toFrom] === place || !place || true === ignoreBlur || 6 > place.length){
-        //hide the place marker if place is empty or too short
-        if(!place || 6 > place.length){
-          $scope.toFromMarkers[toFrom].setMap(null);
-        }
-        lastMappedPlaces[toFrom] = place;
-        ignoreBlur = false;
-        return;
+  //begin private scope for keeping track of last input, and mapping when appropriate
+  var lastFrom, lastTo;
+  var lastMappedPlaces = {};
+  var ignoreBlur=false;
+  function mapOnBlur( place, toFrom )
+  {
+    //blur handler runs each time the autocomplete input is blurred via selecting, or just blurring
+    //If it was blurred because of a selection, we don't want it to run -- let the selectTo or selectFrom run instead
+    //return if no change, return if place is empty, or we're supposed to ignore blur events
+    if( (place && lastMappedPlaces[toFrom] === place) || true === ignoreBlur || (place && 6 > place.length)){
+      //hide the place marker if place is empty or too short
+      if(!place || 6 > place.length){
+        $scope.toFromMarkers[toFrom].setMap(null);
       }
-      $scope.showNext = false;
       lastMappedPlaces[toFrom] = place;
-      setTimeout(function selectPlace(){
-        //if $scope.to or $scope.from is different from place, the autocomplete input's select events are handling
-        if( $scope[toFrom] !== place){ return; }
-        //otherwise, run selectPlace
-        $scope.selectPlace(place, toFrom);
-      }, 500);
+      ignoreBlur = false;
+      return;
+    }else if(!place){
+      console.log( $scope[toFrom + 'Default'] );
+      place = $scope[toFrom + 'Default'];
+    }else{
+      $scope.showNext = false;
     }
+    lastMappedPlaces[toFrom] = place;
+    setTimeout(function selectPlace(){
+      //if $scope.to or $scope.from is different from place, the autocomplete input's select events are handling
+      if( $scope[toFrom] !== place){ return; }
+      //otherwise, run selectPlace
+      $scope.selectPlace(place, toFrom);
+    }, 500);
+  }
 
-    $scope.mapFrom = function(place){
-      if(lastFrom != place){
-        mapOnBlur(place, 'from');
-      }
+  $scope.mapFrom = function(place){
+    if(lastFrom != place){
+      mapOnBlur(place, 'from');
     }
-    $scope.mapTo = function(place){
-      if(lastTo != place){
-        mapOnBlur(place, 'to');
-      }
+  }
+  $scope.mapTo = function(place){
+    if(lastTo != place){
+      mapOnBlur(place, 'to');
     }
-    $scope.focusTo = function(e){
-      lastTo = e.srcElement.value;
-    }
-    $scope.focusFrom = function(e){
-      lastFrom = e.srcElement.value;
-    }
+  }
+  $scope.focusTo = function(e){
+    lastTo = e.srcElement.value;
+  }
+  $scope.focusFrom = function(e){
+    lastFrom = e.srcElement.value;
+  }
 
-    $scope.selectFrom = function(place){
-      ignoreBlur = true;
-      $scope.selectPlace(place, 'from');
-    }
+  $scope.selectFrom = function(place){
+    ignoreBlur = true;
+    $scope.selectPlace(place, 'from');
+  }
 
-    $scope.selectTo = function(place){
-      ignoreBlur = true;
-      $scope.selectPlace(place, 'to');
-    }
-    //end private scope for keeping track of last input
-  }());
+  $scope.selectTo = function(place){
+    ignoreBlur = true;
+    $scope.selectPlace(place, 'to');
+  }
 
   $scope.selectPlace = function(place, toFrom){
     //when a place is selected, update the map

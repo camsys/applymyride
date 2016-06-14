@@ -430,6 +430,18 @@ img.official-logo {
   color: #FFF;
   text-decoration: none;
 }
+.from-to-where input::-webkit-input-placeholder {
+  color: black;
+}
+.from-to-where input:-moz-placeholder {
+  color: black;
+}
+.from-to-where input::-moz-placeholder {
+  color: black;
+}
+.from-to-where input:-ms-input-placeholder {
+  color: black;
+}
 
 .cs-two-week-date-picker .week{
   display:flex;

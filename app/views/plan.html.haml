@@ -3,7 +3,7 @@
   .alert.alert-danger.text-center{"ng-show" => "apiError", :role => "alert"}
     %b API Error :
     %span {{ apiStatus }}
-  .fromToWhere{ng: {show: 'step==="where"'}}
+  .from-to-where{ng: {show: 'step==="where"'}}
     %form
       .form-group
         .row
@@ -12,7 +12,7 @@
               %strong
                 Where To?
           .col-lg-6.col-lg-offset-3.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1.col-xs-12
-            %autocomplete{ 'attr-placeholder'=> 'Start typing a name or address',
+            %autocomplete{ 'attr-placeholder'=> '{{toDefault}}',
                                         'attr-input-id' => 'whereToInput',
                                         'attr-autofocus' => 'true',
                                         'attr-clicktofocus' => 'true',
@@ -38,7 +38,7 @@
               %strong
                 Starting From?
           .col-lg-6.col-lg-offset-3.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1.col-xs-12
-            %autocomplete{ 'attr-placeholder'=> 'Where from?',
+            %autocomplete{ 'attr-placeholder'=> '{{fromDefault}}',
                                         'attr-input-id' => 'whereFromInput',
                                         'attr-clicktofocus' => 'true',
                                         class: 'autocompleteWrapper',
