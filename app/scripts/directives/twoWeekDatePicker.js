@@ -3,6 +3,8 @@
 var app = angular.module('applyMyRideApp');
 
 app.directive('twoWeekDatePicker', function() {
+    var weekdayCount;
+    var today = moment();
     return {
         restrict: "E",
         templateUrl: "views/two-week-date-picker.html",
@@ -13,6 +15,7 @@ app.directive('twoWeekDatePicker', function() {
             scope.selected = _removeTime(scope.selected || moment());
             var month = scope.selected.clone();
             var start = scope.selected.clone();
+            weekdayCount = 0;
 
             _removeTime(start);
             _buildTwoWeeks(scope, start, month);
@@ -56,7 +59,7 @@ app.directive('twoWeekDatePicker', function() {
         for(i=0; i < weeksToShow; i+=1){
             scope.months[monthI].weeks.push({ days: _buildWeek(date.clone(), month) });
             date.add(1, "w");
-            if(date.month() !== month.month() ){
+            if(date.month() !== month.month() && weekdayCount < 10){
                 scope.months.push({
                     name: date.clone(),
                     weeks: []
@@ -84,8 +87,13 @@ app.directive('twoWeekDatePicker', function() {
                 number: date.date(),
                 isCurrentMonth: date.month() === month.month(),
                 isToday: date.isSame(new Date(), "day"),
+                disabled: (weekdayCount > 10),
                 date: date.clone()
             });
+            var dateDay = date.day();
+            if(date.isAfter(today) && dateDay > 0 && dateDay < 6){
+                weekdayCount +=1;
+            }
             date = date.clone();
             date.add(1, "d");
         }
