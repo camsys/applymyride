@@ -23,7 +23,6 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
   $scope.showConfirmLocationMap = false;
   $scope.mapOptions = {
     zoom: 17,
-    draggable: false,
     mapTypeId: google.maps.MapTypeId.ROADMAP
   };
   $scope.step = $routeParams.step;

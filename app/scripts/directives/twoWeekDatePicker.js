@@ -9,7 +9,7 @@ app.directive('twoWeekDatePicker', function() {
         restrict: "E",
         templateUrl: "views/two-week-date-picker.html",
         scope: {
-            selected: "="
+            selected: "=?"
         },
         link: function(scope) {
             scope.selected = _removeTime(scope.selected || moment());
@@ -80,14 +80,15 @@ app.directive('twoWeekDatePicker', function() {
     }
 
     function _buildWeek(date, month) {
-        var days = [];
+        var days = [], disabled;
         for (var i = 0; i < 7; i++) {
+            disabled = (weekdayCount > 10) || date.isBefore(today);
             days.push({
                 name: date.format("dd").substring(0, 1),
                 number: date.date(),
                 isCurrentMonth: date.month() === month.month(),
                 isToday: date.isSame(new Date(), "day"),
-                disabled: (weekdayCount > 10),
+                disabled: disabled,
                 date: date.clone()
             });
             var dateDay = date.day();
