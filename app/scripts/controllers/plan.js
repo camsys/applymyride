@@ -41,15 +41,15 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
   $scope.howLongOptions = [];
   $scope.fromDate = new Date();
   $scope.returnDate = new Date();
-  $scope.showMap = false;
+  $scope.showMap = true;
   $scope.location = $location.path();
   $scope.errors = {};
   $scope.showAllPurposes = false;
 
   $scope.toDefault = localStorage.getItem('last_destination') || '';
-  $scope.to = $scope.toDefault;
+  $scope.to = planService.to || '';
   $scope.fromDefault = localStorage.getItem('last_origin') || '';
-  $scope.from = $scope.fromDefault;
+  $scope.from = planService.from || '';
 
   $scope.reset = function() {
     planService.reset();
@@ -355,13 +355,13 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
   }
 
   $scope.clearFrom = function(){
-    $scope.showMap = false;
+    //$scope.showMap = false;
     $scope.showNext = false;
     $scope.from = null;
   }
 
   $scope.clearTo = function(){
-    $scope.showMap = false;
+    //$scope.showMap = false;
     $scope.showNext = false;
     $scope.to = null;
   }
@@ -425,6 +425,7 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
   var ignoreBlur=false;
   function mapOnBlur( place, toFrom )
   {
+    var defaulted = false;
     //blur handler runs each time the autocomplete input is blurred via selecting, or just blurring
     //If it was blurred because of a selection, we don't want it to run -- let the selectTo or selectFrom run instead
     //return if no change, return if place is empty, or we're supposed to ignore blur events
@@ -437,15 +438,15 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
       ignoreBlur = false;
       return;
     }else if(!place){
-      console.log( $scope[toFrom + 'Default'] );
       place = $scope[toFrom + 'Default'];
+      defaulted = true;
     }else{
       $scope.showNext = false;
     }
     lastMappedPlaces[toFrom] = place;
     setTimeout(function selectPlace(){
       //if $scope.to or $scope.from is different from place, the autocomplete input's select events are handling
-      if( $scope[toFrom] !== place){ return; }
+      if(!defaulted && $scope[toFrom] !== place){ return; }
       //otherwise, run selectPlace
       $scope.selectPlace(place, toFrom);
     }, 500);
@@ -493,7 +494,7 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
     if(-1 < selectedIndex && selectedIndex < $scope.poiData.length){
       //this is a POI result, get the 1Click location name
       $scope.poi = $scope.poiData[selectedIndex];
-      $scope.checkServiceArea($scope.poi, null, toFrom);
+      $scope.checkServiceArea($scope.poi, $scope.poi.formatted_address, toFrom);
     }else{
       var placeId = $scope.placeIds[selectedIndex];
       if(placeId) {
@@ -693,7 +694,7 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
                 $scope.step = 'from_confirm';
                 $scope.$apply();
               }else{
-                $scope.showMap = false;
+                //$scope.showMap = false;
                 $scope.showNext = false;
                 bootbox.alert("You are currently outside the service area.  To plan a trip, enter a starting location within the service area.");
                 $location.path("/plan/from");
@@ -861,9 +862,13 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
       //load the map origin/destination
       if($scope.to){
         $scope.selectPlace($scope.to, 'to');
+      }else if($scope.toDefault){
+        $scope.selectPlace($scope.toDefault, 'to');
       }
       if($scope.from){
         $scope.selectPlace($scope.from, 'from');
+      }else if($scope.fromDefault){
+        $scope.selectPlace($scope.fromDefault, 'from');
       }
       break;
     case 'when':

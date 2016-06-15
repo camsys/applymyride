@@ -430,8 +430,16 @@ img.official-logo {
   color: #FFF;
   text-decoration: none;
 }
+::selection {
+  background: rgb(177,215,254);
+}
+::-moz-selection {
+  background: rgb(177,215,254);
+}
+
 .from-to-where input::-webkit-input-placeholder {
   color: black;
+  background-color:rgb(177,215,254);
 }
 .from-to-where input:-moz-placeholder {
   color: black;
