@@ -29,7 +29,7 @@ module.exports = function (grunt) {
         separator: grunt.util.linefeed + ';' + grunt.util.linefeed
       }
     },
-
+    
     // Project settings
     yeoman: appConfig,
 
@@ -349,6 +349,12 @@ module.exports = function (grunt) {
     // concat: {
     //   dist: {}
     // },
+    
+    uglify: {
+      options: {
+        mangle: false
+      }
+    },
 
     imagemin: {
       dist: {
