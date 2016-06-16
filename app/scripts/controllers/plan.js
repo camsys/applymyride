@@ -41,7 +41,7 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
   $scope.howLongOptions = [];
   $scope.fromDate = new Date();
   $scope.returnDate = new Date();
-  $scope.showMap = true;
+  $scope.showMap = false;
   $scope.location = $location.path();
   $scope.errors = {};
   $scope.showAllPurposes = false;
@@ -431,7 +431,7 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
     //return if no change, return if place is empty, or we're supposed to ignore blur events
     if( (place && lastMappedPlaces[toFrom] === place) || true === ignoreBlur || (place && 6 > place.length)){
       //hide the place marker if place is empty or too short
-      if(!place || 6 > place.length){
+      if((!place || 6 > place.length) && $scope.toFromMarkers[toFrom]){
         $scope.toFromMarkers[toFrom].setMap(null);
       }
       lastMappedPlaces[toFrom] = place;
