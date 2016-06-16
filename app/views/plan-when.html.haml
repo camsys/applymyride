@@ -1,0 +1,57 @@
+%form
+  .form-group
+    .row
+      .col-lg-6.col-lg-offset-3.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1.col-xs-12
+        %h2
+          %strong
+            When?
+    .row
+      .col-lg-6.col-lg-offset-3.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1.col-xs-12
+        %h3 What day? {{fromMoment | momentYMD}}
+    .row
+      .col-lg-6.col-lg-offset-3.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1.col-xs-12
+        .cs-two-week-date-picker
+          %div{class: 'week'}
+            %div{class: 'day'} Sun
+            %div{class: 'day'} Mon
+            %div{class: 'day'} Tue
+            %div{class: 'day'} Wed
+            %div{class: 'day'} Thu
+            %div{class: 'day'} Fri
+            %div{class: 'day'} Sat
+          %div{ng: {repeat: 'month in twoWeeksSelector.months' }, class: 'month'}
+            {{month.name}}
+            %div{ng: {repeat: 'week in month.weeks' }, class: 'week'}
+              %div{ class: 'day', 
+                    tabindex:'{{day.tabindex}}',
+                    ng: { repeat: 'day in week', 
+                          click:'selectDepartDate(day)', 
+                          disabled:'!day.businessDay', 
+                          class:'{ disabled: !day.businessDay, selected: fromMoment.isSame(day.moment, "day")}' } }
+                {{day.day}}
+    .row
+      .col-lg-6.col-lg-offset-3.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1.col-xs-12
+        %h3 What time do you want to arrive?
+    .row
+      .col-lg-6.col-lg-offset-3.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1.col-xs-12
+        %cs-time-input{cs:{model:'fromMoment'}}
+    .row
+      .col-lg-6.col-lg-offset-3.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1.col-xs-12
+        %h3 How long do you want to stay?
+    .row
+      .col-lg-6.col-lg-offset-3.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1.col-xs-12
+        %select.form-control{name:'howlong', required:'true', ng:{options:'option.name for option in howLongOptions', model:'howLong'}}
+          %option{value:'', disabled:''} Select an option
+    .row.sticky-footer{style: 'margin-top: 30px'}
+      .col-md-8.col-md-offset-2.col-xs-12
+        .pull-left
+          %a.btn{href: "", back: '', ng: {click: "back()"}}
+            Back
+        .pull-right
+          %a.btn.btn-primary.btn-next{href: "", ng: {show: 'showNext', click: 'next()'}}
+            %span
+              Next
+          %a.btn.disabled.btn-primary.btn-next{href: "", ng: {hide: 'showNext'}}
+            %span
+              Next
+

@@ -33,8 +33,8 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
   $scope.invalidEmail = false;
   $scope.showBack = false;
   $scope.planService = planService;
-  $scope.fromMoment = moment(new Date());
-  $scope.returnMoment = moment(new Date());
+  $scope.fromMoment = moment( planService.fromDate || new Date() );
+  $scope.returnMoment = null;
   $scope.serviceHours = {};
   $scope.fromTime = '';
   $scope.howLong = 0;
@@ -844,13 +844,82 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
         }
       })
   }
+  $scope.selectDepartDate = function(day){
+    var starts;
+    console.log('$scope.fromMoment', day.moment.isSame($scope.fromMoment, 'day'), ($scope.fromMoment||{}).toString(), day.moment.toString(), {d:day, fm:$scope.fromMoment});
+    starts = day.serviceHours.open.split(':');
+    $scope.fromMoment = day.moment.clone();
+    $scope.fromMoment.hour( parseInt(starts[0]) ).minute( parseInt(starts[1]) ).seconds(0);
+  }
   function _repopulateServiceHours(){
     $http.get(urlPrefix + '/api/v1/services/hours').
       success(function(data) {
         $scope.serviceHours = data;
+        _setupTwoWeekSelector();
       }
     );
+  }
+  function _setupTwoWeekSelector(){
+    var months = [],
+      currentMonth = '',
+      currentWeek=0,
+      today = moment(),
+      date = today.clone().day(0),
+      weekdayCount = 0,
+      totalCount = 0;
+    var makeWeek = function(startDate)
+    {
+      var i, week = [], 
+          loopDay, isOpen, sameMonth;
+      //set the loopDate to sunday
+      var loopDay =  startDate.clone().day(0);
+      console.log(startDate.month(), loopDay.month());
+      //generate a week of days, with meta-data
+      for(i=0; i<7; i+=1){
+        sameMonth = (loopDay.month() === startDate.month());
+        //must be same month and loop day has service hours for isOpen to count
+        isOpen = (sameMonth && !!$scope.serviceHours[ loopDay.format('YYYY-MM-DD') ]);
+        //count the open days, also total (incase open days never reaches 10)
+        weekdayCount += isOpen ? 1 : 0;
+        totalCount += 1;
+        week[i] = {
+          moment: loopDay.clone(),
+          day: loopDay.format('D'),
+          isToday: loopDay.isSame( today, 'day' ),
+          sameMonth: sameMonth,
+          tabindex: isOpen ? '0' : '-1',
+          serviceHours: $scope.serviceHours[ loopDay.format('YYYY-MM-DD') ],
+          businessDay: isOpen
+        };
+        //increment the day for next loop
+        loopDay.add(1, 'd');
+      }
+      return week;
+    };
+    //initialize the month
+    currentMonth = date.format('MMMM');
+    months.push( {name: currentMonth, weeks: [] } );
 
+    //build an array of months[].weeks[].days[]
+    while(weekdayCount < 10 && totalCount < 30){
+      //create the months entry if needed (not on first run)
+      if(currentMonth !== date.format('MMMM')){
+        currentMonth = date.format('MMMM');
+        //setup weeks array
+        months.push( {name: currentMonth, weeks: [] } );
+
+        //if the 1st of the month isn't on 0 (Sunday), need to back up date and make the 1st week again.  
+        if(0 !== date.clone().date(1).day() ){
+          months[ months.length-1 ].weeks.push( makeWeek( date.clone().date(1) ) );
+        }
+      }
+
+      //add a week to this month
+      months[ months.length-1 ].weeks.push( makeWeek(date) );
+      date.add(1,'w');
+    }
+    console.log('months', months);
+    $scope.twoWeeksSelector = {months:months};
   }
 
 
@@ -874,6 +943,7 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
     case 'when':
       //re-populate service hours
       _repopulateServiceHours();
+      $scope.showNext = ($scope.fromMoment.isAfter( moment().hour(23) )) ? true : false;
       break;
     case 'start_current':
       $scope.showNext = false;
@@ -1334,13 +1404,19 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
   );
 
   $scope.$watch('fromMoment', function(n){
+    console.log('fromMoment Change', n);
     var from, datestr, endOfDay, beginOfDay, time, diff, name, fromDiff;
-    if( !n._isAMomentObject ){ return;}
+    $scope.showNext = false;
+    if( !n || !n._isAMomentObject ){ return;}
+    $scope.showNext = true;
+    planService.fromDate = n.toDate();
     from = n.clone();
     //when fromMoment is selected, update the available times
     //http://oneclick-pa-dev.herokuapp.com/api/v1/services/hours
     datestr = from.format('YYYY-MM-DD');
     $scope.howLongOptions = [];
+    
+    return;
     if( !$scope.serviceHours[datestr] ){ return; }
     time = $scope.serviceHours[datestr].close.split(':');
     endOfDay = from.clone().hour(time[0]).minute(time[1]).seconds(0);
