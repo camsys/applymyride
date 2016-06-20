@@ -866,10 +866,12 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
       today = moment(),
       date = today.clone().day(0),
       weekdayCount = 0,
+      newWeek,
       totalCount = 0;
     var makeWeek = function(startDate)
     {
       var i, week = [], 
+          somethingOpen = false,
           loopDay, isOpen, sameMonth;
       //set the loopDate to sunday
       var loopDay =  startDate.clone().day(0);
@@ -879,6 +881,7 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
         sameMonth = (loopDay.month() === startDate.month());
         //must be same month and loop day has service hours for isOpen to count
         isOpen = (sameMonth && !!$scope.serviceHours[ loopDay.format('YYYY-MM-DD') ]);
+        somethingOpen = somethingOpen || isOpen;
         //count the open days, also total (incase open days never reaches 10)
         weekdayCount += isOpen ? 1 : 0;
         totalCount += 1;
@@ -893,6 +896,9 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
         };
         //increment the day for next loop
         loopDay.add(1, 'd');
+      }
+      if(!somethingOpen){
+        return false;
       }
       return week;
     };
@@ -910,12 +916,18 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
 
         //if the 1st of the month isn't on 0 (Sunday), need to back up date and make the 1st week again.  
         if(0 !== date.clone().date(1).day() ){
-          months[ months.length-1 ].weeks.push( makeWeek( date.clone().date(1) ) );
+          newWeek = makeWeek( date.clone().date(1) );
+          if(false !== newWeek){
+            months[ months.length-1 ].weeks.push( newWeek );
+          }
         }
       }
 
       //add a week to this month
-      months[ months.length-1 ].weeks.push( makeWeek(date) );
+      newWeek = makeWeek(date);
+      if(false !== newWeek){
+        months[ months.length-1 ].weeks.push( newWeek );
+      }
       date.add(1,'w');
     }
     console.log('months', months);
