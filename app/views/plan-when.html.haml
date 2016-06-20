@@ -40,7 +40,7 @@
         %h3 How long do you want to stay?
     .row
       .col-lg-6.col-lg-offset-3.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1.col-xs-12
-        %select.form-control{name:'howlong', required:'true', ng:{options:'option.name for option in howLongOptions', model:'howLong'}}
+        %select.form-control{name:'howlong', required:'true', ng:{options:'option.name for option in howLongOptions', model:'howLong', class:'{disabled:!fromMoment.isAfter(moment()) }'}}
           %option{value:'', disabled:''} Select an option
     .row.sticky-footer{style: 'margin-top: 30px'}
       .col-md-8.col-md-offset-2.col-xs-12

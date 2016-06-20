@@ -484,7 +484,24 @@ input,
 button{
   outline:none;
 }
-
+.cs-time-input{
+  display:flex;
+  flex-flow:row;
+}
+.cs-time-input .cs-hour{
+  border-right:none;
+  width:2em;
+  text-align:right;
+}
+.cs-time-input .cs-hour:after{
+  display: inline-block;
+  content: '|||||||';
+  color:red;
+  font-size:30px;
+}
+.cs-time-input .cs-minute{
+  border-left:none;
+}
 .cs-time-input input.cs-ampm{
   -webkit-appearance: none;
   -moz-appearance: none;
@@ -501,4 +518,8 @@ button{
 .cs-time-input .cs-ampm:checked:after{
   content:'AM';
 }
+.time-when select.disabled{
+  pointer-events:none;
+}
+
 

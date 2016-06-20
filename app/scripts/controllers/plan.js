@@ -845,11 +845,50 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
       })
   }
   $scope.selectDepartDate = function(day){
-    var starts;
-    console.log('$scope.fromMoment', day.moment.isSame($scope.fromMoment, 'day'), ($scope.fromMoment||{}).toString(), day.moment.toString(), {d:day, fm:$scope.fromMoment});
-    starts = day.serviceHours.open.split(':');
+    var from, endOfDay, beginOfDay, splitTime, diff, name, fromDiff, hour, minute;
+    //try to re-use the selected time if there is one, otherwise use the start time as a default
+    if($scope.fromMoment){
+      minute = parseInt($scope.fromMoment.format('m'));
+      hour = parseInt($scope.fromMoment.format('h'));
+    }else{
+      splitTime = day.serviceHours.open.split(':');
+      minute = parseInt(splitTime[0]);
+      hour = parseInt(splitTime[1]);
+    }
+    $scope.serviceHours = day.serviceHours;
     $scope.fromMoment = day.moment.clone();
-    $scope.fromMoment.hour( parseInt(starts[0]) ).minute( parseInt(starts[1]) ).seconds(0);
+    //set the hour/minute to start times
+    $scope.fromMoment.hour( hour ).minute( minute ).seconds(0);
+    $scope.howLongOptions = [];
+
+    from = $scope.fromMoment.clone();
+    splitTime = $scope.serviceHours.close.split(':');
+    endOfDay = from.clone().hour(splitTime[0]).minute(splitTime[1]).seconds(0);
+    
+    splitTime = $scope.serviceHours.open.split(':');
+    beginOfDay = from.clone().hour(splitTime[0]).minute(splitTime[1]).seconds(0);
+    if(from.isBefore(beginOfDay)){
+      fromDiff = beginOfDay;
+      from = beginOfDay.clone();
+    }else{
+      fromDiff = from.clone();
+    }
+    while( from.isBefore(endOfDay) ){
+      name ='';
+      from.add(15, 'm');
+      diff = from.diff(fromDiff, 'minutes');
+      if(diff < 60){
+        name = '+'+ diff +' Minutes (' +from.format('h:mm') +')';
+      }else if( 0 === (diff % 60)){
+        //no minutes
+        name = '+' + from.diff(fromDiff, 'hours') + ' Hours (' +from.format('h:mm') + ')';
+      }else{
+        name = '+' + from.diff(fromDiff, 'hours') + ' Hours ' + (diff % 60) + ' Minutes (' + from.format('h:mm') + ')';
+      }
+      $scope.howLongOptions.push({
+        name: name
+      });
+    }
   }
   function _repopulateServiceHours(){
     $http.get(urlPrefix + '/api/v1/services/hours').
@@ -955,7 +994,8 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
     case 'when':
       //re-populate service hours
       _repopulateServiceHours();
-      $scope.showNext = ($scope.fromMoment.isAfter( moment().hour(23) )) ? true : false;
+      $scope.showNext = $scope.fromMoment.isAfter( moment().hour(23).minute(59) );
+      console.log('when show next', $scope.showNext, $scope.fromMoment.toString(), moment().hour(23).toString() );
       break;
     case 'start_current':
       $scope.showNext = false;
@@ -1215,7 +1255,7 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
 
 
 
-
+/*
   $scope.$watch('fromDate', function(n) {
       var fromDateString = moment(new Date()).format('M/D/YYYY');
       if($scope.step == 'fromDate'){
@@ -1251,7 +1291,7 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
       }
     }
   );
-
+*/
   $scope.$watch('returnDate', function(n) {
       if($scope.step == 'returnDate'){
         if (n) {
@@ -1416,46 +1456,12 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
   );
 
   $scope.$watch('fromMoment', function(n){
-    console.log('fromMoment Change', n);
-    var from, datestr, endOfDay, beginOfDay, time, diff, name, fromDiff;
+    //only show next if we have a valid moment object
     $scope.showNext = false;
     if( !n || !n._isAMomentObject ){ return;}
     $scope.showNext = true;
+    //save the date/time to planService
     planService.fromDate = n.toDate();
-    from = n.clone();
-    //when fromMoment is selected, update the available times
-    //http://oneclick-pa-dev.herokuapp.com/api/v1/services/hours
-    datestr = from.format('YYYY-MM-DD');
-    $scope.howLongOptions = [];
-    
-    return;
-    if( !$scope.serviceHours[datestr] ){ return; }
-    time = $scope.serviceHours[datestr].close.split(':');
-    endOfDay = from.clone().hour(time[0]).minute(time[1]).seconds(0);
-    time = $scope.serviceHours[datestr].open.split(':');
-    beginOfDay = from.clone().hour(time[0]).minute(time[1]).seconds(0);
-    if(from.isBefore(beginOfDay)){
-      fromDiff = beginOfDay;
-      from = beginOfDay.clone();
-    }else{
-      fromDiff = from.clone();
-    }
-    while( from.isBefore(endOfDay) ){
-      name ='';
-      from.add(15, 'm');
-      diff = from.diff(fromDiff, 'minutes');
-      if(diff < 60){
-        name = '+'+ diff +' Minutes (' +from.format('h:mm') +')';
-      }else if( 0 === (diff % 60)){
-        //no minutes
-        name = '+' + from.diff(fromDiff, 'hours') + ' Hours (' +from.format('h:mm') + ')';
-      }else{
-        name = '+' + from.diff(fromDiff, 'hours') + ' Hours ' + (diff % 60) + ' Minutes (' + from.format('h:mm') + ')';
-      }
-      $scope.howLongOptions.push({
-        name: name
-      });
-    }
   });
 
 }
