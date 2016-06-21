@@ -57,6 +57,8 @@ angular.module('applyMyRideApp')
         delete planService.email;
         $window.location.href = "#/";
         $window.location.reload();
+        planService.to = '';
+        planService.from = '';
       };
 
     }]);
