@@ -98,36 +98,6 @@
     %p
       {{greeting}}
 
-  %form.from-location{name: 'from_location', ng: {show: 'step==="from"'}}
-    .row
-      .col-md-8.col-md-offset-2.col-xs-12
-        %h4 Where are you starting from?
-    .row
-      .col-md-8.col-md-offset-2.col-xs-12{'style' => 'line-height: 2em;'}
-        .input-group
-          %autocomplete.autocomplete{tabindex: 'null', 'inputclass' => 'clearable', 'disable-filter' => 'true', 'data' => 'locations', 'on-type'=> 'getLocations', 'on-select' => 'selectPlace', ng: {model: 'from', 'attr-mobile' => '{{mobile}}'}}
-          .input-group-btn
-            %a.btn.btn-success.btn-block{href: "", style: 'padding-left: 0px; padding-right: 0px;min-width: 20px; border-top-left-radius:0px; border-bottom-left-radius:0px;', ng: {click: 'clearFrom()'}}
-              %i.fa.fa-times.fa-lg{style:'color: white;'}
-    .row
-      .col-md-8.col-md-offset-2.col-xs-12
-        %div.map-canvas{'ui-map' => 'fromLocationMap', 'ui-options' => 'mapOptions', ng: {show: 'showMap'}}
-
-  %form.to-location{ng: {show: 'step==="to"'}}
-    .row
-      .col-md-8.col-md-offset-2.col-xs-12
-        %h4 Where are you going?
-    .row
-      .col-md-8.col-md-offset-2.col-xs-12{'style' => 'line-height: 2em;'}
-        .input-group
-          %autocomplete.autocomplete{tabindex: 'null', 'inputclass' => 'clearable', 'disable-filter' => 'true', 'data' => 'locations', 'on-type'=> 'getLocations', 'on-select' => 'selectPlace', :ng => {:model => 'to', 'attr-mobile' => '{{mobile}}'}}
-          .input-group-btn
-            %a.btn.btn-success.btn-block{href: "", style: 'padding-left: 0px; padding-right: 0px;min-width: 20px; border-top-left-radius:0px; border-bottom-left-radius:0px;', ng: {click: 'clearTo()'}}
-              %i.fa.fa-times.fa-lg{style:'color: white;'}
-    .row
-      .col-md-8.col-md-offset-2.col-xs-12
-        %div.map-canvas{'ui-map' => 'toLocationMap', 'ui-options' => 'mapOptions', ng: {show: 'showMap'}}
-
   .need-return-trip{ng: {show: 'step==="needReturnTrip"'}}
     .text-center
       %h4 Do you need a return trip?
