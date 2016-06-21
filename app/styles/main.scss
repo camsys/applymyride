@@ -537,4 +537,17 @@ button{
   width: 6em;
 }
 
+i.cs-map-marker{
+  display:inline-block;
+  width:20px;
+  height:30px;
+  background-repeat:no-repeat;
+  background-size: contain;
+}
+i.cs-map-marker.B{
+  background-image: url(http://maps.google.com/mapfiles/markerB.png);
+}
+i.cs-map-marker.A{
+  background-image: url(http://maps.google.com/mapfiles/marker_greenA.png);
+}
 

@@ -10,36 +10,12 @@
           .col-lg-6.col-lg-offset-3.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1.col-xs-12
             %h2
               %strong
-                Where To?
-          .col-lg-6.col-lg-offset-3.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1.col-xs-12
-            %autocomplete{ 'attr-placeholder'=> '{{toDefault}}',
-                                        'attr-input-id' => 'whereToInput',
-                                        'attr-autofocus' => 'true',
-                                        'attr-clicktofocus' => 'true',
-                                        class: 'autocompleteWrapper',
-                                        id: 'toInput',
-                                        tabindex: 'null',
-                                        required: 'true',
-                                        'inputclass' => 'clearable tripplanner__location form__input',
-                                        'disable-filter' => 'true',
-                                        'data' => 'locations',
-                                        'on-type'=> 'getLocations',
-                                        'on-focus'=> 'focusTo',
-                                        'on-blur'=> 'mapTo',
-                                        'on-select' => 'selectTo', 
-                                        'autocomplete-required' => 'true',
-                                        ng: { model: 'to'} }
-            .alert.alert-danger{role:'alert', ng:{show:'errors.noResultsto'}}
-              Address is not recognized.  Try entering it another way.
-            .alert.alert-danger{role:'alert', ng:{show:'errors.rangeErrorto'}}
-              The location you selected is outside the service area.
-          .col-lg-6.col-lg-offset-3.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1.col-xs-12
-            %h2
-              %strong
+                %i{class:'cs-map-marker A'}
                 Starting From?
           .col-lg-6.col-lg-offset-3.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1.col-xs-12
             %autocomplete{ 'attr-placeholder'=> '{{fromDefault}}',
                                         'attr-input-id' => 'whereFromInput',
+                                        'attr-autofocus' => 'true',
                                         'attr-clicktofocus' => 'true',
                                         class: 'autocompleteWrapper',
                                         id: 'fromInput',
@@ -58,6 +34,32 @@
             .alert.alert-danger{role:'alert', ng:{show:'errors.noResultsfrom'}}
               Address is not recognized.  Try entering it another way.
             .alert.alert-danger{role:'alert', ng:{show:'errors.rangeErrorfrom'}}
+              The location you selected is outside the service area.
+          .col-lg-6.col-lg-offset-3.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1.col-xs-12
+            %h2
+              %strong
+                %i{class:'cs-map-marker B'}
+                Where To?
+          .col-lg-6.col-lg-offset-3.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1.col-xs-12
+            %autocomplete{ 'attr-placeholder'=> '{{toDefault}}',
+                                        'attr-input-id' => 'whereToInput',
+                                        'attr-clicktofocus' => 'true',
+                                        class: 'autocompleteWrapper',
+                                        id: 'toInput',
+                                        tabindex: 'null',
+                                        required: 'true',
+                                        'inputclass' => 'clearable tripplanner__location form__input',
+                                        'disable-filter' => 'true',
+                                        'data' => 'locations',
+                                        'on-type'=> 'getLocations',
+                                        'on-focus'=> 'focusTo',
+                                        'on-blur'=> 'mapTo',
+                                        'on-select' => 'selectTo', 
+                                        'autocomplete-required' => 'true',
+                                        ng: { model: 'to'} }
+            .alert.alert-danger{role:'alert', ng:{show:'errors.noResultsto'}}
+              Address is not recognized.  Try entering it another way.
+            .alert.alert-danger{role:'alert', ng:{show:'errors.rangeErrorto'}}
               The location you selected is outside the service area.
         .row
           .col-md-8.col-md-offset-2.col-xs-12
