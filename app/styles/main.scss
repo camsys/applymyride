@@ -550,4 +550,7 @@ i.cs-map-marker.B{
 i.cs-map-marker.A{
   background-image: url(http://maps.google.com/mapfiles/marker_greenA.png);
 }
-
+.btn.btn-primary:focus{
+  border-color: rgb(31, 202,35);
+  background-color: rgb(31, 202,35);
+  }
