@@ -439,7 +439,6 @@ img.official-logo {
 
 .from-to-where input::-webkit-input-placeholder {
   color: black;
-  background-color:rgb(177,215,254);
 }
 .from-to-where input:-moz-placeholder {
   color: black;
@@ -520,6 +519,22 @@ button{
 }
 .time-when select.disabled{
   pointer-events:none;
+}
+
+#LoginTemplate .dob .invalid{
+  border:1px solid red;
+  background-color:pink;
+}
+#LoginTemplate .dob{
+  display:inline-block;
+}
+#LoginTemplate .dob.month,
+#LoginTemplate .dob.day{
+  width: 3em;
+  padding:6px;
+}
+#LoginTemplate .dob.year{
+  width: 6em;
 }
 
 

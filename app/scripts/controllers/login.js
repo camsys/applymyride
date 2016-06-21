@@ -26,7 +26,13 @@ angular.module('applyMyRideApp')
       $scope.counties = [];
       $scope.sharedRideId = ipCookie('sharedRideId');
       $scope.county = ipCookie('county');
-      $scope.birthdate = sessionStorage.getItem('dateofbirth') || '';
+      $scope.dateofbirth = sessionStorage.getItem('dateofbirth') || false;
+      $scope.dob = {month:'', day:'', year:''};
+      if($scope.dateofbirth){
+        var dob = moment($scope.dateofbirth);
+        $scope.dob = {month:dob.month()+1, day:dob.date(), year:dob.year()};
+      }
+      $scope.errors = {dob:false};
 
       var authentication_token = ipCookie('authentication_token');
       var email = ipCookie('email');
@@ -36,6 +42,33 @@ angular.module('applyMyRideApp')
         planService.authentication_token = authentication_token;
         planService.email = email;
         $location.path('/plan/where');
+      }
+
+      function checkNextValid(){
+        var bd;
+        try{
+          bd = moment()
+          bd.month( parseInt($scope.dob.month)-1 )
+          bd.date($scope.dob.day)
+          bd.year($scope.dob.year);
+        }catch(e){
+          $scope.dateofbirth = false;
+        }
+        $scope.errors.dob = (( $scope.loginform.month.$dirty && $scope.loginform.month.$invalid )
+                            || ($scope.loginform.day.$dirty && $scope.loginform.day.$invalid )
+                            || (($scope.loginform.year.$viewValue||'').length > 3 && $scope.loginform.year.$invalid ));
+        if( !$scope.errors.dob && $scope.dob.month && $scope.dob.day && $scope.dob.year ){
+          $scope.dateofbirth = bd.toDate();
+        }else{
+          $scope.dateofbirth = false;
+        }
+        $scope.disableNext = !($scope.loginform.month.$valid 
+                          && $scope.loginform.day.$valid 
+                          && $scope.loginform.year.$valid 
+                          && $scope.dateofbirth 
+                          && $scope.sharedRideId 
+                          && $scope.county
+                          && true);
       }
 
       $scope.checkId = function() {
@@ -66,19 +99,26 @@ angular.module('applyMyRideApp')
         $location.path('/');
       }
 
-      $scope.$watch('birthdate', function(n) {
-          var dob = new Date($scope.birthdate);
-          //return if dob is invalid
-          if( isNaN( dob.getYear() ) ){
-              $scope.disableNext = true;
-              $scope.dateofbirth = undefined;
-              return;
+      $scope.$watch('dob.month', function(n){
+          var monthInt = parseInt(n);
+          if(monthInt > 1 && monthInt < 13){
+              $('#LoginTemplate input.dob.day').focus();
           }
-          //if date is valid, save for later
-          $scope.dateofbirth = dob;
-          $scope.checkId();
-        }
-      );
+          checkNextValid();
+          return;
+      });
+      $scope.$watch('dob.day', function(n){
+          var dayInt = parseInt(n);
+          if(dayInt > 3){
+              $('#LoginTemplate input.dob.year').focus();
+          }
+          checkNextValid();
+          return;
+      });
+      $scope.$watch('dob.year', function(n){
+          checkNextValid();
+          return;
+      });
 
       $scope.authenticate = function(){
         planService.dateofbirth = $scope.dateofbirth;

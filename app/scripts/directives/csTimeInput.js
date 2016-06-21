@@ -7,7 +7,7 @@ app.directive('csTimeInput', function() {
     return {
         restrict: "E",
         templateUrl: "views/cs-time-input.html",
-        link: function(scope, element, attrs){ //, ngModelController) {
+        link: function(scope, element, attrs){
             scope.hour = '8';
             scope.minute = '00';
             scope.isAM = true;
@@ -54,8 +54,43 @@ app.directive('csTimeInput', function() {
                 hour = (true === scope.isAM)
                       ? hour
                       : (12 + hour);
-                scope.$parent.fromMoment = scope.$parent.fromMoment.clone().hour(hour).minute(minute);
+                if(hour && minute){
+                    scope.$parent.fromMoment = scope.$parent.fromMoment.clone().hour(hour).minute(minute);
+                }else{
+                    scope.$parent.showNext = false;
+                }
             }
+            
+            var key = {left: 37, up: 38, right: 39, down: 40 , enter: 13, esc: 27, tab: 9, backspace:8};
+            element[0].addEventListener("keydown", function(e)
+            {
+                var keycode = e.keyCode || e.which;
+                //check if hour field, otherwise is minute (return if it's not minute)
+                var isHour = e.srcElement.classList.contains('cs-hour');
+                var value = parseInt(e.srcElement.value);
+                if(!isHour && !e.srcElement.classList.contains('cs-minute') ){ return; }
+
+                console.log(scope.hour, scope.minute, keycode);
+                switch (keycode){
+                    case key.up:
+                        if(isHour && value > 11){ return; }
+                        if(!isHour && value > 58){ return; }
+                        e.srcElement.value = value+1;
+                        e.preventDefault();
+                        break;
+                    case key.down:
+                        if(value <= 1){ return; }
+                        e.srcElement.value = value-1;
+                        e.preventDefault();
+                        break;
+                    case key.backspace:
+                        //if(minute && scope)
+                        console.log('h', e.srcElement.classList.contains('cs-hour'), 'm', e.srcElement.classList.contains('cs-minute'));
+                        break;
+                }
+            }, true)
+
+
             //end updateTime
         }
     };
