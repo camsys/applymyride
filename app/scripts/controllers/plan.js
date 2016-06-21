@@ -1382,53 +1382,6 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
     }
   );
 
-  $scope.$watch('fromLocationMap', function(map) {
-    if(map && $routeParams.step == 'from' && planService.from){
-        $scope.from = planService.from;
-        var result = planService.fromDetails;
-        if($scope.marker){
-          $scope.marker.setMap(null);
-        }
-        var location = new google.maps.LatLng(result.geometry.location.lat, result.geometry.location.lng);
-        if(isNaN(location.lat())){
-          location = result.geometry.location;
-        }
-        map.setCenter(location);
-        $scope.marker = new google.maps.Marker({
-          map: map,
-          position: location,
-          animation: google.maps.Animation.DROP
-        });
-        $scope.showMap = true;
-        $scope.disableNext = false;
-        $scope.showNext = true;
-        $scope.showUndo = true;
-    }
-  })
-
-  $scope.$watch('toLocationMap', function(map) {
-    if(map && $routeParams.step == 'to' && planService.to){
-      $scope.to = planService.to;
-      var result = planService.toDetails;
-      if($scope.marker){
-        $scope.marker.setMap(null);
-      }
-      var location = new google.maps.LatLng(result.geometry.location.lat, result.geometry.location.lng);
-      if(isNaN(location.lat())){
-        location = result.geometry.location;
-      }
-      map.setCenter(location);
-      $scope.marker = new google.maps.Marker({
-        map: map,
-        position: location,
-        animation: google.maps.Animation.DROP
-      });
-      $scope.showMap = true;
-      $scope.disableNext = false;
-      $scope.showNext = true;
-      $scope.showUndo = true;
-    }
-  })
 
   $scope.$watch('confirmFromLocationMap', function(n) {
       if (n) {
