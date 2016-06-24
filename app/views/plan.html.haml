@@ -161,10 +161,11 @@
           %a.btn.btn-primary.btn-block{href: "", style: 'margin-bottom:4px; width:100%; padding-left:0px; padding-right:0px;', ng: {click: 'specifyTripPurpose("{{ purpose.name }}")'}}
             {{ purpose.name }}
         .col-xs-12
-          %a.btn.btn-link.btn-block{href: "", style: 'margin-bottom:4px; width:100%; padding-left:0px; padding-right:0px;', ng: {show:'!showAllPurposes', click: 'showAllPurposes = true;'}}
-            More trip purposes
-          %a.btn.btn-link.btn-block{href: "", style: 'margin-bottom:4px; width:100%; padding-left:0px; padding-right:0px;', ng: {show:'showAllPurposes', click: 'showAllPurposes = false;'}}
-            Show fewer trip purposes
+          .row
+            %a.btn.btn-link.btn-block{href: "", style: 'margin-bottom:4px; width:100%; padding-left:0px; padding-right:0px;', ng: {show:'!showAllPurposes', click: 'showAllPurposes = true;'}}
+              More trip purposes
+            %a.btn.btn-link.btn-block{href: "", style: 'margin-bottom:4px; width:100%; padding-left:0px; padding-right:0px;', ng: {show:'showAllPurposes', click: 'showAllPurposes = false;'}}
+              Show fewer trip purposes
     .row.sticky-footer{style: 'margin-top: 30px'}
       .col-md-8.col-md-offset-2.col-xs-12
         .pull-left
