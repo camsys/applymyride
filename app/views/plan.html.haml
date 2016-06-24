@@ -155,13 +155,13 @@
     .row
       .col-md-8.col-md-offset-2.col-sm-8.col-sm-offset-2
         .col-xs-6{style:'margin:7px 0px; padding-left:0px;', ng: {repeat: 'purpose in top_purposes'}}
-          %a.btn.btn-primary.btn-block{href: "", style: 'margin-bottom:4px; width:100%; padding-left:0px; padding-right:0px;', ng: {click: 'specifyTripPurpose("{{ purpose.name }}")'}}
+          %a.btn.btn-primary.btn-block{href: "", style: 'margin-bottom:4px; width:100%; padding-left:0px; padding-right:0px;', ng: {click: 'specifyTripPurpose(purpose.name)'}}
             {{ purpose.name }}
         .col-xs-6{style:'margin:7px 0px; padding-left:0px;', ng: {repeat: 'purpose in purposes', show:'showAllPurposes'}}
-          %a.btn.btn-primary.btn-block{href: "", style: 'margin-bottom:4px; width:100%; padding-left:0px; padding-right:0px;', ng: {click: 'specifyTripPurpose("{{ purpose.name }}")'}}
+          %a.btn.btn-primary.btn-block{href: "", style: 'margin-bottom:4px; width:100%; padding-left:0px; padding-right:0px;', ng: {click: 'specifyTripPurpose(purpose.name)'}}
             {{ purpose.name }}
         .col-xs-12
-          .row
+          .row{style:'margin-right:0px;'}
             %a.btn.btn-link.btn-block{href: "", style: 'margin-bottom:4px; width:100%; padding-left:0px; padding-right:0px;', ng: {show:'!showAllPurposes', click: 'showAllPurposes = true;'}}
               More trip purposes
             %a.btn.btn-link.btn-block{href: "", style: 'margin-bottom:4px; width:100%; padding-left:0px; padding-right:0px;', ng: {show:'showAllPurposes', click: 'showAllPurposes = false;'}}
@@ -240,9 +240,9 @@
               {{request.purpose}}
     .row
       .col-xs-8.col-xs-offset-2.col-md-4.col-md-offset-4.col-sm-8.col-sm-offset-2.text-center
-        %a.btn.btn-success.btn-block{href: "", ng: {click: 'next()'}}
-          Search for ride!
-        %a.btn-block.link-btn{"ng-href" => "#/plan/fromDate"}
+        %a.btn.btn-primary.btn-block{href: "", ng: {click: 'next()'}}
+          Book this Shared Ride
+        %a.btn-block.link-btn{"ng-href" => "#/plan/from"}
           No, change my request
 
   .list_itineraries.col-xs-12.col-sm-8.col-sm-offset-2.no-padding{ng: {show: 'step==="list_itineraries" && noresults == true'}}

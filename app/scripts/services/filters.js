@@ -12,4 +12,10 @@ angular.module('applyMyRideApp')
     if(!m || !m._isAMomentObject){ return ''; }
     return m.format('YY-MM-DD');
   };
+})
+.filter('momentHMA', function() {
+  return function(m) {
+    if(!m || !m._isAMomentObject){ return ''; }
+    return m.format('h:mm a');
+  };
 });

@@ -20,7 +20,8 @@
             %div{class: 'day'} Fri
             %div{class: 'day'} Sat
           %div{ng: {repeat: 'month in twoWeeksSelector.months' }, class: 'month'}
-            {{month.name}}
+            %h3
+              {{month.name}}
             %div{ng: {repeat: 'week in month.weeks' }, class: 'week'}
               %div{ class: 'day', 
                     tabindex:'{{day.tabindex}}',
@@ -34,14 +35,17 @@
         %h3 What time do you want to arrive?
     .row
       .col-lg-6.col-lg-offset-3.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1.col-xs-12
-        %input{type:'text'}
+        %cs-time-input{ng:{model:'fromMoment'}}
     .row
       .col-lg-6.col-lg-offset-3.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1.col-xs-12
         %h3 How long do you want to stay?
     .row
       .col-lg-6.col-lg-offset-3.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1.col-xs-12
-        %select.form-control{name:'howlong', required:'true', ng:{options:'option.name for option in howLongOptions', model:'howLong', class:'{disabled:!fromMoment.isAfter(moment()) }'}}
-          %option{value:'', disabled:''} Select an option
+        %select.form-control{required:'true', ng:{model:'$parent.howLong', options:'option.name for option in howLongOptions', change:'updateReturnTime(howLong)', class:'{disabled:!fromMoment.isAfter(moment()) }'}}
+          %option{value:'0', disabled:''} Select an option
+    .row{'ng-show'=>'returnMoment'}
+      .col-lg-6.col-lg-offset-3.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1.col-xs-12
+        Return at {{returnMoment | momentHMA}}
     .row.sticky-footer{style: 'margin-top: 30px'}
       .col-md-8.col-md-offset-2.col-xs-12
         .pull-left

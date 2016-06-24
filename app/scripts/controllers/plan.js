@@ -35,9 +35,13 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
   $scope.planService = planService;
   $scope.fromMoment = moment( planService.fromDate || new Date() );
   $scope.returnMoment = null;
-  $scope.serviceHours = {};
+  $scope.serviceHours = null;
   $scope.fromTime = '';
-  $scope.howLong = 0;
+  if(planService.fromDate && planService.returnDate){
+    $scope.howLong = {minutes: ''+ moment(planService.returnDate).diff( planService.fromDate, 'minutes') };
+  }else{
+    $scope.howLong = {minutes:'0'};
+  }
   $scope.howLongOptions = [];
   $scope.fromDate = new Date();
   $scope.returnDate = new Date();
@@ -74,6 +78,19 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
     $scope.showEmail = !$scope.showEmail;
     $event.stopPropagation();
   };
+
+  $scope.updateReturnTime = function(o){
+    if(!o){return;}
+    var destinationDuration = parseInt(o.minutes);
+    if(destinationDuration > 0){
+      $scope.returnMoment = $scope.fromMoment.clone().add( destinationDuration, 'm' );
+      planService.returnDate = $scope.returnMoment.toDate();
+    }else{
+      $scope.returnMoment = null;
+      planService.returnDate = null;
+    }
+    planService.howLong = destinationDuration;
+  }
 
   $scope.rebook = function($event, tab, index) {
     planService.rebookTrip = $scope.trips[tab][index];
@@ -337,7 +354,7 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
 
   $scope.specifyTripPurpose = function(purpose){
     planService.purpose = purpose;
-    $location.path("/plan/needReturnTrip");
+    $location.path("/plan/confirm");
   }
 
   $scope.specifyFromTimeType = function(type){
@@ -845,7 +862,7 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
       })
   }
   $scope.selectDepartDate = function(day){
-    var from, endOfDay, beginOfDay, splitTime, diff, name, fromDiff, hour, minute;
+    var splitTime, hour, minute;
     //try to re-use the selected time if there is one, otherwise use the start time as a default
     if($scope.fromMoment){
       minute = parseInt($scope.fromMoment.format('m'));
@@ -855,17 +872,25 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
       minute = parseInt(splitTime[0]);
       hour = parseInt(splitTime[1]);
     }
-    $scope.serviceHours = day.serviceHours;
     $scope.fromMoment = day.moment.clone();
     //set the hour/minute to start times
     $scope.fromMoment.hour( hour ).minute( minute ).seconds(0);
+  }
+  function _setupHowLongOptions(){
+    var from, endOfDay, beginOfDay, splitTime, diff, name, fromDiff,
+      selectedServiceHours, chosenHowLong;
+    //can only setup howlong if fromMoment is within service hours
+    if(!$scope.fromMoment || !$scope.serviceHours || !$scope.serviceHours[ $scope.fromMoment.format('YYYY-MM-DD') ] ){ return; }
+    selectedServiceHours = $scope.serviceHours[ $scope.fromMoment.format('YYYY-MM-DD') ];    
+
+    chosenHowLong = $.extend({}, $scope.howLong);
     $scope.howLongOptions = [];
 
     from = $scope.fromMoment.clone();
-    splitTime = $scope.serviceHours.close.split(':');
+    splitTime = selectedServiceHours.close.split(':');
     endOfDay = from.clone().hour(splitTime[0]).minute(splitTime[1]).seconds(0);
     
-    splitTime = $scope.serviceHours.open.split(':');
+    splitTime = selectedServiceHours.open.split(':');
     beginOfDay = from.clone().hour(splitTime[0]).minute(splitTime[1]).seconds(0);
     if(from.isBefore(beginOfDay)){
       fromDiff = beginOfDay;
@@ -878,23 +903,29 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
       from.add(15, 'm');
       diff = from.diff(fromDiff, 'minutes');
       if(diff < 60){
-        name = '+'+ diff +' Minutes (' +from.format('h:mm') +')';
+        name = '+'+ diff +' Minutes';
       }else if( 0 === (diff % 60)){
         //no minutes
-        name = '+' + from.diff(fromDiff, 'hours') + ' Hours (' +from.format('h:mm') + ')';
+        name = '+' + from.diff(fromDiff, 'hours') + ' Hours';
       }else{
-        name = '+' + from.diff(fromDiff, 'hours') + ' Hours ' + (diff % 60) + ' Minutes (' + from.format('h:mm') + ')';
+        name = '+' + from.diff(fromDiff, 'hours') + ' Hours ' + (diff % 60) + ' Minutes';
       }
       $scope.howLongOptions.push({
+        minutes: diff,
         name: name
       });
+      if(diff == $scope.howLong.minutes){
+        $scope.howLong = $scope.howLongOptions[ $scope.howLongOptions.length-1 ];
+      }
     }
+    $scope.updateReturnTime($scope.howLong);
   }
   function _repopulateServiceHours(){
     $http.get(urlPrefix + '/api/v1/services/hours').
       success(function(data) {
         $scope.serviceHours = data;
         _setupTwoWeekSelector();
+        _setupHowLongOptions();
       }
     );
   }
@@ -914,7 +945,6 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
           loopDay, isOpen, sameMonth;
       //set the loopDate to sunday
       var loopDay =  startDate.clone().day(0);
-      console.log(startDate.month(), loopDay.month());
       //generate a week of days, with meta-data
       for(i=0; i<7; i+=1){
         sameMonth = (loopDay.month() === startDate.month());
@@ -969,7 +999,6 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
       }
       date.add(1,'w');
     }
-    console.log('months', months);
     $scope.twoWeeksSelector = {months:months};
   }
 
@@ -995,7 +1024,6 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
       //re-populate service hours
       _repopulateServiceHours();
       $scope.showNext = $scope.fromMoment.isAfter( moment().hour(23).minute(59) );
-      console.log('when show next', $scope.showNext, $scope.fromMoment.toString(), moment().hour(23).toString() );
       break;
     case 'start_current':
       $scope.showNext = false;
@@ -1415,6 +1443,7 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
     $scope.showNext = true;
     //save the date/time to planService
     planService.fromDate = n.toDate();
+    _setupHowLongOptions();
   });
 
 }

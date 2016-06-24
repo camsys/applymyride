@@ -15,82 +15,91 @@ app.directive('csTimeInput', function() {
             //update the displayed time when from Moment updates
             scope.$parent.$watch('fromMoment', function( newStartTime ){
                 if(unwatch || !newStartTime || !newStartTime._isAMomentObject ){ unwatch=false; return; }
+                //setup the local vars when fromMoment changes
                 scope.hour = newStartTime.format('h');
                 scope.minute = newStartTime.format('mm');
                 scope.isAM = ('am' === newStartTime.format('a'));
-                console.log('startTime', newStartTime)
             });
 
             scope.updateTime = function() {
-                var hour, minute;
+                var from, hour, minute;
                 unwatch = true;
+                from = scope.$parent.fromMoment.clone();
                 setTimeout(function(){unwatch = false;}, 200);
                 //limit minute to less than 60
-                scope.minute = (scope.minute.match(/[0-5]?[0-9]/) || ['0'])[0];
-                if(parseInt(scope.minute) > 59){
-                    if( scope.minute.match(/^0/) && parseInt( scope.minute.substr(1) ) < 59 ){
-                        scope.minute = scope.minute.substr(1);
-                    }else{
-                        scope.minute = scope.minute.substr(0, scope.minute.length-1);
-                    }
-                }else{
-                    if(scope.minute.length > 2 && null !== scope.minute.match(/^0/) ){
-                        //trim off the front if the lenght is long and 0 is first char
-                        scope.minute = scope.minute.substr(1, 2);
-                    }else{
-                        //limit to two chars
-                        scope.minute = scope.minute.substr(0, 2);
-                    }
-                }
-
-                //limit hour to less than 12
-                if(parseInt(scope.hour) > 12){
-                    scope.hour = scope.hour.substr(0, 1);
-                }else{
-                    scope.hour = scope.hour.substr(0, 2);
-                }
                 hour = parseInt(scope.hour);
                 minute = parseInt(scope.minute);
                 hour = (true === scope.isAM)
                       ? hour
                       : (12 + hour);
-                if(hour && minute){
-                    scope.$parent.fromMoment = scope.$parent.fromMoment.clone().hour(hour).minute(minute);
+                //12AM become 24, make it 0
+                hour = (hour == 24) ? 0 : hour;
+                from.hour(hour).minute(minute);
+                if(hour > -1 && minute > -1){
+                    scope.$parent.fromMoment = from;
                 }else{
                     scope.$parent.showNext = false;
                 }
             }
             
             var key = {left: 37, up: 38, right: 39, down: 40 , enter: 13, esc: 27, tab: 9, backspace:8};
+            var lastVal = {};
             element[0].addEventListener("keydown", function(e)
+            {
+                var lvIndex = e.srcElement.classList.contains('cs-hour') ? 'hour' : 'minute';
+                lastVal[lvIndex] = e.srcElement.value;
+            });
+            element[0].addEventListener("keyup", function(e)
             {
                 var keycode = e.keyCode || e.which;
                 //check if hour field, otherwise is minute (return if it's not minute)
                 var isHour = e.srcElement.classList.contains('cs-hour');
-                var value = parseInt(e.srcElement.value);
                 if(!isHour && !e.srcElement.classList.contains('cs-minute') ){ return; }
+                var lvIndex = isHour ? 'hour' : 'minute';
+                var resetField = function(){ e.srcElement.value = parseInt(lastVal[lvIndex].substr(0,2) || 0) || '0'; }
+                var value = parseInt(e.srcElement.value) > -1 ? parseInt(e.srcElement.value) : '';
+                if(e.srcElement.value != value){
+                    e.srcElement.value = value;
+                    scope[lvIndex] = value;
+                }
 
-                console.log(scope.hour, scope.minute, keycode);
-                switch (keycode){
-                    case key.up:
-                        if(isHour && value > 11){ return; }
-                        if(!isHour && value > 58){ return; }
-                        e.srcElement.value = value+1;
-                        e.preventDefault();
-                        break;
-                    case key.down:
-                        if(value <= 1){ return; }
-                        e.srcElement.value = value-1;
-                        e.preventDefault();
-                        break;
-                    case key.backspace:
-                        //if(minute && scope)
-                        console.log('h', e.srcElement.classList.contains('cs-hour'), 'm', e.srcElement.classList.contains('cs-minute'));
-                        break;
+                if( e.key > -1 && e.key < 10 && e.key !== ' ' ){
+                    //range check the input with the key
+                    if(isHour){
+                        var hour = parseInt(e.srcElement.value);
+                        if( 12 < hour){
+                            resetField();
+                            return;
+                        }else if(hour > 1){
+                            setTimeout(function(){
+                                $('.cs-time-input input.cs-minute').focus();
+                                $('.cs-time-input input.cs-minute').click();
+                            }, 1);
+                        }
+                    }else{
+                        if( 60 < parseInt(e.srcElement.value)){
+                            resetField();
+                            return;
+                        }
+                    }
+                }else{
+                    //only allow numbers
+                    if(1  == e.key.length ){
+                        resetField();
+                        return;
+                    }
                 }
             }, true)
 
-
+            function getSelectionText() {
+                var text = "";
+                if (window.getSelection) {
+                    text = window.getSelection().toString();
+                } else if (document.selection && document.selection.type != "Control") {
+                    text = document.selection.createRange().text;
+                }
+                return text;
+            }
             //end updateTime
         }
     };
