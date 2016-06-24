@@ -60,6 +60,13 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
     $location.path("/plan/fromDate");
   };
 
+  $scope.goPlanWhere = function(){
+    $location.path('/plan/where');
+  }
+  $scope.goPlanWhen = function(){
+    $location.path('/plan/when');
+  }
+
   $scope.toggleMyRideButtonBar = function(type, index) {
     $scope.showEmail = false;
     var selectionIndex = index;

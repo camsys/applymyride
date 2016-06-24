@@ -179,7 +179,7 @@
           My ride request
     .row.truncate
       .col-xs-12.col-md-6.col-md-offset-3.col-sm-8.col-sm-offset-2
-        .row.row-eq-height.rounded-border
+        .row.row-eq-height.rounded-border{'ng-click'=>'goPlanWhere()'}
           .col-xs-3.col-md-2
             %p.text-left.text-muted
               From
@@ -189,7 +189,7 @@
             %h5.text-muted.text-left
               {{request.fromLine2}}
 
-        .row.row-eq-height.rounded-border
+        .row.row-eq-height.rounded-border{'ng-click'=>'goPlanWhere()'}
           .col-xs-3.col-md-2
             %p.text-left.text-muted
               To
@@ -199,7 +199,7 @@
             %h5.text-muted.text-left
               {{request.toLine2}}
 
-        .row.row-eq-height.rounded-border{ng: {show: '!request.roundtrip || request.sameday'}}
+        .row.row-eq-height.rounded-border{ng: {show: '!request.roundtrip || request.sameday', click:'goPlanWhen()'}}
           .col-xs-3.col-md-2
             %p.text-left.text-muted
               When
@@ -211,7 +211,7 @@
               %h5.text-muted.text-left{ng: {show: 'request.when4'}}
                 {{request.when4}}
 
-        %div.rounded-border{style: "margin-left: -15px; margin-right: -15px;", ng: {show: 'request.roundtrip && !request.sameday'}}
+        %div.rounded-border{style: "margin-left: -15px; margin-right: -15px;", ng: {show: 'request.roundtrip && !request.sameday', click:'goPlanWhen()'}}
           .row.row-eq-height{style: "margin-left: 0px; margin-right: 0px;"}
             .col-xs-3.col-md-2
               %p.text-left.text-muted
