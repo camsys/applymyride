@@ -42,6 +42,9 @@ angular.module('applyMyRideApp')
         planService.authentication_token = authentication_token;
         planService.email = email;
         $location.path('/plan/where');
+      }else{
+        delete localStorage.last_origin;
+        delete localStorage.last_destination;
       }
 
       function checkNextValid(){

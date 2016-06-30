@@ -509,8 +509,8 @@ button{
   -moz-appearance: none;
   appearance: none;
 }
-.cs-time-input .cs-ampm:after,
-.cs-time-input .cs-ampm::after{
+.cs-time-input input.cs-ampm:after,
+.cs-time-input input.cs-ampm::after{
   display: inline-block;
   content:'PM';
   border:1px solid #CCC;
@@ -518,8 +518,8 @@ button{
   border-radius: 4px;
   margin-top: -6px;
 }
-.cs-time-input .cs-ampm:checked:after,
-.cs-time-input .cs-ampm:checked::after{
+.cs-time-input input.cs-ampm:checked:after,
+.cs-time-input input.cs-ampm:checked::after{
   content:'AM';
 }
 .time-when select.disabled{
@@ -559,7 +559,9 @@ i.cs-map-marker.A{
   background-image: url(http://maps.google.com/mapfiles/marker_greenA.png);
 }
 
-
+.autocomplete ul{
+  padding:0px;
+}
 
 .btn.btn-primary:focus{
   border-color: rgb(31, 202,35);
