@@ -14,6 +14,10 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
   }
   var urlPrefix = 'http://' + $scope.apiHost + '/';
 
+  var eightAm = new Date();
+  eightAm.setSeconds(0);
+  eightAm.setMinutes(0);
+  eightAm.setHours(8);
   $scope.minReturnDate = new Date();
   $scope.marker = null;
   $scope.toFromMarkers = {};
@@ -33,7 +37,7 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
   $scope.invalidEmail = false;
   $scope.showBack = false;
   $scope.planService = planService;
-  $scope.fromMoment = moment( planService.fromDate || new Date() );
+  $scope.fromMoment = moment( planService.fromDate || eightAm );
   $scope.returnMoment = null;
   $scope.serviceHours = null;
   $scope.fromTime = '';
@@ -895,18 +899,20 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
   $scope.selectDepartDate = function(day){
     var splitTime, hour, minute;
     //try to re-use the selected time if there is one, otherwise use the start time as a default
-    if($scope.fromMoment){
+    if($scope.fromMoment && !$scope.fromMoment.isSame( moment(), 'day' )){
       minute = parseInt($scope.fromMoment.format('m'));
       hour = parseInt($scope.fromMoment.format('h'));
     }else{
       splitTime = day.serviceHours.open.split(':');
-      minute = parseInt(splitTime[0]);
-      hour = parseInt(splitTime[1]);
+      hour = parseInt(splitTime[0]);
+      minute = parseInt(splitTime[1]);
     }
     $scope.fromMoment = day.moment.clone();
     //set the hour/minute to start times
     $scope.fromMoment.hour( hour ).minute( minute ).seconds(0);
-    $('input.cs-hour').focus();
+    setTimeout(function(){
+      $('input.cs-hour').select();
+    }, 100);
   }
   function _setupHowLongOptions(){
     var from, endOfDay, beginOfDay, splitTime, diff, name, fromDiff,

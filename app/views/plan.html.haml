@@ -231,7 +231,7 @@
               %h5.text-muted.text-left
                 {{request.when4}}
 
-        %a.row.row-eq-height.rounded-border{href:'#/plan/purpose'}
+        %a.no_underline.row.row-eq-height.rounded-border{href:'#/plan/purpose'}
           .col-xs-3.col-md-2
             %p.text-left.text-muted
               Purpose
@@ -502,6 +502,8 @@
         .col-md-4.col-md-offset-4.col-xs-12.text-center
           %a.btn.btn-primary{href: '', ng: {click: 'specifySharedRideCompanion("false")'}, style: 'white-space: normal; margin-bottom:4px;'}
             No, I'm riding alone
+      .row
+        .col-md-4.col-md-offset-4.col-xs-12.text-center
           %a.btn.btn-link{href: '', ng: {click: 'specifySharedRideCompanion("true")'}, style: 'white-space: normal; margin-bottom:4px; cursor:pointer;'}
             Yes, I have a companion or escort with me.
 
@@ -509,20 +511,20 @@
     .col-md-8.col-md-offset-2.col-xs-12
       .row{ng: {show: 'questions.assistant'}}
         .col-xs-12
-          %input{id:'hasescort', type: 'checkbox', ng: {model: 'hasEscort'}}
           %label{for:'hasescort'}
             %h4
+              %input{id:'hasescort', type: 'checkbox', ng: {model: 'hasEscort'}}
               {{questions.assistant}}
       .row{ng: {show: 'questions.children'}}
         .col-xs-12
-          %input{id:'hascompanions', type: 'checkbox', ng: {model: 'hasCompanions'}}
           %label{for:'hascompanions'}
             %h4
+              %input{id:'hascompanions', type: 'checkbox', ng: {model: 'hasCompanions'}}
               {{questions.children}}
         .col-xs-12{'ng-show'=>'hasCompanions'}
           %select{ng: {model: 'numberOfCompanions', options: 'number for number in questions.limit'}}
-      .row
-        .form-group
+      .row.sticky-footer{style: 'margin-top: 30px'}
+        .col-md-8.col-md-offset-2.col-xs-12
           %a.btn.btn-back{href: "", back: '', ng: {click: "back()"}}
             Back
           %a.btn.btn-primary.pull-right{href: "", ng: {click: 'next()'}}
@@ -538,8 +540,8 @@
       .row
         .form-group
           %textarea.form-control{placeholder: 'Dear Driver, please...', rows: '5', ng: {model: 'driverInstructions'}}
-      .row
-        .form-group
+      .row.sticky-footer{style: 'margin-top: 30px'}
+        .col-md-8.col-md-offset-2.col-xs-12
           %a.btn.btn-back{href: "", back: '', ng: {click: "back()"}}
             %span
               Back
