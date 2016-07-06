@@ -32,9 +32,9 @@ angular.module('applyMyRideApp')
         var questionObj = {};
         angular.forEach(questions, function(question, index) {
           if(question.code == 'assistant'){
-            questionObj.assistant = question.question;
+            questionObj.assistant = "I'll have an escort"; //question.question;
           }else if(question.code == 'children' || question.code == 'companions'){
-            questionObj.children = question.question;
+            questionObj.children = "I'll have a companion or family member with me."; //question.question;
             questionObj.limit = question.choices;
           }
         });
@@ -164,6 +164,7 @@ angular.module('applyMyRideApp')
         }
         request.purpose = this.purpose;
         $scope.request = request;
+        this.confirmRequest = request;
       }
 
       this.prepareTripSearchResultsPage = function(){
@@ -282,8 +283,8 @@ angular.module('applyMyRideApp')
         if(this.email){
           if(this.paratransitItineraries.length > 1){
             //for round trips, show the fare as the sum of the two PARATRANSIT fares
-            var fare1 = this.paratransitItineraries[0].cost;
-            var fare2 = this.paratransitItineraries[1].cost;
+            var fare1 = this.paratransitItineraries[0].cost || 0;
+            var fare2 = this.paratransitItineraries[1].cost || 0;
             fare_info.mode_paratransit = (new Number(fare1) + new Number(fare2)).toFixed(2).toString();
           }else if(this.paratransitItineraries.length == 1){
             fare_info.mode_paratransit = new Number(this.paratransitItineraries[0].cost).toFixed(2).toString();
@@ -295,7 +296,10 @@ angular.module('applyMyRideApp')
       this.getLowestPricedParatransitTrip = function(paratransitTrips){
         var lowestPricedParatransitTrip;
         angular.forEach(paratransitTrips, function(paratransitTrip, index) {
-          if(paratransitTrip.duration && paratransitTrip.start_time && paratransitTrip.cost) {
+          if( isNaN( parseInt( paratransitTrip.cost )) ){
+            paratransitTrip.cost = 0;
+          }
+          if(paratransitTrip.duration && paratransitTrip.start_time && paratransitTrip.cost >= 0) {
             paratransitTrip.travelTime = humanizeDuration(paratransitTrip.duration * 1000, {
               units: ["hours", "minutes"],
               round: true

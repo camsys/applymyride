@@ -92,9 +92,11 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
     if(destinationDuration > 0){
       $scope.returnMoment = $scope.fromMoment.clone().add( destinationDuration, 'm' );
       planService.returnDate = $scope.returnMoment.toDate();
+      planService.returnTime = $scope.returnMoment.toDate();
     }else{
       $scope.returnMoment = null;
       planService.returnDate = null;
+      planService.returnTime = null;
     }
     planService.howLong = destinationDuration;
   }
@@ -327,6 +329,8 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
         $location.path('/plan/confirm');
         break;
       case 'confirm':
+        $location.path('/plan/companions');
+        break;
         usSpinnerService.spin('spinner-1');
         var promise = planService.postItineraryRequest($http);
         promise.
@@ -339,16 +343,13 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
             usSpinnerService.stop('spinner-1');
           });
         break;
-      case 'sharedride_options_2':
+      case 'assistant':
         planService.hasEscort = $scope.hasEscort;
-        planService.numberOfCompanions = $scope.numberOfCompanions;
-        $location.path('/plan/sharedride_options_3');
+        planService.numberOfCompanions = $scope.numberOfCompanions || 0;
+        $location.path('/plan/instructions_for_driver');
         break;
-      case 'sharedride_options_3':
+      case 'instructions_for_driver':
         planService.driverInstructions = $scope.driverInstructions;
-        $location.path('/plan/book_shared_ride');
-        break;
-      case 'book_shared_ride':
         usSpinnerService.spin('spinner-1');
         var promise = planService.bookSharedRide($http);
         promise.then(function(result) {
@@ -361,7 +362,30 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
 
   $scope.specifyTripPurpose = function(purpose){
     planService.purpose = purpose;
-    $location.path("/plan/confirm");
+    planService.prepareConfirmationPage($scope);
+    planService.transitResult = [];
+    planService.paratransitResult = null;
+    usSpinnerService.spin('spinner-1');
+    var promise = planService.postItineraryRequest($http);
+    promise.
+      success(function(result) {
+        var i;
+        for(i=0; i<result.itineraries.length; i+=1){
+          result.itineraries[i].origin = planService.getAddressDescriptionFromLocation(result.itineraries[i].start_location);
+          result.itineraries[i].destination = planService.getAddressDescriptionFromLocation(result.itineraries[i].end_location);
+          if(result.itineraries[i].returned_mode_code == "mode_paratransit"){
+            planService.paratransitResult = result.itineraries[i];
+          }else{
+            planService.transitResult.push(result.itineraries[i]);
+          }
+        }
+        planService.searchResults = result;
+        $location.path("/plan/confirm");
+      }).
+      error(function(result) {
+        bootbox.alert("An error occured on the server, please retry your search or try again later.");
+        usSpinnerService.stop('spinner-1');
+      });
   }
 
   $scope.specifyFromTimeType = function(type){
@@ -735,17 +759,17 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
 
   $scope.specifySharedRideCompanion = function(hasCompanion) {
     if(hasCompanion == 'true'){
-      $location.path("/plan/sharedride_options_2");
-      $scope.step = 'sharedride_options_2';
+      $location.path("/plan/assistant");
+      $scope.step = 'assistant';
     }else{
-      $location.path("/plan/sharedride_options_3");
-      $scope.step = 'sharedride_options_3';
+      $location.path("/plan/instructions_for_driver");
+      $scope.step = 'instructions_for_driver';
     }
   }
 
   $scope.selectSharedRide = function() {
-    $location.path("/plan/sharedride_options_1");
-    $scope.step = 'sharedride_options_1';
+    $location.path("/plan/companions");
+    $scope.step = 'companions';
   }
 
   $scope.overrideCurrentLocation = function() {
@@ -882,6 +906,7 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
     $scope.fromMoment = day.moment.clone();
     //set the hour/minute to start times
     $scope.fromMoment.hour( hour ).minute( minute ).seconds(0);
+    $('input.cs-hour').focus();
   }
   function _setupHowLongOptions(){
     var from, endOfDay, beginOfDay, splitTime, diff, name, fromDiff,
@@ -921,7 +946,7 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
         minutes: diff,
         name: name
       });
-      if(diff == $scope.howLong.minutes){
+      if($scope.howLong && diff == $scope.howLong.minutes){
         $scope.howLong = $scope.howLongOptions[ $scope.howLongOptions.length-1 ];
       }
     }
@@ -987,6 +1012,10 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
       //create the months entry if needed (not on first run)
       if(currentMonth !== date.format('MMMM')){
         currentMonth = date.format('MMMM');
+        //if the previous month has no weeks in it (happens like, last day of month) remove it
+        if(months[months.length -1].weeks.length === 0){
+          months.pop();
+        }
         //setup weeks array
         months.push( {name: currentMonth, weeks: [] } );
 
@@ -1032,6 +1061,26 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
       _repopulateServiceHours();
       $scope.showNext = $scope.fromMoment.isAfter( moment().hour(23).minute(59) );
       break;
+    case 'confirm' :
+      $scope.request = planService.confirmRequest;
+      $scope.transitResult = planService.transitResult;
+      $scope.paratransitResult = planService.paratransitResult;
+      
+      planService.prepareTripSearchResultsPage();
+      $scope.fare_info = planService.fare_info;
+      $scope.paratransitItineraries = planService.paratransitItineraries;
+      $scope.walkItineraries = planService.walkItineraries;
+      $scope.transitItineraries = planService.transitItineraries;
+      $scope.transitInfos = planService.transitInfos;
+      $scope.noresults = false;
+      if($scope.paratransitItineraries.length < 1 && $scope.transitItineraries.length < 1 && $scope.walkItineraries.length < 1){
+        $scope.noresults = true;
+      }else if($scope.paratransitItineraries.length < 1 && $scope.transitItineraries.length < 1 && $scope.walkItineraries.length > 0){
+        $scope.step = 'alternative_options';
+      }else if($scope.walkItineraries.length > 0){
+        $scope.showAlternativeOption = true;
+      }
+      break;
     case 'start_current':
       $scope.showNext = false;
       break;
@@ -1075,11 +1124,14 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
       $scope.disableNext = false;
       break;
     case 'purpose':
-      planService.getTripPurposes($scope, $http);
+      usSpinnerService.spin('spinner-1');
+      planService.getTripPurposes($scope, $http).then(function(){
+        usSpinnerService.stop('spinner-1');
+      });
       $scope.showNext = false;
       break;
     case 'confirm':
-      planService.prepareConfirmationPage($scope);
+//      planService.prepareConfirmationPage($scope);
       $scope.showNext = false;
       break;
     case 'needReturnTrip':
@@ -1241,10 +1293,10 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
         }
       });
       break;
-    case 'sharedride_options_1':
+    case 'companions':
       $scope.showNext = false;
       break;
-    case 'sharedride_options_2':
+    case 'assistant':
       $scope.questions = planService.getPrebookingQuestions();
       $scope.hasEscort = planService.hasEscort;
       $scope.numberOfCompanions = planService.numberOfCompanions;
@@ -1253,7 +1305,7 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
       $scope.showNext = true;
       $scope.disableNext = false;
       break;
-    case 'sharedride_options_3':
+    case 'instructions_for_driver':
       $scope.driverInstructions = planService.driverInstructions;
       break;
     case 'rebook':
@@ -1450,6 +1502,11 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
     $scope.showNext = true;
     //save the date/time to planService
     planService.fromDate = n.toDate();
+    planService.fromTime = n.toDate();
+    planService.fromTimeType = 'depart';
+    planService.returnTimeType =  'depart';
+    planService.asap = false;
+    planService.fromTimeType = 'arrive';
     _setupHowLongOptions();
   });
 
