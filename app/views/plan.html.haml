@@ -179,7 +179,7 @@
           My ride request
     .row.truncate
       .col-xs-12.col-md-6.col-md-offset-3.col-sm-8.col-sm-offset-2
-        .row.row-eq-height.rounded-border{'ng-click'=>'goPlanWhere()'}
+        %a.no_underline.row.row-eq-height.rounded-border{href:'#/plan/where'}
           .col-xs-3.col-md-2
             %p.text-left.text-muted
               From
@@ -189,7 +189,7 @@
             %h5.text-muted.text-left
               {{request.fromLine2}}
 
-        .row.row-eq-height.rounded-border{'ng-click'=>'goPlanWhere()'}
+        %a.no_underline.row.row-eq-height.rounded-border{href:'#/plan/where'}
           .col-xs-3.col-md-2
             %p.text-left.text-muted
               To
@@ -199,7 +199,7 @@
             %h5.text-muted.text-left
               {{request.toLine2}}
 
-        .row.row-eq-height.rounded-border{ng: {show: '!request.roundtrip || request.sameday', click:'goPlanWhen()'}}
+        %a.no_underline.row.row-eq-height.rounded-border{href:'#/plan/when', ng: {show: '!request.roundtrip || request.sameday'}}
           .col-xs-3.col-md-2
             %p.text-left.text-muted
               When
@@ -211,7 +211,7 @@
               %h5.text-muted.text-left{ng: {show: 'request.when4'}}
                 {{request.when4}}
 
-        %div.rounded-border{style: "margin-left: -15px; margin-right: -15px;", ng: {show: 'request.roundtrip && !request.sameday', click:'goPlanWhen()'}}
+        %a.no_underline.rounded-border{href:'#/plan/when', style: "margin-left: -15px; margin-right: -15px;", ng: {show: 'request.roundtrip && !request.sameday'}}
           .row.row-eq-height{style: "margin-left: 0px; margin-right: 0px;"}
             .col-xs-3.col-md-2
               %p.text-left.text-muted
@@ -231,24 +231,86 @@
               %h5.text-muted.text-left
                 {{request.when4}}
 
-        .row.row-eq-height.rounded-border
+        %a.row.row-eq-height.rounded-border{href:'#/plan/purpose'}
           .col-xs-3.col-md-2
             %p.text-left.text-muted
               Purpose
           .col-xs-9.col-md-10
             %h4.text-left
               {{request.purpose}}
-    .row
-      .col-xs-8.col-xs-offset-2.col-md-4.col-md-offset-4.col-sm-8.col-sm-offset-2.text-center
+        .row.row-eq-height.rounded-border{'ng-hide'=>'showAllRides'}
+          .col-xs-3.col-md-2
+            %p.text-left.text-muted
+              Cost
+          .col-xs-9.col-md-10
+            %h4.text-left
+              {{fare_info["mode_paratransit"] | currency | free}}
+    %div{'ng-show'=>'showAllRides'}
+      .row
+        .col-xs-12.col-md-6.col-md-offset-3.col-sm-8.col-sm-offset-2
+          %h3{style: 'font-weight:600;'}
+            Shared Ride options
+        .col-xs-12.col-md-6.col-md-offset-3.col-sm-8.col-sm-offset-2
+          %a.no_underline.row.row-eq-height.rounded-border{ng: {href: '#/transitoptions/0'}}
+            .row.even-height-row.table-compact
+              .col-xs-2.col-height-slave
+                {{fare_info["mode_paratransit"] | currency | free}}
+              .col-xs-10.col-height-master
+                .row.row-eq-height.table-compact
+                  .col-xs-12
+                    %h4.text-muted
+                      Riders....
+      .row
+        .col-xs-12.col-md-6.col-md-offset-3.col-sm-8.col-sm-offset-2
+          %h3{style: 'font-weight:600;'}
+            Bus options
+        .col-xs-12.col-md-6.col-md-offset-3.col-sm-8.col-sm-offset-2
+          %a.no_underline.row.row-eq-height.rounded-border{ng: {href: '#/transitoptions/0', show: 'fare_info["mode_transit"] && transitInfos[0].length >  1'}}
+            .row.even-height-row.table-compact
+              .col-xs-2.col-height-slave
+                {{fare_info["mode_transit"] | currency | free}}
+              .col-xs-10.col-height-master
+                .row.row-eq-height.table-compact
+                  .col-xs-12
+                    %h4.text-muted
+                      Public Transportation
+      %a.no_underline.row.row-eq-height.rounded-border{ng: {show: 'transitInfos[0].length == 1', href: '#/transit/0/{{transitInfo.id}}', repeat: 'transitInfo in transitInfos[0]'}}
+        .row.even-height-row.table-compact
+          .col-xs-2.col-height-slave
+            %img.img-responsive{ng: {src: 'images/modes/transit.png'}}
+          .col-xs-6.col-height-master
+            .row.row-eq-height.table-compact
+              .col-xs-12
+                Bus
+            .row.row-eq-height.table-compact
+              .col-xs-12
+                %p.text-left.text-muted
+                  Travel time: {{transitInfo.travelTime}}
+            .row.row-eq-height.table-compact
+              .col-xs-12
+                %p.text-left.text-muted
+                  Start time: {{transitInfo.startDesc}}
+          .col-xs-4.col-height-slave
+            .row.row-eq-height.table-compact.pull-right
+              .col-xs-12
+                {{transitInfo.cost | currency | free}}
+            .route-badge
+              %img{style: 'height: 20px;', ng: {src: 'images/modes/transit.png'}}
+              %span {{transitInfo.route}}
+    .row{style: 'margin-top: 30px'}
+      .col-lg-6.col-lg-offset-3.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1.col-xs-12.text-center
         %a.btn.btn-primary.btn-block{href: "", ng: {click: 'next()'}}
           Book this Shared Ride
-    .row
-      .col-xs-6.col-md-4.text-center
-        %a.btn.btn-back{href: "", back: '', ng: {click: "back()"}}
-          Back
-      .col-xs-6.col-md-4.text-center
-        %a{"ng-click" => "showAllRides=!showAllRides"}
-          View more ride options
+      .col-lg-6.col-lg-offset-3.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1.col-xs-12.text-center
+        .pull-left
+          %a.btn{href: "", back: '', ng: {click: "back()"}}
+            Back
+        .pull-right
+          %a.btn{"ng-click" => "showAllRides=!showAllRides"}
+            %span{'ng-hide'=>'showAllRides'}
+              View more ride options
+            %span{'ng-show'=>'showAllRides'}
+              Only shared rides
 
   .list_itineraries.col-xs-12.col-sm-8.col-sm-offset-2.no-padding{ng: {show: 'step==="list_itineraries" && noresults == true'}}
     %h2 We did not find any rides matching your request
@@ -443,28 +505,49 @@
           %a.btn.btn-link{href: '', ng: {click: 'specifySharedRideCompanion("true")'}, style: 'white-space: normal; margin-bottom:4px; cursor:pointer;'}
             Yes, I have a companion or escort with me.
 
-  .depart-time{ng: {show: 'step==="sharedride_options_2"'}}
+  .depart-time{ng: {show: 'step==="assistant"'}}
     .col-md-8.col-md-offset-2.col-xs-12
       .row{ng: {show: 'questions.assistant'}}
         .col-xs-12
-          %h4
-            {{questions.assistant}}
-            %input{type: 'checkbox', ng: {model: 'hasEscort'}}
+          %input{id:'hasescort', type: 'checkbox', ng: {model: 'hasEscort'}}
+          %label{for:'hasescort'}
+            %h4
+              {{questions.assistant}}
       .row{ng: {show: 'questions.children'}}
         .col-xs-12
-          %h4
-            {{questions.children}}
-            %select{ng: {model: 'numberOfCompanions', options: 'number for number in questions.limit'}}
+          %input{id:'hascompanions', type: 'checkbox', ng: {model: 'hasCompanions'}}
+          %label{for:'hascompanions'}
+            %h4
+              {{questions.children}}
+        .col-xs-12{'ng-show'=>'hasCompanions'}
+          %select{ng: {model: 'numberOfCompanions', options: 'number for number in questions.limit'}}
+      .row
+        .form-group
+          %a.btn.btn-back{href: "", back: '', ng: {click: "back()"}}
+            Back
+          %a.btn.btn-primary.pull-right{href: "", ng: {click: 'next()'}}
+            Next
 
-
-  .depart-time{ng: {show: 'step==="sharedride_options_3"'}}
+  .depart-time{ng: {show: 'step==="instructions_for_driver"'}}
     .col-md-8.col-md-offset-2.col-xs-12
       .form-group
-        %h4 If you have any special instructions for the driver, please enter them below
-        %h4c This is optional
+        %h2
+          Any requests for the driver?
+        %h4.text-muted
+          This is optional
       .row
         .form-group
           %textarea.form-control{placeholder: 'Dear Driver, please...', rows: '5', ng: {model: 'driverInstructions'}}
+      .row
+        .form-group
+          %a.btn.btn-back{href: "", back: '', ng: {click: "back()"}}
+            %span
+              Back
+          %a.btn.btn-primary.pull-right{href: "", ng: {click: 'next()'}}
+            %span{'ng-show'=>'driverInstructions'}
+              Next
+            %span{'ng-hide'=>'driverInstructions'}
+              Skip
 
   .depart-time{ng: {show: 'step==="book_shared_ride"'}}
     .row
