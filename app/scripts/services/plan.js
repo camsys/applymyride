@@ -680,7 +680,9 @@ angular.module('applyMyRideApp')
       }
 
       this.getHeaders = function(){
-        var headers = {headers:  {}
+        var headers = {headers:  {
+          "X-User-Email" : this.email,
+          "X-User-Token" : this.authentication_token}
         };
         return headers;
       }
