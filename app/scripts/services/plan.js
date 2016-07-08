@@ -129,7 +129,7 @@ angular.module('applyMyRideApp')
                 tripDivs.future.push(false);
               }
             });
-            ipCookie('rideCount', data.trips.length);
+            ipCookie('rideCount', trips.future.length);
             $scope.trips = trips;
             $scope.tripDivs = tripDivs;
           });
