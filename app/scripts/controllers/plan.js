@@ -297,10 +297,43 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
 
     switch($scope.step) {
       case 'when':
-        $location.path('/plan/purpose');
+        if(!planService.email){
+          _bookTrip();
+        }else{
+          $location.path('/plan/purpose');
+        }
         break;
       case 'where':
         $location.path('/plan/when');
+        break;
+      case 'confirm':
+        $location.path('/plan/companions');
+        break;
+        usSpinnerService.spin('spinner-1');
+        var promise = planService.postItineraryRequest($http);
+        promise.
+          success(function(result) {
+            planService.searchResults = result;
+            $location.path('/plan/list_itineraries');
+          }).
+          error(function(result) {
+            bootbox.alert("An error occured on the server, please retry your search or try again later.");
+            usSpinnerService.stop('spinner-1');
+          });
+        break;
+      case 'assistant':
+        planService.hasEscort = $scope.hasEscort;
+        planService.numberOfCompanions = $scope.numberOfCompanions || 0;
+        $location.path('/plan/instructions_for_driver');
+        break;
+      case 'instructions_for_driver':
+        planService.driverInstructions = $scope.driverInstructions;
+        usSpinnerService.spin('spinner-1');
+        var promise = planService.bookSharedRide($http);
+        promise.then(function(result) {
+          planService.booking_results = result.data.booking_results;
+          $location.path('/paratransit/confirm_shared_ride');
+        });
         break;
     }
     return;
@@ -349,41 +382,11 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
         planService.returnTimeType = $scope.returnTimeType;
         $location.path('/plan/confirm');
         break;
-      case 'confirm':
-        $location.path('/plan/companions');
-        break;
-        usSpinnerService.spin('spinner-1');
-        var promise = planService.postItineraryRequest($http);
-        promise.
-          success(function(result) {
-            planService.searchResults = result;
-            $location.path('/plan/list_itineraries');
-          }).
-          error(function(result) {
-            bootbox.alert("An error occured on the server, please retry your search or try again later.");
-            usSpinnerService.stop('spinner-1');
-          });
-        break;
-      case 'assistant':
-        planService.hasEscort = $scope.hasEscort;
-        planService.numberOfCompanions = $scope.numberOfCompanions || 0;
-        $location.path('/plan/instructions_for_driver');
-        break;
-      case 'instructions_for_driver':
-        planService.driverInstructions = $scope.driverInstructions;
-        usSpinnerService.spin('spinner-1');
-        var promise = planService.bookSharedRide($http);
-        promise.then(function(result) {
-          planService.booking_results = result.data.booking_results;
-          $location.path('/paratransit/confirm_shared_ride');
-        });
-        break;
     }
     */
   };
 
-  $scope.specifyTripPurpose = function(purpose){
-    planService.purpose = purpose;
+  function _bookTrip(){
     planService.prepareConfirmationPage($scope);
     planService.transitResult = [];
     planService.paratransitResult = null;
@@ -408,6 +411,10 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
         bootbox.alert("An error occured on the server, please retry your search or try again later.");
         usSpinnerService.stop('spinner-1');
       });
+  }
+  $scope.specifyTripPurpose = function(purpose){
+    planService.purpose = purpose;
+    _bookTrip();
   }
 
   $scope.specifyFromTimeType = function(type){
@@ -925,6 +932,12 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
       hour = parseInt(splitTime[0]);
       minute = parseInt(splitTime[1]);
     }
+    splitTime = day.serviceHours.open.split(':');
+    $scope.serviceOpen = moment().set({hour:splitTime[0], minute:splitTime[1]}).format('h:mm a');
+    
+    splitTime = day.serviceHours.close.split(':');
+    $scope.serviceClose = moment().set({hour:splitTime[0], minute:splitTime[1]}).format('h:mm a');
+    
     $scope.fromMoment = day.moment.clone();
     //set the hour/minute to start times
     $scope.fromMoment.hour( hour ).minute( minute ).seconds(0);
