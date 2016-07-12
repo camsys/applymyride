@@ -829,19 +829,23 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
 
   $scope.submitRebookedTrip = function(){
     $scope.message = null;
+    
     var fromDate = $scope.fromDate;
     if(!fromDate){
       $scope.message = 'Please enter a departure date.';
       return;
     }
+
     var fromTime = $scope.fromTime;
     if(!fromTime){
       $scope.message = 'Please enter a departure time.';
       return;
     }
+
     fromTime.setYear(fromDate.getFullYear());
     fromTime.setMonth(fromDate.getMonth());
     fromTime.setDate(fromDate.getDate());
+
     if(planService.rebookTrip.itineraries.length > 1){
       var returnTime = $scope.returnTime;
       var returnDate = $scope.returnDate;
@@ -872,8 +876,8 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
     request.itinerary_request = [];
     var outboundTrip = {};
     outboundTrip.segment_index = 0;
-    outboundTrip.start_location = trip.itineraries[0].start_location;
-    outboundTrip.end_location = trip.itineraries[0].end_location;
+    outboundTrip.start_location = trip.itineraries[0].origin;
+    outboundTrip.end_location = trip.itineraries[0].destination;
     outboundTrip.assistant = trip.itineraries[0].assistant;
     outboundTrip.companions = trip.itineraries[0].companions;
     outboundTrip.note = trip.itineraries[0].note;
@@ -886,8 +890,8 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
     if(trip.itineraries.length > 1){
       var returnTrip = {};
       returnTrip.segment_index = 1;
-      returnTrip.start_location = trip.itineraries[1].start_location;
-      returnTrip.end_location = trip.itineraries[1].end_location;
+      returnTrip.start_location = trip.itineraries[1].origin;
+      returnTrip.end_location = trip.itineraries[1].destination;
       returnTrip.departure_type = trip.itineraries[1].requested_time_type;
       returnTrip.assistant = trip.itineraries[0].assistant;
       returnTrip.companions = trip.itineraries[0].companions;
@@ -1362,7 +1366,6 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
       break;
     case 'my_rides':
       planService.reset();
-      //var ridesPromise = planService.getRides($http, $scope, ipCookie);
       var pastRides = planService.getPastRides($http, $scope, ipCookie);
       var futureRides = planService.getFutureRides($http, $scope, ipCookie);
       
