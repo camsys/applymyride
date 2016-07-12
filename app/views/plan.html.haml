@@ -270,8 +270,8 @@
                 Going
               %h3{ng: {hide: 'transitInfos[1]' } }
                 One Way
-            .col-xs-2.pull-right
-              %img{ng: {src: 'images/modes/transit.png'}, style:'width: 50%; vertical-align: bottom;'}
+            .col-xs-2.pull-right.bus-options-right
+              %img{ng: {src: 'images/modes/transit.png'}, style:'width: 50%; vertical-align: middle;'}
               {{transitInfos[0][0].route}}
             .col-xs-12
               .row{style:'padding: 0px 0px 10px 10px;'}
@@ -297,8 +297,8 @@
           .row.rounded-border
             .col-xs-10
               %h3 Returning
-            .col-xs-2.pull-right
-              %img{ng: {src: 'images/modes/transit.png'}, style:'width: 50%; vertical-align: bottom;'}
+            .col-xs-2.pull-right.bus-options-right
+              %img{ng: {src: 'images/modes/transit.png'}, style:'width: 50%; vertical-align: middle;'}
               {{transitInfos[1][0].route}}
             .col-xs-12
               .row{style:'padding: 0px 0px 10px 10px;'}
