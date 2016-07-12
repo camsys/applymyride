@@ -144,7 +144,8 @@ angular.module('applyMyRideApp')
           planService.email = result.data.email;
           planService.first_name = result.data.first_name;
           planService.last_name = result.data.last_name;
-          planService.getRides($http, $scope, ipCookie);
+          planService.getPastRides($http, $scope, ipCookie);
+          planService.getFutureRides($http, $scope, ipCookie);
           var lastDest, lastOrigin;
           if(typeof '' !== typeof result.data.last_destination && result.data.last_destination.formatted_address){
             lastDest = result.data.last_destination.formatted_address;

@@ -159,61 +159,6 @@ angular.module('applyMyRideApp')
           });
       }
 
-      this.getRides = function($http, $scope, ipCookie) {
-        var that = this;
-        return $http.get(urlPrefix + 'api/v1/trips/list', this.getHeaders()).
-          success(function(data) {
-            var sortable = [];
-            angular.forEach(data.trips, function(trip, index) {
-              if(trip.scheduled_time){
-                sortable.push([trip, trip.itineraries[0].start_time])
-              }
-            });
-            sortable.sort(function(a,b){ return a[1].localeCompare(b[1]); })
-            $scope.trips = [];
-            angular.forEach(sortable, function(trip, index) {
-              $scope.trips.push(trip[0]);
-            });
-            var trips = {};
-            trips.past = [];
-            trips.future = [];
-
-            var tripDivs = {};
-            tripDivs.past = [];
-            tripDivs.future = [];
-
-            var newestRecord = 0;
-            angular.forEach($scope.trips, function(trip, index) {
-              trip.mode = trip.itineraries[0].returned_mode_code;
-              trip.roundTrip = trip.itineraries.length > 1 ? true : false;
-              trip.startDesc = that.getDateDescription(trip.itineraries[0].start_time);
-              trip.startDesc += " at " + moment(trip.itineraries[0].start_time).format('h:mm a');
-              var dayDiff = moment(trip.itineraries[0].start_time).startOf('day').diff(moment().startOf('day'), 'days');
-              var createdAt = moment(trip.itineraries[0].created_at).unix();
-              if(dayDiff < 0){
-                if(createdAt > newestRecord){
-                  newestRecord = createdAt;
-                  $scope.tabPast = true;
-                  delete $scope.tabFuture;
-                }
-                trips.past.push(trip);
-                tripDivs.past.push(false);
-              }else{
-                if(createdAt > newestRecord){
-                  newestRecord = createdAt;
-                  $scope.tabFuture = true;
-                  delete $scope.tabPast;
-                }
-                trips.future.push(trip);
-                tripDivs.future.push(false);
-              }
-            });
-            ipCookie('rideCount', trips.future.length);
-            $scope.trips = trips;
-            $scope.tripDivs = tripDivs;
-          });
-      }
-
       this.prepareConfirmationPage = function($scope) {
         var itineraryRequestObject = this.createItineraryRequest();
         this.itineraryRequestObject = itineraryRequestObject;
