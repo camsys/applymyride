@@ -680,6 +680,8 @@ angular.module('applyMyRideApp')
       }
 
       this.getHeaders = function(){
+        //return empty object if no email
+        if(!this.email){ return {}; }
         var headers = {headers:  {
           "X-User-Email" : this.email,
           "X-User-Token" : this.authentication_token}

@@ -7,7 +7,19 @@ angular.module('applyMyRideApp')
     return input == '$0.00' ? "Free" : input;
   };
 })
-.filter('momentYMD', function() {
+.filter('minutes', function() {
+  return function(m) {
+    if(m <= 60){
+      return '' + m + ' minutes';
+    }else{
+      return '' 
+        + (Math.floor( m/60 )) + ' hours, '
+        + (m % 60) + ' minutes';
+    }
+    if(!m || !m._isAMomentObject){ return ''; }
+    return m.format('YY-MM-DD');
+  };
+}).filter('momentYMD', function() {
   return function(m) {
     if(!m || !m._isAMomentObject){ return ''; }
     return m.format('YY-MM-DD');
