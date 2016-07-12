@@ -42,20 +42,18 @@
     .row
       .col-lg-6.col-lg-offset-3.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1.col-xs-12
         %select.form-control{required:'true', ng:{model:'$parent.howLong', options:'option.name for option in howLongOptions', change:'updateReturnTime(howLong)', class:'{disabled:!fromMoment.isAfter(moment()) }'}}
-          %option{value:'0', disabled:''} Select an option
     .row{'ng-show'=>'returnMoment'}
       .col-lg-6.col-lg-offset-3.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1.col-xs-12
         Return at {{returnMoment | momentHMA}}
     .row.sticky-footer{style: 'margin-top: 30px'}
       .col-lg-6.col-lg-offset-3.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1.col-xs-12
         .pull-left
-          %a.btn{href: "", back: '', ng: {click: "back()"}}
+          %a.btn{href: "", back: '', ng: {click: "back()", hide:'backToConfirm'}}
             Back
         .pull-right
-          %a.btn.btn-primary.btn-next{href: "", ng: {show: 'returnMoment', click: 'next()'}}
-            %span
+          %a.btn.btn-primary.btn-next{href: "", ng: {class:'{disabled:(!showNext) }', click: 'next()'}}
+            %span{ng:{hide:'backToConfirm'}}
               Next
-          %a.btn.disabled.btn-primary.btn-next{href: "", ng: {hide: 'returnMoment'}}
-            %span
-              Next
+            %span{ng:{show:'backToConfirm'}}
+              Back to confirm
 

@@ -42,7 +42,8 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
   $scope.serviceHours = null;
   $scope.fromTime = '';
   if(planService.fromDate && planService.returnDate){
-    $scope.howLong = {minutes: ''+ moment(planService.returnDate).diff( planService.fromDate, 'minutes') };
+    $scope.howLongMinutes = moment(planService.returnDate).diff( planService.fromDate, 'minutes');
+    $scope.howLong = {minutes: ''+ $scope.howLongMinutes };
   }else{
     $scope.howLong = {minutes:'0'};
   }
@@ -53,6 +54,7 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
   $scope.location = $location.path();
   $scope.errors = {};
   $scope.showAllPurposes = false;
+  $scope.backToConfirm = planService.backToConfirm;
 
   $scope.toDefault = localStorage.getItem('last_destination') || '';
   $scope.to = planService.to || '';
@@ -65,10 +67,16 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
   };
 
   $scope.goPlanWhere = function(){
+    planService.backToConfirm = true;
     $location.path('/plan/where');
   }
   $scope.goPlanWhen = function(){
+    planService.backToConfirm = true;
     $location.path('/plan/when');
+  }
+  $scope.goPlanPurpose = function(){
+    planService.backToConfirm = true;
+    $location.path('/plan/purpose');
   }
 
   $scope.toggleMyRideButtonBar = function(type, index) {
@@ -277,10 +285,16 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
   }
 
   $scope.next = function() {
-    if($scope.disableNext)
-      return;
-    
+    if($scope.disableNext){ return; }
     $scope.showNext = false;
+
+    //rebook the trip if backToConfirm
+    if(planService.backToConfirm){
+      $scope.specifyTripPurpose( planService.purpose );
+      planService.backToConfirm = false;
+      return;
+    }
+
     switch($scope.step) {
       case 'when':
         $location.path('/plan/purpose');
@@ -288,6 +302,9 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
       case 'where':
         $location.path('/plan/when');
         break;
+    }
+    return;
+    /*
       case 'fromDate':
         planService.fromDate = $scope.fromDate;
         $location.path('/plan/fromTimeType');
@@ -362,6 +379,7 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
         });
         break;
     }
+    */
   };
 
   $scope.specifyTripPurpose = function(purpose){
@@ -914,15 +932,50 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
       $('input.cs-hour').select();
     }, 100);
   }
+  function _whenShowNext(){
+    //true to show next
+    var fromOK, returnOK, 
+    _checkServiceHours = function(day, okNull)
+    {
+      var index, splitTime, startMoment, endMoment;
+      //day is null return false, unless null is ok
+      if(day === null){
+        if( okNull === true ){ return true; }
+        return false;
+      }
+      //return false if selected day does not have service hours
+      index = day.format('YYYY-MM-DD');
+      if( !$scope.serviceHours[index] ){return false;}
+
+      //return false if time not within the service hours
+      splitTime = $scope.serviceHours[index].open.split(':');
+      startMoment = day.clone().hour(splitTime[0]).minute(splitTime[1]).subtract(1, 'seconds');
+      splitTime = $scope.serviceHours[index].close.split(':');
+      endMoment = day.clone().hour(splitTime[0]).minute(splitTime[1]).add(1, 'seconds');
+      if( !day.isBetween(startMoment, endMoment ) ){return false;}
+
+      //make sure day is in the future
+      if( moment().isAfter(day) ){ return false; }
+
+      //passed all checks, ok to show next
+      return true;
+    };// end _checkServiceHours
+    fromOK = _checkServiceHours( $scope.fromMoment );
+    returnOK = _checkServiceHours( $scope.returnMoment, true);
+    return fromOK && returnOK;
+
+  }
   function _setupHowLongOptions(){
     var from, endOfDay, beginOfDay, splitTime, diff, name, fromDiff,
-      selectedServiceHours, chosenHowLong;
+      selectedServiceHours, selectedIndex;
     //can only setup howlong if fromMoment is within service hours
     if(!$scope.fromMoment || !$scope.serviceHours || !$scope.serviceHours[ $scope.fromMoment.format('YYYY-MM-DD') ] ){ return; }
     selectedServiceHours = $scope.serviceHours[ $scope.fromMoment.format('YYYY-MM-DD') ];    
 
-    chosenHowLong = $.extend({}, $scope.howLong);
-    $scope.howLongOptions = [];
+    $scope.howLongOptions = [{
+        minutes: 0,
+        name: 'No return trip'
+      }];
 
     from = $scope.fromMoment.clone();
     splitTime = selectedServiceHours.close.split(':');
@@ -953,19 +1006,12 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
         name: name
       });
       if($scope.howLong && diff == $scope.howLong.minutes){
-        $scope.howLong = $scope.howLongOptions[ $scope.howLongOptions.length-1 ];
+        selectedIndex = $scope.howLongOptions.length-1;
       }
     }
+    selectedIndex = selectedIndex || 0;
+    $scope.howLong = $scope.howLongOptions[ selectedIndex ];
     $scope.updateReturnTime($scope.howLong);
-  }
-  function _repopulateServiceHours(){
-    $http.get(urlPrefix + '/api/v1/services/hours').
-      success(function(data) {
-        $scope.serviceHours = data;
-        _setupTwoWeekSelector();
-        _setupHowLongOptions();
-      }
-    );
   }
   function _setupTwoWeekSelector(){
     var months = [],
@@ -1064,8 +1110,28 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
       break;
     case 'when':
       //re-populate service hours
-      _repopulateServiceHours();
-      $scope.showNext = $scope.fromMoment.isAfter( moment().hour(23).minute(59) );
+      $http.get(urlPrefix + '/api/v1/services/hours').
+        success(function(data) {
+          $scope.serviceHours = data;
+          _setupTwoWeekSelector();
+          $scope.$watch('fromMoment', function(n){
+            //only show next if we have a valid moment object
+            $scope.showNext = false;
+            if( !n || !n._isAMomentObject ){ return;}
+            $scope.showNext = true;
+            //save the date/time to planService
+            planService.fromDate = n.toDate();
+            planService.fromTime = n.toDate();
+            planService.fromTimeType = 'depart';
+            planService.returnTimeType =  'depart';
+            planService.asap = false;
+            planService.fromTimeType = 'arrive';
+            _setupHowLongOptions();
+            $scope.showNext = _whenShowNext();
+          });
+        }
+      );
+
       break;
     case 'confirm' :
       $scope.request = planService.confirmRequest;
@@ -1134,10 +1200,6 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
       planService.getTripPurposes($scope, $http).then(function(){
         usSpinnerService.stop('spinner-1');
       });
-      $scope.showNext = false;
-      break;
-    case 'confirm':
-//      planService.prepareConfirmationPage($scope);
       $scope.showNext = false;
       break;
     case 'needReturnTrip':
@@ -1501,20 +1563,6 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
     }
   );
 
-  $scope.$watch('fromMoment', function(n){
-    //only show next if we have a valid moment object
-    $scope.showNext = false;
-    if( !n || !n._isAMomentObject ){ return;}
-    $scope.showNext = true;
-    //save the date/time to planService
-    planService.fromDate = n.toDate();
-    planService.fromTime = n.toDate();
-    planService.fromTimeType = 'depart';
-    planService.returnTimeType =  'depart';
-    planService.asap = false;
-    planService.fromTimeType = 'arrive';
-    _setupHowLongOptions();
-  });
 
 }
 ]);
