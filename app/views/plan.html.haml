@@ -608,27 +608,8 @@
   .discounts{ng: {show: 'step==="my_rides"'}}
     .col-md-8.col-md-offset-2.col-xs-12.no-padding
       %tabset
-        %tab{'heading' => 'Today ({{trips.today.length}})', 'active' => 'tabToday'}
-          .myride{index: '{{$index}}', ng: {init: 'tab = "today"', click: 'toggleMyRideButtonBar("today", $index)', repeat: 'trip in trips.today'}}
-            .row
-              .col-xs-2.col-height-slave
-                %img.img-responsive{ng: {src: 'images/modes/paratransit.png', show: 'trip.mode == "mode_paratransit"'}}
-                %img.img-responsive{ng: {src: 'images/modes/transit.png', show: 'trip.mode == "mode_transit"'}}
-                %img.img-responsive{ng: {src: 'images/modes/walk.png', show: 'trip.mode == "mode_walk"'}}
-              .col-xs-10.col-height-master{style: 'width: 60em !important;'}
-                .row
-                  .col-xs-12
-                    %h4 {{trip.from_place}} to {{trip.to_place}}
-                .row
-                  .col-xs-8
-                    %h5.blue-text {{trip.startDesc}}
-                  .col-xs-4
-                    %h5.text-muted.text-right{ng: {show: 'trip.itineraries.length > 1'}} (round trip)
-                    %h5.text-muted.text-right{ng: {show: 'trip.itineraries.length == 1'}} (one way)
-            .animate-show.myride-buttons{ng: {show: 'tripDivs.today[$index]'}}
-              .row.even-height-row
-                %span{ng: {include: "'views/emailOrCancel.html'"}}
-        %tab{'heading' => 'Future ({{trips.future.length}})', 'active' => 'tabFuture'}
+        
+        %tab{'heading' => 'Upcoming ({{trips.future.length}})', 'active' => 'tabFuture'}
           .myride{'index' => '{{$index}}', ng: {init: 'tab = "future"', click: 'toggleMyRideButtonBar("future", $index)', repeat: 'trip in trips.future'}}
             .row
               .col-xs-2.col-height-slave
@@ -648,7 +629,7 @@
             .animate-show.myride-buttons{ng: {show: 'tripDivs.future[$index]'}}
               .row.even-height-row
                 %span{ng: {include: "'views/emailOrCancel.html'"}}
-        %tab{'heading' => 'Past ({{trips.past.length}})', 'active' => 'tabPast'}
+        %tab{'heading' => 'History ({{trips.past.length}})', 'active' => 'tabPast'}
           .myride{'index' => '{{$index}}', ng: {init: 'tab = "past"', click: 'toggleMyRideButtonBar("past", $index);', repeat: 'trip in trips.past'}}
             .row
               .col-xs-2.col-height-slave

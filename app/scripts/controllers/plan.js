@@ -145,12 +145,17 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
         if(result == true){
           var cancel = {};
           cancel.bookingcancellation_request = [];
-
           angular.forEach(trip.itineraries, function(itinerary, index) {
-            var itineraryCancellation = {};
-            itineraryCancellation.itinerary_id = itinerary.id;
-            cancel.bookingcancellation_request.push(itineraryCancellation);
+            var bookingCancellation = {};
+            if(itinerary.id){
+              bookingCancellation.itinerary_id = itinerary.id;
+            }
+            else if(itinerary.booking_confirmation){
+              bookingCancellation.booking_confirmation = itinerary.booking_confirmation;     
+            }
+            cancel.bookingcancellation_request.push(bookingCancellation);
           });
+          
           var cancelPromise = planService.cancelTrip($http, cancel)
           cancelPromise.error(function(data) {
             bootbox.alert("An error occurred, your trip was not cancelled.  Please call 1-844-PA4-RIDE for more information.");
@@ -174,7 +179,6 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
       case 'mode_paratransit':
         break;
       case 'mode_transit':
-        console.log('transit')
         break;
       case 'mode_walk':
         break;
@@ -1358,21 +1362,23 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
       break;
     case 'my_rides':
       planService.reset();
-      var ridesPromise = planService.getRides($http, $scope, ipCookie);
+      //var ridesPromise = planService.getRides($http, $scope, ipCookie);
+      var pastRides = planService.getPastRides($http, $scope, ipCookie);
+      var futureRides = planService.getFutureRides($http, $scope, ipCookie);
+      
       $scope.hideButtonBar = true;
-      ridesPromise.then(function() {
+
+      
+      futureRides.then(function() {
         var navbar = $routeParams.navbar;
         if(navbar){
           $scope.tabFuture = true;
           delete $scope.tabPast;
-          delete $scope.tabToday;
-          if($scope.trips.today.length > 0){
-            $scope.tabToday = true;
-            delete $scope.tabPast;
-            delete $scope.tabFuture;
-          }
         }
       });
+    
+      
+
       break;
     case 'companions':
       $scope.showNext = false;
