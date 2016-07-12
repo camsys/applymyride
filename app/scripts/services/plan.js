@@ -67,6 +67,98 @@ angular.module('applyMyRideApp')
         return re.test(email);
       }
 
+      this.getPastRides = function($http, $scope, ipCookie) {
+        var tripType = 'past',
+            urlPath = 'api/v1/trips/past_trips';
+        return this.getRidesByType($http, $scope, ipCookie, tripType, urlPath);
+      }
+
+      this.getFutureRides = function($http, $scope, ipCookie) {
+        var tripType = 'future',
+            urlPath = 'api/v1/trips/future_trips';
+        return this.getRidesByType($http, $scope, ipCookie, tripType, urlPath);
+      }
+
+      this.getRidesByType = function($http, $scope, ipCookie, tripType, urlPath) {
+        var that = this;
+        return $http.get(urlPrefix + urlPath, this.getHeaders()).
+          success(function(data) {
+    
+            var sortable = [],
+                tripDivs = [],
+                trips = [];
+
+            if(!$scope.trips)
+              $scope.trips = {};
+
+            if(!$scope.tripDivs)
+              $scope.tripDivs = {};
+
+            angular.forEach(data.trips, function(trip, index) {
+
+              if(trip[0].departure && trip[0].status && (trip[0].status != "canceled" || tripType == 'past')){
+                
+                var i = 0;
+                var trip_with_itineraries = {};
+                
+                trip_with_itineraries.itineraries = [];
+                
+                while(typeof trip[i] !== 'undefined'){
+
+                  // Check for first itinerary to set Trip values
+                  if(i == 0){ 
+                    trip_with_itineraries.mode = trip[i].mode;
+                    trip_with_itineraries.startDesc = that.getDateDescription(trip[i].departure);
+                    trip_with_itineraries.startDesc += " at " + moment(trip[i].departure).format('h:mm a');
+
+                    var origin_addresses = trip[0].origin.address_components;
+                    for(var n = 0; n < origin_addresses.length; n++){
+                      var address_types = origin_addresses[n].types ;
+                      if(address_types.length > 0 && address_types.indexOf("street_address") != -1){
+                        trip_with_itineraries.from_place = origin_addresses[n].short_name;
+                        break;
+                      }
+                    }
+
+                    var destination_addresses = trip[0].destination.address_components;
+                    for(var j = 0; j < destination_addresses.length; j++){
+                      var address_types = destination_addresses[j].types ;
+                      if(address_types.length > 0 && address_types.indexOf("street_address") != -1){
+                        trip_with_itineraries.to_place = destination_addresses[j].short_name;
+                        break;
+                      }
+                    }
+                  }
+
+                  trip_with_itineraries.itineraries.push(trip[i]);
+                  i++;
+                }
+                
+                trip_with_itineraries.roundTrip = typeof trip[1] !== 'undefined' ? true : false;
+                
+                sortable.push([trip_with_itineraries, trip[0].departure])
+              }
+            });
+
+            sortable.sort(function(a,b){ return a[1].localeCompare(b[1]); })
+            
+            angular.forEach(sortable, function(trip_and_departure_array, index) {
+              trips.push(trip_and_departure_array[0]);
+            });
+
+            if(tripType == 'future'){
+              $scope.trips.future = trips;
+              $scope.tripDivs.future = tripDivs;
+              ipCookie('rideCount', trips.length);
+            }
+            else {
+              $scope.trips.past = trips;
+              $scope.tripDivs.past = tripDivs;
+            }
+
+          });
+      }
+
       this.getRides = function($http, $scope, ipCookie) {
         var that = this;
         return $http.get(urlPrefix + 'api/v1/trips/list', this.getHeaders()).
@@ -83,12 +175,10 @@ angular.module('applyMyRideApp')
               $scope.trips.push(trip[0]);
             });
             var trips = {};
-            trips.today = [];
             trips.past = [];
             trips.future = [];
 
             var tripDivs = {};
-            tripDivs.today = [];
             tripDivs.past = [];
             tripDivs.future = [];
 
@@ -100,20 +190,10 @@ angular.module('applyMyRideApp')
               trip.startDesc += " at " + moment(trip.itineraries[0].start_time).format('h:mm a');
               var dayDiff = moment(trip.itineraries[0].start_time).startOf('day').diff(moment().startOf('day'), 'days');
               var createdAt = moment(trip.itineraries[0].created_at).unix();
-              if(dayDiff == 0) {
-                if(createdAt > newestRecord){
-                  newestRecord = createdAt;
-                  $scope.tabToday = true;
-                  delete $scope.tabPast;
-                  delete $scope.tabFuture;
-                }
-                trips.today.push(trip);
-                tripDivs.today.push(false);
-              }else if(dayDiff < 0){
+              if(dayDiff < 0){
                 if(createdAt > newestRecord){
                   newestRecord = createdAt;
                   $scope.tabPast = true;
-                  delete $scope.tabToday;
                   delete $scope.tabFuture;
                 }
                 trips.past.push(trip);
@@ -122,7 +202,6 @@ angular.module('applyMyRideApp')
                 if(createdAt > newestRecord){
                   newestRecord = createdAt;
                   $scope.tabFuture = true;
-                  delete $scope.tabToday;
                   delete $scope.tabPast;
                 }
                 trips.future.push(trip);
