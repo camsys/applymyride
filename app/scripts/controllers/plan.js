@@ -78,6 +78,11 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
     planService.backToConfirm = true;
     $location.path('/plan/purpose');
   }
+  $scope.goViewTransit = function(segmentId, tripId){
+    if(segmentId > -1 && tripId > 0){
+      $location.path('/transit/'+segmentId+'/'+tripId);
+    }
+  }
 
   $scope.toggleMyRideButtonBar = function(type, index) {
     $scope.showEmail = false;

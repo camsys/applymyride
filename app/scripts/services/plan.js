@@ -32,9 +32,9 @@ angular.module('applyMyRideApp')
         var questionObj = {};
         angular.forEach(questions, function(question, index) {
           if(question.code == 'assistant'){
-            questionObj.assistant = "I'll have an escort"; //question.question;
+            questionObj.assistant = question.question;
           }else if(question.code == 'children' || question.code == 'companions'){
-            questionObj.children = "I'll have a companion or family member with me."; //question.question;
+            questionObj.children = question.question;
             questionObj.limit = question.choices;
           }
         });

@@ -230,7 +230,7 @@
               %h5.text-muted.text-left
                 {{request.when4}}
 
-        .no_underline.row.row-eq-height.rounded-border{ng:{click:'goPlanPurpose()'}}
+        .no_underline.row.row-eq-height.rounded-border{ng:{show:'request.purpose', click:'goPlanPurpose()'}}
           .col-xs-3.col-md-2
             %p.text-left.text-muted
               Purpose
@@ -263,7 +263,8 @@
         .col-xs-12.col-md-6.col-md-offset-3.col-sm-8.col-sm-offset-2
           %h2{style: 'font-weight:600;'}
             Bus options
-        .col-xs-12.col-md-6.col-md-offset-3.col-sm-8.col-sm-offset-2
+      .row
+        .col-xs-12.col-md-6.col-md-offset-3.col-sm-8.col-sm-offset-2{ng:{click:'goViewTransit(0, transitInfos[0][0].id)'}}
           .row.rounded-border
             .col-xs-10
               %h3{ng: {show: 'transitInfos[1]' } }
@@ -286,14 +287,16 @@
                   Trip Time is {{transitItineraries[0][0].travelTime}}
                 .col-xs-12
                   Walking time is {{transitItineraries[0][0].walkTimeDesc}}
-                        
+
+      .row
         .col-xs-12.col-md-6.col-md-offset-3.col-sm-8.col-sm-offset-2{ng: {show: 'transitInfos[1]' } }
           .row.rounded-border
             .col-xs-12.text-center
               %h4.text-muted
                 {{request.purpose}} {{howLong.minutes | minutes}}
 
-        .col-xs-12.col-md-6.col-md-offset-3.col-sm-8.col-sm-offset-2{ng: {show: 'transitInfos[1]' } }
+      .row
+        .col-xs-12.col-md-6.col-md-offset-3.col-sm-8.col-sm-offset-2{ng: {show: 'transitInfos[1]', click:'goViewTransit(1, transitInfos[1][0].id)' } }
           .row.rounded-border
             .col-xs-10
               %h3 Returning
