@@ -18,6 +18,7 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
   eightAm.setSeconds(0);
   eightAm.setMinutes(0);
   eightAm.setHours(8);
+  eightAm.setDate( eightAm.getDate() - 1 );
   $scope.minReturnDate = new Date();
   $scope.marker = null;
   $scope.toFromMarkers = {};
