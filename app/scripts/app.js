@@ -44,11 +44,19 @@ angular.module('applyMyRideApp', [
         templateUrl: 'views/plan.html',
         controller: 'PlanController'
       })
+      .when('/plan/:step/:departid/:returnid', {
+        templateUrl: 'views/transit-detail.html',
+        controller: 'PlanController'
+      })
       .when('/plan/:step', {
         templateUrl: 'views/plan.html',
         controller: 'PlanController'
       })
-      .when('/transit/:segmentid/:tripid', {
+      .when('/transit/:departid', {
+        templateUrl: 'views/transit.html',
+        controller: 'TransitController'
+      })
+      .when('/transit-old/:segmentid/:tripid', {
         templateUrl: 'views/transit.html',
         controller: 'TransitController'
       })

@@ -1,11 +1,19 @@
 'use strict';
 
 angular.module('applyMyRideApp')
-  .controller('TransitController', ['$scope','$routeParams', '$location', 'flash', 'planService', '$http','ipCookie',
-    function ($scope, $routeParams, $location, flash, planService, $http, ipCookie) {
+  .controller('TransitController', ['$scope','$routeParams', '$location', 'flash', 'planService', '$http','ipCookie', '$attrs',
+    function ($scope, $routeParams, $location, flash, planService, $http, ipCookie, $attrs) {
 
-      $scope.segmentid = $routeParams.segmentid;
-      $scope.tripid = $routeParams.tripid;
+      if($routeParams.departid && $attrs.segmentid > -1){
+        $scope.segmentid = $attrs.segmentid;
+        $scope.tripid = ($scope.segmentid == 0) 
+          ? $routeParams.departid
+          : $routeParams.returnid; //$scope.$parent.transitInfos[$attrs.segmentid][0].id;
+        $scope.embedded = true;
+      }else{
+        $scope.segmentid = $routeParams.segmentid;
+        $scope.tripid = $routeParams.tripid;
+      }
       $scope.location = $location.path();
       $scope.fare_info = planService.fare_info;
       $scope.disableNext = true;

@@ -264,7 +264,7 @@
           %h2{style: 'font-weight:600;'}
             Bus options
       .row
-        .col-xs-12.col-md-6.col-md-offset-3.col-sm-8.col-sm-offset-2{ng:{click:'goViewTransit(0, transitInfos[0][0].id)'}}
+        .col-xs-12.col-md-6.col-md-offset-3.col-sm-8.col-sm-offset-2{ng:{click:'goViewTransit(transitInfos[0][0].id, ( transitInfos[1] || [{id:0}] )[0].id)'}}
           .row.rounded-border
             .col-xs-10
               %h3{ng: {show: 'transitInfos[1]' } }
@@ -296,7 +296,7 @@
                 {{request.purpose}} {{howLong.minutes | minutes}}
 
       .row
-        .col-xs-12.col-md-6.col-md-offset-3.col-sm-8.col-sm-offset-2{ng: {show: 'transitInfos[1]', click:'goViewTransit(1, transitInfos[1][0].id)' } }
+        .col-xs-12.col-md-6.col-md-offset-3.col-sm-8.col-sm-offset-2{ng: {show: 'transitInfos[1]', click:'goViewTransit(transitInfos[0][0].id, ( transitInfos[1] || [{id:0}] )[0].id)' } }
           .row.rounded-border
             .col-xs-10
               %h3 Returning
@@ -523,20 +523,30 @@
 
   .depart-time{ng: {show: 'step==="assistant"'}}
     .col-md-8.col-md-offset-2.col-xs-12
+      .row
+        .col-xs-12
+          %h3
+            Who will be riding with you?
+    .col-md-8.col-md-offset-2.col-xs-12{style:'margin-top:20px;'}
       .row{ng: {show: 'questions.assistant'}}
         .col-xs-12
-          %label{for:'hasescort'}
+          %h4.pull-left
+            %input{id:'hasescort', type: 'checkbox', ng: {model: 'hasEscort'}}
+          %label{for:'hasescort', style:'width:90%'}
             %h4
-              %input{id:'hasescort', type: 'checkbox', ng: {model: 'hasEscort'}}
               {{questions.assistant}}
       .row{ng: {show: 'questions.children'}}
         .col-xs-12
-          %label{for:'hascompanions'}
+          %h4.pull-left
+            %input{id:'hascompanions', type: 'checkbox', ng: {model: 'hasCompanions'}}
+          %label{for:'hascompanions', style:'width:90%'}
             %h4
-              %input{id:'hascompanions', type: 'checkbox', ng: {model: 'hasCompanions'}}
               {{questions.children}}
         .col-xs-12{'ng-show'=>'hasCompanions'}
-          %select{ng: {model: 'numberOfCompanions', options: 'number for number in questions.limit'}}
+          %label{for:'numberofcompanions'}
+            %h4{style:'display:inline;'}
+              How Many?
+            %select{id:'numberofcompanions', ng: {model: 'numberOfCompanions', options: 'number for number in questions.limit'}}
       .row.sticky-footer{style: 'margin-top: 30px'}
         .col-md-8.col-md-offset-2.col-xs-12
           %a.btn.btn-back{href: "", back: '', ng: {click: "back()"}}

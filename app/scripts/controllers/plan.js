@@ -79,10 +79,8 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
     planService.backToConfirm = true;
     $location.path('/plan/purpose');
   }
-  $scope.goViewTransit = function(segmentId, tripId){
-    if(segmentId > -1 && tripId > 0){
-      $location.path('/transit/'+segmentId+'/'+tripId);
-    }
+  $scope.goViewTransit = function(departId, returnId){
+    $location.path('/plan/transit/'+departId+'/'+returnId);
   }
 
   $scope.toggleMyRideButtonBar = function(type, index) {
@@ -1122,6 +1120,19 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
 //initialize this step's state
   switch($routeParams.step) {
     case undefined:
+      break;
+    case 'transit':
+      (function(){
+        var startDate, endDate, end;
+        var startDate = moment(new Date(planService.transitItineraries[0][0].start_time));
+        end = planService.transitItineraries[1] || planService.transitItineraries[0];
+        var endDate = moment(new Date(end[0].end_time));
+        $scope.startDate = startDate.format('dddd MMMM do');
+        $scope.startTime = startDate.format('h:mm a');
+        $scope.endTime = endDate.format('h:mm a');
+        $scope.transitInfos = planService.transitInfos;
+      }());
+    break;
     case 'where':
       //load the map origin/destination
       if($scope.to){

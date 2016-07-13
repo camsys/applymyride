@@ -1,0 +1,74 @@
+.transit-embedded{style: 'padding: 0;'}
+  .row{style: 'margin-bottom: 1em;'}
+    .col-xs-12
+      .row
+        .col-xs-10.text-left
+          %h4
+            {{itinerary.travelTime}} 
+        .col-xs-2.text-right
+          %h4{style: 'font-weight:bold; float:right; vertical-align: bottom;'} {{itinerary.cost | currency | free}}
+  .row
+    .col-xs-12.transit-container
+      .row.row-eq-height.transit-header
+    .col-xs-12.transit-body
+      .border-between.timeline{'index' => '{{$index}}', ng: {click: 'show()', repeat: 'leg in itinerary.json_legs track by $index', class: '{"mode_bus": leg.mode == "BUS", "mode_walk": leg.mode == "WALK"}'}}
+        .row.even-height-row
+          .col-xs-2.right-side
+            %h4 {{leg.startTimeDesc}}
+          .col-xs-1.right-side
+            %i.fa.fa-circle-o.fa-lg.waypoint
+          .col-xs-9.leg-info.pull-left.left-side
+            .bus-info{ng: {show: 'leg.mode == "BUS"'}}
+              .row
+                .leg-info.col-xs-12.leg-header
+                  %h5.text-muted Get on {{leg.serviceName}}
+                  %h4{ng: {show: '!$first'}}  Bus {{leg.route}} @ {{leg.from.name}}
+                  %h4{ng: {show: '$first'}}  Bus {{leg.route}} @ {{itinerary.start_location.name}}
+              .row
+                .leg-info.col-xs-12
+                  %h5.text-muted "{{leg.route}} - {{leg.headsign}}"
+              .row
+                .leg-info.col-xs-12
+                  %h5.text-muted {{leg.distanceDesc}} Miles ({{leg.travelTime}})
+            .walk-info{ng: {show: 'leg.mode == "WALK"'}}
+              .row
+                .leg-info.col-xs-12.leg-header
+                  %h5.text-muted{ng: {show: '!$first'}} Get off
+                  %h4{ng: {show: '!$first'}} {{leg.from.name}}
+                  %h5.text-muted{ng: {show: '$first'}} Begin at
+                  %h4{ng: {show: '$first'}}  {{itinerary.start_location.name}}
+              .row
+                .leg-info.col-xs-12
+                  .row.even-height-row
+                    .col-height-slave{style: 'width: 20px'}
+                      %i.fa.fa-chevron-down.fa-lg{style: 'color: grey', ng: {show: '!showDiv[$index] || showDiv[$index] == false'}}
+                      %i.fa.fa-chevron-up.fa-lg{style: 'color: grey', ng: {show: 'showDiv[$index] == true'}}
+                    .col-height-master
+                      %h5.text-muted Walk
+                      %h5.text-muted {{leg.distanceDesc}} Miles ({{leg.travelTime}})
+              .animate-show.blah{ng: {show: 'showDiv[$index]'}}
+                .row{ng: {repeat: 'step in leg.steps'}}
+                  .leg-info.col-xs-12{style: 'padding-left: 50px;'}
+                    %img.walk-arrow{height: '30px', width: '30px', ng: {src: 'images/transit/{{step.arrow}}.png'}}
+                    .row
+                      .leg-info.col-xs-12
+                        {{step.description}}
+                    .row.text-muted
+                      .leg-info.col-xs-12
+                        .walk-step{ng: {show: '!$last'}}
+                          {{step.distanceDesc}} miles
+                        %div{ng: {show: '$last'}}
+                          {{step.distanceDesc}} miles
+      .border-between.timeline{style: 'margin-bottom: 1em;'}
+        .row.even-height-row
+          .col-xs-2.right-side
+            %h4 {{itinerary.destinationTimeDesc}}
+          .col-xs-1.right-side
+            %i.destination.fa.fa-dot-circle-o.fa-lg.waypoint{style: 'margin-left: -16px;'}
+          .col-xs-9.leg-info.pull-left.left-side
+            .bus-info
+              .row
+                .leg-info.col-xs-12.leg-header
+                  %h5.text-muted Arrive at
+                  %h4 {{itinerary.end_location.name}}
+

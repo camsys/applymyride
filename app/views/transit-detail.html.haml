@@ -1,0 +1,45 @@
+#transit.container
+
+  .row
+    .col-md-8.col-md-offset-2.col-xs-12
+      .row
+        .col-xs-6
+          %h3
+            {{startDate}}
+        .col-xs-6{style:'text-align:right;'}
+          {{startTime}} to {{endTime}}
+
+  .row
+    .col-md-8.col-md-offset-2.col-xs-12{style:' background-color: rgb(205,254,206); '}
+      %h2
+        Bus Ride
+
+  .row
+    .col-md-8.col-md-offset-2.col-xs-12
+      %h3{ng:{show:'transitInfos[1]'}}
+        Outgoing Trip
+      %h3{ng:{hide:'transitInfos[1]'}}
+        One way Trip
+    .col-md-8.col-md-offset-2.col-xs-12
+      %span{ segmentid:'0', ng:{ include: "'views/transit-embedded.html'", controller:'TransitController'}}
+
+  .row{ng:{show:'transitInfos[1]'}}
+    .col-md-8.col-md-offset-2.col-xs-12
+      %h3
+        Return Trip
+    .col-md-8.col-md-offset-2.col-xs-12
+      %span{ segmentid:'1', ng:{ include: "'views/transit-embedded.html'", controller:'TransitController'}}
+
+  .row.sticky-footer{style: 'margin-top: 30px'}
+    .col-md-8.col-md-offset-2.col-xs-12
+      %a.btn.btn-primary.btn-block{href: "", ng: {click: 'console.log(9001);'}}
+        Save to My Rides
+
+    .col-md-8.col-md-offset-2.col-xs-12
+      .pull-left
+        %a.btn{href: "", back: '', ng: {click: "back()"}}
+          Back
+      .pull-right
+        %a.btn.btn-link{href: "/"}
+          Book another ride
+
