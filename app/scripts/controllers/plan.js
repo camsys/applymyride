@@ -1408,8 +1408,14 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
       $scope.questions = planService.getPrebookingQuestions();
       $scope.hasEscort = planService.hasEscort;
       $scope.numberOfCompanions = planService.numberOfCompanions;
-      if($scope.numberOfCompanions == null)
+      if($scope.numberOfCompanions == null){
         $scope.numberOfCompanions = 0;
+      }
+      if($scope.numberOfCompanions > 0){
+        $scope.hasCompanions = true;
+      }else{
+        $scope.hasCompanions = false;
+      }
       $scope.showNext = true;
       $scope.disableNext = false;
       break;
