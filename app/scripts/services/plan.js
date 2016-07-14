@@ -292,16 +292,17 @@ angular.module('applyMyRideApp')
         this.transitInfos = [];
         if(itinerariesByModeOutbound && itinerariesByModeOutbound.mode_transit){
           this.transitInfos.push(this.prepareTransitOptionsPage(itinerariesBySegmentThenMode[0].mode_transit));
-        }
-
-        if(itinerariesByModeReturn && itinerariesByModeReturn.mode_transit){
-          //for round trips, show the fare as the sum of the two recommended fares
-          this.transitInfos.push(this.prepareTransitOptionsPage(itinerariesBySegmentThenMode[1].mode_transit));
-          var fare1 = this.transitInfos[0][0].cost;
-          var fare2 = this.transitInfos[1][0].cost;
-          fare_info.mode_transit = (new Number(fare1) + new Number(fare2)).toFixed(2).toString();
-        }else if (fare_info.roundtrip == true){
-          this.transitInfos = [];
+          
+          //check for return, reseet transitInfos if this is round trip and no return
+          if(itinerariesByModeReturn && itinerariesByModeReturn.mode_transit){
+            //for round trips, show the fare as the sum of the two recommended fares
+            this.transitInfos.push(this.prepareTransitOptionsPage(itinerariesBySegmentThenMode[1].mode_transit));
+            var fare1 = this.transitInfos[0][0].cost;
+            var fare2 = this.transitInfos[1][0].cost;
+            fare_info.mode_transit = (new Number(fare1) + new Number(fare2)).toFixed(2).toString();
+          }else if (fare_info.roundtrip == true){
+            this.transitInfos = [];
+          }
         }
 
         if(this.email){

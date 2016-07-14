@@ -255,7 +255,7 @@
             %a.btn{href: "", back: '', ng: {click: "back()"}}
               Back
           .pull-right
-            %a.btn{"ng-click" => "showBusRides=!showBusRides"}
+            %a.btn{ng:{show:'transitInfos.length>0', click: 'showBusRides=!showBusRides'}}
               View more ride options
 
     %div{'ng-show'=>'showBusRides'}
