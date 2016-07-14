@@ -1044,7 +1044,9 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
       currentWeek=0,
       today = moment(),
       date = today.clone().day(0),
-      weekdayCount = 0,
+      openCount = 0,
+      openDays = Object.keys($scope.serviceHours).length, 
+      maxDays = openDays *2,
       newWeek,
       totalCount = 0;
     var makeWeek = function(startDate)
@@ -1061,7 +1063,7 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
         isOpen = (sameMonth && !!$scope.serviceHours[ loopDay.format('YYYY-MM-DD') ]);
         somethingOpen = somethingOpen || isOpen;
         //count the open days, also total (incase open days never reaches 10)
-        weekdayCount += isOpen ? 1 : 0;
+        openCount += isOpen ? 1 : 0;
         totalCount += 1;
         week[i] = {
           moment: loopDay.clone(),
@@ -1085,7 +1087,7 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
     months.push( {name: currentMonth, weeks: [] } );
 
     //build an array of months[].weeks[].days[]
-    while(weekdayCount < 10 && totalCount < 30){
+    while(openCount < openDays && totalCount < maxDays){
       //create the months entry if needed (not on first run)
       if(currentMonth !== date.format('MMMM')){
         currentMonth = date.format('MMMM');
@@ -1148,8 +1150,8 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
       break;
     case 'when':
       //re-populate service hours
-      $http.get(urlPrefix + '/api/v1/services/hours').
-        success(function(data) {
+      planService.getServiceHours($http)
+        .success(function(data) {
           $scope.serviceHours = data;
           _setupTwoWeekSelector();
           $scope.$watch('fromMoment', function(n){
@@ -1167,8 +1169,7 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
             _setupHowLongOptions();
             $scope.showNext = _whenShowNext();
           });
-        }
-      );
+        });
 
       break;
     case 'confirm' :

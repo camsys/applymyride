@@ -574,6 +574,10 @@ angular.module('applyMyRideApp')
         return $http.get(urlPrefix + 'api/v1/users/profile', this.getHeaders());
       }
 
+      this.getServiceHours = function($http){
+        return $http.get(urlPrefix + '/api/v1/services/hours', this.getHeaders());
+      }
+
       this.bookSharedRide = function($http) {
         var requestHolder = {};
         requestHolder.booking_request = [];
