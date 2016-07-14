@@ -17,13 +17,23 @@ angular.module('applyMyRideApp')
         }else{
           $scope.walkingDistance = $scope.profile.walking_distance + " miles";
         }
+        if($scope.email == "")
+            $scope.email_editable = false;
+        else
+            $scope.email_editable = true;
 
       });
 
 
       $scope.toggleEdit = function() {
         if($scope.editable == true){
-          $scope.invalidEmail = !planService.validateEmail($scope.email);
+          if($scope.email_editable){
+            $scope.invalidEmail = !planService.validateEmail($scope.email);
+          }
+          else{
+            $scope.invalidEmail = false;
+          }
+
           if(!$scope.walkingDistance){
             $scope.invalidDistance = true;
           }else{
@@ -34,17 +44,21 @@ angular.module('applyMyRideApp')
           }else{
             $scope.invalidSpeed = false;
           }
+
           if($scope.invalidEmail == false && $scope.invalidDistance == false && $scope.invalidSpeed == false ) {
 
             $scope.walkingDistance = $scope.walkingDistance.substr(0, $scope.walkingDistance.indexOf(" "));
 
-            var profileUpdate = {
-              "attributes": {
-                "email": $scope.email,
-                "walking_speed": $scope.walkingSpeed,
-                "walking_distance": $scope.walkingDistance
-              }
+            var profileUpdate = {};
+                
+            profileUpdate.attributes = {};
+            profileUpdate.attributes.walking_speed = $scope.walkingSpeed;
+            profileUpdate.attributes.walking_distance = $scope.walkingDistance;
+            
+            if($scope.email){
+              profileUpdate.attributes.email = $scope.email;
             }
+
             planService.profileUpdateObject = profileUpdate;
             planService.postProfileUpdate($http);
             $scope.editable = false;
@@ -52,7 +66,12 @@ angular.module('applyMyRideApp')
           }
         }else{
           $scope.editable = true;
+          if($scope.email == "")
+            $scope.email_editable = false;
+          else
+            $scope.email_editable = true;
         }
       };
     }
+
   ]);

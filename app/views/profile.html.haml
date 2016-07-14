@@ -33,14 +33,14 @@
             %i.fa.fa-circle
             %i.fa.fa-circle
             %i.fa.fa-circle
-      .row{style: 'border-top: 1px solid grey; margin: 0px;'}
+      .row{style: 'border-top: 1px solid grey; margin: 0px;', ng: {show: 'email_editable == true'}}
         .col-xs-3.text-right.text-muted
           %h4
             Email:
         .col-xs-9
-          %h4{ng: {show: '!editable'}}
+          %h4{ng: {show: 'editable == false'}}
             {{email}}
-          %input.form-control{ng: {model: 'email', show: 'editable'}}
+          %input.form-control{ng: {model: 'email', show: 'editable == true'}}
       .row{ng: {show: 'invalidEmail == true'}}
         .col-xs-12.col-sm-8.col-sm-offset-2.text-left{style: 'color: red'}
           Please enter only valid email addresses
