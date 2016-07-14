@@ -63,7 +63,55 @@ angular.module('applyMyRideApp')
 
       }
 
+      $scope.cancelTrip = function(paratransitItineraries){
+        $event.stopPropagation();
+        var message = "Are you sure you want to cancel this ride?";
+        var successMessage = 'Your trip has been cancelled.'
+        
+        bootbox.confirm({
+          message: message,
+          buttons: {
+            'cancel': {
+              label: 'Keep Ride'
+            },
+            'confirm': {
+              label: 'Cancel Ride'
+            }
+          },
+          callback: function(result) {
+            if(result == true){
+              var cancel = {};
+              cancel.bookingcancellation_request = [];
+              angular.forEach(paratransitItineraries, function(itinerary, index) {
+                var bookingCancellation = {};
+                if(itinerary.id){
+                  bookingCancellation.itinerary_id = itinerary.id;
+                }
+                else if(itinerary.booking_confirmation){
+                  bookingCancellation.booking_confirmation = itinerary.booking_confirmation;     
+                }
+                cancel.bookingcancellation_request.push(bookingCancellation);
+              });
+              
+              var cancelPromise = planService.cancelTrip($http, cancel)
+              cancelPromise.error(function(data) {
+                bootbox.alert("An error occurred, your trip was not cancelled.  Please call 1-844-PA4-RIDE for more information.");
+              });
+              cancelPromise.success(function(data) {
+                bootbox.alert(successMessage, function(){
+                    $location.path("/plan/where");
+                });
+                ipCookie('rideCount', ipCookie('rideCount') - 1);
+
+              })
+            }
+          }
+        });
+      }
+
       $scope.prepareTrip();
 
     }
+
+
   ]);
