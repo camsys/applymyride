@@ -331,7 +331,12 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
         break;
       case 'assistant':
         planService.hasEscort = $scope.hasEscort;
-        planService.numberOfCompanions = $scope.numberOfCompanions || 0;
+        if($scope.hasCompanions){
+          planService.numberOfCompanions = $scope.numberOfCompanions || 0;
+        }else{
+          planService.numberOfCompanions = 0;
+        }
+        
         $location.path('/plan/instructions_for_driver');
         break;
       case 'instructions_for_driver':

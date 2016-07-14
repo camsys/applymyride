@@ -147,12 +147,12 @@ angular.module('applyMyRideApp')
           planService.getPastRides($http, $scope, ipCookie);
           planService.getFutureRides($http, $scope, ipCookie);
           var lastDest, lastOrigin;
-          if(typeof '' !== typeof result.data.last_destination && result.data.last_destination.formatted_address){
+          if(result.data.last_destination && typeof '' !== typeof result.data.last_destination && result.data.last_destination.formatted_address){
             lastDest = result.data.last_destination.formatted_address;
           }else{
             lastDest = result.data.last_destination || '';
           }
-          if(typeof '' !== typeof result.data.last_origin && result.data.last_origin.formatted_address){
+          if(result.data.last_origin && typeof '' !== typeof result.data.last_origin && result.data.last_origin.formatted_address){
             lastOrigin = result.data.last_origin.formatted_address;
           }else{
             lastOrigin = result.data.last_origin || '';
