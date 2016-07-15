@@ -322,7 +322,7 @@
           .pull-left
             %a.btn{ng:{hide:'!!transitItineraries', click: 'showBusRides=!showBusRides'}}
               Back
-            %a.btn{ng:{show:'!!transitItineraries', click: 'back()'}}
+            %a.btn{href:'', back:'', ng:{show:'!!transitItineraries', click: 'back()'}}
               Back
           .pull-right
             %a.btn.btn-primary{href: "", back: '', ng: {click: "saveBusTrip()"}}
