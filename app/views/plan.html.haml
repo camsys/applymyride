@@ -237,14 +237,14 @@
           .col-xs-9.col-md-10
             %h4.text-left
               {{request.purpose}}
-        .row.row-eq-height.rounded-border{'ng-hide'=>'showBusRides || !!transitItineraries'}
+        .row.row-eq-height.rounded-border{'ng-hide'=>'showBusRides || paratransitItineraries.length == 0'}
           .col-xs-3.col-md-2
             %p.text-left.text-muted
               Cost
           .col-xs-9.col-md-10
             %h4.text-left
               {{fare_info["mode_paratransit"] | currency | free}}
-    .notAllRides{'ng-hide'=>'showBusRides || !!transitItineraries'}
+    .notAllRides{'ng-hide'=>'showBusRides || paratransitItineraries.length == 0'}
       .row.row-eq-height
         .col-xs-12.col-md-6.col-md-offset-3.col-sm-8.col-sm-offset-2.text-center{style:'margin-bottom:10px;'}
           %a.btn.btn-primary.btn-block{href: "", ng: {click: 'next()'}}
@@ -258,7 +258,7 @@
             %a.btn{ng:{show:'transitInfos.length>0', click: 'showBusRides=!showBusRides'}}
               View more ride options
 
-    %div{'ng-show'=>'showBusRides || !!transitItineraries'}
+    %div{'ng-show'=>'showBusRides || paratransitItineraries.length == 0'}
       .row
         .col-xs-12.col-md-6.col-md-offset-3.col-sm-8.col-sm-offset-2
           %h2{style: 'font-weight:600;'}
@@ -320,9 +320,9 @@
       .row.row-eq-height
         .col-xs-12.col-md-6.col-md-offset-3.col-sm-8.col-sm-offset-2.text-center
           .pull-left
-            %a.btn{ng:{hide:'!!transitItineraries', click: 'showBusRides=!showBusRides'}}
+            %a.btn{ng:{hide:'paratransitItineraries.length == 0', click: 'showBusRides=!showBusRides'}}
               Back
-            %a.btn{href:'', back:'', ng:{show:'!!transitItineraries', click: 'back()'}}
+            %a.btn{href:'', back:'', ng:{show:'paratransitItineraries.length == 0', click: 'back()'}}
               Back
           .pull-right
             %a.btn.btn-primary{href: "", back: '', ng: {click: "saveBusTrip()"}}
