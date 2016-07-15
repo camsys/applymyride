@@ -439,15 +439,19 @@ img.official-logo {
 
 .from-to-where input::-webkit-input-placeholder {
   color: black;
+  opacity: 1;
 }
 .from-to-where input:-moz-placeholder {
   color: black;
+  opacity: 1;
 }
 .from-to-where input::-moz-placeholder {
   color: black;
+  opacity: 1;
 }
 .from-to-where input:-ms-input-placeholder {
   color: black;
+  opacity: 1;
 }
 
 .cs-two-week-date-picker .week{
@@ -505,21 +509,17 @@ button{
   margin-left:-5px;
 }
 .cs-time-input input.cs-ampm{
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
+  opacity: 0;
+  width: 0px;
 }
-.cs-time-input input.cs-ampm:after,
-.cs-time-input input.cs-ampm::after{
+.cs-time-input input.cs-ampm + .cs-ampmspan::after{
   display: inline-block;
   content:'PM';
   border:1px solid #CCC;
   padding: 4px;
   border-radius: 4px;
-  margin-top: -6px;
 }
-.cs-time-input input.cs-ampm:checked:after,
-.cs-time-input input.cs-ampm:checked::after{
+.cs-time-input input.cs-ampm:checked + .cs-ampmspan::after{
   content:'AM';
 }
 .time-when select.disabled{
