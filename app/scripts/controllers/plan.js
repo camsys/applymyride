@@ -542,6 +542,13 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
     }, 500);
   }
 
+  $scope.whereShowNext = function(){
+    if( !$scope.toFromMarkers.from || !$scope.toFromMarkers.to){ 
+      return false;
+    }
+    return (!!$scope.toFromMarkers.from.map && !!$scope.toFromMarkers.to.map);
+  }
+
   $scope.mapFrom = function(place){
     if(lastFrom != place){
       mapOnBlur(place, 'from');
