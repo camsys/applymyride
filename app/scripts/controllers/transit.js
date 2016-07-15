@@ -134,6 +134,34 @@ angular.module('applyMyRideApp')
         $scope.saveTransitItinerary()
       }
 
+      $scope.saveToMyRides = function(){
+        var itineraries = {}
+        var selectItineraries = [];
+        
+        var tripId = planService.tripId;
+        var outboundItineraryId = $routeParams.departid;
+        var returnItineraryId = $routeParams.returnid;
+
+        if(outboundItineraryId > 0)
+          selectItineraries.push({"trip_id":tripId, "itinerary_id":outboundItineraryId});
+        if(returnItineraryId > 0)
+          selectItineraries.push({"trip_id":tripId, "itinerary_id":returnItineraryId});
+
+        itineraries.select_itineraries = selectItineraries;
+
+        if(outboundItineraryId < 1 && returnItineraryId < 1){
+          bootbox.alert("An error occurred and we were unable to save this trip to your list of rides.  Please try your search again.");
+        }
+        else {
+          var promise = planService.selectItineraries($http, itineraries);
+          promise.then(function(result) {
+            ipCookie('rideCount', ipCookie('rideCount') + 1);
+            $scope.rideCount = ipCookie('rideCount');
+            $location.path("/transitconfirm");
+          });
+        }
+      }
+
       $scope.saveTransitItinerary = function(){
         var tripId = planService.tripId;
         planService.outboundTripId
