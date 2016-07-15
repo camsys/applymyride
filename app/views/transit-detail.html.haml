@@ -32,8 +32,10 @@
 
   .row.sticky-footer{style: 'margin-top: 30px'}
     .col-md-8.col-md-offset-2.col-xs-12
-      %a.btn.btn-primary.btn-block{href: "", ng: {click: 'saveToMyRides()', controller:'TransitController'}}
+      %a.btn.btn-primary.btn-block{href: "", ng: {click: 'saveBusTrip()', hide:'transitSaved'}}
         Save to My Rides
+      %a.btn.btn-primary.btn-block{href: "", style:'background-color:red;',ng: {click: 'cancelThisBusTrip()', show:'transitSaved'}}
+        Cancel this ride
 
     .col-md-8.col-md-offset-2.col-xs-12
       .pull-left

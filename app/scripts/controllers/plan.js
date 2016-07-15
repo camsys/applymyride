@@ -64,7 +64,7 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
 
   $scope.reset = function() {
     planService.reset();
-    $location.path("/plan/fromDate");
+    $location.path("/plan/where");
   };
 
   $scope.goPlanWhere = function(){
@@ -122,6 +122,26 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
     $scope.step = 'rebook';
     $location.path('/plan/rebook');
   };
+  $scope.cancelThisBusTrip = function() {
+    var cancelRequest = {bookingcancellation_request: []};
+    var leg1, leg2;
+    leg1 = {itinerary_id: planService.transitItineraries[0][0].id};
+    cancelRequest.bookingcancellation_request.push( leg1 );
+    if(planService.fare_info.roundtrip){
+      leg2 = {itinerary_id: planService.transitItineraries[1][0].id};
+      cancelRequest.bookingcancellation_request.push( leg2 );
+    }
+    var cancelPromise = planService.cancelTrip($http, cancelRequest)
+    cancelPromise.error(function(data) {
+      bootbox.alert("An error occurred, your trip was not cancelled.  Please call 1-844-PA4-RIDE for more information.");
+    });
+    cancelPromise.success(function(data) {
+      bootbox.alert('Your trip has been cancelled');
+      ipCookie('rideCount', ipCookie('rideCount') - 1);
+      $scope.transitSaved = false;
+      planService.transitSaved = false;
+    })
+  }
 
   $scope.cancelTrip = function($event, tab, index) {
     $event.stopPropagation();
@@ -398,6 +418,26 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
     }
     */
   };
+
+  $scope.saveBusTrip = function(){
+    var tripId = planService.tripId;
+    var selectedItineraries = [{"trip_id":tripId, "itinerary_id":planService.transitInfos[0][0].id}];
+
+    if(planService.fare_info.roundtrip == true){
+      selectedItineraries.push({"trip_id":tripId, "itinerary_id":planService.transitInfos[1][0].id});
+    }
+    var selectedItineraries = {"select_itineraries": selectedItineraries};
+    
+    var promise = planService.selectItineraries($http, selectedItineraries);
+    promise.then(function(result) {
+      ipCookie('rideCount', ipCookie('rideCount') + 1);
+      $scope.rideCount = ipCookie('rideCount');
+      $scope.transitSaved = true;
+      planService.transitSaved = true;
+      bootbox.alert("Your trip has been saved");
+    });
+  }
+
 
   function _bookTrip(){
     planService.prepareConfirmationPage($scope);

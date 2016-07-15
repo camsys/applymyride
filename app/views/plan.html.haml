@@ -325,8 +325,10 @@
             %a.btn{href:'', back:'', ng:{show:'paratransitItineraries.length == 0', click: 'back()'}}
               Back
           .pull-right
-            %a.btn.btn-primary{href: "", back: '', ng: {click: "saveBusTrip()"}}
+            %a.btn.btn-primary{href: "", ng: {click: "saveBusTrip()", hide:'transitSaved'}}
               Save this bus trip
+            %a.btn.btn-primary{href: "", style:'background-color:red;',ng: {click: 'cancelThisBusTrip()', show:'transitSaved'}}
+              Cancel this trip
 
   .list_itineraries.col-xs-12.col-sm-8.col-sm-offset-2.no-padding{ng: {show: 'step==="list_itineraries" && noresults == true'}}
     %h2 We did not find any rides matching your request
