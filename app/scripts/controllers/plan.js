@@ -560,7 +560,6 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
     //blur handler runs each time the autocomplete input is blurred via selecting, or just blurring
     //If it was blurred because of a selection, we don't want it to run -- let the selectTo or selectFrom run instead
     //return if no change, return if place is empty, or we're supposed to ignore blur events
-    console.log(toFrom, lastMappedPlaces[toFrom], place);
     if( (place && lastMappedPlaces[toFrom] === place) || true === ignoreBlur || (place && 6 > place.length)){
       //hide the place marker if place is empty or too short
       if((!place || 6 > place.length) && $scope.toFromMarkers[toFrom]){
