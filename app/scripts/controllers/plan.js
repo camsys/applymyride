@@ -510,7 +510,8 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
     }
   }
   //begin private scope for keeping track of last input, and mapping when appropriate
-  var lastFrom, lastTo;
+  var lastFrom = $scope.from || $scope.fromDefault;
+  var lastTo = $scope.to || $scope.toDefault;
   var lastMappedPlaces = {};
   var ignoreBlur=false;
   function mapOnBlur( place, toFrom )
@@ -552,12 +553,16 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
 
   $scope.mapFrom = function(place){
     if(lastFrom != place){
-      mapOnBlur(place, 'from');
+      setTimeout(function(){
+        mapOnBlur(place, 'from');
+      }, 300);
     }
   }
   $scope.mapTo = function(place){
     if(lastTo != place){
-      mapOnBlur(place, 'to');
+      setTimeout(function(){
+        mapOnBlur(place, 'to');
+      }, 300);
     }
   }
   $scope.focusTo = function(e){
