@@ -3,15 +3,19 @@
     .row{style: 'margin-bottom: 1em;', ng: {show: 'email'}}
       .col-xs-12.text-center{style: 'padding: 0;'}
         %h2 Your trip has been saved
-    .row{style: 'margin-bottom: 1em; margin-top: 1em;'}
-      .col-xs-12.col-md-6.col-md-offset-3.col-sm-6.col-sm-offset-3.text-left.no-padding
-        %a.btn.btn-primary.btn-block{href: '', ng: {click: 'reset()'}}
-          Plan another ride
-        %a.btn.btn-danger.btn-block{style: 'margin-top: 1em; margin-bottom: 1em;', href: '', ng: {click: 'cancelTrip(paratransitItineraries)'}}
-          Cancel this ride
-        %a.btn-block.text-center.link-btn{"ng-href" => "#/plan/my_rides"}
-          View my saved rides
+    
   .headerwrap{ng:{show: '$index == 0'}}
+    .row
+      .col-xs-12.col-md-8.col-md-offset-2.no-padding
+        .row
+          .col-xs-12{style:' background-color: rgb(205,254,206); padding;10px;'}
+            %h2
+              %span
+                Shared Ride
+              %span{ng: {hide: 'tripCancelled'}} 
+                (booked)
+              %span{style: 'color: red', ng: {show: 'tripCancelled'}}
+                (cancelled)
     .row
       .col-xs-6.text-right.text-muted
         Escorts/Companions:
@@ -22,9 +26,7 @@
         Instructions to Driver:
       .col-xs-6.text-left
         {{driverInstructions}}
-    .row
-      .col-xs-12.col-md-8.col-md-offset-2.no-padding
-        %h2 Trip Details
+
   .row{style: 'margin-top: 1em;', ng: {show: '$index == 0'}}
     .col-xs-12.col-md-8.col-md-offset-2.no-padding
       .row
@@ -84,6 +86,14 @@
                 .leg-info.col-xs-12.leg-header
                   %h5.text-muted ARRIVE
                   %h4.text-muted {{itinerary.end_location.name}}
+  .row.sticky-footer{style: 'margin-top: 2em'}
+    .col-md-8.col-md-offset-2.col-xs-12
+      %a.btn.btn-primary.btn-block{style:'background-color:red; margin-top: 1em; margin-bottom: 1em;', href: '', ng: {click: 'cancelTrip()', hide:'tripCancelled'}}
+        Cancel this ride
+      %a.btn.btn-primary.btn-block{href: '', ng: {click: 'reset()'}}
+        Plan another ride
+      %a.btn-block.text-center.link-btn{"ng-href" => "#/plan/my_rides"}
+        View my saved rides
 .container{style: 'padding: 0;', ng: {show: 'booking_failed'}}
   .row{style: 'margin-bottom: 1em;'}
     .col-xs-12.col-md-8.col-md-offset-2{style: 'padding: 0;'}
