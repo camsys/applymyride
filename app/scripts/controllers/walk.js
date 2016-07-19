@@ -11,7 +11,7 @@ angular.module('applyMyRideApp')
 
       $scope.reset = function() {
         planService.reset();
-        $location.path("/plan/fromDate");
+        $location.path("/plan/where");
       };
 
       $scope.toggleEmail = function() {
