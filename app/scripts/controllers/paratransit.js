@@ -21,7 +21,7 @@ angular.module('applyMyRideApp')
           result.wait_endDesc = moment(result.wait_end).format('h:mm a');
           result.arrivalDesc = moment(result.arrival).format('h:mm a');
         });
-        $scope.purpose = planService.itineraryRequestObject.trip_purpose;
+        
         angular.forEach(planService.booking_results, function(result, index) {
           result.wait_startDesc = moment(result.wait_start).format('h:mm a');
           result.wait_endDesc = moment(result.wait_end).format('h:mm a');
@@ -31,6 +31,10 @@ angular.module('applyMyRideApp')
             $scope.booking_failed = true;
           }
         });
+
+        $scope.purpose = planService.itineraryRequestObject.trip_purpose;
+
+        $scope.tripCancelled = !planService.booking_results[0].booked;
 
         if(!$scope.booking_failed){
           ipCookie('rideCount', ipCookie('rideCount') + 1);
@@ -63,10 +67,11 @@ angular.module('applyMyRideApp')
 
       }
 
-      $scope.cancelTrip = function(paratransitItineraries){
-        $event.stopPropagation();
+      $scope.cancelTrip = function(){
         var message = "Are you sure you want to cancel this ride?";
         var successMessage = 'Your trip has been cancelled.'
+
+        var paratransitItineraries = planService.paratransitItineraries;
         
         bootbox.confirm({
           message: message,
@@ -99,9 +104,10 @@ angular.module('applyMyRideApp')
               });
               cancelPromise.success(function(data) {
                 bootbox.alert(successMessage, function(){
-                    $location.path("/plan/where");
+                    ipCookie('rideCount', ipCookie('rideCount') - 1);
+                    $scope.tripCancelled = true;
                 });
-                ipCookie('rideCount', ipCookie('rideCount') - 1);
+               
 
               })
             }
