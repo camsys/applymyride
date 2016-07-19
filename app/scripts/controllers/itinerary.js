@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('applyMyRideApp')
-  .controller('ItineraryController', ['$scope','$routeParams', '$location', 'flash', 'planService', '$http',
-    function ($scope, $routeParams, $location, flash, planService, $http) {
+  .controller('ItineraryController', ['$scope','$routeParams', '$location', 'flash', 'planService', '$http','ipCookie',
+    function ($scope, $routeParams, $location, flash, planService, $http, ipCookie) {
       $scope.showDiv = {};
       $scope.location = $location.path();
       $scope.trip = planService.selectedTrip;
@@ -45,9 +45,64 @@ angular.module('applyMyRideApp')
       }
       $scope.mode = $scope.trip.mode;
 
-      $scope.show = function($event){
-        var index = $(event.target).parents('.timeline').attr('index');
-        $scope.showDiv[index] = !$scope.showDiv[index];
+      if($scope.trip.itineraries.length > 0){
+        $scope.tripCancelled = $scope.trip.itineraries[0].status == "canceled" ? true : false;
       }
+
+      $scope.cancelTrip = function(){
+
+        $scope.trip = planService.selectedTrip;
+        
+
+        var message = "Are you sure you want to cancel this ride?";
+        var successMessage = 'Your trip has been cancelled.';
+        
+        bootbox.confirm({
+          message: message,
+          buttons: {
+            'cancel': {
+              label: 'Keep Ride'
+            },
+            'confirm': {
+              label: 'Cancel Ride'
+            }
+          },
+          callback: function(result){
+            if(result == true){
+              var cancel = {};
+              cancel.bookingcancellation_request = [];
+              angular.forEach($scope.trip.itineraries, function(itinerary, index) {
+                var bookingCancellation = {};
+                if($scope.trip.mode == 'mode_transit' && itinerary.id){
+                  bookingCancellation.itinerary_id = itinerary.id;
+                }
+                else if($scope.trip.mode == 'mode_paratransit' && itinerary.booking_confirmation){
+                  bookingCancellation.booking_confirmation = itinerary.booking_confirmation;     
+                }
+                cancel.bookingcancellation_request.push(bookingCancellation);
+              });
+              
+              var cancelPromise = planService.cancelTrip($http, cancel)
+              cancelPromise.error(function(data) {
+                bootbox.alert("An error occurred, your trip was not cancelled.  Please call 1-844-PA4-RIDE for more information.");
+              });
+              cancelPromise.success(function(data) {
+                bootbox.alert(successMessage);
+                ipCookie('rideCount', ipCookie('rideCount') - 1);
+                $scope.tripCancelled = true;
+              })
+            }
+          }
+        })
+      }
+
+    $scope.show = function($event){
+      var index = $(event.target).parents('.timeline').attr('index');
+      $scope.showDiv[index] = !$scope.showDiv[index];
     }
-  ]);
+
+    $scope.viewMyRides = function() {
+      $location.path("/plan/my_rides");
+    };
+  }
+]);
