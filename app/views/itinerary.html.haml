@@ -1,12 +1,3 @@
-.container.no-padding
-  .row{style: 'margin-top: 1em;'}
-    .col-md-8.col-md-offset-2.col-xs-12
-      .row{ng: {show: 'email'}}
-        .col-xs-12.col-md-6.col-md-offset-3.col-sm-6.col-sm-offset-3.text-left
-          %a.btn.btn-success.btn-block{ng: {click: 'reset()'}}
-            Plan a new trip
-          %a.btn-block.text-center{ng: {href: '#/plan/my_rides'}}
-            View my saved rides
 .transitwrapper#itinerary{ng: {show: 'mode==="mode_transit"'}}
   %div{style: 'margin-top: 1em', ng: {show: 'showEmail'}}
     .row
@@ -31,8 +22,14 @@
   .row{style: 'margin-bottom: 1em;'}
     .col-xs-12.col-md-8.col-md-offset-2.no-padding
       .row
-        .col-xs-12
-          %h2 Trip Details
+        .col-xs-12{style:' background-color: rgb(205,254,206); padding;10px;'}
+          %h2
+            %span
+              Bus Ride
+            %span{ng: {hide: 'tripCancelled'}} 
+              (saved)
+            %span{style: 'color: red', ng: {show: 'tripCancelled'}}
+              (cancelled)
   .transititinerary{index: '{{$index}}', ng: {repeat: 'itinerary in itineraries'}}
     .row{ng: {show: '$index == 0 && itineraries.length > 1'}}
       .col-xs-12.col-md-8.col-md-offset-2.no-padding
@@ -131,8 +128,14 @@
   .row{style: 'margin-bottom: 1em;', ng: {show: '$index == 0'}}
     .col-xs-12.col-md-8.col-md-offset-2.no-padding
       .row
-        .col-xs-12
-          %h2 Trip Details
+        .col-xs-12{style:' background-color: rgb(205,254,206); padding;10px;'}
+          %h2
+            %span
+              Shared Ride
+            %span{ng: {hide: 'tripCancelled'}} 
+              (saved)
+            %span{style: 'color: red', ng: {show: 'tripCancelled'}}
+              (cancelled)
   .headerwrap{ng: {show: '$index == 0'}}
     .row
       .col-xs-6.text-right.text-muted
@@ -208,8 +211,8 @@
   .row{style: 'margin-bottom: 1em;', ng: {show: '$index == 0'}}
     .col-xs-12.col-md-8.col-md-offset-2.no-padding
       .row
-        .col-xs-12
-          %h2 Trip Details
+        .col-xs-12{style:' background-color: rgb(205,254,206); padding;10px;'}
+          %h2 Walk Details
 .walkitinerary#walk{index: '{{$index}}', ng: {repeat: 'itinerary in walkItineraries'}}
   .row{ng: {show: '$index == 0'}}
     .col-xs-12.col-md-8.col-md-offset-2.no-padding
@@ -277,10 +280,16 @@
                 .leg-info.col-xs-12.leg-header
                   %h4 {{itinerary.destinationDesc}}
 
-.container.sticky-footer
-  .row{style: 'margin-top: 10px'}
-    .col-md-8.col-md-offset-2.col-xs-6.col-xs-offset-3
-      .pull-left
-        %a.btn-back{href: "", back: '', ng: {click: "back()"}}
-          %span{ng: {include: "'views/button-chevron-left.html'"}}
-          Back
+.row.sticky-footer{style: 'margin-top: 2em'}
+  .col-md-8.col-md-offset-2.col-xs-12
+    %a.btn.btn-primary.btn-block{href: "", style:'background-color:red;',ng: {click: 'cancelTrip()', hide:'tripCancelled'}}
+      Cancel this ride
+    %a.btn.btn-primary.btn-block{href: "", ng: {click: "viewMyRides()", show:'tripCancelled'}}
+      View all my rides
+  .col-md-8.col-md-offset-2.col-xs-12{style: 'margin-top: 2em; margin-bottom: 1em;'}
+    .pull-left
+      %a.btn{href: "", back: '', ng: {click: "back()"}}
+        Back
+    .pull-right
+      %a.btn.btn-link{href: "/#/"}
+        Book another ride
