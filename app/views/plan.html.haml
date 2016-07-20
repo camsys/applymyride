@@ -62,10 +62,10 @@
             .alert.alert-danger{role:'alert', ng:{show:'errors.rangeErrorto'}}
               The location you selected is outside the service area.
         .row
-          .col-md-8.col-md-offset-2.col-xs-12
+          .col-lg-6.col-lg-offset-3.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1.col-xs-12
             %div.map-canvas{'ui-map' => 'whereToMap', 'ui-options' => 'mapOptions', ng: {show: 'showMap'}}
-        .row.sticky-footer{style: 'margin-top: 30px'}
-          .col-md-8.col-md-offset-2.col-xs-12
+        .row.unstuck-foot{style: 'margin-top: 30px'}
+          .col-lg-6.col-lg-offset-3.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1.col-xs-12
             .pull-left
               %a.btn{href: "", back: '', ng: {click: "back()", hide:'backToConfirm'}}
                 Start over
@@ -165,7 +165,7 @@
               More trip purposes
             %a.btn.btn-link.btn-block{href: "", style: 'margin-bottom:4px; width:100%; padding-left:0px; padding-right:0px;', ng: {show:'showAllPurposes', click: 'showAllPurposes = false;'}}
               Show fewer trip purposes
-    .row.sticky-footer{style: 'margin-top: 30px'}
+    .row.unstuck-foot{style: 'margin-top: 30px'}
       .col-md-8.col-md-offset-2.col-xs-12
         .pull-left
           %a.btn{href: "", back: '', ng: {click: "back()"}}
@@ -551,7 +551,7 @@
             %h4{style:'display:inline;'}
               How Many?
             %select{id:'numberofcompanions', ng: {model: 'numberOfCompanions', options: 'number for number in questions.limit'}}
-      .row.sticky-footer{style: 'margin-top: 30px'}
+      .row.unstuck-foot{style: 'margin-top: 30px'}
         .col-md-8.col-md-offset-2.col-xs-12
           %a.btn.btn-back{href: "", back: '', ng: {click: "back()"}}
             Back
@@ -568,7 +568,7 @@
       .row
         .form-group
           %textarea.form-control{placeholder: 'Dear Driver, please...', rows: '5', ng: {model: 'driverInstructions'}}
-      .row.sticky-footer{style: 'margin-top: 30px'}
+      .row.unstuck-foot{style: 'margin-top: 30px'}
         .col-md-8.col-md-offset-2.col-xs-12
           %a.btn.btn-back{href: "", back: '', ng: {click: "back()"}}
             %span
