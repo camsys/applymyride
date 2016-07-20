@@ -4,24 +4,21 @@
       .col-lg-6.col-lg-offset-3.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1.col-xs-12
         %h2
           %strong
-            When?
-    .row
-      .col-lg-6.col-lg-offset-3.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1.col-xs-12
-        %h3 What day?
+            When do you want to arrive?
     .row
       .col-lg-6.col-lg-offset-3.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1.col-xs-12
         .cs-two-week-date-picker
-          %div{class: 'week'}
-            %div{class: 'day'} Sun
-            %div{class: 'day'} Mon
-            %div{class: 'day'} Tue
-            %div{class: 'day'} Wed
-            %div{class: 'day'} Thu
-            %div{class: 'day'} Fri
-            %div{class: 'day'} Sat
           %div{ng: {repeat: 'month in twoWeeksSelector.months' }, class: 'month'}
             %h3
               {{month.name}}
+            %div{class: 'week'}
+              %div{class: 'day month-heading'} Sun
+              %div{class: 'day month-heading'} Mon
+              %div{class: 'day month-heading'} Tue
+              %div{class: 'day month-heading'} Wed
+              %div{class: 'day month-heading'} Thu
+              %div{class: 'day month-heading'} Fri
+              %div{class: 'day month-heading'} Sat
             %div{ng: {repeat: 'week in month.weeks' }, class: 'week'}
               %div{ class: 'day', 
                     tabindex:'{{day.tabindex}}',
@@ -30,15 +27,6 @@
                           disabled:'!day.businessDay', 
                           class:'{ disabled: !day.businessDay, selected: fromMoment.isSame(day.moment, "day")}' } }
                 {{day.day}}
-    .row{ng:{show:'serviceOpen'}}
-      .col-lg-6.col-lg-offset-3.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1.col-xs-12
-        %h3{style:'display:inline'}
-          Service Hours:
-        %span.service-hours
-        {{serviceOpen}} to {{serviceClose}}
-    .row
-      .col-lg-6.col-lg-offset-3.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1.col-xs-12
-        %h3 What time do you want to arrive?
     .row
       .col-lg-6.col-lg-offset-3.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1.col-xs-12
         %cs-time-input{ng:{model:'fromMoment'}}
