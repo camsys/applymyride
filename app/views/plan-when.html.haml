@@ -27,7 +27,7 @@
                           disabled:'!day.businessDay', 
                           class:'{ disabled: !day.businessDay, selected: fromMoment.isSame(day.moment, "day")}' } }
                 {{day.day}}
-    .row
+    .row{style:'padding:11px 0px;'}
       .col-lg-6.col-lg-offset-3.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1.col-xs-12
         %cs-time-input{ng:{model:'fromMoment'}}
     .row
@@ -39,7 +39,7 @@
     .row{'ng-show'=>'returnMoment'}
       .col-lg-6.col-lg-offset-3.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1.col-xs-12
         Return at {{returnMoment | momentHMA}}
-    .row.sticky-footer{style: 'margin-top: 30px'}
+    .row.unstuck-foot{style: 'margin-top: 30px'}
       .col-lg-6.col-lg-offset-3.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1.col-xs-12
         .pull-left
           %a.btn{href: "", back: '', ng: {click: "back()", hide:'backToConfirm'}}

@@ -421,8 +421,8 @@ img.official-logo {
   color:#EEE;
   background-color: #14834D;
 }
-.btn.btn-primary:hover,
-.btn.btn-next:hover{
+.btn.btn-primary,
+.btn.btn-next{
   text-decoration: none;
 }
 .btn.disabled{
@@ -454,42 +454,45 @@ img.official-logo {
   opacity: 1;
 }
 
-.cs-two-week-date-picker .week{
-  display:flex;
-  flex-flow:row;
+.cs-two-week-date-picker{
+  .week{
+    display:flex;
+    flex-flow:row;
+  }
+
+  .day{
+    display:inline-block;
+    width:14.25%;
+    background-color: #DDD;
+    border: 1px solid #EEE;
+    padding: 15px 0px;
+    text-align:center;
+    font-weight:bold;
+  }
+  .week.names .day{
+    font-weight:initial;
+  }
+  .day.selected{
+    color: #EEE;
+    background-color:#14834D;
+  }
+  .day.today,
+  .day.disabled,
+  .day.different-month{
+    pointer-events:none;
+    cursor:default;
+    color:#AAA;
+    background-color:#DDD;
+  }
+  .month-heading{
+    background-color:unset;
+    padding:3px;
+  }
+  .month{
+    padding-top:7px;
+  }
 }
 
-.cs-two-week-date-picker .day{
-  display:inline-block;
-  width:14.25%;
-  background-color: #DDD;
-  border: 1px solid #EEE;
-  padding: 15px 0px;
-  text-align:center;
-  font-weight:bold;
-}
-.cs-two-week-date-picker .week.names .day{
-  font-weight:initial;
-}
-.cs-two-week-date-picker .day.selected{
-  color: #EEE;
-  background-color:#14834D;
-}
-.cs-two-week-date-picker .day.today,
-.cs-two-week-date-picker .day.disabled,
-.cs-two-week-date-picker .day.different-month{
-  pointer-events:none;
-  cursor:default;
-  color:#AAA;
-  background-color:#DDD;
-}
-.cs-two-week-date-picker .month-heading{
-  background-color:unset;
-  padding:3px;
-}
-.cs-two-week-date-picker .month{
-  padding-top:7px;
-}
 input,
 button{
   outline:none;
@@ -584,4 +587,14 @@ i.cs-map-marker.A{
   padding: 7px 3px;
   border-top: none;
   border-right: none;
+}
+.unstuck-foot{
+  @media only screen and (max-device-width: 480px){
+    position:relative;
+  }
+}
+#PlanTemplate{
+  @media only screen and (max-device-width: 480px){
+    margin:0px -30px !important;
+  }
 }
