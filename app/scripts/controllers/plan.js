@@ -12,7 +12,7 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
   }else if( document.location.hostname.match(/findmyridepa2-qa\.camsys-apps\.com/) ){
     $scope.apiHost = 'oneclick-pa-qa.camsys-apps.com';
   }
-  var urlPrefix = 'http://' + $scope.apiHost + '/';
+  var urlPrefix = '//' + $scope.apiHost + '/';
 
   var eightAm = new Date();
   eightAm.setSeconds(0);
@@ -22,8 +22,8 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
   $scope.minReturnDate = new Date();
   $scope.marker = null;
   $scope.toFromMarkers = {};
-  $scope.toFromIcons={'to' : 'http://maps.google.com/mapfiles/markerB.png',
-                      'from' : 'http://maps.google.com/mapfiles/marker_greenA.png' };
+  $scope.toFromIcons={'to' : '//maps.google.com/mapfiles/markerB.png',
+                      'from' : '//maps.google.com/mapfiles/marker_greenA.png' };
   $scope.locations = [];
   $scope.placeIds = [];
   $scope.showConfirmLocationMap = false;
@@ -1463,7 +1463,7 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
       break;
     case 'list_itineraries':
       if($routeParams.test){
-        $http.get('http://' + $scope.apiHost + '/data/bookingresult.json').
+        $http.get('//' + $scope.apiHost + '/data/bookingresult.json').
           success(function(data) {
             planService.itineraryRequestObject = data.itinerary_request;
             planService.searchResults = data.itinerary_response;

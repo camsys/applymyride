@@ -77,7 +77,6 @@ angular.module('applyMyRideApp').factory('flash', function($rootScope) {
     },
     getMessage: function() {
       return currentMessage;
-      currentMessage = null;
     }
   };
 });
