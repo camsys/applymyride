@@ -496,17 +496,30 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
     $scope.to = null;
   }
 
-  $scope.getLocations = function(typed){
+  $scope.getFromLocations = function(typed){
+    $scope.getLocations(typed, true);
+  }
+
+  $scope.getToLocations = function(typed){
+    $scope.getLocations(typed, false);
+  }
+
+  $scope.getLocations = function(typed, addCurrentLocation){
     if(typed){
       var config = planService.getHeaders();
       $scope.suggestions = LocationSearch.getLocations(typed, config, planService.email != null);
       $scope.suggestions.then(function(data){
-
-        var choices = [];
+ 
         $scope.placeLabels = [];
         $scope.placeIds = [];
         $scope.placeAddresses = [];
         $scope.poiData = [];
+
+        var choices = [];
+
+        if(addCurrentLocation && $scope.isMobile()){
+          choices.push({label:'Current Location', option: true})
+        }
 
         var savedPlaceData = data[1].savedplaces;
         if(savedPlaceData && savedPlaceData.length > 0){
@@ -519,7 +532,6 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
           $scope.poiData = data[1].poiData;
           $scope.placeAddresses = $scope.placeAddresses.concat(data[1].savedplaceaddresses);
         }
-
 
         if(data.length > 2){
           var recentSearchData = data[2].recentsearches;
@@ -628,20 +640,33 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
     $scope.showNext = false;
     var placeIdPromise = $q.defer();
     $scope.placeLabels = $scope.placeLabels || [];
+
+    if(toFrom == 'from' && $scope.isMobile()){
+      $scope.placeLabels.push("Current Location");
+    }
+
     var selectedIndex = $scope.placeLabels.indexOf(place);
+    
     $scope.errors['noResults'+toFrom] = false;
     if($scope.toFromMarkers[toFrom]){
       $scope.toFromMarkers[toFrom].setMap(null);
     }
-    if(-1 < selectedIndex && selectedIndex < $scope.poiData.length){
+
+    if(-1 < selectedIndex && $scope.placeLabels[selectedIndex] == $scope.placeLabels[$scope.placeLabels.length-1]){
+      //this is a POI result, get the 1Click location name
+      $scope.getCurrentLocation(toFrom);
+    }
+    else if(-1 < selectedIndex && selectedIndex < $scope.poiData.length){
       //this is a POI result, get the 1Click location name
       $scope.poi = $scope.poiData[selectedIndex];
       $scope.checkServiceArea($scope.poi, $scope.poi.formatted_address, toFrom);
-    }else{
+    }
+    else{
       var placeId = $scope.placeIds[selectedIndex];
       if(placeId) {
         placeIdPromise.resolve(placeId);
-      }else{
+      }
+      else{
         var labelIndex = $scope.placeLabels.indexOf(place);
         var autocompleteService = new google.maps.places.AutocompleteService();
         var address;
@@ -664,7 +689,7 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
               placeIdPromise.resolve(placeId);
             }
           });
-      }
+      }  
 
       placeIdPromise.promise.then(function(placeId) {
         var placesService = new google.maps.places.PlacesService($scope.whereToMap);
@@ -717,7 +742,90 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
     }
   }
 
-  $scope.checkServiceArea = function(result, place, toFrom){
+  $scope.getCurrentLocation = function(toFrom) {
+    if (navigator.geolocation) {
+      $scope.startSpin();
+      //navigator.geolocation.getCurrentPosition($scope.setOriginLocation(showPosition, 'from'), $scope.showError);
+      navigator.geolocation.getCurrentPosition(function (position) {
+        var latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+        var geocoder = new google.maps.Geocoder();
+        var placeIdPromise = $q.defer();
+        geocoder.geocode({'latLng': latlng}, function(results, status) {
+          if (status == google.maps.GeocoderStatus.OK) {
+            if (results[0]) {
+              var result = results[0];
+              var place = result.formatted_address;
+
+              if(result.place_id){
+                placeIdPromise.resolve();
+              } 
+              else{
+                $scope.stopSpin();
+              }
+
+              placeIdPromise.promise.then($scope.mapAddressByPlaceId(result.place_id, place, toFrom, true));
+            }
+          }
+        })
+      }, $scope.showError);
+    } else {
+      $scope.error = "Geolocation is not supported by this browser.";
+    }
+  }
+
+  $scope.mapAddressByPlaceId = function(placeId, place, toFrom, updateInput = false) {
+    var placesService = new google.maps.places.PlacesService($scope.whereToMap);
+    placesService.getDetails( { 'placeId': placeId}, function(result, status) {
+      if (status == google.maps.GeocoderStatus.OK) {
+        //verify the location has a street address
+        var datatypes = [];
+        var route;
+        angular.forEach(result.address_components, function(component, index) {
+          angular.forEach(component.types, function(type, index) {
+            datatypes.push(type);
+            if(type == 'route'){
+              route = component.long_name;
+            }
+          });
+        });
+
+        if(datatypes.indexOf('street_number') < 0 || datatypes.indexOf('route') < 0){
+          if(datatypes.indexOf('route') < 0){
+            $scope.toFromMarkers[toFrom].setMap(null);
+            bootbox.alert("The location you selected does not have have a street associated with it, please select another location.");
+            $scope.stopSpin();
+            return;
+          }
+          else if(datatypes.indexOf('street_number') < 0){
+            var streetNameIndex = place.indexOf(route);
+            if(streetNameIndex > -1){
+              var prefix = place.substr(0, streetNameIndex);
+              prefix = prefix.trim();
+              var streetComponent = {};
+              streetComponent.short_name = prefix;
+              streetComponent.long_name = prefix;
+              streetComponent.types = [];
+              streetComponent.types.push('street_number');
+              result.address_components.push(streetComponent);
+            }
+            else{
+              $scope.toFromMarkers[toFrom].setMap(null);
+              bootbox.alert("The location you selected does not have a street number associated, please select another location.");
+              $scope.stopSpin();
+              return;
+            }
+          }
+        }
+        $scope.checkServiceArea(result, place, toFrom, updateInput);
+      } 
+      else {
+        alert('Geocode was not successful for the following reason: ' + status);
+        $scope.stopSpin();
+      }
+    });
+  }
+
+  $scope.checkServiceArea = function(result, place, toFrom, updateInput = false){
     var serviceAreaPromise = planService.checkServiceArea($http, result);
     $scope.showNext = false;
     serviceAreaPromise.
@@ -767,15 +875,19 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
           });
           map.setCenter(bounds.getCenter());
           map.fitBounds(bounds);
-
           if(toFrom == 'from'){
             planService.fromDetails = result;
             planService.from = place;
+            if(updateInput){
+              $("#whereFromInput").val(place);
+            }
           }else if(toFrom == 'to'){
             planService.toDetails = result;
             planService.to = place;
+            if(updateInput){
+              $("#whereToInput").val(place);
+            }
           }
-
         }else{
           //$scope.showMap = false;
           $scope.showNext = false;
@@ -783,22 +895,16 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
             $scope.toFromMarkers[toFrom].setMap(null);
           }
           $scope.errors['rangeError'+toFrom] = true;
-          //bootbox.alert("The location you selected is outside the service area.");
+          bootbox.alert("The location you selected is outside the service area.");
+          $scope.stopSpin();
         }
+        $scope.stopSpin();
       }).
       error(function(serviceAreaResult) {
         bootbox.alert("An error occured on the server, please retry your search or try again later.");
+        $scope.stopSpin();
       });
   }
-
-  $scope.getCurrentLocation = function() {
-    usSpinnerService.spin('spinner-1');
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition($scope.setOriginLocation, $scope.showError);
-    } else {
-      $scope.error = "Geolocation is not supported by this browser.";
-    }
-  };
 
   $scope.showError = function (error) {
     switch (error.code) {
@@ -816,41 +922,21 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
         break;
     }
     $scope.$apply();
+    $scope.stopSpin();
   }
 
-  $scope.setOriginLocation = function (position) {
-    var latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-    var geocoder = new google.maps.Geocoder();
-    geocoder.geocode({'latLng': latlng}, function(results, status) {
-      if (status == google.maps.GeocoderStatus.OK) {
-        if (results[0]) {
-          var result = results[0];
-
-          var serviceAreaPromise = planService.checkServiceArea($http, result);
-          serviceAreaPromise.
-            success(function(serviceAreaResult) {
-              if(serviceAreaResult.result == true){
-                planService.from = result.formatted_address;
-                planService.fromDetails = result;
-                $location.path("/plan/from_confirm");
-                $scope.step = 'from_confirm';
-                $scope.$apply();
-              }else{
-                //$scope.showMap = false;
-                $scope.showNext = false;
-                bootbox.alert("You are currently outside the service area.  To plan a trip, enter a starting location within the service area.");
-                $location.path("/plan/from");
-                $scope.step = 'from';
-              }
-            }).
-            error(function(serviceAreaResult) {
-              bootbox.alert("An error occured on the server, please retry your search or try again later.");
-            });
-        }
-      }
-    })
+  $scope.isMobile = function(){
+    return /Mobi/.test(navigator.userAgent);
   }
 
+  $scope.startSpin = function(){
+    usSpinnerService.spin('spinner-1');
+  }
+
+  $scope.stopSpin = function(){
+    usSpinnerService.stop('spinner-1');
+  }
+  
   $scope.specifySharedRideCompanion = function(hasCompanion) {
     if(hasCompanion == 'true'){
       $location.path("/plan/assistant");
