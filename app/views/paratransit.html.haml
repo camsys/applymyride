@@ -86,10 +86,12 @@
                 .leg-info.col-xs-12.leg-header
                   %h5.text-muted ARRIVE
                   %h4.text-muted {{itinerary.end_location.name}}
-  .row.sticky-footer{style: 'margin-top: 2em'}
+  .row.unstuck-foot{style: 'margin-top: 2em'}
     .col-md-8.col-md-offset-2.col-xs-12
       %a.btn.btn-primary.btn-block{style:'background-color:red; margin-top: 1em; margin-bottom: 1em;', href: '', ng: {click: 'cancelTrip()', hide:'tripCancelled'}}
         Cancel this ride
+      %a.btn.btn-primary.btn-block{href: '', ng: {click: 'bookSharedRide()', show:'tripCancelled'}}
+        Book this shared ride
       %a.btn.btn-primary.btn-block{href: '', ng: {click: 'reset()'}}
         Plan another ride
       %a.btn-block.text-center.link-btn{"ng-href" => "#/plan/my_rides"}
