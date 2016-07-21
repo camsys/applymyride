@@ -3,16 +3,23 @@
   .row
     .col-md-8.col-md-offset-2.col-xs-12
       .row
-        .col-xs-6
+        .col-sm-6.col-xs-8
           %h3
-            {{startDate}}
-        .col-xs-6{style:'text-align:right;'}
-          {{startTime}} to {{endTime}}
+            %span
+              {{startDay}}
+            %span{style:'white-space:nowrap;'}
+              {{startDate}}
+        .col-sm-6.col-xs-4.text-right
+          %span{style:'white-space:nowrap;line-height:34px;'}
+            {{startTime}}
+          %span{style:'white-space:nowrap;'}
+            to {{endTime}}
 
   .row
     .col-md-8.col-md-offset-2.col-xs-12{style:' background-color: rgb(205,254,206); padding;10px;'}
-      %h2
-        Bus Ride
+      %h3
+        %strong
+          Bus Ride
 
   .row
     .col-md-8.col-md-offset-2.col-xs-12
@@ -30,7 +37,7 @@
     .col-md-8.col-md-offset-2.col-xs-12
       %span{ segmentid:'1', ng:{ include: "'views/transit-embedded.html'", controller:'TransitController'}}
 
-  .row.sticky-footer{style: 'margin-top: 30px'}
+  .row.unstuck-foot{style: 'margin-top: 30px'}
     .col-md-8.col-md-offset-2.col-xs-12
       %a.btn.btn-primary.btn-block{href: "", ng: {click: 'saveBusTrip()', hide:'transitSaved'}}
         Save to My Rides
