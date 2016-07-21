@@ -27,7 +27,7 @@ angular.module('applyMyRideApp')
       }else if( document.location.hostname.match(/findmyridepa2-qa\.camsys-apps\.com/) ){
         this.apiHost = 'oneclick-pa-qa.camsys-apps.com';
       }
-      var urlPrefix = 'http://' + this.apiHost + '/';
+      var urlPrefix = '//' + this.apiHost + '/';
       this.getPrebookingQuestions = function(){
         var questions = this.paratransitItineraries[0].prebooking_questions;
         var questionObj = {};
@@ -729,7 +729,7 @@ angular.module('applyMyRideApp')
     }else if( document.location.hostname.match(/findmyridepa2-qa\.camsys-apps\.com/) ){
       this.apiHost = 'oneclick-pa-qa.camsys-apps.com';
     }
-    var urlPrefix = 'http://' + this.apiHost + '/';
+    var urlPrefix = '//' + this.apiHost + '/';
 
     var autocompleteService = new google.maps.places.AutocompleteService();
 

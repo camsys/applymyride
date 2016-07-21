@@ -13,7 +13,7 @@ angular.module('applyMyRideApp')
       //this should probably be in a service if there's anything more
       $http({
         method: 'GET',
-        url: 'http://' + $scope.apiHost + '/api/v1/services/ids_humanized'
+        url: '//'+$scope.apiHost + '/api/v1/services/ids_humanized'
       }).then(function successCallback(response) {
         //update the counties
         $scope.counties = response.data.service_ids;
@@ -135,7 +135,7 @@ angular.module('applyMyRideApp')
         ipCookie('county', login.session.county, {expires: 7, expirationUnit: 'days'});
         sessionStorage.setItem('dateofbirth', login.session.dob);
 
-        var promise = $http.post('http://'+$scope.apiHost+'/api/v1/sign_in', login);
+        var promise = $http.post('//'+$scope.apiHost+'/api/v1/sign_in', login);
         promise.error(function(result) {
           $location.path('/loginError');
         });
