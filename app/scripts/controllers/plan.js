@@ -1272,7 +1272,8 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
         var startDate = moment(new Date(planService.transitItineraries[0][0].start_time));
         end = planService.transitItineraries[1] || planService.transitItineraries[0];
         var endDate = moment(new Date(end[0].end_time));
-        $scope.startDate = startDate.format('dddd MMMM do');
+        $scope.startDay = startDate.format('dddd');
+        $scope.startDate = startDate.format('MMMM do');
         $scope.startTime = startDate.format('h:mm a');
         $scope.endTime = endDate.format('h:mm a');
         $scope.transitInfos = planService.transitInfos;
