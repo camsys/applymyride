@@ -1162,12 +1162,12 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
       from.add(15, 'm');
       diff = from.diff(fromDiff, 'minutes');
       if(diff < 60){
-        name = '+'+ diff +' Minutes';
+        name = ''+ diff +' Minutes';
       }else if( 0 === (diff % 60)){
         //no minutes
-        name = '+' + from.diff(fromDiff, 'hours') + ' Hours';
+        name = '' + from.diff(fromDiff, 'hours') + ' Hours';
       }else{
-        name = '+' + from.diff(fromDiff, 'hours') + ' Hours ' + (diff % 60) + ' Minutes';
+        name = '' + from.diff(fromDiff, 'hours') + ' Hours ' + (diff % 60) + ' Minutes';
       }
       $scope.howLongOptions.push({
         minutes: diff,
