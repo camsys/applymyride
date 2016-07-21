@@ -114,6 +114,16 @@ angular.module('applyMyRideApp')
           }
         });
       }
+      $scope.bookSharedRide = function(){
+        var promise = planService.bookSharedRide($http);
+        promise.then(function(result) {
+          planService.booking_results = result.data.booking_results;
+          $scope.tripCancelled = false;
+          return;
+          $location.path('/paratransit/confirm_shared_ride');
+        });
+        return false;
+      }
 
       $scope.prepareTrip();
 
