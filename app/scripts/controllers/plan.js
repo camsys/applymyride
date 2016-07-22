@@ -2,9 +2,9 @@
 
 var app = angular.module('applyMyRideApp');
 
-app.controller('PlanController', ['$scope', '$http','$routeParams', '$location', 'planService', 'flash', 'usSpinnerService', '$q', 'LocationSearch', 'localStorageService', 'ipCookie', '$timeout',
+app.controller('PlanController', ['$scope', '$http','$routeParams', '$location', 'planService', 'util', 'flash', 'usSpinnerService', '$q', 'LocationSearch', 'localStorageService', 'ipCookie', '$timeout',
 
-function($scope, $http, $routeParams, $location, planService, flash, usSpinnerService, $q, LocationSearch, localStorageService, ipCookie, $timeout) {
+function($scope, $http, $routeParams, $location, planService, util, flash, usSpinnerService, $q, LocationSearch, localStorageService, ipCookie, $timeout) {
 
   $scope.apiHost = document.location.hostname;
   if( document.location.hostname.match(/findmyridepa2-dev\.camsys-apps\.com/) ){
@@ -517,7 +517,7 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
 
         var choices = [];
 
-        if(addCurrentLocation && $scope.isMobile()){
+        if(addCurrentLocation && util.isMobile()){
           choices.push({label:'Current Location', option: true})
         }
 
@@ -641,7 +641,7 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
     var placeIdPromise = $q.defer();
     $scope.placeLabels = $scope.placeLabels || [];
 
-    if(toFrom == 'from' && $scope.isMobile()){
+    if(toFrom == 'from' && util.isMobile()){
       $scope.placeLabels.push("Current Location");
     }
 
@@ -773,7 +773,8 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
     }
   }
 
-  $scope.mapAddressByPlaceId = function(placeId, place, toFrom, updateInput = false) {
+  $scope.mapAddressByPlaceId = function(placeId, place, toFrom, updateInput) {
+    updateInput = util.assignDefaultValueIfEmpty(updateInput, false);
     var placesService = new google.maps.places.PlacesService($scope.whereToMap);
     placesService.getDetails( { 'placeId': placeId}, function(result, status) {
       if (status == google.maps.GeocoderStatus.OK) {
@@ -825,7 +826,8 @@ function($scope, $http, $routeParams, $location, planService, flash, usSpinnerSe
     });
   }
 
-  $scope.checkServiceArea = function(result, place, toFrom, updateInput = false){
+  $scope.checkServiceArea = function(result, place, toFrom, updateInput){
+    updateInput = util.assignDefaultValueIfEmpty(updateInput, false);
     var serviceAreaPromise = planService.checkServiceArea($http, result);
     $scope.showNext = false;
     serviceAreaPromise.

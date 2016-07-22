@@ -436,15 +436,15 @@ angular.module('applyMyRideApp')
       }
 
       this.setItineraryDescriptions = function(itinerary){
-        itinerary.startDesc = this.getDateDescription(itinerary.start_time);
-        itinerary.startDesc += " at " + moment(itinerary.start_time).format('h:mm a')
-        itinerary.endDesc = this.getDateDescription(itinerary.end_time);
-        itinerary.endDesc += " at " + moment(itinerary.end_time).format('h:mm a');
+        itinerary.startDesc = this.getDateDescription(itinerary.departure);
+        itinerary.startDesc += " at " + moment(itinerary.departure).format('h:mm a')
+        itinerary.endDesc = this.getDateDescription(itinerary.arrival);
+        itinerary.endDesc += " at " + moment(itinerary.arrival).format('h:mm a');
         itinerary.travelTime = humanizeDuration(itinerary.duration * 1000,  { units: ["hours", "minutes"], round: true });
         itinerary.walkTimeDesc = humanizeDuration(itinerary.walk_time * 1000,  { units: ["hours", "minutes"], round: true });
-        itinerary.dayAndDateDesc = moment(itinerary.start_time).format('dddd, MMMM Do');
-        itinerary.startTimeDesc = moment(itinerary.start_time).format('h:mm a');
-        itinerary.endTimeDesc = moment(itinerary.end_time).format('h:mm a');
+        itinerary.dayAndDateDesc = moment(itinerary.departure).format('dddd, MMMM Do');
+        itinerary.startTimeDesc = moment(itinerary.departure).format('h:mm a');
+        itinerary.endTimeDesc = moment(itinerary.arrival).format('h:mm a');
         itinerary.distanceDesc = ( itinerary.distance * 0.000621371 ).toFixed(2);
         itinerary.walkDistanceDesc = ( itinerary.walk_distance * 0.000621371 ).toFixed(2);
       }
