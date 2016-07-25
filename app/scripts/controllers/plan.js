@@ -520,7 +520,7 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
         var choices = [];
 
         if(addCurrentLocation && util.isMobile()){
-          choices.push({label: currentLocationLable, option: true})
+          choices.push({label: currentLocationLabel, option: true})
         }
 
         var savedPlaceData = data[1].savedplaces;
