@@ -19,6 +19,7 @@ angular.module('applyMyRideApp')
         delete this.hasEscort;
         delete this.driverInstructions;
         delete this.transitSaved;
+        delete this.transitCancelled;
       }
 
       this.apiHost = document.location.hostname;

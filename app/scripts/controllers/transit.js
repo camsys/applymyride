@@ -19,6 +19,9 @@ angular.module('applyMyRideApp')
       $scope.disableNext = true;
       $scope.showDiv = {};
       $scope.showEmail = false;
+      $scope.transitSaved = planService.transitSaved || false;
+      $scope.transitCancelled = planService.transitCancelled || false;
+
 
       $scope.reset = function() {
         planService.reset();

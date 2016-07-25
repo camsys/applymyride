@@ -430,6 +430,12 @@ img.official-logo {
   color: #FFF;
   text-decoration: none;
 }
+
+.btn-spacing .btn{
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
+
 ::selection {
   background: rgb(177,215,254);
 }

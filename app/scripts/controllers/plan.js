@@ -2,9 +2,9 @@
 
 var app = angular.module('applyMyRideApp');
 
-app.controller('PlanController', ['$scope', '$http','$routeParams', '$location', 'planService', 'util', 'flash', 'usSpinnerService', '$q', 'LocationSearch', 'localStorageService', 'ipCookie', '$timeout',
+app.controller('PlanController', ['$scope', '$http','$routeParams', '$location', 'planService', 'util', 'flash', 'usSpinnerService', '$q', 'LocationSearch', 'localStorageService', 'ipCookie', '$timeout', '$window',
 
-function($scope, $http, $routeParams, $location, planService, util, flash, usSpinnerService, $q, LocationSearch, localStorageService, ipCookie, $timeout) {
+function($scope, $http, $routeParams, $location, planService, util, flash, usSpinnerService, $q, LocationSearch, localStorageService, ipCookie, $timeout, $window) {
 
   var currentLocationLabel = "Current Location";
 
@@ -63,6 +63,8 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
   $scope.to = planService.to || '';
   $scope.fromDefault = localStorage.getItem('last_origin') || '';
   $scope.from = planService.from || '';
+  $scope.transitSaved = planService.transitSaved || false;
+  $scope.transitCancelled = planService.transitCancelled || false;
 
   $scope.reset = function() {
     planService.reset();
@@ -125,6 +127,7 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
     $location.path('/plan/rebook');
   };
   $scope.cancelThisBusTrip = function() {
+    usSpinnerService.spin('spinner-1');
     var cancelRequest = {bookingcancellation_request: []};
     var leg1, leg2;
     leg1 = {itinerary_id: planService.transitItineraries[0][0].id};
@@ -136,12 +139,16 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
     var cancelPromise = planService.cancelTrip($http, cancelRequest)
     cancelPromise.error(function(data) {
       bootbox.alert("An error occurred, your trip was not cancelled.  Please call 1-844-PA4-RIDE for more information.");
+      usSpinnerService.stop('spinner-1');
     });
     cancelPromise.success(function(data) {
       bootbox.alert('Your trip has been cancelled');
       ipCookie('rideCount', ipCookie('rideCount') - 1);
       $scope.transitSaved = false;
+      $scope.transitCancelled = true;
       planService.transitSaved = false;
+      planService.transitCancelled = true;
+      usSpinnerService.stop('spinner-1');
     })
   }
 
@@ -436,7 +443,7 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
       $scope.rideCount = ipCookie('rideCount');
       $scope.transitSaved = true;
       planService.transitSaved = true;
-      bootbox.alert("Your trip has been saved");
+      bootbox.alert("Your trip has been saved", $scope.goViewTransit(planService.transitInfos[0][0].id, ( planService.transitInfos[1] || [{id:0}] )[0].id));
     });
   }
 
@@ -940,7 +947,20 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
   $scope.stopSpin = function(){
     usSpinnerService.stop('spinner-1');
   }
-  
+
+  $scope.logout = function() {
+    delete ipCookie.remove('email');
+    delete ipCookie.remove('authentication_token');
+    sessionStorage.clear();
+    localStorage.clear();
+    delete $scope.email;
+    delete planService.email;
+    $window.location.href = "#/";
+    $window.location.reload();
+    planService.to = '';
+    planService.from = '';
+  };
+ 
   $scope.specifySharedRideCompanion = function(hasCompanion) {
     if(hasCompanion == 'true'){
       $location.path("/plan/assistant");

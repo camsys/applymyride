@@ -20,7 +20,10 @@
       %h3
         %strong
           Bus Ride
-
+        %span{ng: {show: 'transitSaved'}} 
+          (saved)
+        %span{style: 'color: red', ng: {show: 'transitCancelled'}}
+          (cancelled)
   .row
     .col-md-8.col-md-offset-2.col-xs-12
       %h3{ng:{show:'transitInfos[1]'}}
@@ -37,18 +40,21 @@
     .col-md-8.col-md-offset-2.col-xs-12
       %span{ segmentid:'1', ng:{ include: "'views/transit-embedded.html'", controller:'TransitController'}}
 
-  .row.unstuck-foot{style: 'margin-top: 30px'}
+  .row.unstuck-foot.btn-spacing{style: 'margin-top: 20px'}
     .col-md-8.col-md-offset-2.col-xs-12
-      %a.btn.btn-primary.btn-block{href: "", ng: {click: 'saveBusTrip()', hide:'transitSaved'}}
-        Save to My Rides
+      %a.btn.btn-primary.btn-block{href: "", ng: {click: 'saveBusTrip()', hide:'transitSaved || transitCancelled'}}
+        Save to my rides
       %a.btn.btn-primary.btn-block{href: "", style:'background-color:red;',ng: {click: 'cancelThisBusTrip()', show:'transitSaved'}}
         Cancel this ride
-
+      %a.btn.btn-primary.btn-block{href: "/#/plan/my_rides", ng: {show:'transitCancelled'}}
+        View my saved rides
     .col-md-8.col-md-offset-2.col-xs-12
       .pull-left
-        %a.btn{href: "", back: '', ng: {click: "back()"}}
+        %a.btn{href: "", back: '', ng: {click: "back()", hide:'transitSaved || transitCancelled'}}
           Back
+        %a.btn{href: "", ng: {click: "logout()", show:'transitSaved || transitCancelled'}}
+          Logout
       .pull-right
-        %a.btn.btn-link{href: "/#/"}
+        %a.btn.btn-link{ng: {click: "reset()"}}
           Book another ride
 
