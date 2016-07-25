@@ -673,6 +673,8 @@ angular.module('applyMyRideApp')
       };
 
       this.addStreetAddressToLocation = function(location) {
+        return;
+        /*
         var street_address;
         angular.forEach(location.address_components, function(address_component, index) {
           if(address_component.types.indexOf("street_number") > -1){
@@ -695,6 +697,7 @@ angular.module('applyMyRideApp')
             ]
           }
         )
+        */
       }
 
       this.fixLatLon = function(location) {
