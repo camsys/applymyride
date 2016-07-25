@@ -643,7 +643,7 @@
       %tabset 
         %tab{'heading' => 'Upcoming ({{trips.future.length}})', 'active' => 'tabFuture'}
           .myride{'index' => '{{$index}}', ng: {init: 'tab = "future"', click: 'toggleMyRideButtonBar("future", $index)', repeat: 'trip in trips.future'}}
-            .row{ng: {click: 'selectTrip($event, tab, $index)'}}
+            .row
               .col-xs-2.col-height-slave
                 %img.img-responsive{ng: {src: 'images/modes/paratransit.png', show: 'trip.mode == "mode_paratransit"'}}
                 %img.img-responsive{ng: {src: 'images/modes/transit.png', show: 'trip.mode == "mode_transit"'}}
@@ -657,10 +657,13 @@
                     %h5.blue-text {{trip.startDesc}}
                   .col-xs-4
                     %h5.text-muted.text-right{ng: {show: 'trip.itineraries.length > 1'}} (round trip)
-                    %h5.text-muted.text-right{ng: {show: 'trip.itineraries.length == 1'}} (one way)         
+                    %h5.text-muted.text-right{ng: {show: 'trip.itineraries.length == 1'}} (one way)  
+            .animate-show.myride-buttons{ng: {show: 'tripDivs.future[$index]'}}   
+              .row.even-height-row    
+                %span{ng: {include: "'views/emailOrCancel.html'"}}      
         %tab{'heading' => 'History ({{trips.past.length}})', 'active' => 'tabPast'}
           .myride{'index' => '{{$index}}', ng: {init: 'tab = "past"', click: 'toggleMyRideButtonBar("past", $index);', repeat: 'trip in trips.past'}}       
-            .row{ng: {click: 'selectTrip($event, tab, $index)'}}
+            .row
               .col-xs-2.col-height-slave
                 %img.img-responsive{ng: {src: 'images/modes/paratransit.png', show: 'trip.mode == "mode_paratransit"'}}
                 %img.img-responsive{ng: {src: 'images/modes/transit.png', show: 'trip.mode == "mode_transit"'}}
@@ -675,6 +678,10 @@
                   .col-xs-4
                     %h5.text-muted.text-right{ng: {show: 'trip.itineraries.length > 1'}} (round trip)
                     %h5.text-muted.text-right{ng: {show: 'trip.itineraries.length == 1'}} (one way)
+            .animate-show.myride-buttons{ng: {show: 'tripDivs.past[$index]'}}
+              .row.even-height-row
+                .col-xs-12.col-height-slave.text-center
+                  %span{ng: {include: "'views/emailOrView.html'"}}
       .row{style: 'margin-top: 10px'}
         .col-md-4.col-md-offset-4.col-xs-12.text-center
           %a.btn.btn-primary.btn-block{href: '', ng: {click: 'reset()'}}

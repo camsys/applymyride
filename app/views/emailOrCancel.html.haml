@@ -1,28 +1,37 @@
-.row.even-height-row
-  .col-xs-3{style: 'text-align: right;'}
-    .row{ng: {click: 'rebook($event, tab, $index)'}}
-      %span.fa-stack
-        %i.fa.fa-refresh.fa-stack-2x
-      %a.blue-text{ng: {show: '!mobile'}}
-        Rebook
-  .col-xs-3{style: 'text-align: center;', ng: {click: 'cancelTrip($event, tab, $index)'}}
+.row.even-height-row{ng: {show: 'trip.mode != "mode_paratransit"'}}
+  .col-xs-4{style: 'text-align: center;', ng: {click: 'cancelTrip($event, tab, $index)'}}
     %span.fa-stack
-      %i.fa.fa-circle.fa-stack-2x
-      %i.fa.fa-times.fa-stack-1x{style: 'color: white;'}
-    %a.blue-text{ng: {show: 'trip.mode != "mode_paratransit" && !mobile'}}
-      Drop
-    %a.blue-text{ng: {show: 'trip.mode == "mode_paratransit" && !mobile'}}
+      %i.fa.fa-times-circle.fa-stack-2x{style: 'color: red;'}
+    %a.blue-text{ng: {show: '!mobile'}}
       Cancel
-  .col-xs-3{style: 'text-align: center;'}
+  .col-xs-4{style: 'text-align: center;'}
     .row{ng: {click: 'toggleEmail($event)'}}
       %span.fa-stack
-        %i.fa.fa-share-square-o.fa-stack-2x
+        %i.fa.fa-envelope-o.fa-stack-2x
       %a.blue-text{ng: {show: '!mobile'}}
         Email
-  .col-xs-3{style: 'text-align: left;'}
+  .col-xs-4{style: 'text-align: center;'}
     .row{ng: {click: 'selectTrip($event, tab, $index)'}}
       %span.fa-stack
-        %i.fa.fa-chevron-right.fa-lg
+        %i.fa.fa-search.fa-stack-2x
+      %a.blue-text{ng: {show: '!mobile'}}
+        View
+.row.even-height-row{ng: {show: 'trip.mode == "mode_paratransit"'}}
+  .col-xs-4{style: 'text-align: right;', ng: {click: 'cancelTrip($event, tab, $index)'}}
+    %span.fa-stack
+      %i.fa.fa-times-circle.fa-stack-2x{style: 'color: red;'}
+    %a.blue-text{ng: {show:'!mobile'}}
+      Cancel
+  .col-xs-4{style: 'text-align: center;'}
+    .row{ng: {click: 'toggleEmail($event)'}}
+      %span.fa-stack
+        %i.fa.fa-envelope-o.fa-stack-2x
+      %a.blue-text{ng: {show: '!mobile'}}
+        Email
+  .col-xs-4{style: 'text-align: left;'}
+    .row{ng: {click: 'selectTrip($event, tab, $index)'}}
+      %span.fa-stack
+        %i.fa.fa-search.fa-stack-2x
       %a.blue-text{ng: {show: '!mobile'}}
         View
 .row{ng: {show: 'showEmail'}}
