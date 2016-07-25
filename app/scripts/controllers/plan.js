@@ -6,6 +6,8 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
 
 function($scope, $http, $routeParams, $location, planService, util, flash, usSpinnerService, $q, LocationSearch, localStorageService, ipCookie, $timeout) {
 
+  var currentLocationLabel = "Current Location";
+
   $scope.apiHost = document.location.hostname;
   if( document.location.hostname.match(/findmyridepa2-dev\.camsys-apps\.com/) ){
     $scope.apiHost = 'oneclick-pa-dev.camsys-apps.com';
@@ -518,7 +520,7 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
         var choices = [];
 
         if(addCurrentLocation && util.isMobile()){
-          choices.push({label:'Current Location', option: true})
+          choices.push({label: currentLocationLable, option: true})
         }
 
         var savedPlaceData = data[1].savedplaces;
@@ -642,7 +644,7 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
     $scope.placeLabels = $scope.placeLabels || [];
 
     if(toFrom == 'from' && util.isMobile()){
-      $scope.placeLabels.push("Current Location");
+      $scope.placeLabels.push(currentLocationLabel);
     }
 
     var selectedIndex = $scope.placeLabels.indexOf(place);
@@ -652,7 +654,7 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
       $scope.toFromMarkers[toFrom].setMap(null);
     }
 
-    if(-1 < selectedIndex && $scope.placeLabels[selectedIndex] == $scope.placeLabels[$scope.placeLabels.length-1]){
+    if(-1 < selectedIndex && $scope.placeLabels[selectedIndex] == currentLocationLabel){
       //this is a POI result, get the 1Click location name
       $scope.getCurrentLocation(toFrom);
     }
