@@ -1,37 +1,218 @@
-.transitwrapper#itinerary{ng: {show: 'mode==="mode_transit"'}}
-  %div{style: 'margin-top: 1em', ng: {show: 'showEmail'}}
-    .row
-      .col-xs-12.col-sm-8.col-sm-offset-2.text-left
-        Email your ride details to a friend (or yourself).
-    .row
-      .col-xs-12.col-sm-8.col-sm-offset-2.text-left.text-muted
-        Use a comma to separate multiple addresses
-    .row
-      .col-xs-10.col-sm-6.col-sm-offset-2{'style' => 'line-height: 2em; padding-right: 0px;'}
-        %input.form-control{style: 'font-size: .9em; border-top-right-radius:0px; border-bottom-right-radius:0px;', ng: {model: 'emailString'}}
-      .col-xs-2.col-sm-2{'style' => 'line-height: 2em; padding-left: 0px;'}
-        %a.btn.btn-success.btn-block{style: 'padding-left: 0px; padding-right: 0px;min-width: 20px; border-top-left-radius:0px; border-bottom-left-radius:0px;', ng: {click: 'sendEmail()'}}
-          %i.fa.fa-envelope-o.fa-lg{style:'color: white;'}
-            %span
-              Send
-    .row{ng: {show: 'invalidEmail == true'}}
-      .col-xs-12.col-sm-8.col-sm-offset-2.text-left{style: 'color: red'}
-        Please enter only valid email addresses
-
-
-  .row{style: 'margin-bottom: 1em;'}
-    .col-xs-12.col-md-8.col-md-offset-2.no-padding
+.container
+  #itinerary{ng: {show: 'mode==="mode_transit"'}}
+    %div{style: 'margin-top: 1em', ng: {show: 'showEmail'}}
       .row
-        .col-xs-12{style:' background-color: rgb(205,254,206); padding;10px;'}
-          %h2
-            %span
-              Bus Ride
-            %span{ng: {hide: 'tripCancelled'}} 
-              (saved)
-            %span{style: 'color: red', ng: {show: 'tripCancelled'}}
-              (cancelled)
-  .transititinerary{index: '{{$index}}', ng: {repeat: 'itinerary in itineraries'}}
-    .row{ng: {show: '$index == 0 && itineraries.length > 1'}}
+        .col-xs-12.col-sm-8.col-sm-offset-2.text-left
+          Email your ride details to a friend (or yourself).
+      .row
+        .col-xs-12.col-sm-8.col-sm-offset-2.text-left.text-muted
+          Use a comma to separate multiple addresses
+      .row
+        .col-xs-10.col-sm-6.col-sm-offset-2{'style' => 'line-height: 2em; padding-right: 0px;'}
+          %input.form-control{style: 'font-size: .9em; border-top-right-radius:0px; border-bottom-right-radius:0px;', ng: {model: 'emailString'}}
+        .col-xs-2.col-sm-2{'style' => 'line-height: 2em; padding-left: 0px;'}
+          %a.btn.btn-success.btn-block{style: 'padding-left: 0px; padding-right: 0px;min-width: 20px; border-top-left-radius:0px; border-bottom-left-radius:0px;', ng: {click: 'sendEmail()'}}
+            %i.fa.fa-envelope-o.fa-lg{style:'color: white;'}
+              %span
+                Send
+      .row{ng: {show: 'invalidEmail == true'}}
+        .col-xs-12.col-sm-8.col-sm-offset-2.text-left{style: 'color: red'}
+          Please enter only valid email addresses
+
+
+    .row{style: 'margin-bottom: 1em;'}
+      .col-xs-12.col-md-8.col-md-offset-2.no-padding
+        .row
+          .col-xs-12{style:' background-color: rgb(205,254,206); padding:10px;'}
+            %h2
+              %strong
+                %span
+                  Bus Rides
+                %span{style:'font-size: 22px;',ng: {hide: 'tripCancelled'}} 
+                  (saved)
+                %span{style: 'color: red; font-size: 22px;', ng: {show: 'tripCancelled'}}
+                  (cancelled)
+    .transititinerary{index: '{{$index}}', ng: {repeat: 'itinerary in itineraries'}}
+      .row{ng: {show: '$index == 0 && itineraries.length > 1'}}
+        .col-xs-12.col-md-8.col-md-offset-2.no-padding
+          .row
+            .col-xs-12
+              %h2 Outbound Trip
+      .row{style: 'margin-top: 2em;', ng: {show: '$index == 1'}}
+        .col-xs-12.col-md-8.col-md-offset-2.no-padding
+          .row
+            .col-xs-12
+              %h2 Return Trip
+      .row{style: 'margin-bottom: 1em;'}
+        .col-xs-12.col-md-8.col-md-offset-2.no-padding
+          .row
+            .col-xs-12.text-muted
+              {{itinerary.dayAndDateDesc}}
+          .row
+            .col-xs-10.text-left
+              %h4
+                {{itinerary.travelTime}} (
+                %img.walk-time-icon{ng: {src: 'images/modes/walk.png'}}
+                {{itinerary.walkTimeDesc}})
+            .col-xs-2.text-right
+              %h4{style: 'float:right; vertical-align: bottom;'} {{itinerary.cost | currency | free}}
+      .row
+        .col-xs-12.col-md-8.col-md-offset-2.transit-container
+          .row.row-eq-height.transit-header
+            .blah{ng: {repeat: 'leg in itinerary.json_legs track by $index'}}
+              %img{ng: {if: 'leg.mode == "WALK"', src: 'images/modes/walk.png'}}
+              %img{ng: {if: 'leg.mode == "BUS"', src: 'images/modes/transit.png'}}
+              %i.fa.fa-lg.fa-chevron-right{ng: {if: '!$last'}}
+        .col-xs-12.col-md-8.col-md-offset-2.transit-body
+          .border-between.timeline{'index' => '{{$index}}', ng: {click: 'show()', repeat: 'leg in itinerary.json_legs track by $index', class: '{"mode_bus": leg.mode == "BUS", "mode_walk": leg.mode == "WALK"}'}}
+            .row.even-height-row
+              .col-xs-2.right-side
+                %h4 {{leg.startTimeDesc}}
+              .col-xs-1.right-side
+                %i.fa.fa-circle-o.fa-lg.waypoint
+              .col-xs-9.leg-info.pull-left.left-side
+                .bus-info{ng: {show: 'leg.mode == "BUS"'}}
+                  .row
+                    .leg-info.col-xs-12.leg-header
+                      %h5.text-muted{ng: {show: '!$first'}} Get on {{leg.serviceName}}
+                      %h4{ng: {show: '!$first'}}  Bus {{leg.route}} @ {{leg.from.name}}
+                      %h5.text-muted{ng: {show: '$first'}} Begin at {{leg.serviceName}}
+                      %h4{ng: {show: '$first'}}  Bus {{leg.route}} @ {{itinerary.origin.name}}
+                  .row
+                    .leg-info.col-xs-12
+                      %h5.text-muted "{{leg.route}} - {{leg.headsign}}"
+                  .row
+                    .leg-info.col-xs-12
+                      %h5.text-muted {{leg.distanceDesc}} Miles ({{leg.travelTime}})
+                .walk-info{ng: {show: 'leg.mode == "WALK"'}}
+                  .row
+                    .leg-info.col-xs-12.leg-header
+                      %h5.text-muted{ng: {show: '!$first'}} Get off
+                      %h4{ng: {show: '!$first'}} {{leg.from.name}}
+                      %h5.text-muted{ng: {show: '$first'}} Begin at
+                      %h4{ng: {show: '$first'}}  {{itinerary.origin.name}}
+                  .row
+                  .leg-info.col-xs-12
+                    .row.even-height-row
+                      .col-height-slave{style: 'width: 20px'}
+                        %i.fa.fa-chevron-down.fa-lg{style: 'color: grey', ng: {show: '!showDiv[$index] || showDiv[$index] == false'}}
+                        %i.fa.fa-chevron-up.fa-lg{style: 'color: grey', ng: {show: 'showDiv[$index] == true'}}
+                      .col-height-master
+                        %h5.text-muted Walk
+                        %h5.text-muted {{leg.distanceDesc}} Miles ({{leg.travelTime}})
+                  .animate-show.blah{ng: {show: 'showDiv[$index]'}}
+                    .row{ng: {repeat: 'step in leg.steps'}}
+                      .leg-info.col-xs-12{style: 'padding-left: 50px;'}
+                        %img.walk-arrow{height: '30px', width: '30px', ng: {src: 'images/transit/{{step.arrow}}.png'}}
+                        .row
+                          .leg-info.col-xs-12
+                            {{step.description}}
+                        .row.text-muted
+                          .leg-info.col-xs-12
+                            .walk-step{ng: {show: '!$last'}}
+                              {{step.distanceDesc}} miles
+                            %div{ng: {show: '$last'}}
+                              {{step.distanceDesc}} miles
+          .border-between.timeline{style: 'margin-bottom: 1em;'}
+            .row.even-height-row
+              .col-xs-2.right-side
+                %h4 {{itinerary.destinationTimeDesc}}
+              .col-xs-1.right-side
+                %i.destination.fa.fa-dot-circle-o.fa-lg.waypoint{style: 'margin-left: -16px;'}
+              .col-xs-9.leg-info.pull-left.left-side
+                .bus-info
+                  .row
+                    .leg-info.col-xs-12.leg-header
+                      %h5.text-muted Arrive at
+                      %h4 {{itinerary.destination.name}}
+
+  #itinerary{style: 'padding: 0;', index: '{{$index}}', ng: {show: 'mode==="mode_paratransit"', repeat: 'itinerary in paratransitItineraries'}}
+    .row{style: 'margin-bottom: 1em;', ng: {show: '$index == 0'}}
+      .col-xs-12.col-md-8.col-md-offset-2.no-padding
+        .row
+          .col-xs-12{style:' background-color: rgb(205,254,206); padding:10px;'}
+            %h2
+              %strong
+                %span
+                  Shared Ride
+                %span{style:'font-size: 22px;', ng: {hide: 'tripCancelled'}} 
+                  (saved)
+                %span{style: 'color: red; font-size: 22px;', ng: {show: 'tripCancelled'}}
+                  (cancelled)
+    .headerwrap{ng: {show: '$index == 0'}}
+      .row
+        .col-xs-6.text-right.text-muted
+          Escorts/Companions:
+        .col-xs-6.text-left
+          {{escort}}
+      .row
+        .col-xs-12.col-md-8.col-md-offset-2.no-padding
+          .row
+            .col-xs-12
+              %h2 Outbound Trip
+    .row{ng: {show: '$index == 1', style: "$index == 1 ? {'margin-top': '2em'} : {}"}}
+      .col-xs-12.col-md-8.col-md-offset-2.no-padding
+        .row
+          .col-xs-12
+            %h2 Return Trip
+    .row
+      .col-xs-12.col-md-8.col-md-offset-2.no-padding
+        .row
+          .col-xs-12.text-muted
+            {{itinerary.dayAndDateDesc}}
+        .row
+          .col-xs-10.text-left
+            %h4 {{itinerary.travelTime}}
+          .col-xs-2.text-right
+            %h4{style: 'float:right; vertical-align: bottom;'} {{itinerary.fare | currency | free}}
+    .row
+      .col-xs-12.col-md-8.col-md-offset-2.paratransit-body
+        .border-between.timeline.mode_wait
+          .row.even-height-row
+            .col-xs-2.right-side.no-padding
+              %h4 {{itinerary.startTimeDesc}}
+            .col-xs-1.right-side
+            .col-xs-9.leg-info.left-side
+              .wait-info
+                .row
+                  .leg-info.col-xs-12
+                    %h5.text-muted WAIT for Shared Ride
+                .row
+                  .leg-info.col-xs-12
+                    %h4.text-muted {{itinerary.origin.formatted_address}}
+                .row
+                  .leg-info.col-xs-12
+                    %h5.text-muted Confirm #: {{itinerary.booking_confirmation}}
+        .border-between.timeline.mode_paratransit
+          .row.even-height-row
+            .col-xs-2.right-side.no-padding
+              %h4 {{itinerary.wait_endDesc}}
+            .col-xs-1.right-side
+              %i.fa.fa-circle-o.fa-lg.waypoint{style: 'color: #0E5302;'}
+            .col-xs-9.leg-info.left-side
+              .bus-info
+                .row{style: 'height: 100px'}
+        .border-between.timeline.mode_paratransit
+          .row.even-height-row
+            .col-xs-2.right-side.no-padding
+              %h4 {{itinerary.endTimeDesc}}
+            .col-xs-1.right-side.no-pseudo
+              %i.fa.fa-circle-o.fa-lg.waypoint{style: 'color: #0E5302;'}
+            .col-xs-9.leg-info.left-side
+              .bus-info
+                .row
+                  .leg-info.col-xs-12.leg-header
+                    %h5.text-muted ARRIVE
+                    %h4.text-muted {{itinerary.destination.formatted_address}}
+
+  .walkitinerary#walk{style: 'padding: 0;', ng: {show: 'mode==="mode_walk"', repeat: 'itinerary in walkItineraries'}}
+    .row{style: 'margin-bottom: 1em;', ng: {show: '$index == 0'}}
+      .col-xs-12.col-md-8.col-md-offset-2.no-padding
+        .row
+          .col-xs-12{style:' background-color: rgb(205,254,206); padding;10px;'}
+            %h2 Walk Details
+  .walkitinerary#walk{index: '{{$index}}', ng: {repeat: 'itinerary in walkItineraries'}}
+    .row{ng: {show: '$index == 0'}}
       .col-xs-12.col-md-8.col-md-offset-2.no-padding
         .row
           .col-xs-12
@@ -41,7 +222,7 @@
         .row
           .col-xs-12
             %h2 Return Trip
-    .row{style: 'margin-bottom: 1em;'}
+    .row
       .col-xs-12.col-md-8.col-md-offset-2.no-padding
         .row
           .col-xs-12.text-muted
@@ -53,58 +234,32 @@
               %img.walk-time-icon{ng: {src: 'images/modes/walk.png'}}
               {{itinerary.walkTimeDesc}})
           .col-xs-2.text-right
-            %h4{style: 'float:right; vertical-align: bottom;'} {{itinerary.cost | currency | free}}
+            %h4{style: 'float:right; vertical-align: bottom;'} Free
     .row
-      .col-xs-12.col-md-8.col-md-offset-2.transit-container
-        .row.row-eq-height.transit-header
-          .blah{ng: {repeat: 'leg in itinerary.json_legs track by $index'}}
-            %img{ng: {if: 'leg.mode == "WALK"', src: 'images/modes/walk.png'}}
-            %img{ng: {if: 'leg.mode == "BUS"', src: 'images/modes/transit.png'}}
-            %i.fa.fa-lg.fa-chevron-right{ng: {if: '!$last'}}
-      .col-xs-12.col-md-8.col-md-offset-2.transit-body
-        .border-between.timeline{'index' => '{{$index}}', ng: {click: 'show()', repeat: 'leg in itinerary.json_legs track by $index', class: '{"mode_bus": leg.mode == "BUS", "mode_walk": leg.mode == "WALK"}'}}
+      .col-xs-12.col-md-8.col-md-offset-2.walk-body
+        .border-between.timeline{'index' => '{{$index}}', ng: {click: 'test()', repeat: 'leg in itinerary.json_legs track by $index', class: '{"mode_bus": leg.mode == "BUS", "mode_walk": leg.mode == "WALK"}'}}
           .row.even-height-row
             .col-xs-2.right-side
               %h4 {{leg.startTimeDesc}}
             .col-xs-1.right-side
               %i.fa.fa-circle-o.fa-lg.waypoint
             .col-xs-9.leg-info.pull-left.left-side
-              .bus-info{ng: {show: 'leg.mode == "BUS"'}}
-                .row
-                  .leg-info.col-xs-12.leg-header
-                    %h5.text-muted{ng: {show: '!$first'}} Get on {{leg.serviceName}}
-                    %h4{ng: {show: '!$first'}}  Bus {{leg.route}} @ {{leg.from.name}}
-                    %h5.text-muted{ng: {show: '$first'}} Begin at {{leg.serviceName}}
-                    %h4{ng: {show: '$first'}}  Bus {{leg.route}} @ {{itinerary.start_location.name}}
-                .row
-                  .leg-info.col-xs-12
-                    %h5.text-muted "{{leg.route}} - {{leg.headsign}}"
-                .row
-                  .leg-info.col-xs-12
-                    %h5.text-muted {{leg.distanceDesc}} Miles ({{leg.travelTime}})
               .walk-info{ng: {show: 'leg.mode == "WALK"'}}
                 .row
                   .leg-info.col-xs-12.leg-header
-                    %h5.text-muted{ng: {show: '!$first'}} Get off
-                    %h4{ng: {show: '!$first'}} {{leg.from.name}}
-                    %h5.text-muted{ng: {show: '$first'}} Begin at
-                    %h4{ng: {show: '$first'}}  {{itinerary.start_location.name}}
+                    %h4 {{leg.from.name}}
                 .row
-                .leg-info.col-xs-12
-                  .row.even-height-row
-                    .col-height-slave{style: 'width: 20px'}
-                      %i.fa.fa-chevron-down.fa-lg{style: 'color: grey', ng: {show: '!showDiv[$index] || showDiv[$index] == false'}}
-                      %i.fa.fa-chevron-up.fa-lg{style: 'color: grey', ng: {show: 'showDiv[$index] == true'}}
-                    .col-height-master
-                      %h5.text-muted Walk
-                      %h5.text-muted {{leg.distanceDesc}} Miles ({{leg.travelTime}})
-                .animate-show.blah{ng: {show: 'showDiv[$index]'}}
+                  .leg-info.col-xs-12
+                    %h4.text-muted Walk
+                    %h4.text-muted {{leg.distanceDesc}} Miles ({{leg.travelTime}})
+                .animate-show.blah{ng: {hide: 'showDiv[$index]'}}
                   .row{ng: {repeat: 'step in leg.steps'}}
                     .leg-info.col-xs-12{style: 'padding-left: 50px;'}
                       %img.walk-arrow{height: '30px', width: '30px', ng: {src: 'images/transit/{{step.arrow}}.png'}}
                       .row
                         .leg-info.col-xs-12
-                          {{step.description}}
+                          .walk-step
+                            {{step.description}}
                       .row.text-muted
                         .leg-info.col-xs-12
                           .walk-step{ng: {show: '!$last'}}
@@ -116,180 +271,23 @@
             .col-xs-2.right-side
               %h4 {{itinerary.destinationTimeDesc}}
             .col-xs-1.right-side
-              %i.destination.fa.fa-dot-circle-o.fa-lg.waypoint{style: 'margin-left: -16px;'}
+              %i.destination.fa.fa-dot-circle-o.fa-lg.waypoint{style: 'margin-left: -18px;'}
             .col-xs-9.leg-info.pull-left.left-side
               .bus-info
                 .row
                   .leg-info.col-xs-12.leg-header
-                    %h5.text-muted Arrive at
-                    %h4 {{itinerary.end_location.name}}
+                    %h4 {{itinerary.destinationDesc}}
 
-#itinerary{style: 'padding: 0;', index: '{{$index}}', ng: {show: 'mode==="mode_paratransit"', repeat: 'itinerary in paratransitItineraries'}}
-  .row{style: 'margin-bottom: 1em;', ng: {show: '$index == 0'}}
-    .col-xs-12.col-md-8.col-md-offset-2.no-padding
-      .row
-        .col-xs-12{style:' background-color: rgb(205,254,206); padding;10px;'}
-          %h2
-            %span
-              Shared Ride
-            %span{ng: {hide: 'tripCancelled'}} 
-              (saved)
-            %span{style: 'color: red', ng: {show: 'tripCancelled'}}
-              (cancelled)
-  .headerwrap{ng: {show: '$index == 0'}}
-    .row
-      .col-xs-6.text-right.text-muted
-        Escorts/Companions:
-      .col-xs-6.text-left
-        {{escort}}
-    .row{style: 'margin-bottom: 1em;'}
-      .col-xs-6.text-right.text-muted
-        Instructions to Driver:
-      .col-xs-6.text-left
-        {{driverInstructions}}
-    .row
-      .col-xs-12.col-md-8.col-md-offset-2.no-padding
-        .row
-          .col-xs-12
-            %h2 Outbound Trip
-  .row{ng: {show: '$index == 1', style: "$index == 1 ? {'margin-top': '2em'} : {}"}}
-    .col-xs-12.col-md-8.col-md-offset-2.no-padding
-      .row
-        .col-xs-12
-          %h2 Return Trip
-  .row
-    .col-xs-12.col-md-8.col-md-offset-2.no-padding
-      .row
-        .col-xs-12.text-muted
-          {{itinerary.dayAndDateDesc}}
-      .row
-        .col-xs-10.text-left
-          %h4 {{itinerary.travelTime}}
-        .col-xs-2.text-right
-          %h4{style: 'float:right; vertical-align: bottom;'} {{itinerary.cost | currency | free}}
-  .row
-    .col-xs-12.col-md-8.col-md-offset-2.paratransit-body
-      .border-between.timeline.mode_wait
-        .row.even-height-row
-          .col-xs-2.right-side.no-padding
-            %h4 {{itinerary.startTimeDesc}}
-          .col-xs-1.right-side
-          .col-xs-9.leg-info.left-side
-            .wait-info
-              .row
-                .leg-info.col-xs-12
-                  %h5.text-muted WAIT for Shared Ride
-              .row
-                .leg-info.col-xs-12
-                  %h4.text-muted {{itinerary.start_location.name}}
-              .row
-                .leg-info.col-xs-12
-                  %h5.text-muted Confirm #: {{itinerary.confirmation_id}}
-      .border-between.timeline.mode_paratransit
-        .row.even-height-row
-          .col-xs-2.right-side.no-padding
-            %h4 {{itinerary.wait_endDesc}}
-          .col-xs-1.right-side
-            %i.fa.fa-circle-o.fa-lg.waypoint{style: 'color: #0E5302;'}
-          .col-xs-9.leg-info.left-side
-            .bus-info
-              .row{style: 'height: 100px'}
-      .border-between.timeline.mode_paratransit
-        .row.even-height-row
-          .col-xs-2.right-side.no-padding
-            %h4 {{itinerary.endTimeDesc}}
-          .col-xs-1.right-side.no-pseudo
-            %i.fa.fa-circle-o.fa-lg.waypoint{style: 'color: #0E5302;'}
-          .col-xs-9.leg-info.left-side
-            .bus-info
-              .row
-                .leg-info.col-xs-12.leg-header
-                  %h5.text-muted ARRIVE
-                  %h4.text-muted {{itinerary.end_location.name}}
-
-.walkitinerary#walk{style: 'padding: 0;', ng: {show: 'mode==="mode_walk"', repeat: 'itinerary in walkItineraries'}}
-  .row{style: 'margin-bottom: 1em;', ng: {show: '$index == 0'}}
-    .col-xs-12.col-md-8.col-md-offset-2.no-padding
-      .row
-        .col-xs-12{style:' background-color: rgb(205,254,206); padding;10px;'}
-          %h2 Walk Details
-.walkitinerary#walk{index: '{{$index}}', ng: {repeat: 'itinerary in walkItineraries'}}
-  .row{ng: {show: '$index == 0'}}
-    .col-xs-12.col-md-8.col-md-offset-2.no-padding
-      .row
-        .col-xs-12
-          %h2 Outbound Trip
-  .row{style: 'margin-top: 2em;', ng: {show: '$index == 1'}}
-    .col-xs-12.col-md-8.col-md-offset-2.no-padding
-      .row
-        .col-xs-12
-          %h2 Return Trip
-  .row
-    .col-xs-12.col-md-8.col-md-offset-2.no-padding
-      .row
-        .col-xs-12.text-muted
-          {{itinerary.dayAndDateDesc}}
-      .row
-        .col-xs-10.text-left
-          %h4
-            {{itinerary.travelTime}} (
-            %img.walk-time-icon{ng: {src: 'images/modes/walk.png'}}
-            {{itinerary.walkTimeDesc}})
-        .col-xs-2.text-right
-          %h4{style: 'float:right; vertical-align: bottom;'} Free
-  .row
-    .col-xs-12.col-md-8.col-md-offset-2.walk-body
-      .border-between.timeline{'index' => '{{$index}}', ng: {click: 'test()', repeat: 'leg in itinerary.json_legs track by $index', class: '{"mode_bus": leg.mode == "BUS", "mode_walk": leg.mode == "WALK"}'}}
-        .row.even-height-row
-          .col-xs-2.right-side
-            %h4 {{leg.startTimeDesc}}
-          .col-xs-1.right-side
-            %i.fa.fa-circle-o.fa-lg.waypoint
-          .col-xs-9.leg-info.pull-left.left-side
-            .walk-info{ng: {show: 'leg.mode == "WALK"'}}
-              .row
-                .leg-info.col-xs-12.leg-header
-                  %h4 {{leg.from.name}}
-              .row
-                .leg-info.col-xs-12
-                  %h4.text-muted Walk
-                  %h4.text-muted {{leg.distanceDesc}} Miles ({{leg.travelTime}})
-              .animate-show.blah{ng: {hide: 'showDiv[$index]'}}
-                .row{ng: {repeat: 'step in leg.steps'}}
-                  .leg-info.col-xs-12{style: 'padding-left: 50px;'}
-                    %img.walk-arrow{height: '30px', width: '30px', ng: {src: 'images/transit/{{step.arrow}}.png'}}
-                    .row
-                      .leg-info.col-xs-12
-                        .walk-step
-                          {{step.description}}
-                    .row.text-muted
-                      .leg-info.col-xs-12
-                        .walk-step{ng: {show: '!$last'}}
-                          {{step.distanceDesc}} miles
-                        %div{ng: {show: '$last'}}
-                          {{step.distanceDesc}} miles
-      .border-between.timeline{style: 'margin-bottom: 1em;'}
-        .row.even-height-row
-          .col-xs-2.right-side
-            %h4 {{itinerary.destinationTimeDesc}}
-          .col-xs-1.right-side
-            %i.destination.fa.fa-dot-circle-o.fa-lg.waypoint{style: 'margin-left: -18px;'}
-          .col-xs-9.leg-info.pull-left.left-side
-            .bus-info
-              .row
-                .leg-info.col-xs-12.leg-header
-                  %h4 {{itinerary.destinationDesc}}
-
-.row.unstuck-foot{style: 'margin-top: 2em'}
-  .col-md-8.col-md-offset-2.col-xs-12
-    %a.btn.btn-primary.btn-block{href: "", style:'background-color:red;',ng: {click: 'cancelTrip()', hide:'tripCancelled'}}
-      Cancel this ride
-    %a.btn.btn-primary.btn-block{href: "", ng: {click: "viewMyRides()", show:'tripCancelled'}}
-      View all my rides
-  .col-md-8.col-md-offset-2.col-xs-12{style: 'margin-top: 2em; margin-bottom: 1em;'}
-    .pull-left
-      %a.btn{href: "", back: '', ng: {click: "back()"}}
-        Back
-    .pull-right
-      %a.btn.btn-link{href: "/#/"}
-        Book another ride
+  .row.unstuck-foot.btn-spacing{style: 'margin-top: 1em;'}
+    .col-md-8.col-md-offset-2.col-xs-12
+      %a.btn.btn-primary.btn-block{href: "", style:'background-color:red;',ng: {click: 'cancelTrip()', hide:'tripCancelled'}}
+        Cancel this ride
+      %a.btn.btn-primary.btn-block{href: "", ng: {click: "viewMyRides()", show:'tripCancelled'}}
+        View all my rides
+    .col-md-8.col-md-offset-2.col-xs-12
+      .pull-left
+        %a.btn{href: "", back: '', ng: {click: "back()"}}
+          Back
+      .pull-right
+        %a.btn.btn-link{href: "/#/"}
+          Book another ride
