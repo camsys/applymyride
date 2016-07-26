@@ -1,25 +1,25 @@
 .row.even-height-row
   .button_wrapper{ng: {show: 'trip.mode != "mode_paratransit"'}}
-    .col-xs-6.col-xs-offset-2{style: 'text-align: center;'}
+    .col-xs-3.col-xs-offset-2{style: 'text-align: right;'}
       .row{ng: {click: 'toggleEmail($event)'}}
         %span.fa-stack
           %i.fa.fa-envelope-o.fa-stack-2x
         %a.blue-text{ng: {show: '!mobile'}}
           Email
-    .col-xs-6{style: 'text-align: center;'}
+    .col-xs-3.col-xs-offset-2{style: 'text-align: left;'}
       .row{ng: {click: 'selectTrip($event, tab, $index)'}}
         %span.fa-stack
           %i.fa.fa-search.fa-stack-2x
         %a.blue-text{ng: {show: '!mobile'}}
           View
   .button_wrapper{ng: {show: 'trip.mode == "mode_paratransit"'}}
-    .col-xs-6{style: 'text-align: center;'}
+    .col-xs-3.col-xs-offset-2{style: 'text-align: right;'}
       .row{ng: {click: 'toggleEmail($event)'}}
         %span.fa-stack
           %i.fa.fa-envelope-o.fa-stack-2x
         %a.blue-text{ng: {show: '!mobile'}}
           Email
-    .col-xs-6{style: 'text-align: center;'}
+    .col-xs-3.col-xs-offset-2{style: 'text-align: left;'}
       .row{ng: {click: 'selectTrip($event, tab, $index)'}}
         %span.fa-stack
           %i.fa.fa-search.fa-stack-2x

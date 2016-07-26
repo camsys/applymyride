@@ -1,5 +1,5 @@
 .row.even-height-row{ng: {show: 'trip.mode != "mode_paratransit"'}}
-  .col-xs-4{style: 'text-align: center;', ng: {click: 'cancelTrip($event, tab, $index)'}}
+  .col-xs-4{style: 'text-align: right;', ng: {click: 'cancelTrip($event, tab, $index)'}}
     %span.fa-stack
       %i.fa.fa-times-circle.fa-stack-2x{style: 'color: red;'}
     %a.blue-text{ng: {show: '!mobile'}}
@@ -10,7 +10,7 @@
         %i.fa.fa-envelope-o.fa-stack-2x
       %a.blue-text{ng: {show: '!mobile'}}
         Email
-  .col-xs-4{style: 'text-align: center;'}
+  .col-xs-4{style: 'text-align: left;'}
     .row{ng: {click: 'selectTrip($event, tab, $index)'}}
       %span.fa-stack
         %i.fa.fa-search.fa-stack-2x
