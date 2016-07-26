@@ -29,6 +29,10 @@
                 {{day.day}}
     .row{style:'padding:11px 0px;'}
       .col-lg-6.col-lg-offset-3.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1.col-xs-12
+        %h4{style:'display:inline-block;', ng:{show:'serviceOpen'}                  }
+          Service hours {{serviceOpen}} to {{serviceClose}}
+      .row
+      .col-lg-6.col-lg-offset-3.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1.col-xs-12
         %cs-time-input{ng:{model:'fromMoment'}}
     .row
       .col-lg-6.col-lg-offset-3.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1.col-xs-12
