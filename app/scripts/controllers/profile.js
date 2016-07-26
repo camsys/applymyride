@@ -60,9 +60,13 @@ angular.module('applyMyRideApp')
             }
 
             planService.profileUpdateObject = profileUpdate;
-            planService.postProfileUpdate($http);
-            $scope.editable = false;
-            flash.setMessage('Your profile was updated.');
+            planService.postProfileUpdate($http)
+            .then(function(result){
+              if($scope.email_editable && result.statusText === 'OK'){
+                planService.email = $scope.email;
+                ipCookie('email', planService.email, {expires: 7, expirationUnit: 'days'});
+              }
+            });
           }
         }else{
           $scope.editable = true;
