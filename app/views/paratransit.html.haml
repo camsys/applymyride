@@ -1,103 +1,112 @@
-.container#paratransit{style: 'padding: 0;', index: '{{$index}}', ng: {show: '!booking_failed', repeat: 'itinerary in paratransitItineraries'}}
-  %div{ng:{show: '$index == 0'}}
-    .row{style: 'margin-bottom: 1em;', ng: {show: 'email'}}
-      .col-xs-12.text-center{style: 'padding: 0;'}
-        %h2 Your trip has been saved
-    
-  .headerwrap{ng:{show: '$index == 0'}}
+.container
+  #paratransit{style: 'padding: 0;', index: '{{$index}}', ng: {show: '!booking_failed', repeat: 'itinerary in paratransitItineraries'}}
+    %div{ng:{show: '$index == 0'}}
+      .row{style: 'margin-bottom: 1em;', ng: {show: 'email'}}
+        .col-xs-12.text-center{style: 'padding: 0;'}
+          %h2 Your trip has been saved
+      
+    .headerwrap{ng:{show: '$index == 0'}}
+      .row
+        .col-xs-12.col-md-8.col-md-offset-2.no-padding
+          .row
+            .col-xs-12{style:'background-color: rgb(205,254,206); padding:10px;'}
+              %h2 
+                %strong
+                  %span
+                    Shared Ride
+                  %span{style:'font-size: 22px;', ng: {hide: 'tripCancelled'}} 
+                    (booked)
+                  %span{style: 'color: red; font-size: 22px;', ng: {show: 'tripCancelled'}}
+                    (cancelled)
+      .row{style:'margin-top: 6px;'}
+        .col-xs-6.text-right.text-muted
+          Escorts/Companions:
+        .col-xs-6.text-left
+          {{escort}}
+
+    .row{style: 'margin-top: 1em;', ng: {show: '$index == 0'}}
+      .col-xs-12.col-md-8.col-md-offset-2.no-padding
+        .row
+          .col-xs-12
+            %h2 Outbound Trip
+    .row{ng: {show: '$index == 1', style: "$index == 1 ? {'margin-top': '2em'} : {}"}}
+      .col-xs-12.col-md-8.col-md-offset-2.no-padding
+        .row
+          .col-xs-12
+            %h2 Return Trip
     .row
       .col-xs-12.col-md-8.col-md-offset-2.no-padding
         .row
-          .col-xs-12{style:' background-color: rgb(205,254,206); padding;10px;'}
-            %h2
-              %span
-                Shared Ride
-              %span{ng: {hide: 'tripCancelled'}} 
-                (booked)
-              %span{style: 'color: red', ng: {show: 'tripCancelled'}}
-                (cancelled)
+          .col-xs-12.text-muted
+            {{itinerary.dayAndDateDesc}}
+        .row
+          .col-xs-10.text-left
+            %h4 {{booking_results[$index].travelTime}}
+          .col-xs-2.text-right
+            %h4{style: 'float:right; vertical-align: bottom;'} {{itinerary.cost | currency | free}}
     .row
-      .col-xs-6.text-right.text-muted
-        Escorts/Companions:
-      .col-xs-6.text-left
-        {{escort}}
-    .row{style: 'margin-bottom: 1em;'}
-      .col-xs-6.text-right.text-muted
-        Instructions to Driver:
-      .col-xs-6.text-left
-        {{driverInstructions}}
+      .col-xs-12.col-md-8.col-md-offset-2.paratransit-body
+        .border-between.timeline.mode_wait
+          .row.even-height-row
+            .col-xs-2.right-side.no-padding
+              %h4 {{booking_results[$index].wait_startDesc}}
+            .col-xs-1.right-side
+            .col-xs-9.leg-info.left-side
+              .wait-info
+                .row
+                  .leg-info.col-xs-12
+                    %h5.text-muted WAIT for Shared Ride
+                .row{ng: {show: '$index == 0'}}
+                  .leg-info.col-xs-12
+                    %h4.text-muted {{itinerary.start_location.name}}
+                .row{ng: {show: '$index == 1'}}
+                  .leg-info.col-xs-12
+                    %h4.text-muted {{itinerary.end_location.name}}
+                .row
+                  .leg-info.col-xs-12
+                    %h5.text-muted Confirm #: {{booking_results[$index].confirmation_id}}
+        .border-between.timeline.mode_paratransit
+          .row.even-height-row
+            .col-xs-2.right-side.no-padding
+              %h4 {{booking_results[$index].wait_endDesc}}
+            .col-xs-1.right-side
+              %i.fa.fa-circle-o.fa-lg.waypoint{style: 'color: #0E5302;'}
+            .col-xs-9.leg-info.left-side
+              .bus-info
+                .row{style: 'height: 100px'}
+        .border-between.timeline.mode_paratransit
+          .row.even-height-row
+            .col-xs-2.right-side.no-padding
+              %h4 {{booking_results[$index].arrivalDesc}}
+            .col-xs-1.right-side.no-pseudo
+              %i.fa.fa-circle-o.fa-lg.waypoint{style: 'color: #0E5302;'}
+            .col-xs-9.leg-info.left-side
+              .bus-info
+                .row
+                  .leg-info.col-xs-12.leg-header
+                    %h5.text-muted ARRIVE
+                .row{ng: {show: '$index == 0'}}
+                  .leg-info.col-xs-12
+                    %h4.text-muted {{itinerary.end_location.name}}
+                .row{ng: {show: '$index == 1'}}
+                  .leg-info.col-xs-12
+                    %h4.text-muted {{itinerary.start_location.name}}        
 
-  .row{style: 'margin-top: 1em;', ng: {show: '$index == 0'}}
-    .col-xs-12.col-md-8.col-md-offset-2.no-padding
-      .row
-        .col-xs-12
-          %h2 Outbound Trip
-  .row{ng: {show: '$index == 1', style: "$index == 1 ? {'margin-top': '2em'} : {}"}}
-    .col-xs-12.col-md-8.col-md-offset-2.no-padding
-      .row
-        .col-xs-12
-          %h2 Return Trip
-  .row
-    .col-xs-12.col-md-8.col-md-offset-2.no-padding
-      .row
-        .col-xs-12.text-muted
-          {{itinerary.dayAndDateDesc}}
-      .row
-        .col-xs-10.text-left
-          %h4 {{booking_results[$index].travelTime}}
-        .col-xs-2.text-right
-          %h4{style: 'float:right; vertical-align: bottom;'} {{itinerary.cost | currency | free}}
-  .row
-    .col-xs-12.col-md-8.col-md-offset-2.paratransit-body
-      .border-between.timeline.mode_wait
-        .row.even-height-row
-          .col-xs-2.right-side.no-padding
-            %h4 {{booking_results[$index].wait_startDesc}}
-          .col-xs-1.right-side
-          .col-xs-9.leg-info.left-side
-            .wait-info
-              .row
-                .leg-info.col-xs-12
-                  %h5.text-muted WAIT for Shared Ride
-              .row
-                .leg-info.col-xs-12
-                  %h4.text-muted {{itinerary.start_location.name}}
-              .row
-                .leg-info.col-xs-12
-                  %h5.text-muted Confirm #: {{booking_results[$index].confirmation_id}}
-      .border-between.timeline.mode_paratransit
-        .row.even-height-row
-          .col-xs-2.right-side.no-padding
-            %h4 {{booking_results[$index].wait_endDesc}}
-          .col-xs-1.right-side
-            %i.fa.fa-circle-o.fa-lg.waypoint{style: 'color: #0E5302;'}
-          .col-xs-9.leg-info.left-side
-            .bus-info
-              .row{style: 'height: 100px'}
-      .border-between.timeline.mode_paratransit
-        .row.even-height-row
-          .col-xs-2.right-side.no-padding
-            %h4 {{booking_results[$index].arrivalDesc}}
-          .col-xs-1.right-side.no-pseudo
-            %i.fa.fa-circle-o.fa-lg.waypoint{style: 'color: #0E5302;'}
-          .col-xs-9.leg-info.left-side
-            .bus-info
-              .row
-                .leg-info.col-xs-12.leg-header
-                  %h5.text-muted ARRIVE
-                  %h4.text-muted {{itinerary.end_location.name}}
-  .row.unstuck-foot{style: 'margin-top: 2em'}
-    .col-md-8.col-md-offset-2.col-xs-12
-      %a.btn.btn-primary.btn-block{style:'background-color:red; margin-top: 1em; margin-bottom: 1em;', href: '', ng: {click: 'cancelTrip()', hide:'tripCancelled'}}
+  .row.unstuck-foot.btn-spacing{style: 'margin-top: 1em;'}
+    .col-xs-12.col-md-8.col-md-offset-2
+      %a.btn.btn-primary.btn-block{style:'background-color:red;', href: '', ng: {click: 'cancelTrip()', hide:'tripCancelled'}}
         Cancel this ride
-      %a.btn.btn-primary.btn-block{href: '', ng: {click: 'bookSharedRide()', show:'tripCancelled'}}
-        Book this shared ride
-      %a.btn.btn-primary.btn-block{href: '', ng: {click: 'reset()'}}
-        Plan another ride
-      %a.btn-block.text-center.link-btn{"ng-href" => "#/plan/my_rides"}
+      %a.btn.btn-primary.btn-block{href: '/#/plan/my_rides', ng: {show:'tripCancelled'}}
         View my saved rides
-.container{style: 'padding: 0;', ng: {show: 'booking_failed'}}
-  .row{style: 'margin-bottom: 1em;'}
+    .col-xs-12.col-md-8.col-md-offset-2
+      .pull-left
+        %a.btn{href: "", ng: {click: "logout()", controller:'PlanController'}}
+          Logout
+      .pull-right
+        %a.btn.btn-link{ng: {click: "reset()", controller:'PlanController'}}
+          Book another ride
+
+  .row{style: 'margin-bottom: 1em;', ng: {show: 'booking_failed'}}
     .col-xs-12.col-md-8.col-md-offset-2{style: 'padding: 0;'}
       .row
         .col-xs-12.col-md-8.col-md-offset-2{style: 'background-color: #FFFFDC'}
