@@ -11,7 +11,7 @@
       .row
         %input.form-control{style: 'font-size: .9em; width: 50%;', placeholder: '00000', ng: {model: 'sharedRideId', required: 'true', change: 'checkId()', enter: 'next()'}}
       .row{style: 'margin-top: 1em'}
-        %h3 Your County
+        %h3 Your county
       .row
         %select.btn-lg{style: 'width: 100%', ng: {model: 'county', change: 'checkId()', options: 'county for county in counties', enter: 'next()'}}
           %option{value: '', disabled: '', selected: ''}
