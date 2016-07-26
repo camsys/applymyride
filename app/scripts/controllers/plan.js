@@ -33,6 +33,15 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
     zoom: 17,
     mapTypeId: google.maps.MapTypeId.ROADMAP
   };
+  //disable some map options if mobile user
+  if(util.isMobile()){
+    $scope.mapOptions.scrollwheel = false;
+    $scope.mapOptions.zoomControl = false;
+    $scope.mapOptions.navigationControl = false;
+    $scope.mapOptions.mapTypeControl = false;
+    $scope.mapOptions.scaleControl = false;
+    $scope.mapOptions.draggable = false;
+  }
   $scope.step = $routeParams.step;
   $scope.disableNext = false;
   $scope.showNext = true;
