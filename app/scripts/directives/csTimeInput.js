@@ -29,11 +29,15 @@ app.directive('csTimeInput', function() {
                 //limit minute to less than 60
                 hour = parseInt(scope.hour);
                 minute = parseInt(scope.minute);
-                hour = (true === scope.isAM)
-                      ? hour
-                      : (12 + hour);
-                //12AM become 24, make it 0
-                hour = (hour == 24) ? 0 : hour;
+                if(true === scope.isAM){
+                    if(hour == 12){
+                        hour = 0;
+                    }
+                }else{
+                    if(hour != 12){
+                        hour += 12;
+                    }
+                }
                 from.hour(hour).minute(minute);
                 if(hour > -1 && minute > -1){
                     scope.$parent.fromMoment = from;
