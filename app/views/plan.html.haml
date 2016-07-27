@@ -172,6 +172,8 @@
             Back
 
   .confirm{ng: {show: 'step==="confirm"', include: "'views/plan-confirm.html'"}}
+  
+  .login-guest{ng: {show: 'step === "login-guest"', include:"'views/login.html'"}}
     
   .list_itineraries.col-xs-12.col-sm-8.col-sm-offset-2.no-padding{ng: {show: 'step==="list_itineraries" && noresults == true'}}
     %h3

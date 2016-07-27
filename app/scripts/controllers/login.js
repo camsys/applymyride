@@ -3,6 +3,9 @@
 angular.module('applyMyRideApp')
   .controller('LoginController', ['$scope', '$location', 'flash', 'planService', '$http', 'ipCookie', '$window', 'localStorageService',
     function ($scope, $location, flash, planService, $http, ipCookie, $window, localStorageService) {
+      //skip initializing this controller if we're not on the page
+      if( ['/','/loginError','/plan/login-guest'].indexOf( $location.path() ) == -1){ return; }
+      
       //setup the backend url depending on environment (local, dev, qa)
       $scope.apiHost = document.location.hostname;
       if( document.location.hostname.match(/findmyridepa2-dev\.camsys-apps\.com/) ){
@@ -176,7 +179,11 @@ angular.module('applyMyRideApp')
           promise = planService.getProfile($http);
           promise.then(function(result) {
             planService.profile = result.data;
-            $location.path('/plan/where');
+            if(planService.to && planService.from && planService.fromDate){
+                $location.path('/plan/purpose');
+            }else{
+                $location.path('/plan/where');
+            }
           })
         });
       }

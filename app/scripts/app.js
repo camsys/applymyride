@@ -30,11 +30,11 @@ angular.module('applyMyRideApp', [
     $routeProvider
       .when('/', {
         templateUrl: 'views/login.html',
-        controller: 'LoginController'
+        controller: 'MainController'
       })
       .when('/loginError', {
         templateUrl: 'views/login.html',
-        controller: 'LoginController'
+        controller: 'MainController'
       })
       .when('/authenticateSharedRideId', {
         templateUrl: 'views/login.html',

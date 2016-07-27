@@ -1350,17 +1350,22 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
 
       break;
     case 'confirm' :
-      $scope.request = planService.confirmRequest;
       $scope.transitResult = planService.transitResult;
       $scope.paratransitResult = planService.paratransitResult;
       
       planService.prepareTripSearchResultsPage();
       $scope.fare_info = planService.fare_info;
       $scope.paratransitItineraries = planService.paratransitItineraries;
+      if(planService.guestParatransitItinerary){
+        //don't let there be paratransit itineraries if the guest itinerary is populated
+        $scope.paratransitItineraries = [];
+      }
+      $scope.guestParatransitItinerary = planService.guestParatransitItinerary;
       $scope.walkItineraries = planService.walkItineraries;
       $scope.transitItineraries = planService.transitItineraries;
       $scope.transitInfos = planService.transitInfos;
       $scope.noresults = false;
+      $scope.request = planService.confirmRequest;
       if($scope.paratransitItineraries.length < 1 && $scope.transitItineraries.length < 1 && $scope.walkItineraries.length < 1){
         $scope.noresults = true;
       }else if($scope.paratransitItineraries.length < 1 && $scope.transitItineraries.length < 1 && $scope.walkItineraries.length > 0){

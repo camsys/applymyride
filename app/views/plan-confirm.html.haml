@@ -71,6 +71,26 @@
       .col-xs-9.col-md-10
         %h4.text-left
           {{fare_info["mode_paratransit"] | currency | free}}
+
+
+.row.rounded-border{style: "border: 0px;", ng:{show:'guestParatransitItinerary'}}
+  .col-xs-12.col-md-6.col-md-offset-3.col-sm-8.col-sm-offset-2
+    %h3
+      %strong
+        Shared Ride options
+  .col-xs-12.col-md-6.col-md-offset-3.col-sm-8.col-sm-offset-2
+    .no_underline.row.rounded-border{ng:{repeat:'discount in guestParatransitItinerary.discounts'}}
+      .col-xs-3.col-md-2
+        %p.text-left
+          %strong
+            {{discount.fare | currency}}
+          .text-muted
+            or less
+      .col-xs-9.col-md-10
+        %h4.text-muted
+          {{discount.comment}}  
+
+    
 .notAllRides{'ng-hide'=>'showBusRides || paratransitItineraries.length == 0'}
   .row
     .col-xs-12.col-md-6.col-md-offset-3.col-sm-8.col-sm-offset-2.text-center{style:'margin-bottom:10px;'}
@@ -90,7 +110,7 @@
     .col-xs-12.col-md-6.col-md-offset-3.col-sm-8.col-sm-offset-2
       %h3
         %strong
-          Bus options
+          Bus
   .row
     .col-xs-12.col-md-6.col-md-offset-3.col-sm-8.col-sm-offset-2{ng:{click:'goViewTransit(transitInfos[0][0].id, ( transitInfos[1] || [{id:0}] )[0].id)'}}
       .row.rounded-border
