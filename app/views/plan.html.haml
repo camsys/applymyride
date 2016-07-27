@@ -12,7 +12,7 @@
               %strong
                 %i{class:'cs-map-marker A'}
                 Where are you starting?
-          .col-lg-6.col-lg-offset-3.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1.col-xs-12
+
             %autocomplete{ 'attr-placeholder'=> '{{fromDefault}}',
                                         'attr-input-id' => 'whereFromInput',
                                         'attr-autofocus' => 'true',
@@ -35,12 +35,12 @@
               Address is not recognized.  Try entering it another way.
             .alert.alert-danger{role:'alert', ng:{show:'errors.rangeErrorfrom'}}
               The location you selected is outside the service area.
-          .col-lg-6.col-lg-offset-3.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1.col-xs-12
+
             %h3
               %strong
                 %i{class:'cs-map-marker B'}
                 Where are you going?
-          .col-lg-6.col-lg-offset-3.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1.col-xs-12
+
             %autocomplete{ 'attr-placeholder'=> '{{toDefault}}',
                                         'attr-input-id' => 'whereToInput',
                                         'attr-clicktofocus' => 'true',
@@ -57,14 +57,16 @@
                                         'on-select' => 'selectTo', 
                                         'autocomplete-required' => 'true',
                                         ng: { model: 'to'} }
+            
             .alert.alert-danger{role:'alert', ng:{show:'errors.noResultsto'}}
               Address is not recognized.  Try entering it another way.
+            
             .alert.alert-danger{role:'alert', ng:{show:'errors.rangeErrorto'}}
               The location you selected is outside the service area.
-        .row
-          .col-lg-6.col-lg-offset-3.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1.col-xs-12
+
             %div.map-canvas{'ui-map' => 'whereToMap', 'ui-options' => 'mapOptions', ng: {show: 'showMap'}}
-        .row.unstuck-foot{style: 'margin-top: 30px'}
+
+        .row.unstuck-foot.btn-spacing
           .col-lg-6.col-lg-offset-3.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1.col-xs-12
             .pull-left
               %a.btn{href: "", back: '', ng: {click: "back()", hide:'backToConfirm'}}
@@ -165,7 +167,7 @@
               More trip purposes
             %a.btn.btn-link.btn-block{href: "", style: 'margin-bottom:4px; width:100%; padding-left:0px; padding-right:0px;', ng: {show:'showAllPurposes', click: 'showAllPurposes = false;'}}
               Show fewer trip purposes
-    .row.unstuck-foot{style: 'margin-top: 30px'}
+    .row.unstuck-foot.btn-spacing
       .col-md-8.col-md-offset-2.col-xs-12
         .pull-left
           %a.btn{href: "", back: '', ng: {click: "back()"}}
@@ -369,7 +371,7 @@
         %h3
           %strong
             Anyone riding with you?
-      .row
+      .row.btn-spacing
         .col-md-4.col-md-offset-4.col-xs-12.text-center
           %a.btn.btn-primary{href: '', ng: {click: 'specifySharedRideCompanion("false")'}, style: 'white-space: normal; margin-bottom:4px;'}
             No, I'm riding alone
@@ -404,7 +406,7 @@
             %h4{style:'display:inline;'}
               How Many?
             %select{id:'numberofcompanions', ng: {model: 'numberOfCompanions', options: 'number for number in questions.limit'}}
-      .row.unstuck-foot{style: 'margin-top: 30px'}
+      .row.unstuck-foot.btn-spacing
         .col-md-8.col-md-offset-2.col-xs-12
           %a.btn.btn-back{href: "", back: '', ng: {click: "back()"}}
             Back
@@ -422,7 +424,7 @@
       .row
         .form-group
           %textarea.form-control{placeholder: 'Dear Driver, please...', rows: '5', ng: {model: 'driverInstructions'}}
-      .row.unstuck-foot{style: 'margin-top: 30px'}
+      .row.unstuck-foot.btn-spacing
         .col-md-8.col-md-offset-2.col-xs-12
           %a.btn.btn-back{href: "", back: '', ng: {click: "back()"}}
             %span
