@@ -13,7 +13,7 @@
         %h4.text-left
           {{request.fromLine1}}
         %h5.text-muted.text-left
-          {{request.fromLine2}}
+          {{request.fromLine2 | noCountry}}
 
     .no_underline.row.rounded-border{ng:{click:'goPlanWhere()'}}
       .col-xs-3.col-md-2
@@ -23,7 +23,7 @@
         %h4.text-left
           {{request.toLine1}}
         %h5.text-muted.text-left
-          {{request.toLine2}}
+          {{request.toLine2 | noCountry}}
 
     .no_underline.row.rounded-border{ng: {show: '!request.roundtrip || request.sameday', click:'goPlanWhen()' } }
       .col-xs-3.col-md-2

@@ -2,9 +2,9 @@
 
 var app = angular.module('applyMyRideApp');
 
-app.controller('PlanController', ['$scope', '$http','$routeParams', '$location', 'planService', 'util', 'flash', 'usSpinnerService', '$q', 'LocationSearch', 'localStorageService', 'ipCookie', '$timeout', '$window',
+app.controller('PlanController', ['$scope', '$http','$routeParams', '$location', 'planService', 'util', 'flash', 'usSpinnerService', '$q', 'LocationSearch', 'localStorageService', 'ipCookie', '$timeout', '$window', '$filter',
 
-function($scope, $http, $routeParams, $location, planService, util, flash, usSpinnerService, $q, LocationSearch, localStorageService, ipCookie, $timeout, $window) {
+function($scope, $http, $routeParams, $location, planService, util, flash, usSpinnerService, $q, LocationSearch, localStorageService, ipCookie, $timeout, $window, $filter) {
 
   var currentLocationLabel = "Current Location";
 
@@ -17,6 +17,7 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
   var urlPrefix = '//' + $scope.apiHost + '/';
 
   var eightAm = new Date();
+  var countryFilter = $filter('noCountry');
   eightAm.setSeconds(0);
   eightAm.setMinutes(0);
   eightAm.setHours(8);
@@ -68,10 +69,10 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
   $scope.showAllPurposes = false;
   $scope.backToConfirm = planService.backToConfirm;
 
-  $scope.toDefault = localStorage.getItem('last_destination') || '';
-  $scope.to = planService.to || '';
-  $scope.fromDefault = localStorage.getItem('last_origin') || '';
-  $scope.from = planService.from || '';
+  $scope.toDefault = countryFilter( localStorage.getItem('last_destination') || '');
+  $scope.to = countryFilter( planService.to || '');
+  $scope.fromDefault = countryFilter( localStorage.getItem('last_origin') || '' );
+  $scope.from = countryFilter( planService.from || '' );
   $scope.transitSaved = planService.transitSaved || false;
   $scope.transitCancelled = planService.transitCancelled || false;
 
