@@ -18,6 +18,12 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
 
   var eightAm = new Date();
   var countryFilter = $filter('noCountry');
+  var checkShowMap = function(){
+    if(Object.keys( $scope.toFromMarkers ).length == 0){
+      $scope.showMap = false;
+    }
+  }
+
   eightAm.setSeconds(0);
   eightAm.setMinutes(0);
   eightAm.setHours(8);
@@ -581,7 +587,9 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
 
         $scope.locations = choices;
       });
+      return $scope.suggestions;
     }
+    return false;
   }
   //begin private scope for keeping track of last input, and mapping when appropriate
   var lastFrom = $scope.from || $scope.fromDefault;
@@ -599,6 +607,7 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
       if((!place || 6 > place.length) && $scope.toFromMarkers[toFrom]){
         $scope.toFromMarkers[toFrom].setMap(null);
       }
+      checkShowMap();
       lastMappedPlaces[toFrom] = place;
       ignoreBlur = false;
       return;
@@ -655,7 +664,7 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
     $scope.selectPlace(place, 'to');
   }
 
-  $scope.selectPlace = function(place, toFrom){
+  $scope.selectPlace = function(place, toFrom, loadLocationsIfNeeded){
     //when a place is selected, update the map
     $scope.poi = null;
     $scope.showMap = true;
@@ -667,12 +676,15 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
       $scope.placeLabels.push(currentLocationLabel);
     }
 
-    var selectedIndex = $scope.placeLabels.indexOf(place);
-    
     $scope.errors['noResults'+toFrom] = false;
     if($scope.toFromMarkers[toFrom]){
       $scope.toFromMarkers[toFrom].setMap(null);
     }
+    if(!place){
+      checkShowMap();
+      return;
+    }
+    var selectedIndex = $scope.placeLabels.indexOf(place);
 
     if(-1 < selectedIndex && $scope.placeLabels[selectedIndex] == currentLocationLabel){
       //this is a POI result, get the 1Click location name
@@ -703,9 +715,22 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
             input: address,
             offset: 0,
             componentRestrictions: {country: 'us'}
-          }, function(list, status) {
+          }, function(list, status)
+          {
             if(status == "ZERO_RESULTS" || list == null){
+              if(loadLocationsIfNeeded){
+                //try again, loading the locations then selecting place
+                var locationsPromise = $scope.getLocations(place)
+                if(locationsPromise!==false){
+                  locationsPromise.then(function(){
+                    $scope.selectPlace(place, toFrom, false);
+                  });
+                  //exit before errors, new selectPlace will handle things
+                  return;
+                }
+              }
               $scope.errors['noResults'+toFrom] = true;
+              checkShowMap();
             }else{
               var placeId = list[0].place_id;
               placeIdPromise.resolve(placeId);
@@ -733,6 +758,7 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
             if(datatypes.indexOf('street_number') < 0 || datatypes.indexOf('route') < 0){
               if(datatypes.indexOf('route') < 0){
                 $scope.toFromMarkers[toFrom].setMap(null);
+                checkShowMap();
                 bootbox.alert("The location you selected does not have have a street associated with it, please select another location.");
                 return;
               }else if(datatypes.indexOf('street_number') < 0){
@@ -747,7 +773,10 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
                   streetComponent.types.push('street_number');
                   result.address_components.push(streetComponent);
                 }else{
-                  $scope.toFromMarkers[toFrom].setMap(null);
+                  if($scope.toFromMarkers[toFrom]){
+                    $scope.toFromMarkers[toFrom].setMap(null);
+                  }
+                  checkShowMap();
                   bootbox.alert("The location you selected does not have a street number associated, please select another location.");
                   return;
                 }
@@ -833,6 +862,7 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
             }
             else{
               $scope.toFromMarkers[toFrom].setMap(null);
+              checkShowMap();
               bootbox.alert("The location you selected does not have a street number associated, please select another location.");
               $scope.stopSpin();
               return;
@@ -875,49 +905,52 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
           $scope.disableNext = false;
           $scope.showNext = true;
 
-          google.maps.event.trigger(map, 'resize');
-          var location = result.geometry.location;//$.extend(true, [], result.geometry.location); //new google.maps.LatLng(result.geometry.location.lat, result.geometry.location.lng);
-          if($scope.poi){
-            var poilocation = $scope.poi.geometry.location;
-            location = new google.maps.LatLng(Number(poilocation.lat), Number(poilocation.lng));
-          }
-
-          if(typeof location.lat == "number"){
-            location = new google.maps.LatLng(Number(location.lat), Number(location.lng));
-          }
-
-          $scope.toFromMarkers[toFrom] = new google.maps.Marker({
-            map: map,
-            position: location,
-            animation: google.maps.Animation.DROP,
-            icon: $scope.toFromIcons[toFrom]
-          });
-
-          var bounds = new google.maps.LatLngBounds();
-          angular.forEach($scope.toFromMarkers, function(marker, k){
-            bounds.extend(marker.position);
-          });
-          map.setCenter(bounds.getCenter());
-          map.fitBounds(bounds);
-          if(toFrom == 'from'){
-            planService.fromDetails = result;
-            planService.from = place;
-            if(updateInput){
-              $("#whereFromInput").val(place);
+          setTimeout(function(){
+            google.maps.event.trigger(map, 'resize');
+            var location = result.geometry.location;//$.extend(true, [], result.geometry.location); //new google.maps.LatLng(result.geometry.location.lat, result.geometry.location.lng);
+            if($scope.poi){
+              var poilocation = $scope.poi.geometry.location;
+              location = new google.maps.LatLng(Number(poilocation.lat), Number(poilocation.lng));
             }
-          }else if(toFrom == 'to'){
-            planService.toDetails = result;
-            planService.to = place;
-            if(updateInput){
-              $("#whereToInput").val(place);
+
+            if(typeof location.lat == "number"){
+              location = new google.maps.LatLng(Number(location.lat), Number(location.lng));
             }
-          }
+
+            $scope.toFromMarkers[toFrom] = new google.maps.Marker({
+              map: map,
+              position: location,
+              animation: google.maps.Animation.DROP,
+              icon: $scope.toFromIcons[toFrom]
+            });
+
+            var bounds = new google.maps.LatLngBounds();
+            angular.forEach($scope.toFromMarkers, function(marker, k){
+              bounds.extend(marker.position);
+            });
+            map.setCenter(bounds.getCenter());
+            map.fitBounds(bounds);
+            if(toFrom == 'from'){
+              planService.fromDetails = result;
+              planService.from = place;
+              if(updateInput){
+                $("#whereFromInput").val(place);
+              }
+            }else if(toFrom == 'to'){
+              planService.toDetails = result;
+              planService.to = place;
+              if(updateInput){
+                $("#whereToInput").val(place);
+              }
+            }
+          }, 1);
         }else{
           //$scope.showMap = false;
           $scope.showNext = false;
           if($scope.toFromMarkers[toFrom]){
             $scope.toFromMarkers[toFrom].setMap(null);
           }
+          checkShowMap();
           $scope.errors['rangeError'+toFrom] = true;
           bootbox.alert("The location you selected is outside the service area.");
           $scope.stopSpin();
@@ -1314,14 +1347,14 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
     case 'where':
       //load the map origin/destination
       if($scope.to){
-        $scope.selectPlace($scope.to, 'to');
+        $scope.selectPlace($scope.to, 'to', true);
       }else if($scope.toDefault){
-        $scope.selectPlace($scope.toDefault, 'to');
+        $scope.selectPlace($scope.toDefault, 'to', true);
       }
       if($scope.from){
-        $scope.selectPlace($scope.from, 'from');
+        $scope.selectPlace($scope.from, 'from', true);
       }else if($scope.fromDefault){
-        $scope.selectPlace($scope.fromDefault, 'from');
+        $scope.selectPlace($scope.fromDefault, 'from', true);
       }
       break;
     case 'when':
