@@ -93,11 +93,11 @@
     
 .notAllRides{'ng-hide'=>'showBusRides || paratransitItineraries.length == 0'}
   .row
-    .col-xs-12.col-md-6.col-md-offset-3.col-sm-8.col-sm-offset-2.text-center{style:'margin-bottom:10px;'}
+    .col-xs-12.col-md-6.col-md-offset-3.col-sm-8.col-sm-offset-2.text-center{style:'padding:0px; margin-bottom:10px;'}
       %a.btn.btn-primary.btn-block{href: "", ng: {click: 'next()'}}
         Book this Shared Ride
   .row
-    .col-xs-12.col-md-6.col-md-offset-3.col-sm-8.col-sm-offset-2.text-center
+    .col-xs-12.col-md-6.col-md-offset-3.col-sm-8.col-sm-offset-2.text-center{style:'padding:0px; '}
       .pull-left
         %a.btn{href: "", back: '', ng: {click: "back()"}}
           Back
@@ -111,8 +111,8 @@
       %h3
         %strong
           Bus
-          %span{ng:{show: 'busRidesExpanded'}} options
-  .row{ng: {hide: 'busRidesExpanded', click:'busRidesExpanded = !busRidesExpanded'}}
+          %span{ng:{show: 'busRidesExpanded || loggedIn'}} options
+  .row{ng: {hide: 'busRidesExpanded || loggedIn', click:'busRidesExpanded = !busRidesExpanded'}}
     .col-xs-12.col-md-6.col-md-offset-3.col-sm-8.col-sm-offset-2
       .no_underline.row.rounded-border
         .col-xs-3.col-md-2
@@ -122,7 +122,7 @@
         .col-xs-9.col-md-10
           %h4.text-muted
             Public Transportation
-  %div{ng: {show: 'busRidesExpanded' }}
+  %div{ng: {show: 'busRidesExpanded || loggedIn' }}
     .row.bus-itinerary-details
       .col-xs-12.col-md-6.col-md-offset-3.col-sm-8.col-sm-offset-2{ng:{click:'goViewTransit(transitInfos[0][0].id, ( transitInfos[1] || [{id:0}] )[0].id)'}}
         .row.rounded-border
@@ -178,7 +178,7 @@
                 Walking time is {{transitItineraries[1][0].walkTimeDesc}}
 
   .row.btn-spacing
-    .col-xs-12.col-md-6.col-md-offset-3.col-sm-8.col-sm-offset-2.text-center
+    .col-xs-12.col-md-6.col-md-offset-3.col-sm-8.col-sm-offset-2.text-center{style:'padding:0px'}
       .pull-left
         %a.btn{ng:{hide:'paratransitItineraries.length == 0', click: 'showBusRides=!showBusRides'}}
           Back
