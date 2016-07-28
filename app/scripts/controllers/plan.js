@@ -1154,8 +1154,8 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
     var splitTime, hour, minute;
     //try to re-use the selected time if there is one, otherwise use the start time as a default
     if($scope.fromMoment && !$scope.fromMoment.isSame( moment(), 'day' )){
-      minute = parseInt($scope.fromMoment.format('m'));
-      hour = parseInt($scope.fromMoment.format('h'));
+      minute = $scope.fromMoment.minute();
+      hour = $scope.fromMoment.hour();
     }else{
       splitTime = day.serviceHours.open.split(':');
       hour = parseInt(splitTime[0]);
