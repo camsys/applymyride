@@ -1225,7 +1225,7 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
       date = today.clone().day(0),
       openCount = 0,
       openDays = Object.keys($scope.serviceHours).length, 
-      maxDays = openDays *2,
+      maxDays = openDays *10,
       newWeek,
       totalCount = 0;
     var makeWeek = function(startDate)
@@ -1256,9 +1256,6 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
         //increment the day for next loop
         loopDay.add(1, 'd');
       }
-      if(!somethingOpen){
-        return false;
-      }
       return week;
     };
     //initialize the month
@@ -1280,15 +1277,13 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
         //if the 1st of the month isn't on 0 (Sunday), need to back up date and make the 1st week again.  
         if(0 !== date.clone().date(1).day() ){
           newWeek = makeWeek( date.clone().date(1) );
-          if(false !== newWeek){
-            months[ months.length-1 ].weeks.push( newWeek );
-          }
+          months[ months.length-1 ].weeks.push( newWeek );
         }
       }
 
-      //add a week to this month
-      newWeek = makeWeek(date);
-      if(false !== newWeek){
+      //add a week to this month, unless it was done by the month code above
+      if(openCount < openDays){
+        newWeek = makeWeek(date);
         months[ months.length-1 ].weeks.push( newWeek );
       }
       date.add(1,'w');
