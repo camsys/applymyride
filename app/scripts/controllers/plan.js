@@ -74,6 +74,7 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
   $scope.errors = {};
   $scope.showAllPurposes = false;
   $scope.backToConfirm = planService.backToConfirm;
+  $scope.loggedIn = !!planService.email;
 
   $scope.toDefault = countryFilter( localStorage.getItem('last_destination') || '');
   $scope.to = countryFilter( planService.to || '');

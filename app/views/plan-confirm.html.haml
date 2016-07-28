@@ -187,7 +187,7 @@
           Back
         %a.btn{href:'', back:'', ng:{show:'paratransitItineraries.length == 0 && !busRidesExpanded', click: 'back()'}}
           Back
-      .pull-right
+      .pull-right{'ng-show'=>'loggedIn'}
         %a.btn.btn-primary{href: "", ng: {click: "saveBusTrip()", hide:'transitSaved || transitCancelled'}}
           Save this bus trip
         %a.btn.btn-primary{href: "", style:'background-color:red;',ng: {click: 'cancelThisBusTrip()', show:'transitSaved'}}
