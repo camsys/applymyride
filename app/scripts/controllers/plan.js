@@ -95,6 +95,9 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
   $scope.goViewTransit = function(departId, returnId){
     $location.path('/plan/transit/'+departId+'/'+returnId);
   }
+  $scope.goPlanLogin = function(){
+    $location.path('/plan/login-guest');
+  }
 
   $scope.toggleMyRideButtonBar = function(type, index) {
     $scope.showEmail = false;

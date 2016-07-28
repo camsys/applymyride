@@ -2,7 +2,7 @@
 
 
 angular.module('applyMyRideApp')
-    .service('planService', function() {
+    .service('planService', ['$rootScope', '$filter', function($rootScope, $filter) {
 
       this.reset = function(){
         delete this.fromDate;
@@ -196,8 +196,11 @@ angular.module('applyMyRideApp')
       this.prepareTripSearchResultsPage = function(){
         this.transitItineraries = [];
         this.paratransitItineraries = [];
+        this.guestParatransitItinerary = null;
         this.walkItineraries = [];
         this.tripId = this.searchResults.trip_id;
+        var currencyFilter = $filter('currency');
+        var freeFilter = $filter('free');
         var itineraries = this.searchResults.itineraries;
         var itinerariesBySegmentThenMode = this.getItinerariesBySegmentAndMode(itineraries);
         var fare_info = {};
@@ -229,10 +232,12 @@ angular.module('applyMyRideApp')
             if(fares.length > 0){
               var lowestFare = Math.min.apply(null, fares).toFixed(2);
               var highestFare = Math.max.apply(null, fares).toFixed(2);
+              lowestFare = currencyFilter(lowestFare);
+              highestFare = currencyFilter(highestFare);
               if(lowestFare == highestFare || (mode_code == 'mode_paratransit' && that.email)){
-                fare_info[[mode_code]] = lowestFare;  //if the user is registered, show the lowest paratransit fare
+                fare_info[[mode_code]] = freeFilter(lowestFare);  //if the user is registered, show the lowest paratransit fare
               }else{
-                fare_info[[mode_code]] = "$" + lowestFare + "-$" + highestFare;
+                fare_info[[mode_code]] = lowestFare + "-" + highestFare;
               }
             }
           });
@@ -301,7 +306,7 @@ angular.module('applyMyRideApp')
             this.transitInfos.push(this.prepareTransitOptionsPage(itinerariesBySegmentThenMode[1].mode_transit));
             var fare1 = this.transitInfos[0][0].cost;
             var fare2 = this.transitInfos[1][0].cost;
-            fare_info.mode_transit = (new Number(fare1) + new Number(fare2)).toFixed(2).toString();
+            fare_info.mode_transit = freeFilter(currencyFilter( (new Number(fare1) + new Number(fare2)).toFixed(2).toString() ));
           }else if (fare_info.roundtrip == true){
             this.transitInfos = [];
           }
@@ -312,9 +317,9 @@ angular.module('applyMyRideApp')
             //for round trips, show the fare as the sum of the two PARATRANSIT fares
             var fare1 = this.paratransitItineraries[0].cost || 0;
             var fare2 = this.paratransitItineraries[1].cost || 0;
-            fare_info.mode_paratransit = (new Number(fare1) + new Number(fare2)).toFixed(2).toString();
+            fare_info.mode_paratransit = freeFilter(currencyFilter( (new Number(fare1) + new Number(fare2)).toFixed(2).toString() ));
           }else if(this.paratransitItineraries.length == 1){
-            fare_info.mode_paratransit = new Number(this.paratransitItineraries[0].cost).toFixed(2).toString();
+            fare_info.mode_paratransit = freeFilter(currencyFilter( new Number(this.paratransitItineraries[0].cost).toFixed(2).toString() ));
           }
         }
         this.fare_info = fare_info;
@@ -723,6 +728,7 @@ angular.module('applyMyRideApp')
         return headers;
       }
     }
+  ]
 );
 
 angular.module('applyMyRideApp')
