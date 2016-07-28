@@ -144,7 +144,7 @@ app.directive('autocomplete', function() {
 
       var key = {left: 37, up: 38, right: 39, down: 40 , enter: 13, esc: 27, tab: 9};
 
-      document.addEventListener("keydown", function(e){
+      element[0].addEventListener("keydown", function(e){
         var keycode = e.keyCode || e.which;
         switch (keycode){
           case key.esc:
@@ -156,7 +156,7 @@ app.directive('autocomplete', function() {
         }
       }, true)
 
-      document.addEventListener("blur", function(e){
+      element[0].addEventListener("blur", function(e){
         //run callback provided in view if the event target is this input's id
         if(scope.onBlur && e.target.id === scope.attrs.inputid){
           scope.onBlur( scope.searchParam );
