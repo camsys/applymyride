@@ -713,8 +713,11 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
         autocompleteService.getPlacePredictions(
           {
             input: address,
-            offset: 0,
-            componentRestrictions: {country: 'us'}
+            bounds: new google.maps.LatLngBounds(
+                      //PA 7 county region
+                      new google.maps.LatLng(39.719635, -79.061985),
+                      new google.maps.LatLng(40.730426, -76.153193)
+                    )
           }, function(list, status)
           {
             if(status == "ZERO_RESULTS" || list == null){
