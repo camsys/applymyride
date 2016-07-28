@@ -70,16 +70,16 @@
           Cost
       .col-xs-9.col-md-10
         %h4.text-left
-          {{fare_info["mode_paratransit"] | currency | free}}
+          {{fare_info["mode_paratransit"]}}
 
 
-.row.rounded-border{style: "border: 0px;", ng:{show:'guestParatransitItinerary'}}
+.row.rounded-border{style: "border: 0px;", ng:{show:'guestParatransitItinerary && !busRidesExpanded'}}
   .col-xs-12.col-md-6.col-md-offset-3.col-sm-8.col-sm-offset-2
     %h3
       %strong
         Shared Ride options
   .col-xs-12.col-md-6.col-md-offset-3.col-sm-8.col-sm-offset-2
-    .no_underline.row.rounded-border{ng:{repeat:'discount in guestParatransitItinerary.discounts'}}
+    .no_underline.row.rounded-border{ng:{repeat:'discount in guestParatransitItinerary.discounts', click:'goPlanLogin()'}}
       .col-xs-3.col-md-2
         %p.text-left
           %strong
@@ -100,7 +100,7 @@
         %a.btn{href: "", back: '', ng: {click: "back()"}}
           Back
       .pull-right
-        %a.btn{ng:{show:'transitInfos.length>0 || walkItineraries.length>0', click: 'showBusRides=!showBusRides'}}
+        %a.btn{ng:{show:'transitInfos.length>0 || walkItineraries.length>0', click: 'busRidesExpanded=true; showBusRides=!showBusRides'}}
           View more ride options
 
 
@@ -178,59 +178,71 @@
       %h3
         %strong
           Bus
-  .row
-    .col-xs-12.col-md-6.col-md-offset-3.col-sm-8.col-sm-offset-2{ng:{click:'goViewTransit(transitInfos[0][0].id, ( transitInfos[1] || [{id:0}] )[0].id)'}}
-      .row.rounded-border
-        .col-xs-10
-          %h3{ng: {show: 'transitInfos[1]' } }
-            Going
-          %h3{ng: {hide: 'transitInfos[1]' } }
-            One Way
-        .col-xs-2.pull-right.bus-options-right
-          %img{ng: {src: 'images/modes/transit.png'}, style:'width: 50%; vertical-align: middle;'}
-          {{transitInfos[0][0].route}}
-        .col-xs-12
-          .row{style:'padding: 0px 0px 10px 10px;'}
-            .col-xs-10
-              Leave {{transitItineraries[0][0].start_time | date:'h:mm a'}}
-            .col-xs-2
-              {{fare_info["mode_transit"] | currency | free}}
-            .col-xs-10
-              Arrive {{transitItineraries[0][0].end_time | date:'h:mm a'}}
-          .row{style:'padding: 0px 0px 10px 10px;'}
-            .col-xs-12
-              Trip Time is {{transitItineraries[0][0].travelTime}}
-            .col-xs-12
-              Walking time is {{transitItineraries[0][0].walkTimeDesc}}
-
-  .row
-    .col-xs-12.col-md-6.col-md-offset-3.col-sm-8.col-sm-offset-2{ng: {show: 'transitInfos[1]' } }
-      .row.rounded-border
-        .col-xs-12.text-center
+          %span{ng:{show: 'busRidesExpanded'}} options
+  .row{ng: {hide: 'busRidesExpanded', click:'busRidesExpanded = !busRidesExpanded'}}
+    .col-xs-12.col-md-6.col-md-offset-3.col-sm-8.col-sm-offset-2
+      .no_underline.row.rounded-border
+        .col-xs-3.col-md-2
+          %p.text-left
+            %strong
+              {{fare_info["mode_transit"]}}
+        .col-xs-9.col-md-10
           %h4.text-muted
-            {{request.purpose}} {{howLong.minutes | minutes}}
+            Public Transportation
+  %div{ng: {show: 'busRidesExpanded' }}
+    .row.bus-itinerary-details
+      .col-xs-12.col-md-6.col-md-offset-3.col-sm-8.col-sm-offset-2{ng:{click:'goViewTransit(transitInfos[0][0].id, ( transitInfos[1] || [{id:0}] )[0].id)'}}
+        .row.rounded-border
+          .col-xs-10
+            %h3{ng: {show: 'transitInfos[1]' } }
+              Going
+            %h3{ng: {hide: 'transitInfos[1]' } }
+              One Way
+          .col-xs-2.pull-right.bus-options-right
+            %img{ng: {src: 'images/modes/transit.png'}, style:'width: 50%; vertical-align: middle;'}
+            {{transitInfos[0][0].route}}
+          .col-xs-12
+            .row{style:'padding: 0px 0px 10px 10px;'}
+              .col-xs-10
+                Leave {{transitItineraries[0][0].start_time | date:'h:mm a'}}
+              .col-xs-2
+                {{fare_info["mode_transit"]}}
+              .col-xs-10
+                Arrive {{transitItineraries[0][0].end_time | date:'h:mm a'}}
+            .row{style:'padding: 0px 0px 10px 10px;'}
+              .col-xs-12
+                Trip Time is {{transitItineraries[0][0].travelTime}}
+              .col-xs-12
+                Walking time is {{transitItineraries[0][0].walkTimeDesc}}
 
-  .row
-    .col-xs-12.col-md-6.col-md-offset-3.col-sm-8.col-sm-offset-2{ng: {show: 'transitInfos[1]', click:'goViewTransit(transitInfos[0][0].id, ( transitInfos[1] || [{id:0}] )[0].id)' } }
-      .row.rounded-border
-        .col-xs-10
-          %h3 Returning
-        .col-xs-2.pull-right.bus-options-right
-          %img{ng: {src: 'images/modes/transit.png'}, style:'width: 50%; vertical-align: middle;'}
-          {{transitInfos[1][0].route}}
-        .col-xs-12
-          .row{style:'padding: 0px 0px 10px 10px;'}
-            .col-xs-10
-              Leave {{transitItineraries[1][0].start_time | date:'h:mm a'}}
-            .col-xs-2
-              {{fare_info["mode_transit"] | currency | free}}
-            .col-xs-10
-              Arrive {{transitItineraries[1][0].end_time | date:'h:mm a'}}
-          .row{style:'padding: 0px 0px 10px 10px;'}
-            .col-xs-12
-              Trip Time is {{transitItineraries[1][0].travelTime}}
-            .col-xs-12
-              Walking time is {{transitItineraries[1][0].walkTimeDesc}}
+    .row
+      .col-xs-12.col-md-6.col-md-offset-3.col-sm-8.col-sm-offset-2{ng: {show: 'transitInfos[1]' } }
+        .row.rounded-border
+          .col-xs-12.text-center
+            %h4.text-muted
+              {{request.purpose}} {{howLong.minutes | minutes}}
+
+    .row
+      .col-xs-12.col-md-6.col-md-offset-3.col-sm-8.col-sm-offset-2{ng: {show: 'transitInfos[1]', click:'goViewTransit(transitInfos[0][0].id, ( transitInfos[1] || [{id:0}] )[0].id)' } }
+        .row.rounded-border
+          .col-xs-10
+            %h3 Returning
+          .col-xs-2.pull-right.bus-options-right
+            %img{ng: {src: 'images/modes/transit.png'}, style:'width: 50%; vertical-align: middle;'}
+            {{transitInfos[1][0].route}}
+          .col-xs-12
+            .row{style:'padding: 0px 0px 10px 10px;'}
+              .col-xs-10
+                Leave {{transitItineraries[1][0].start_time | date:'h:mm a'}}
+              .col-xs-2
+                {{fare_info["mode_transit"]}}
+              .col-xs-10
+                Arrive {{transitItineraries[1][0].end_time | date:'h:mm a'}}
+            .row{style:'padding: 0px 0px 10px 10px;'}
+              .col-xs-12
+                Trip Time is {{transitItineraries[1][0].travelTime}}
+              .col-xs-12
+                Walking time is {{transitItineraries[1][0].walkTimeDesc}}
 
   .row
     .col-xs-12.col-md-6.col-md-offset-3.col-sm-8.col-sm-offset-2.text-center
@@ -245,13 +257,13 @@
       .pull-left
         %a.btn{href: "", back: '', ng: {click: "back()", hide:'transitSaved || transitCancelled || walkSaved || walkCancelled'}}
           Back
-        %a.btn{href: "", ng: {click: "logout()", show:'transitSaved || transitCancelled || walkSaved || walkCancelled'}}
-          Logout
+        %a.btn{href:'', back:'', ng:{show:'paratransitItineraries.length == 0', click: 'back()'}}
+          Back
       .pull-right
         %a.btn.btn-link{ng: {click: "reset()", show:'transitSaved || transitCancelled || walkSaved || walkCancelled'}}
           Book another ride
         %a.btn{ng:{hide:'paratransitItineraries.length == 0', click: 'showBusRides=!showBusRides', hide:'transitSaved || transitCancelled || walkSaved || walkCancelled'}}
           View less ride options
-
-        
+				%a.btn{ng:{show:'guestParatransitItinerary && busRidesExpanded', click: 'busRidesExpanded=!busRidesExpanded'}}
+          View less ride options     
         
