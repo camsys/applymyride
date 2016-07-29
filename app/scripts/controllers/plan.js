@@ -7,14 +7,7 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
 function($scope, $http, $routeParams, $location, planService, util, flash, usSpinnerService, $q, LocationSearch, localStorageService, ipCookie, $timeout, $window, $filter) {
 
   var currentLocationLabel = "Current Location";
-
-  $scope.apiHost = document.location.hostname;
-  if( document.location.hostname.match(/findmyridepa2-dev\.camsys-apps\.com/) ){
-    $scope.apiHost = 'oneclick-pa-dev.camsys-apps.com';
-  }else if( document.location.hostname.match(/findmyridepa2-qa\.camsys-apps\.com/) ){
-    $scope.apiHost = 'oneclick-pa-qa.camsys-apps.com';
-  }
-  var urlPrefix = '//' + $scope.apiHost + '/';
+  var urlPrefix = '//' + APIHOST + '/';
 
   var eightAm = new Date();
   var countryFilter = $filter('noCountry');
@@ -1538,7 +1531,7 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
       break;
     case 'list_itineraries':
       if($routeParams.test){
-        $http.get('//' + $scope.apiHost + '/data/bookingresult.json').
+        $http.get('//' + APIHOST + '/data/bookingresult.json').
           success(function(data) {
             planService.itineraryRequestObject = data.itinerary_request;
             planService.searchResults = data.itinerary_response;

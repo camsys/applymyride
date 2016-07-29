@@ -22,13 +22,7 @@ angular.module('applyMyRideApp')
         delete this.transitCancelled;
       }
 
-      this.apiHost = document.location.hostname;
-      if( document.location.hostname.match(/findmyridepa2-dev\.camsys-apps\.com/) ){
-        this.apiHost = 'oneclick-pa-dev.camsys-apps.com';
-      }else if( document.location.hostname.match(/findmyridepa2-qa\.camsys-apps\.com/) ){
-        this.apiHost = 'oneclick-pa-qa.camsys-apps.com';
-      }
-      var urlPrefix = '//' + this.apiHost + '/';
+      var urlPrefix = '//' + APIHOST + '/';
       this.getPrebookingQuestions = function(){
         var questions = this.paratransitItineraries[0].prebooking_questions;
         var questionObj = {};
@@ -734,13 +728,7 @@ angular.module('applyMyRideApp')
 angular.module('applyMyRideApp')
   .service('LocationSearch', function($http, $q, localStorageService, $filter){
     var countryFilter = $filter('noCountry');
-    this.apiHost = document.location.hostname;
-    if( document.location.hostname.match(/findmyridepa2-dev\.camsys-apps\.com/) ){
-      this.apiHost = 'oneclick-pa-dev.camsys-apps.com';
-    }else if( document.location.hostname.match(/findmyridepa2-qa\.camsys-apps\.com/) ){
-      this.apiHost = 'oneclick-pa-qa.camsys-apps.com';
-    }
-    var urlPrefix = '//' + this.apiHost + '/';
+    var urlPrefix = '//' + APIHOST + '/';
 
     var autocompleteService = new google.maps.places.AutocompleteService();
 
