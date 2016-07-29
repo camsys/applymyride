@@ -1,4 +1,17 @@
 .container
+  .row{style: 'margin-bottom: 1em;', ng: {show: 'booking_failed'}}
+    .col-xs-12.col-md-8.col-md-offset-2{style: 'padding: 0;'}
+      .row
+        .col-xs-12.col-md-8.col-md-offset-2{style: 'background-color: #FFFFDC'}
+          %h3{style: 'opacity: 1'} Sorry! There is a problem with your request
+      .row
+        .col-xs-12.col-md-8.col-md-offset-2
+          %h3
+            .fa.fa-phone
+            Call to learn more
+            %a.btn-next{href: "tel://1-844-724-7433"}
+              1-844-PA4-RIDE
+              
   #paratransit{style: 'padding: 0;', index: '{{$index}}', ng: {show: '!booking_failed', repeat: 'itinerary in paratransitItineraries'}}
     %div{ng:{show: '$index == 0'}}
       .row{style: 'margin-bottom: 1em;', ng: {show: 'email'}}
@@ -105,18 +118,4 @@
       .pull-right
         %a.btn.btn-link{ng: {click: "reset()", controller:'PlanController'}}
           Book another ride
-
-  .row{style: 'margin-bottom: 1em;', ng: {show: 'booking_failed'}}
-    .col-xs-12.col-md-8.col-md-offset-2{style: 'padding: 0;'}
-      .row
-        .col-xs-12.col-md-8.col-md-offset-2{style: 'background-color: #FFFFDC'}
-          %h3{style: 'opacity: 1'} Sorry! There is a problem with your request
-      .row
-        .col-xs-12.col-md-8.col-md-offset-2
-          %h3
-            .fa.fa-phone
-            Call to learn more
-            %a.btn-next{href: "tel://1-844-724-7433"}
-              1-844-PA4-RIDE
-
 
