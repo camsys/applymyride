@@ -25,6 +25,13 @@ angular.module('applyMyRideApp')
     return m.format('YY-MM-DD');
   };
 })
+.filter('noCountry', function() {
+  return function(addressString) {
+    //filters ", USA" or ", United States" from the end$ of strings. comma optional
+    var country = /(, )?(United States|USA)$/;
+    return (addressString || '').replace(country, '').trim();
+  };
+})
 .filter('momentHMA', function() {
   return function(m) {
     if(!m || !m._isAMomentObject){ return ''; }

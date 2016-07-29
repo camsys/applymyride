@@ -745,7 +745,8 @@ angular.module('applyMyRideApp')
 );
 
 angular.module('applyMyRideApp')
-  .service('LocationSearch', function($http, $q, localStorageService){
+  .service('LocationSearch', function($http, $q, localStorageService, $filter){
+    var countryFilter = $filter('noCountry');
     this.apiHost = document.location.hostname;
     if( document.location.hostname.match(/findmyridepa2-dev\.camsys-apps\.com/) ){
       this.apiHost = 'oneclick-pa-dev.camsys-apps.com';
@@ -794,14 +795,13 @@ angular.module('applyMyRideApp')
 
         }, function(list, status) {
           angular.forEach(list, function(value, index) {
-
+            var formatted_address;
             //verify the location has a street address
             if(that.results.length < 10 && ((value.types.indexOf('route') > -1) || (value.types.indexOf('establishment') > -1) || (value.types.indexOf('street_address') > -1))){
-              var terms = [];
-              angular.forEach(value.terms, function(term, index) {
-                terms.push(term.value)
-              }, terms);
-              that.results.push(terms.join(" "));
+              //var terms = [];
+              //angular.forEach(value.terms, function(term, index) { terms.push(term.value); }, terms);
+              formatted_address = countryFilter( value.description );
+              that.results.push(formatted_address);
               that.placeIds.push(value.place_id);
             }
           });
@@ -823,7 +823,7 @@ angular.module('applyMyRideApp')
         angular.forEach(Object.keys(recentSearches), function(key, index) {
           if(that.recentSearchResults.length < 10 && key.toLowerCase().indexOf(text.toLowerCase()) > -1 && that.recentSearchResults.indexOf(key) < 0){
             var location = recentSearches[key];
-            that.recentSearchResults.push(key);
+            that.recentSearchResults.push( countryFilter( key ) );
             that.recentSearchPlaceIds.push(location.place_id)
           }
         });

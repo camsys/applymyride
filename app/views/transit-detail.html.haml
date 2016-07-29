@@ -44,7 +44,7 @@
         %span{ segmentid:'1', ng:{ include: "'views/transit-embedded.html'", controller:'TransitController'}}
 
     .row.unstuck-foot.btn-spacing{style: 'margin-top: 20px'}
-      .col-md-8.col-md-offset-2.col-xs-12
+      .col-md-8.col-md-offset-2.col-xs-12{ng: {show: 'loggedIn' } }
         .row{ng:{show: 'mode === "transit"'}}
           %a.btn.btn-primary.btn-block{href: "", ng: {click: 'saveBusTrip()', hide:'transitSaved || transitCancelled'}}
             Save to my rides
@@ -61,11 +61,12 @@
           %a.btn.btn-primary.btn-block{href: "/#/plan/my_rides", }
             View my saved rides
         
-        .row
+      .row
+        .col-md-8.col-md-offset-2.col-xs-12
           .pull-left
             %a.btn{href: "", back: '', ng: {click: "back()", hide:'transitSaved || transitCancelled || walkSaved || walkCancelled'}}
               Back
-            %a.btn{href: "", ng: {click: "logout()", show:'transitSaved || transitCancelled || walkSaved || walkCancelled'}}
+            %a.btn{href: "", ng: {click: "logout()", show:'loggedIn && (transitSaved || transitCancelled || walkSaved || walkCancelled)'}}
               Logout
           .pull-right
             %a.btn.btn-link{ng: {click: "reset()"}}
