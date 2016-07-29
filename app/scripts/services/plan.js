@@ -115,13 +115,19 @@ angular.module('applyMyRideApp')
                     trip_with_itineraries.startDesc = that.getDateDescription(trip[i].departure);
                     trip_with_itineraries.startDesc += " at " + moment(trip[i].departure).format('h:mm a');
 
+                    
+
                     var origin_addresses = trip[0].origin.address_components;
                     for(var n = 0; n < origin_addresses.length; n++){
                       var address_types = origin_addresses[n].types ;
                       if(address_types.length > 0 && address_types.indexOf("street_address") != -1){
                         trip_with_itineraries.from_place = origin_addresses[n].short_name;
                         break;
-                      }
+                      }  
+                    }
+
+                    if(!trip_with_itineraries.from_place && trip[0].origin.name){
+                      trip_with_itineraries.from_place = trip[0].origin.name;
                     }
 
                     var destination_addresses = trip[0].destination.address_components;
@@ -132,6 +138,11 @@ angular.module('applyMyRideApp')
                         break;
                       }
                     }
+
+                    if(!trip_with_itineraries.to_place && trip[0].destination.name){
+                      trip_with_itineraries.to_place = trip[0].destination.name;
+                    }
+
                   }
 
                   trip_with_itineraries.itineraries.push(trip[i]);
