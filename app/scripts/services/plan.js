@@ -443,9 +443,9 @@ angular.module('applyMyRideApp')
         itinerary.endDesc += " at " + moment(itinerary.arrival).format('h:mm a');
         itinerary.travelTime = humanizeDuration(itinerary.duration * 1000,  { units: ["hours", "minutes"], round: true });
         itinerary.walkTimeDesc = humanizeDuration(itinerary.walk_time * 1000,  { units: ["hours", "minutes"], round: true });
-        itinerary.dayAndDateDesc = moment(itinerary.departure).format('dddd, MMMM Do');
-        itinerary.startTimeDesc = moment(itinerary.departure).format('h:mm a');
-        itinerary.endTimeDesc = itinerary.arrival ? moment(itinerary.arrival).format('h:mm a') : "";
+        itinerary.dayAndDateDesc = moment(itinerary.wait_start).format('dddd, MMMM Do');
+        itinerary.startTimeDesc = moment(itinerary.wait_start).format('h:mm a');
+        itinerary.endTimeDesc = itinerary.arrival ? moment(itinerary.arrival).format('h:mm a') : "Arrive";
         itinerary.distanceDesc = ( itinerary.distance * 0.000621371 ).toFixed(2);
         itinerary.walkDistanceDesc = ( itinerary.walk_distance * 0.000621371 ).toFixed(2);
       }
