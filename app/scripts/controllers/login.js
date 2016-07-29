@@ -6,17 +6,10 @@ angular.module('applyMyRideApp')
       //skip initializing this controller if we're not on the page
       if( ['/','/loginError','/plan/login-guest'].indexOf( $location.path() ) == -1){ return; }
       
-      //setup the backend url depending on environment (local, dev, qa)
-      $scope.apiHost = document.location.hostname;
-      if( document.location.hostname.match(/findmyridepa2-dev\.camsys-apps\.com/) ){
-        $scope.apiHost = 'oneclick-pa-dev.camsys-apps.com';
-      }else if( document.location.hostname.match(/findmyridepa2-qa\.camsys-apps\.com/) ){
-        $scope.apiHost = 'oneclick-pa-qa.camsys-apps.com';
-      }
       //this should probably be in a service if there's anything more
       $http({
         method: 'GET',
-        url: '//'+$scope.apiHost + '/api/v1/services/ids_humanized'
+        url: '//'+ APIHOST + '/api/v1/services/ids_humanized'
       }).then(function successCallback(response) {
         //update the counties
         $scope.counties = response.data.service_ids;
@@ -138,7 +131,7 @@ angular.module('applyMyRideApp')
         ipCookie('county', login.session.county, {expires: 7, expirationUnit: 'days'});
         sessionStorage.setItem('dateofbirth', login.session.dob);
 
-        var promise = $http.post('//'+$scope.apiHost+'/api/v1/sign_in', login);
+        var promise = $http.post('//'+APIHOST+'/api/v1/sign_in', login);
         promise.error(function(result) {
           $location.path('/loginError');
         });

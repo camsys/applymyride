@@ -109,6 +109,23 @@
     </div>
     </div>
 
+    <script>
+      //initialize APIHOST by depending on environment
+      var APIHOST = (function( docHost )
+      {
+        var env = docHost.match(/^findmyridepa2-(.+)\.camsys-apps\.com$/);
+        var apiHosts = {
+          'demo': 'oneclick-pa-demo.camsys-apps.com',
+          'dev': 'oneclick-pa-dev.camsys-apps.com',
+          'qa': 'oneclick-pa-qa.camsys-apps.com'
+        };
+        //use docHost by default, for local environments
+        if(!env || !env[1]){
+          return docHost;
+        }
+        return apiHosts[ env[1] ];
+      }( document.location.hostname ));
+    </script>
 
     <!-- build:js(.) scripts/oldieshim.js -->
     <!--[if lt IE 9]>
