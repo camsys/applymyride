@@ -209,8 +209,15 @@
     .row{style: 'margin-bottom: 1em;', ng: {show: '$index == 0'}}
       .col-xs-12.col-md-8.col-md-offset-2.no-padding
         .row
-          .col-xs-12{style:' background-color: rgb(205,254,206); padding;10px;'}
-            %h2 Walk Details
+          .col-xs-12{style:' background-color: rgb(205,254,206); padding:10px;'}
+            %h2
+              %strong
+                %span
+                  Walk Details
+                %span{style:'font-size: 22px;', ng: {hide: 'tripCancelled'}} 
+                  (saved)
+                %span{style: 'color: red; font-size: 22px;', ng: {show: 'tripCancelled'}}
+                  (cancelled)
   .walkitinerary#walk{index: '{{$index}}', ng: {repeat: 'itinerary in walkItineraries'}}
     .row{ng: {show: '$index == 0'}}
       .col-xs-12.col-md-8.col-md-offset-2.no-padding

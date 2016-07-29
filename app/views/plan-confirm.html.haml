@@ -101,10 +101,79 @@
           %a.btn{href: "", back: '', ng: {click: "back()"}}
             Back
         .pull-right
-          %a.btn{ng:{show:'transitInfos.length>0', click: 'showBusRides=!showBusRides'}}
+          %a.btn{ng:{show:'transitInfos.length>0 || walkItineraries.length>0', click: 'showBusRides=!showBusRides'}}
             View more ride options
 
-  %div{'ng-show'=>'showBusRides || paratransitItineraries.length == 0'}
+  
+
+  %div{style: "margin-top: 2em;", ng:{show:'showBusRides && walkItineraries[0]'}}
+    .row
+      .col-xs-12.col-md-6.col-md-offset-3.col-sm-8.col-sm-offset-2
+        %h3
+          %strong
+            Walk
+    .row
+      .col-xs-12.col-md-6.col-md-offset-3.col-sm-8.col-sm-offset-2{ng:{click:'goViewWalk(walkItineraries[0].id, (walkItineraries[1] ? walkItineraries[1].id : 0))'}}
+        .row.rounded-border
+          .col-xs-10
+            %h3{ng: {show: 'walkItineraries[1]' } }
+              Going
+            %h3{ng: {hide: 'walkItineraries[1]' } }
+              One Way
+          .col-xs-2.pull-right.bus-options-right
+            %img{ng: {src: 'images/modes/walk.png'}, style:'width: 50%; vertical-align: middle;'}
+            {{walkItineraries[0].route}}
+          .col-xs-12
+            .row{style:'padding: 0px 0px 10px 10px;'}
+              .col-xs-10
+                Leave {{walkItineraries[0].start_time | date:'h:mm a'}}
+              .col-xs-2
+                {{fare_info["mode_walk"] | currency | free}}
+              .col-xs-10
+                Arrive {{walkItineraries[0].end_time | date:'h:mm a'}}
+            .row{style:'padding: 0px 0px 10px 10px;'}
+              .col-xs-12
+                Trip Time is {{walkItineraries[0].travelTime}}
+              .col-xs-12
+                Walking time is {{walkItineraries[0].walkTimeDesc}}
+
+    .row
+      .col-xs-12.col-md-6.col-md-offset-3.col-sm-8.col-sm-offset-2{ng: {show: 'walkItineraries[1]' } }
+        .row.rounded-border
+          .col-xs-12.text-center
+            %h4.text-muted
+              {{request.purpose}} {{howLong.minutes | minutes}}
+
+    .row
+      .col-xs-12.col-md-6.col-md-offset-3.col-sm-8.col-sm-offset-2{ng: {show: 'walkItineraries[1]', click:'goViewWalk(walkItineraries[0].id, (walkItineraries[1] ? walkItineraries[1].id : 0))'}}
+        .row.rounded-border
+          .col-xs-10
+            %h3 Returning
+          .col-xs-2.pull-right.bus-options-right
+            %img{ng: {src: 'images/modes/walk.png'}, style:'width: 50%; vertical-align: middle;'}
+            {{walkItineraries[1].route}}
+          .col-xs-12
+            .row{style:'padding: 0px 0px 10px 10px;'}
+              .col-xs-10
+                Leave {{walkItineraries[1].start_time | date:'h:mm a'}}
+              .col-xs-2
+                {{fare_info["mode_walk"] | currency | free}}
+              .col-xs-10
+                Arrive {{walkItineraries[1].end_time | date:'h:mm a'}}
+            .row{style:'padding: 0px 0px 10px 10px;'}
+              .col-xs-12
+                Trip Time is {{walkItineraries[1].travelTime}}
+              .col-xs-12
+                Walking time is {{walkItineraries[1].walkTimeDesc}}
+
+    .row
+      .col-xs-12.col-md-6.col-md-offset-3.col-sm-8.col-sm-offset-2.text-center
+        %a.btn.btn-primary.btn-block{href: "", style:"margin-top: .75em;", ng: {click: "saveWalkTrip()", hide:'walkSaved || walkCancelled'}}
+          Save this walk trip
+        %a.btn.btn-primary.btn-block{href: "", style:'background-color:red;',ng: {click: 'cancelThisWalkTrip()', show:'walkSaved'}}
+          Cancel this trip
+
+  %div{style: "margin-top: 1em;", ng:{show:'(showBusRides  && transitInfos.length>0) || paratransitItineraries.length == 0'}}
     .row
       .col-xs-12.col-md-6.col-md-offset-3.col-sm-8.col-sm-offset-2
         %h3
@@ -164,15 +233,26 @@
               .col-xs-12
                 Walking time is {{transitItineraries[1][0].walkTimeDesc}}
 
-    .row.btn-spacing
+    .row
       .col-xs-12.col-md-6.col-md-offset-3.col-sm-8.col-sm-offset-2.text-center
+        %a.btn.btn-primary.btn-block{href: "", style:"margin-top: .75em;", ng: {click: "saveBusTrip()", hide:'transitSaved || transitCancelled'}}
+          Save this bus trip
+        %a.btn.btn-primary.btn-block{href: "", style:'background-color:red;',ng: {click: 'cancelThisBusTrip()', show:'transitSaved'}}
+          Cancel this trip
+        
+  %div{'ng-show'=>'(showBusRides)'}
+    .row.btn-spacing
+      .col-xs-12.col-md-6.col-md-offset-3.col-sm-8.col-sm-offset-2
         .pull-left
-          %a.btn{ng:{hide:'paratransitItineraries.length == 0', click: 'showBusRides=!showBusRides'}}
+          %a.btn{href: "", back: '', ng: {click: "back()", hide:'transitSaved || transitCancelled || walkSaved || walkCancelled'}}
             Back
-          %a.btn{href:'', back:'', ng:{show:'paratransitItineraries.length == 0', click: 'back()'}}
-            Back
+          %a.btn{href: "", ng: {click: "logout()", show:'transitSaved || transitCancelled || walkSaved || walkCancelled'}}
+            Logout
         .pull-right
-          %a.btn.btn-primary{href: "", ng: {click: "saveBusTrip()", hide:'transitSaved || transitCancelled'}}
-            Save this bus trip
-          %a.btn.btn-primary{href: "", style:'background-color:red;',ng: {click: 'cancelThisBusTrip()', show:'transitSaved'}}
-            Cancel this trip
+          %a.btn.btn-link{ng: {click: "reset()", show:'transitSaved || transitCancelled || walkSaved || walkCancelled'}}
+            Book another ride
+          %a.btn{ng:{hide:'paratransitItineraries.length == 0', click: 'showBusRides=!showBusRides', hide:'transitSaved || transitCancelled || walkSaved || walkCancelled'}}
+            View less ride options
+
+          
+          

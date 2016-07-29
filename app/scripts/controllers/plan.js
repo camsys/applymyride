@@ -74,6 +74,8 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
   $scope.from = planService.from || '';
   $scope.transitSaved = planService.transitSaved || false;
   $scope.transitCancelled = planService.transitCancelled || false;
+  $scope.walkSaved = planService.walkSaved || false;
+  $scope.walkCancelled = planService.walkCancelled || false;
 
   $scope.reset = function() {
     planService.reset();
@@ -94,6 +96,10 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
   }
   $scope.goViewTransit = function(departId, returnId){
     $location.path('/plan/transit/'+departId+'/'+returnId);
+  }
+
+  $scope.goViewWalk = function(departId, returnId){
+    $location.path('/plan/walk/'+departId+'/'+returnId);
   }
 
   $scope.toggleMyRideButtonBar = function(type, index) {
@@ -157,6 +163,32 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
       $scope.transitCancelled = true;
       planService.transitSaved = false;
       planService.transitCancelled = true;
+      usSpinnerService.stop('spinner-1');
+    })
+  }
+
+  $scope.cancelThisWalkTrip = function() {
+    usSpinnerService.spin('spinner-1');
+    var cancelRequest = {bookingcancellation_request: []};
+    var leg1, leg2;
+    leg1 = {itinerary_id: planService.walkItineraries[0].id};
+    cancelRequest.bookingcancellation_request.push( leg1 );
+    if(planService.fare_info.roundtrip){
+      leg2 = {itinerary_id: planService.walkItineraries[1].id};
+      cancelRequest.bookingcancellation_request.push( leg2 );
+    }
+    var cancelPromise = planService.cancelTrip($http, cancelRequest)
+    cancelPromise.error(function(data) {
+      bootbox.alert("An error occurred, your trip was not cancelled.  Please call 1-844-PA4-RIDE for more information.");
+      usSpinnerService.stop('spinner-1');
+    });
+    cancelPromise.success(function(data) {
+      bootbox.alert('Your trip has been cancelled');
+      ipCookie('rideCount', ipCookie('rideCount') - 1);
+      $scope.walkSaved = false;
+      $scope.walkCancelled = true;
+      planService.walkSaved = false;
+      planService.walkCancelled = true;
       usSpinnerService.stop('spinner-1');
     })
   }
@@ -452,7 +484,26 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
       $scope.rideCount = ipCookie('rideCount');
       $scope.transitSaved = true;
       planService.transitSaved = true;
-      bootbox.alert("Your trip has been saved", $scope.goViewTransit(planService.transitInfos[0][0].id, ( planService.transitInfos[1] || [{id:0}] )[0].id));
+      bootbox.alert("Your trip has been saved");
+    });
+  }
+
+  $scope.saveWalkTrip = function(){
+    var tripId = planService.tripId;
+    var selectedItineraries = [{"trip_id":tripId, "itinerary_id":planService.walkItineraries[0].id}];
+
+    if(planService.fare_info.roundtrip == true){
+      selectedItineraries.push({"trip_id":tripId, "itinerary_id":planService.walkItineraries[1].id});
+    }
+    var selectedItineraries = {"select_itineraries": selectedItineraries};
+    
+    var promise = planService.selectItineraries($http, selectedItineraries);
+    promise.then(function(result) {
+      ipCookie('rideCount', ipCookie('rideCount') + 1);
+      $scope.rideCount = ipCookie('rideCount');
+      $scope.walkSaved = true;
+      planService.walkSaved = true;
+      bootbox.alert("Your trip has been saved");
     });
   }
 
@@ -680,6 +731,7 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
       $scope.checkServiceArea($scope.poi, $scope.poi.formatted_address, toFrom);
     }
     else{
+      
       var placeId = $scope.placeIds[selectedIndex];
       if(placeId) {
         placeIdPromise.resolve(placeId);
@@ -1310,6 +1362,22 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
         $scope.startTime = startDate.format('h:mm a');
         $scope.endTime = endDate.format('h:mm a');
         $scope.transitInfos = planService.transitInfos;
+        $scope.transit = "transit";
+        $scope.mode = "transit";
+      }());
+    break;
+    case 'walk':
+      (function(){
+        var startDate, endDate, end;
+        var startDate = moment(new Date(planService.walkItineraries[0].start_time));
+        end = planService.walkItineraries[1] || planService.walkItineraries[0];
+        var endDate = moment(new Date(end.end_time));
+        $scope.startDay = startDate.format('dddd');
+        $scope.startDate = startDate.format('MMMM do');
+        $scope.startTime = startDate.format('h:mm a');
+        $scope.endTime = endDate.format('h:mm a');
+        $scope.walkItineraries = planService.walkItineraries;
+        $scope.mode = "walk";
       }());
     break;
     case 'where':

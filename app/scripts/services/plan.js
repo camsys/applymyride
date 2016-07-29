@@ -20,6 +20,8 @@ angular.module('applyMyRideApp')
         delete this.driverInstructions;
         delete this.transitSaved;
         delete this.transitCancelled;
+        delete this.walkSaved;
+        delete this.walkCancelled;
       }
 
       this.apiHost = document.location.hostname;
