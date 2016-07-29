@@ -4,7 +4,7 @@
       %strong  
         My Rides
 .row
-  .col-md-10.col-md-offset-1.col-xs-12
+  .col-md-8.col-md-offset-2.col-xs-12
     %tabset 
       %tab{'heading' => 'Upcoming ({{trips.future.length}})', 'active' => 'tabFuture'}
         .myride{'index' => '{{$index}}', ng: {init: 'tab = "future"', click: 'toggleMyRideButtonBar("future", $index)', repeat: 'trip in trips.future'}}
