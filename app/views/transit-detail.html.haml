@@ -63,10 +63,11 @@
           Please enter only valid email addresses
 
     .row.unstuck-foot.btn-spacing{style: 'margin-top: 20px'}
-      .col-md-8.col-md-offset-2.col-xs-12{ng: {show: 'loggedIn' } }
+      .col-md-8.col-md-offset-2.col-xs-12
         .row
-          %a.btn.btn-primary.btn-block{href: "", ng: {show:'walkSaved || transitSaved', click: 'toggleEmail($event);'}}
+          %a.btn.btn-primary.btn-block{href: "", ng: {click: 'toggleEmail($event);'}}
             Email this ride        
+      .col-md-8.col-md-offset-2.col-xs-12{ng: {show: 'loggedIn' } }  
         .row{ng:{show: 'mode === "transit"'}}
           %a.btn.btn-primary.btn-block{href: "", ng: {click: 'saveBusTrip()', hide:'transitSaved || transitCancelled'}}
             Save to my rides
