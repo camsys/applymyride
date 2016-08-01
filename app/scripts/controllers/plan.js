@@ -1387,7 +1387,7 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
         end = planService.transitItineraries[1] || planService.transitItineraries[0];
         var endDate = moment(new Date(end[0].end_time));
         $scope.startDay = startDate.format('dddd');
-        $scope.startDate = startDate.format('MMMM do');
+        $scope.startDate = startDate.format('MMMM Do');
         $scope.startTime = startDate.format('h:mm a');
         $scope.endTime = endDate.format('h:mm a');
         $scope.transitInfos = planService.transitInfos;
@@ -1402,7 +1402,7 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
         end = planService.walkItineraries[1] || planService.walkItineraries[0];
         var endDate = moment(new Date(end.end_time));
         $scope.startDay = startDate.format('dddd');
-        $scope.startDate = startDate.format('MMMM do');
+        $scope.startDate = startDate.format('MMMM Do');
         $scope.startTime = startDate.format('h:mm a');
         $scope.endTime = endDate.format('h:mm a');
         $scope.walkItineraries = planService.walkItineraries;
