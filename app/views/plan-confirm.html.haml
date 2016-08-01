@@ -91,7 +91,7 @@
           {{discount.comment}}  
 
     
-.notAllRides{'ng-hide'=>'showBusRides || paratransitItineraries.length == 0'}
+.notAllRides{'ng-hide'=>'showBusRides || !hasParatransit'}
   .row
     .col-xs-12.col-md-6.col-md-offset-3.col-sm-8.col-sm-offset-2.text-center{style:'padding:0px; margin-bottom:10px;'}
       %a.btn.btn-primary.btn-block{href: "", ng: {click: 'next()'}}
@@ -102,18 +102,17 @@
         %a.btn{href: "", back: '', ng: {click: "back()"}}
           Back
       .pull-right
-        %a.btn{ng:{show:'transitInfos.length>0 || walkItineraries.length>0', click: 'busRidesExpanded=true; showBusRides=!showBusRides'}}
+        %a.btn{ng:{show:'hasTransit || hasWalk', click: 'busRidesExpanded=true; showBusRides=!showBusRides'}}
           View more ride options
 
 
 
-%div{style: "margin-top: 2em;", ng:{show:'showBusRides && walkItineraries[0]'}}
+%div{style: "margin-top: 2em;", ng:{show:'(showBusRides || !hasParatransit) && hasWalk'}}
   .row
     .col-xs-12.col-md-6.col-md-offset-3.col-sm-8.col-sm-offset-2
       %h3
         %strong
-          Walk
-        %span{ng:{show: 'busRidesExpanded || loggedIn'}} options
+          Walk options
   .row
     .col-xs-12.col-md-6.col-md-offset-3.col-sm-8.col-sm-offset-2{ng:{click:'goViewWalk(walkItineraries[0].id, (walkItineraries[1] ? walkItineraries[1].id : 0))'}}
       .row.rounded-border
@@ -168,14 +167,7 @@
             .col-xs-12
               Walking time is {{walkItineraries[1].walkTimeDesc}}
 
-  .row
-    .col-xs-12.col-md-6.col-md-offset-3.col-sm-8.col-sm-offset-2.text-center
-      %a.btn.btn-primary.btn-block{href: "", style:"margin-top: .75em;", ng: {click: "saveWalkTrip()", hide:'walkSaved || walkCancelled'}}
-        Save this walk trip
-      %a.btn.btn-primary.btn-block{href: "", style:'background-color:red;',ng: {click: 'cancelThisWalkTrip()', show:'walkSaved'}}
-        Cancel this trip
-
-%div{style: "margin-top: 1em;", ng:{show:'(showBusRides  && transitInfos.length>0) || paratransitItineraries.length == 0'}}
+%div{style: "margin-top: 1em;", ng:{show:'hasTransit && (showBusRides  || !hasParatransit)'}}
   .row
     .col-xs-12.col-md-6.col-md-offset-3.col-sm-8.col-sm-offset-2
       %h3
@@ -249,25 +241,33 @@
               .col-xs-12
                 Walking time is {{transitItineraries[1][0].walkTimeDesc}}
 
-  .row{'ng-show'=>'loggedIn'}
+%div{style: "margin-top: 1em;", ng:{show:'noresults'}}
+  .row
     .col-xs-12.col-md-6.col-md-offset-3.col-sm-8.col-sm-offset-2.text-center
-      %a.btn.btn-primary.btn-block{href: "", style:"margin-top: .75em;", ng: {click: "saveBusTrip()", hide:'transitSaved || transitCancelled'}}
-        Save this bus trip
-      %a.btn.btn-primary.btn-block{href: "", style:'background-color:red;',ng: {click: 'cancelThisBusTrip()', show:'transitSaved'}}
-        Cancel this trip
+      %h4
+        %strong
+          No valid travel options found. Please go back and try a new search. 
       
-%div{'ng-show'=>'(showBusRides)'}
-  .row.btn-spacing
-    .col-xs-12.col-md-6.col-md-offset-3.col-sm-8.col-sm-offset-2.text-center
-      .pull-left
-        %a.btn{href: "", back: '', ng: {click: "back()", hide:'transitSaved || transitCancelled || walkSaved || walkCancelled'}}
-          Back
-        %a.btn{href: "", ng: {click: "logout()", show:'loggedIn && (transitSaved || transitCancelled || walkSaved || walkCancelled)'}}
-          Logout
-      .pull-right
-        %a.btn{ng:{show:'transitSaved || transitCancelled || walkSaved || walkCancelled', click: 'reset()'}}
-          Book another ride
-        %a.btn{ng:{show:'paratransitItineraries.length>0', click: 'showBusRides=!showBusRides'}}
-          View less ride options
-        %a.btn{ng:{show:'guestParatransitItinerary && busRidesExpanded', click: 'busRidesExpanded=!busRidesExpanded'}}
-          View less ride options
+.row.btn-spacing{'ng-show'=>'showBusRides || !hasParatransit'}
+  .col-xs-12.col-md-6.col-md-offset-3.col-sm-8.col-sm-offset-2.text-center
+    .pull-left
+      %a.btn{ng:{hide:'!hasParatransit || transitSaved || transitCancelled || walkSaved || walkCancelled', click: 'showBusRides=!showBusRides'}}
+        Back
+    .pull-left
+      %a.btn{ng:{show:'guestParatransitItinerary && busRidesExpanded', click: 'busRidesExpanded=!busRidesExpanded'}}
+        Back
+      %a.btn{href:'', back:'', ng:{show:'!hasParatransit && !busRidesExpanded', click: 'back()'}}
+        Back
+      %a.btn{href: "", ng: {click: "logout()", show:'loggedIn && (transitSaved || transitCancelled || walkSaved || walkCancelled)'}}
+        Logout
+    .pull-right{'ng-show'=>'loggedIn'}
+      %a.btn.btn-primary{href: "", ng: {click: "saveBusTrip()", show:'hasTransit && !transitSaved && !transitCancelled'}}
+        Save this bus trip
+      %a.btn.btn-primary{href: "", ng: {click: "saveWalkTrip()", show:'!hasTransit && hasWalk && !walkSaved && !walkCancelled'}}
+        Save this walk trip
+      %a.btn.btn-primary{href: "", style:'background-color:red;',ng: {click: 'cancelThisBusTrip', show:'transitSaved'}}
+        Cancel this trip
+      %a.btn.btn-primary{href: "", style:'background-color:red;',ng: {click: 'cancelThisWalkTrip', show:'walkSaved'}}
+        Cancel this trip
+      %a.btn{ng:{show:'transitCancelled || walkCancelled', click: 'reset()'}}
+        Book another ride

@@ -488,7 +488,9 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
       $scope.rideCount = ipCookie('rideCount');
       $scope.transitSaved = true;
       planService.transitSaved = true;
-      bootbox.alert("Your trip has been saved");
+      var departId = planService.transitInfos[0][0].id;
+      var returnId = (planService.transitInfos[1] || [{id:0}] )[0].id;
+      bootbox.alert("Your trip has been saved", $scope.goViewTransit(departId, returnId));
     });
   }
 
@@ -507,7 +509,9 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
       $scope.rideCount = ipCookie('rideCount');
       $scope.walkSaved = true;
       planService.walkSaved = true;
-      bootbox.alert("Your trip has been saved");
+      var departId = planService.walkItineraries[0].id;
+      var returnId = planService.walkItineraries[1] ? planService.walkItineraries[1].id : 0;
+      bootbox.alert("Your trip has been saved", $scope.goViewWalk(departId, returnId));
     });
   }
 
@@ -1463,12 +1467,13 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
       $scope.transitInfos = planService.transitInfos;
       $scope.noresults = false;
       $scope.request = planService.confirmRequest;
+
+      $scope.hasParatransit = $scope.paratransitItineraries.length > 0;
+      $scope.hasTransit = $scope.transitInfos.length > 0;
+      $scope.hasWalk = $scope.walkItineraries.length > 0;
+
       if($scope.paratransitItineraries.length < 1 && $scope.transitItineraries.length < 1 && $scope.walkItineraries.length < 1){
         $scope.noresults = true;
-      }else if($scope.paratransitItineraries.length < 1 && $scope.transitItineraries.length < 1 && $scope.walkItineraries.length > 0){
-        $scope.step = 'alternative_options';
-      }else if($scope.walkItineraries.length > 0){
-        $scope.showAlternativeOption = true;
       }
       break;
     case 'start_current':
