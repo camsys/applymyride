@@ -65,7 +65,7 @@
     .row.unstuck-foot.btn-spacing{style: 'margin-top: 20px'}
       .col-md-8.col-md-offset-2.col-xs-12{ng: {show: 'loggedIn' } }
         .row
-          %a.btn.btn-blue.btn-block{href: "", ng: {hide:'transitCancelled || walkCancelled', click: 'toggleEmail($event);'}}
+          %a.btn.btn-blue.btn-block{href: "", ng: {show:'walkSaved || transitSaved', click: 'toggleEmail($event);'}}
             Email this ride        
         .row{ng:{show: 'mode === "transit"'}}
           %a.btn.btn-primary.btn-block{href: "", ng: {click: 'saveBusTrip()', hide:'transitSaved || transitCancelled'}}
