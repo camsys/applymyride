@@ -72,10 +72,11 @@ angular.module('applyMyRideApp')
           callback: function(result){
             if(result == true){
               var cancel = {};
+
               cancel.bookingcancellation_request = [];
               angular.forEach($scope.trip.itineraries, function(itinerary, index) {
                 var bookingCancellation = {};
-                if($scope.trip.mode == 'mode_transit' && itinerary.id){
+                if(($scope.trip.mode == 'mode_transit' || $scope.trip.mode == 'mode_walk') && itinerary.id){
                   bookingCancellation.itinerary_id = itinerary.id;
                 }
                 else if($scope.trip.mode == 'mode_paratransit' && itinerary.booking_confirmation){
