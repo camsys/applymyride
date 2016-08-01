@@ -1,25 +1,5 @@
 .container
   #itinerary{ng: {show: 'mode==="mode_transit"'}}
-    %div{style: 'margin-top: 1em', ng: {show: 'showEmail'}}
-      .row
-        .col-xs-12.col-sm-8.col-sm-offset-2.text-left
-          Email your ride details to a friend (or yourself).
-      .row
-        .col-xs-12.col-sm-8.col-sm-offset-2.text-left.text-muted
-          Use a comma to separate multiple addresses
-      .row
-        .col-xs-10.col-sm-6.col-sm-offset-2{'style' => 'line-height: 2em; padding-right: 0px;'}
-          %input.form-control{style: 'font-size: .9em; border-top-right-radius:0px; border-bottom-right-radius:0px;', ng: {model: 'emailString'}}
-        .col-xs-2.col-sm-2{'style' => 'line-height: 2em; padding-left: 0px;'}
-          %a.btn.btn-success.btn-block{style: 'padding-left: 0px; padding-right: 0px;min-width: 20px; border-top-left-radius:0px; border-bottom-left-radius:0px;', ng: {click: 'sendEmail()'}}
-            %i.fa.fa-envelope-o.fa-lg{style:'color: white;'}
-              %span
-                Send
-      .row{ng: {show: 'invalidEmail == true'}}
-        .col-xs-12.col-sm-8.col-sm-offset-2.text-left{style: 'color: red'}
-          Please enter only valid email addresses
-
-
     .row{style: 'margin-bottom: 1em;'}
       .col-xs-12.col-md-8.col-md-offset-2.no-padding
         .row
@@ -285,8 +265,29 @@
                   .leg-info.col-xs-12.leg-header
                     %h4 {{itinerary.destinationDesc}}
 
+  %div{style: 'margin-top: 1em', ng: {show: 'showEmail'}}
+    .row
+      .col-xs-12.col-sm-8.col-sm-offset-2.text-left
+        Email your ride details to a friend (or yourself).
+    .row
+      .col-xs-12.col-sm-8.col-sm-offset-2.text-left.text-muted
+        Use a comma to separate multiple addresses
+    .row
+      .col-xs-10.col-sm-6.col-sm-offset-2{'style' => 'line-height: 2em; padding-right: 0px;'}
+        %input.form-control{style: 'font-size: .9em; border-top-right-radius:0px; border-bottom-right-radius:0px;', ng: {model: 'emailString'}}
+      .col-xs-2.col-sm-2{'style' => 'line-height: 2em; padding-left: 0px;'}
+        %a.btn.btn-success.btn-block{style: 'padding-left: 0px; padding-right: 0px;min-width: 20px; border-top-left-radius:0px; border-bottom-left-radius:0px;', ng: {click: 'sendEmail($event)'}}
+          %i.fa.fa-envelope-o.fa-lg{style:'color: white;'}
+            %span
+              Send
+    .row{ng: {show: 'invalidEmail == true'}}
+      .col-xs-12.col-sm-8.col-sm-offset-2.text-left{style: 'color: red'}
+        Please enter only valid email addresses
+
   .row.unstuck-foot.btn-spacing{style: 'margin-top: 1em;'}
     .col-md-8.col-md-offset-2.col-xs-12
+      %a.btn.btn-blue.btn-block{href: "", ng: {click: 'toggleEmail($event);'}}
+        Email this ride
       %a.btn.btn-primary.btn-block{href: "", style:'background-color:red;',ng: {click: 'cancelTrip()', hide:'tripCancelled'}}
         Cancel this ride
       %a.btn.btn-primary.btn-block{href: "", ng: {click: "viewMyRides()", show:'tripCancelled'}}

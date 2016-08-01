@@ -384,9 +384,14 @@ a.login-btns .btn-branded {
   color: white;
 }
 
-.btn-blue { background-color: #19487D; }
-.btn-green { background-color: #00884B; }
-.btn-grey { background-color: #828282; }
+.btn.btn-blue, .btn-blue:active:hover, .btn-blue:active:focus, .btn-blue:active.focus, .btn-blue.active:hover, .btn-blue.active:focus, .btn-blue.active.focus, .open > .btn-blue.dropdown-toggle:hover, .open > .btn-blue.dropdown-toggle:focus, .open > .btn-blue.dropdown-toggle.focus {
+  color:#EEE;
+  background-color: #19487D;
+}
+
+
+.btn-green { background-color: #00884B; color: #fff;}
+.btn-grey { background-color: #828282; color: #fff;}
 
 img.official-logo {
   height: 3em;

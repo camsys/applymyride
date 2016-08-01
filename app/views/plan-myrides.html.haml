@@ -7,7 +7,7 @@
   .col-md-8.col-md-offset-2.col-xs-12
     %tabset 
       %tab{'heading' => 'Upcoming ({{trips.future.length}})', 'active' => 'tabFuture'}
-        .myride{'index' => '{{$index}}', ng: {init: 'tab = "future"', click: 'toggleMyRideButtonBar("future", $index)', repeat: 'trip in trips.future'}}
+        .myride{'index' => '{{$index}}', ng: {init: 'tab = "future"', click: 'selectTrip($event, tab, $index)', repeat: 'trip in trips.future'}}
           .row
             .col-xs-2.col-height-slave
               %img.img-responsive{ng: {src: 'images/modes/paratransit.png', show: 'trip.mode == "mode_paratransit"'}}
@@ -27,7 +27,7 @@
             .row.even-height-row    
               %span{ng: {include: "'views/emailOrCancel.html'"}}      
       %tab{'heading' => 'History ({{trips.past.length}})', 'active' => 'tabPast'}
-        .myride{'index' => '{{$index}}', ng: {init: 'tab = "past"', click: 'toggleMyRideButtonBar("past", $index);', repeat: 'trip in trips.past'}}       
+        .myride{'index' => '{{$index}}', ng: {init: 'tab = "past"', click: 'selectTrip($event, tab, $index);', repeat: 'trip in trips.past'}}       
           .row
             .col-xs-2.col-height-slave
               %img.img-responsive{ng: {src: 'images/modes/paratransit.png', show: 'trip.mode == "mode_paratransit"'}}
