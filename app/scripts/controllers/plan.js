@@ -119,12 +119,6 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
     $scope.tripDivs[type][index] = !$scope.tripDivs[type][index];
   };
 
-  $scope.toggleEmail = function($event) {
-    $scope.invalidEmail = false;
-    $scope.showEmail = !$scope.showEmail;
-    $event.stopPropagation();
-  };
-
   $scope.updateReturnTime = function(o){
     if(!o){return;}
     var destinationDuration = parseInt(o.minutes);
@@ -264,42 +258,37 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
     $location.path('/itinerary');
   };
 
+  $scope.toggleEmail = function($event) {
+    $scope.invalidEmail = false;
+    $scope.showEmail = !$scope.showEmail;
+    $event.stopPropagation();
+  };
+
   $scope.sendEmail = function($event) {
     $event.stopPropagation();
-    angular.forEach(Object.keys($scope.trips), function(key, index) {
-      var tripTab = $scope.trips[key];
-      angular.forEach(tripTab, function(trip, index) {
-        if(trip.emailString){
-          var result = planService.validateEmail(trip.emailString);
-          if(result == true){
 
-            $scope.showEmail = false;
-            $scope.tripDivs[key][index] = false;
-            var addresses = trip.emailString.split(/[ ,;]+/);
-            var emailRequest = {};
-            emailRequest.email_itineraries = [];
-            angular.forEach(addresses, function(address, index) {
-              var emailRequestPart = {};
-              emailRequestPart.email_address = address;
-              emailRequestPart.itineraries = [];
-            angular.forEach(trip.itineraries, function(itinerary, index) {
-                emailRequestPart.itineraries.push({"trip_id":trip.id.toString(),"itinerary_id":itinerary.id.toString()})
-            });
-              emailRequest.email_itineraries.push(emailRequestPart)
-            });
-            var emailPromise = planService.emailItineraries($http, emailRequest);
-            emailPromise.error(function(data) {
-              bootbox.alert("An error occurred on the server, your email was not sent.");
-            });
-            delete trip.emailString;
-            flash.setMessage('Your email was sent');
-          }else{
-            $scope.invalidEmail = true;
-          }
-        }
-      });
-    });
-  };
+    var emailString = $scope.emailString;
+
+    if(emailString && planService.tripId){
+      var result = planService.validateEmail(emailString);
+      if(result == true){
+
+        $scope.showEmail = false;
+
+        var emailRequest = {};
+        emailRequest.email_address = emailString;
+        emailRequest.trip_id = planService.tripId;
+
+        var emailPromise = planService.emailItineraries($http, emailRequest);
+        emailPromise.error(function(data) {
+          bootbox.alert("An error occurred on the server, your email was not sent.");
+        });
+        bootbox.alert('Your email was sent');
+      }else{
+        $scope.invalidEmail = true;
+      } 
+    }
+  }
 
   $scope.openCalendar = function($event) {
     $event.preventDefault();

@@ -43,8 +43,30 @@
       .col-md-8.col-md-offset-2.col-xs-12
         %span{ segmentid:'1', ng:{ include: "'views/transit-embedded.html'", controller:'TransitController'}}
 
+    %div{style: 'margin-top: 1em', ng: {show: 'showEmail'}}
+      .row
+        .col-xs-12.col-sm-8.col-sm-offset-2.text-left
+          Email your ride details to a friend (or yourself).
+      .row
+        .col-xs-12.col-sm-8.col-sm-offset-2.text-left.text-muted
+          Use a comma to separate multiple addresses
+      .row
+        .col-xs-10.col-sm-6.col-sm-offset-2{'style' => 'line-height: 2em; padding-right: 0px;'}
+          %input.form-control{style: 'font-size: .9em; border-top-right-radius:0px; border-bottom-right-radius:0px;', ng: {model: 'emailString'}}
+        .col-xs-2.col-sm-2{'style' => 'line-height: 2em; padding-left: 0px;'}
+          %a.btn.btn-success.btn-block{style: 'padding-left: 0px; padding-right: 0px;min-width: 20px; border-top-left-radius:0px; border-bottom-left-radius:0px;', ng: {click: 'sendEmail($event)'}}
+            %i.fa.fa-envelope-o.fa-lg{style:'color: white;'}
+              %span
+                Send
+      .row{ng: {show: 'invalidEmail == true'}}
+        .col-xs-12.col-sm-8.col-sm-offset-2.text-left{style: 'color: red'}
+          Please enter only valid email addresses
+
     .row.unstuck-foot.btn-spacing{style: 'margin-top: 20px'}
       .col-md-8.col-md-offset-2.col-xs-12{ng: {show: 'loggedIn' } }
+        .row
+          %a.btn.btn-blue.btn-block{href: "", ng: {hide:'transitCancelled || walkCancelled', click: 'toggleEmail($event);'}}
+            Email this ride        
         .row{ng:{show: 'mode === "transit"'}}
           %a.btn.btn-primary.btn-block{href: "", ng: {click: 'saveBusTrip()', hide:'transitSaved || transitCancelled'}}
             Save to my rides
