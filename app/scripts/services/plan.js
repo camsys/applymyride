@@ -40,7 +40,7 @@ angular.module('applyMyRideApp')
       }
 
       this.emailItineraries = function($http, emailRequest){
-        return $http.post(urlPrefix + 'api/v1/itineraries/email', emailRequest, this.getHeaders())
+        return $http.post(urlPrefix + 'api/v1/trips/email', emailRequest, this.getHeaders())
       }
 
       this.cancelTrip = function($http, cancelRequest){
@@ -735,6 +735,7 @@ angular.module('applyMyRideApp')
         };
         return headers;
       }
+
     }
   ]
 );
