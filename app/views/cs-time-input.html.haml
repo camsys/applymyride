@@ -1,8 +1,8 @@
 %div{class:'cs-time-input {{class}}', id:'{{id}}'}
-  %input{class:'cs-hour', type:'tel', ng:{model:'hour', change:'updateTime()'}, 'click-focus'=>'true'}
+  %input{class:'cs-hour', type:'tel', ng:{model:'hour', change:'updateTime("hour")'}, 'click-focus'=>'true'}
   .seperator-hour-minute
     &#58;
-  %input{class:'cs-minute', type:'tel', ng:{model:'minute', change:'updateTime()'}, 'attr-placeholder'=>'00', 'click-focus'=>'true'}
+  %input{class:'cs-minute', type:'tel', ng:{model:'minute', change:'updateTime("minute")'}, 'attr-placeholder'=>'00', 'click-focus'=>'true'}
   %label{for:'cs-ampm-input'}
-    %input{class:'cs-ampm', id:'cs-ampm-input', type:'checkbox', name:'cstimeisam', ng:{ model:'isAM', change:'updateTime()' }}
+    %input{class:'cs-ampm', id:'cs-ampm-input', type:'checkbox', name:'cstimeisam', ng:{ model:'isAM', change:'updateTime("ampm")' }}
     %span{class:'cs-ampmspan'}

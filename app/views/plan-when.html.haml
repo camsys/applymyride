@@ -49,7 +49,7 @@
           %a.btn{href: "", back: '', ng: {click: "back()", hide:'backToConfirm'}}
             Back
         .pull-right
-          %a.btn.btn-primary.btn-next{href: "", ng: {class:'{disabled:(!showNext) }', click: 'next()'}}
+          %a.btn.btn-primary.btn-next{href: "", ng: {class:'{disabled:(!whenShowNext()) }', click: 'next()'}}
             %span{ng:{hide:'backToConfirm'}}
               Next
             %span{ng:{show:'backToConfirm'}}

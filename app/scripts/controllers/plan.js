@@ -1212,39 +1212,8 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
       $('input.cs-hour').select();
     }, 100);
   }
-  function _whenShowNext(){
-    //true to show next
-    var fromOK, returnOK, 
-    _checkServiceHours = function(day, okNull)
-    {
-      var index, splitTime, startMoment, endMoment;
-      //day is null return false, unless null is ok
-      if(day === null){
-        if( okNull === true ){ return true; }
-        return false;
-      }
-      //return false if selected day does not have service hours
-      index = day.format('YYYY-MM-DD');
-      if( !$scope.serviceHours[index] ){return false;}
+  $scope.whenShowNext = function(){ return false; };
 
-      //return false if time not within the service hours
-      splitTime = $scope.serviceHours[index].open.split(':');
-      startMoment = day.clone().hour(splitTime[0]).minute(splitTime[1]).subtract(1, 'seconds');
-      splitTime = $scope.serviceHours[index].close.split(':');
-      endMoment = day.clone().hour(splitTime[0]).minute(splitTime[1]).add(1, 'seconds');
-      if( !day.isBetween(startMoment, endMoment ) ){return false;}
-
-      //make sure day is in the future
-      if( moment().isAfter(day) ){ return false; }
-
-      //passed all checks, ok to show next
-      return true;
-    };// end _checkServiceHours
-    fromOK = _checkServiceHours( $scope.fromMoment );
-    returnOK = _checkServiceHours( $scope.returnMoment, true);
-    return fromOK && returnOK;
-
-  }
   function _setupHowLongOptions(){
     var from, endOfDay, beginOfDay, splitTime, diff, name, fromDiff,
       selectedServiceHours, selectedIndex;
@@ -1421,6 +1390,39 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
         .success(function(data) {
           $scope.serviceHours = data;
           _setupTwoWeekSelector();
+          $scope.whenShowNext = function(){
+            //true to show next
+            var fromOK, returnOK, 
+            _checkServiceHours = function(day, okNull)
+            {
+              var index, splitTime, startMoment, endMoment;
+              //day is null return false, unless null is ok
+              if(day === null){
+                if( okNull === true ){ return true; }
+                return false;
+              }
+              //return false if selected day does not have service hours
+              index = day.format('YYYY-MM-DD');
+              if( !$scope.serviceHours[index] ){return false;}
+
+              //return false if time not within the service hours
+              splitTime = $scope.serviceHours[index].open.split(':');
+              startMoment = day.clone().hour(splitTime[0]).minute(splitTime[1]).subtract(1, 'seconds');
+              splitTime = $scope.serviceHours[index].close.split(':');
+              endMoment = day.clone().hour(splitTime[0]).minute(splitTime[1]).add(1, 'seconds');
+              if( !day.isBetween(startMoment, endMoment ) ){return false;}
+
+              //make sure day is in the future
+              if( moment().isAfter(day) ){ return false; }
+
+              //passed all checks, ok to show next
+              return true;
+            };// end _checkServiceHours
+            fromOK = _checkServiceHours( $scope.fromMoment );
+            returnOK = _checkServiceHours( $scope.returnMoment, true);
+            return fromOK && returnOK;
+
+          }
           $scope.$watch('fromMoment', function(n){
             //only show next if we have a valid moment object
             $scope.showNext = false;
@@ -1434,7 +1436,7 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
             planService.asap = false;
             planService.fromTimeType = 'arrive';
             _setupHowLongOptions();
-            $scope.showNext = _whenShowNext();
+            $scope.showNext = $scope.whenShowNext();
           });
         });
 
