@@ -13,7 +13,7 @@
               1-844-PA4-RIDE
               
   #paratransit{style: 'padding: 0;', index: '{{$index}}', ng: {show: '!booking_failed', repeat: 'itinerary in paratransitItineraries'}}
-    %div{ng:{show: '$index == 0'}}
+    %div{ng:{show: '$index == 0 && !tripCancelled'}}
       .row{style: 'margin-bottom: 1em;', ng: {show: 'email'}}
         .col-xs-12.text-center{style: 'padding: 0;'}
           %h2 Your trip has been saved
