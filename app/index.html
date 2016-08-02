@@ -20,9 +20,27 @@
     <link rel="stylesheet" href="styles/autocomplete.css">
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
     <base href="/">
+    <script>
+      //initialize APIHOST by depending on environment
+      var APIHOST = (function( docHost )
+      {
+        var env = docHost.match(/^findmyridepa2-(.+)\.camsys-apps\.com$/);
+        var apiHosts = {
+          'demo': 'oneclick-pa-demo.camsys-apps.com',
+          'dev': 'oneclick-pa-dev.camsys-apps.com',
+          'qa': 'oneclick-pa-qa.camsys-apps.com'
+        };
+        //use docHost by default, for local environments
+        if(!env || !env[1]){
+          return docHost;
+        }
+        return apiHosts[ env[1] ];
+      }( document.location.hostname ));
+      var DEBUGOFF = !!APIHOST.match(/findmyridepa2-demo/);
+    </script>
   </head>
   <body ng-app="applyMyRideApp" ng-controller="NavbarController">
-    <div style="position:absolute; bottom:1px;">v2.0.2-s.5-rc.1</div>
+    <div style="position:absolute; bottom:1px;" ng-hide="ture == DEBUGOFF">v2.0.2-s.5-rc.1</div>
     <!--[if lt IE 7]>
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
@@ -109,23 +127,6 @@
     </div>
     </div>
 
-    <script>
-      //initialize APIHOST by depending on environment
-      var APIHOST = (function( docHost )
-      {
-        var env = docHost.match(/^findmyridepa2-(.+)\.camsys-apps\.com$/);
-        var apiHosts = {
-          'demo': 'oneclick-pa-demo.camsys-apps.com',
-          'dev': 'oneclick-pa-dev.camsys-apps.com',
-          'qa': 'oneclick-pa-qa.camsys-apps.com'
-        };
-        //use docHost by default, for local environments
-        if(!env || !env[1]){
-          return docHost;
-        }
-        return apiHosts[ env[1] ];
-      }( document.location.hostname ));
-    </script>
 
     <!-- build:js(.) scripts/oldieshim.js -->
     <!--[if lt IE 9]>
