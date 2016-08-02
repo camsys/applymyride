@@ -99,7 +99,7 @@ angular.module('applyMyRideApp')
         })
       }
 
-      $scope.show = function($event){
+      $scope.show = function(event){
         var index = $(event.target).parents('.timeline').attr('index');
         $scope.showDiv[index] = !$scope.showDiv[index];
       }
