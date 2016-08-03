@@ -10,6 +10,7 @@ angular.module('applyMyRideApp')
       input.setAttribute('type','date');
       var notADateValue = 'not-a-date';
       input.setAttribute('value', notADateValue);
+      $scope.debugoff = !!APIHOST.match(/demo/);
       $scope.html5 = !(input.value === notADateValue);
       planService.html5 = $scope.html5;
       $scope.mobile = deviceDetector.isMobile();

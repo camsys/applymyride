@@ -78,6 +78,10 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
   $scope.walkSaved = planService.walkSaved || false;
   $scope.walkCancelled = planService.walkCancelled || false;
 
+  //plan/confirm bus options selected-tab placeholder
+  $scope.selectedBusOption = planService.selectedBusOption || [0,0];
+
+
   $scope.reset = function() {
     planService.reset();
     $location.path("/plan/where");
@@ -96,6 +100,13 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
     $location.path('/plan/purpose');
   }
   $scope.goViewTransit = function(departId, returnId){
+    //get the transit depart/return ids using the selectedBusOption (current tabs)
+    departId = $scope.transitInfos[0][ $scope.selectedBusOption[0] ].id;
+    if( $scope.transitInfos[1] && $scope.transitInfos[1][ $scope.selectedBusOption[1] ] ){
+      returnId = $scope.transitInfos[1][ $scope.selectedBusOption[1] ].id;
+    }else{
+      returnId = 0;
+    }
     $location.path('/plan/transit/'+departId+'/'+returnId);
   }
   $scope.goPlanLogin = function(){
@@ -464,10 +475,10 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
 
   $scope.saveBusTrip = function(){
     var tripId = planService.tripId;
-    var selectedItineraries = [{"trip_id":tripId, "itinerary_id":planService.transitInfos[0][0].id}];
+    var selectedItineraries = [{"trip_id":tripId, "itinerary_id":planService.transitInfos[0][ $scope.selectedBusOption[0] ].id}];
 
     if(planService.fare_info.roundtrip == true){
-      selectedItineraries.push({"trip_id":tripId, "itinerary_id":planService.transitInfos[1][0].id});
+      selectedItineraries.push({"trip_id":tripId, "itinerary_id":planService.transitInfos[1][ $scope.selectedBusOption[1] ].id});
     }
     var selectedItineraries = {"select_itineraries": selectedItineraries};
     
@@ -477,9 +488,7 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
       $scope.rideCount = ipCookie('rideCount');
       $scope.transitSaved = true;
       planService.transitSaved = true;
-      var departId = planService.transitInfos[0][0].id;
-      var returnId = (planService.transitInfos[1] || [{id:0}] )[0].id;
-      bootbox.alert("Your trip has been saved", $scope.goViewTransit(departId, returnId));
+      bootbox.alert("Your trip has been saved", $scope.goViewTransit());
     });
   }
 
@@ -1466,6 +1475,11 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
       if($scope.paratransitItineraries.length < 1 && $scope.transitItineraries.length < 1 && $scope.walkItineraries.length < 1){
         $scope.noresults = true;
       }
+      $scope.$watch('selectedBusOption', function(n){
+        if(n && n.length && typeof n === 'object'){
+          planService.selectedBusOption = n;
+        }
+      })
       break;
     case 'start_current':
       $scope.showNext = false;

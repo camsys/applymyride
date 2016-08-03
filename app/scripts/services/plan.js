@@ -22,6 +22,7 @@ angular.module('applyMyRideApp')
         delete this.transitCancelled;
         delete this.walkSaved;
         delete this.walkCancelled;
+        delete this.selectedBusOption;
       }
 
       var urlPrefix = '//' + APIHOST + '/';

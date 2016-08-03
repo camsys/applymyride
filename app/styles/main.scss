@@ -615,3 +615,36 @@ i.cs-map-marker.A{
     margin:0px -30px !important;
   }
 }
+
+ul.bus-nav-tabs.nav-tabs {
+
+  display:flex;
+  flex-wrap:wrap;
+
+  li{
+    flex-grow:1;
+    min-width:20%;
+  }
+  li .btn{
+    background:#14834D;
+    box-shadow:unset;
+    border-right:1px solid grey;
+    border-radius: 0px;
+    color:white;
+    width:100%;
+  }
+  li:last-child .btn{
+    border-right:unset;
+  }
+  li.active {
+    border-bottom: unset;
+    outline-width: 0;
+    
+    .btn{
+      color:black;
+      background:white;
+      border-bottom:none;
+    }
+  }
+}
+
