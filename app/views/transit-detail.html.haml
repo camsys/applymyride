@@ -17,15 +17,14 @@
 
     .row
       .col-md-8.col-md-offset-2.col-xs-12{style:' background-color: rgb(205,254,206); padding:10px;'}
-        %h3
-          %strong
-            %span{ng: {show: 'mode === "transit"'}}
-              Bus Ride
-            %span{ng: {show: 'mode === "walk"'}}
-              Walk
-          %span{ng: {show: 'transitSaved || walkSaved'}} 
+        %h1
+          %span{ng: {show: 'mode === "transit"'}}
+            Bus Ride
+          %span{ng: {show: 'mode === "walk"'}}
+            Walk
+          %span{style:'font-size: 22px;', ng: {show: 'transitSaved || walkSaved'}} 
             (saved)
-          %span{style: 'color: red', ng: {show: 'transitCancelled || walkCancelled'}}
+          %span{style: 'font-size: 22px; color: red;', ng: {show: 'transitCancelled || walkCancelled'}}
             (cancelled)
     .row
       .col-md-8.col-md-offset-2.col-xs-12

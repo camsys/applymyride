@@ -4,14 +4,13 @@
       .col-xs-12.col-md-8.col-md-offset-2.no-padding
         .row
           .col-xs-12{style:' background-color: rgb(205,254,206); padding:10px;'}
-            %h2
-              %strong
-                %span
-                  Bus Rides
-                %span{style:'font-size: 22px;',ng: {hide: 'tripCancelled'}} 
-                  (saved)
-                %span{style: 'color: red; font-size: 22px;', ng: {show: 'tripCancelled'}}
-                  (cancelled)
+            %h1
+              %span
+                Bus Rides
+              %span{style:'font-size: 22px;',ng: {hide: 'tripCancelled'}} 
+                (saved)
+              %span{style: 'color: red; font-size: 22px;', ng: {show: 'tripCancelled'}}
+                (cancelled)
     .transititinerary{index: '{{$index}}', ng: {repeat: 'itinerary in itineraries'}}
       .row{ng: {show: '$index == 0 && itineraries.length > 1'}}
         .col-xs-12.col-md-8.col-md-offset-2.no-padding
@@ -201,14 +200,13 @@
       .col-xs-12.col-md-8.col-md-offset-2.no-padding
         .row
           .col-xs-12{style:' background-color: rgb(205,254,206); padding:10px;'}
-            %h2
-              %strong
-                %span
-                  Walk Details
-                %span{style:'font-size: 22px;', ng: {hide: 'tripCancelled'}} 
-                  (saved)
-                %span{style: 'color: red; font-size: 22px;', ng: {show: 'tripCancelled'}}
-                  (cancelled)
+            %h1
+              %span
+                Walk Details
+              %span{style:'font-size: 22px;', ng: {hide: 'tripCancelled'}} 
+                (saved)
+              %span{style: 'color: red; font-size: 22px;', ng: {show: 'tripCancelled'}}
+                (cancelled)
   .walkitinerary#walk{index: '{{$index}}', ng: {repeat: 'itinerary in walkItineraries'}}
     .row{ng: {show: '$index == 0'}}
       .col-xs-12.col-md-8.col-md-offset-2.no-padding
