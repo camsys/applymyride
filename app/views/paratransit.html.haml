@@ -124,11 +124,11 @@
       .col-xs-12.col-sm-8.col-sm-offset-2.text-left.text-muted
         Use a comma to separate multiple addresses
     .row
-      .col-xs-10.col-sm-6.col-sm-offset-2{'style' => 'line-height: 2em; padding-right: 0px;'}
+      .col-xs-8.col-sm-6.col-sm-offset-2{'style' => 'line-height: 2em; padding-right: 0px;'}
         %input.form-control{style: 'font-size: .9em; border-top-right-radius:0px; border-bottom-right-radius:0px;', ng: {model: 'emailString'}}
-      .col-xs-2.col-sm-2{'style' => 'line-height: 2em; padding-left: 0px;'}
+      .col-xs-4.col-sm-2{'style' => 'line-height: 2em; padding-left: 0px;'}
         %a.btn.btn-success.btn-block{style: 'padding-left: 0px; padding-right: 0px;min-width: 20px; border-top-left-radius:0px; border-bottom-left-radius:0px;', ng: {click: 'sendEmail($event)'}}
-          %i.fa.fa-envelope-o.fa-lg{style:'color: white;'}
+          %i.fa.fa-envelope-o{style:'color: white;'}
             %span
               Send
     .row{ng: {show: 'invalidEmail == true'}}
