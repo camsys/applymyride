@@ -1686,8 +1686,7 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
           delete $scope.tabPast;
         }
       });
-    
-      
+      $window.visited = true;
 
       break;
     case 'companions':
