@@ -23,14 +23,28 @@
         .col-xs-12.col-md-8.col-md-offset-2.no-padding
           .row
             .col-xs-12{style:'background-color: rgb(205,254,206); padding:10px;'}
-              %h2 
-                %strong
-                  %span
-                    Shared Ride
-                  %span{style:'font-size: 22px;', ng: {hide: 'tripCancelled'}} 
-                    (booked)
-                  %span{style: 'color: red; font-size: 22px;', ng: {show: 'tripCancelled'}}
-                    (cancelled)
+              %h1
+                %span
+                  Shared Ride
+                %span{style:'font-size: 22px;', ng: {hide: 'tripCancelled'}} 
+                  (booked)
+                %span{style: 'color: red; font-size: 22px;', ng: {show: 'tripCancelled'}}
+                  (cancelled)
+              %h5.text-muted
+                %span
+                  CONFIRMATION
+                %span.tab1
+                  %strong &num;{{booking_results[0].confirmation_id}}
+                %span.tab1
+                  (Outbound)
+              %h5.text-muted{ng: {show: 'booking_results.length > 1'}}
+                %span 
+                  CONFIRMATION
+                %span.tab1
+                  %strong &num;{{booking_results[1].confirmation_id}}
+                %span.tab1
+                  (Return)
+
       .row{style:'margin-top: 6px;'}
         .col-xs-6.text-right.text-muted
           Escorts/Companions:
