@@ -11,7 +11,7 @@
     .col-xs-12.transit-container
       .row.row-eq-height.transit-header
     .col-xs-12.transit-body
-      .border-between.timeline{'index' => '{{$index}}', ng: {click: 'show()', repeat: 'leg in itinerary.json_legs track by $index', class: '{"mode_bus": leg.mode == "BUS", "mode_walk": leg.mode == "WALK"}'}}
+      .border-between.timeline{'index' => '{{$index}}', ng: {click: 'show($event)', repeat: 'leg in itinerary.json_legs track by $index', class: '{"mode_bus": leg.mode == "BUS", "mode_walk": leg.mode == "WALK"}'}}
         .row.even-height-row
           .col-xs-2.right-side
             %h4 {{leg.startTimeDesc}}
