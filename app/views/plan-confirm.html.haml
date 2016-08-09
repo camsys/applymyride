@@ -210,7 +210,7 @@
                   .col-xs-10
                     Leave {{transitItineraries[0][ selectedBusOption[0] ].start_time | date:'h:mm a'}}
                   .col-xs-2
-                    {{fare_info["mode_transit"] | currency | free}}
+                    {{transitInfos[0][ selectedBusOption[0] ].cost | currency | free}}
                   .col-xs-10
                     Arrive {{transitItineraries[0][ selectedBusOption[0] ].end_time | date:'h:mm a'}}
                 .row{style:'padding: 0px 0px 10px 10px;'}
@@ -238,13 +238,13 @@
                 %h3 Returning
               .col-xs-2.pull-right.bus-options-right
                 %img{ng: {src: 'images/modes/transit.png'}, style:'width: 50%; vertical-align: middle;'}
-                {{transitInfos[1][0].route}}
+                {{transitInfos[1][ selectedBusOption[1] ].route}}
               .col-xs-12
                 .row{style:'padding: 0px 0px 10px 10px;'}
                   .col-xs-10
                     Leave {{transitItineraries[1][ selectedBusOption[1] ].start_time | date:'h:mm a'}}
                   .col-xs-2
-                    {{fare_info["mode_transit"]}}
+                    {{transitInfos[1][ selectedBusOption[1] ].cost | currency | free}}
                   .col-xs-10
                     Arrive {{transitItineraries[1][ selectedBusOption[1] ].end_time | date:'h:mm a'}}
                 .row{style:'padding: 0px 0px 10px 10px;'}
@@ -266,7 +266,7 @@
         %a.btn{ng:{hide:'!hasParatransit || transitSaved || transitCancelled || walkSaved || walkCancelled', click: 'showBusRides=!showBusRides'}}
           Back
       .pull-left
-        %a.btn{ng:{show:'guestParatransitItinerary && busRidesExpanded', click: 'busRidesExpanded=!busRidesExpanded'}}
+        %a.btn{ng:{show:'!loggedIn && busRidesExpanded', click: 'busRidesExpanded=!busRidesExpanded'}}
           Back
         %a.btn{href:'', back:'', ng:{show:'!hasParatransit && !busRidesExpanded', click: 'back()'}}
           Back
