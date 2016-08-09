@@ -154,10 +154,10 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
     usSpinnerService.spin('spinner-1');
     var cancelRequest = {bookingcancellation_request: []};
     var leg1, leg2;
-    leg1 = {itinerary_id: planService.transitItineraries[0][0].id};
+    leg1 = {itinerary_id: planService.transitItineraries[0][ $scope.selectedBusOption[0] ].id};
     cancelRequest.bookingcancellation_request.push( leg1 );
     if(planService.fare_info.roundtrip){
-      leg2 = {itinerary_id: planService.transitItineraries[1][0].id};
+      leg2 = {itinerary_id: planService.transitItineraries[1][ $scope.selectedBusOption[1] ].id};
       cancelRequest.bookingcancellation_request.push( leg2 );
     }
     var cancelPromise = planService.cancelTrip($http, cancelRequest)
@@ -1354,9 +1354,9 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
     case 'transit':
       (function(){
         var startDate, endDate, end;
-        var startDate = moment(new Date(planService.transitItineraries[0][0].start_time));
+        var startDate = moment(new Date(planService.transitItineraries[0][ $scope.selectedBusOption[0] ].start_time));
         end = planService.transitItineraries[1] || planService.transitItineraries[0];
-        var endDate = moment(new Date(end[0].end_time));
+        var endDate = moment(new Date(end[$scope.selectedBusOption[1]].end_time));
         $scope.startDay = startDate.format('dddd');
         $scope.startDate = startDate.format('MMMM Do');
         $scope.startTime = startDate.format('h:mm a');
