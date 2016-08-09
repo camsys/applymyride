@@ -50,6 +50,9 @@
             Or, continue as a guest
             
         .row{style: 'margin-top: 1em'}
+          .pull-left{ng: {show: "location == '/plan/login-guest'"}}
+            %a.btn{href: "", back:''}
+              Back
           .pull-right
             %a.btn.btn-primary.btn-next{href: "", ng: {click: 'next()', hide: 'disableNext'}}
               Next
