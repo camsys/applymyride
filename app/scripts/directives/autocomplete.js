@@ -4,6 +4,7 @@ var app = angular.module('autocomplete', []);
 
 app.directive('autocomplete', function() {
   var index = -1;
+  var wasTyped = false;
 
   return {
     restrict: 'E',
@@ -62,8 +63,10 @@ app.directive('autocomplete', function() {
         }
 
         // function thats passed to on-type attribute gets executed
-        if($scope.onType)
+        if($scope.onType && wasTyped){
           $scope.onType($scope.searchParam);
+        }
+        wasTyped = false;
       });
 
       // for hovering over suggestions
@@ -146,42 +149,10 @@ app.directive('autocomplete', function() {
 
       element[0].addEventListener("keydown", function(e){
         var keycode = e.keyCode || e.which;
-        switch (keycode){
-          case key.esc:
-            // disable suggestions on escape
-            scope.select();
-            scope.setIndex(-1);
-            scope.$apply();
-            e.preventDefault();
-        }
-      }, true)
-
-      element[0].addEventListener("blur", function(e){
-        //run callback provided in view if the event target is this input's id
-        if(scope.onBlur && e.target.id === scope.attrs.inputid){
-          scope.onBlur( scope.searchParam );
-        }
-        // disable suggestions on blur
-        // we do a timeout to prevent hiding it before a click event is registered
-        setTimeout(function() {
-          scope.select();
-          scope.setIndex(-1);
-          scope.$apply();
-        }, 150);
-      }, true);
-
-      element[0].addEventListener("focus", function (e){
-        if(scope.onFocus){
-          scope.onFocus(e, scope);
-        }
-      }, true);
-
-      element[0].addEventListener("keydown",function (e){
-        var keycode = e.keyCode || e.which;
         var l = angular.element(this).find('li').length;
 
         // this allows submitting forms by pressing Enter in the autocompleted field
-        if(!scope.completing || l == 0) return;
+        //if(!scope.completing || l == 0) return;
 
         // implementation of the up and down movement in the list of suggestions
         switch (keycode){
@@ -259,10 +230,32 @@ app.directive('autocomplete', function() {
             e.preventDefault();
             break;
           default:
+            wasTyped = true;
             return;
         }
+      }, true)
 
-      });
+      element[0].addEventListener("blur", function(e){
+        //run callback provided in view if the event target is this input's id
+        if(scope.onBlur && e.target.id === scope.attrs.inputid){
+          scope.onBlur( scope.searchParam );
+        }
+        // disable suggestions on blur
+        // we do a timeout to prevent hiding it before a click event is registered
+        setTimeout(function() {
+          scope.select();
+          scope.setIndex(-1);
+          scope.$apply();
+        }, 150);
+
+      }, true);
+
+      element[0].addEventListener("focus", function (e){
+        if(scope.onFocus){
+          scope.onFocus(e, scope);
+        }
+      }, true);
+
     },
     template: '\
         <div class="autocomplete {{ attrs.class }}" id="{{ attrs.id }}">\
