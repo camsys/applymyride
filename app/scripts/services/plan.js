@@ -312,8 +312,14 @@ angular.module('applyMyRideApp')
           if(itinerariesByModeReturn && itinerariesByModeReturn.mode_transit){
             //for round trips, show the fare as the sum of the two recommended fares
             this.transitInfos.push(this.prepareTransitOptionsPage(itinerariesBySegmentThenMode[1].mode_transit));
-            var fare1 = this.transitInfos[0][ this.selectedBusOption[0] ].cost;
-            var fare2 = this.transitInfos[1][ this.selectedBusOption[1] ].cost;
+            if(this.selectedBusOption){
+              var fare1 = this.transitInfos[0][ this.selectedBusOption[0] ].cost;
+              var fare2 = this.transitInfos[1][ this.selectedBusOption[1] ].cost;
+            }
+            else{
+              var fare1 = this.transitInfos[0][0].cost;
+              var fare2 = this.transitInfos[1][0].cost;
+            }
             fare_info.mode_transit = freeFilter(currencyFilter( (new Number(fare1) + new Number(fare2)).toFixed(2).toString() ));
           }else if (fare_info.roundtrip == true){
             this.transitInfos = [];
