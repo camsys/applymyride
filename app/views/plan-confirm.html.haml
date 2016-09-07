@@ -253,6 +253,32 @@
                   .col-xs-12
                     Walking time is {{transitItineraries[1][ selectedBusOption[1] ].walkTimeDesc}}
 
+  %div{style: "margin-top: 1em;", ng:{show:'hasTaxi && (showBusRides  || !hasParatransit)'}}
+    .row
+      .col-xs-12.col-md-6.col-md-offset-3.col-sm-8.col-sm-offset-2
+        %h3
+          %strong
+            Taxi
+    .row{ng: {repeat:'taxiOption in taxiItineraries'}}
+      .col-xs-12.col-md-6.col-md-offset-3.col-sm-8.col-sm-offset-2
+        .no_underline.row.rounded-border{style:'display:flex;'}
+          .col-xs-3.col-md-2{style:'margin:auto;'}
+            %strong {{taxiOption.cost | currency}}
+            %div{ng:{show:'taxiOption.returnItinerary'}}
+              .text-muted (Going)
+              %strong {{taxiOption.returnItinerary.cost | currency}}
+              .text-muted (Returning)
+          .col-xs-5.col-md-6.text-center{style:'margin:auto;'}
+            %img{ng:{ src: '{{taxiOption.logo_url}}'}}
+            %h4.text-muted
+              {{taxiOption.service_name}}
+          .col-xs-4.col-md-4{style:'margin:auto;'}
+            %div  
+              Trip Time {{taxiOption.duration | seconds}}
+            %div
+              Wait {{taxiOption.wait_time | seconds}}
+            %div
+              Walk {{taxiOption.walk_time | seconds}}
   %div{style: "margin-top: 1em;", ng:{show:'noresults'}}
     .row
       .col-xs-12.col-md-6.col-md-offset-3.col-sm-8.col-sm-offset-2.text-center

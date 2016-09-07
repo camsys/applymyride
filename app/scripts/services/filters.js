@@ -19,6 +19,20 @@ angular.module('applyMyRideApp')
     if(!m || !m._isAMomentObject){ return ''; }
     return m.format('YY-MM-DD');
   };
+})
+.filter('seconds', function() {
+  return function(s) {
+    var m = Math.ceil( s/60 );
+    if(m <= 60){
+      return '' + m + ' min';
+    }else{
+      return '' 
+        + (Math.floor( m/60 )) + ' hr, '
+        + (m % 60) + ' min';
+    }
+    if(!m || !m._isAMomentObject){ return ''; }
+    return m.format('YY-MM-DD');
+  };
 }).filter('momentYMD', function() {
   return function(m) {
     if(!m || !m._isAMomentObject){ return ''; }

@@ -1465,6 +1465,8 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
       $scope.walkItineraries = planService.walkItineraries;
       $scope.transitItineraries = planService.transitItineraries;
       $scope.transitInfos = planService.transitInfos;
+      $scope.taxiItineraries = planService.taxiItineraries;
+      $scope.hasTaxi = $scope.taxiItineraries.length > 0;
       $scope.noresults = false;
       $scope.request = planService.confirmRequest;
 

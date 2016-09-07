@@ -205,6 +205,7 @@ angular.module('applyMyRideApp')
         this.transitItineraries = [];
         this.paratransitItineraries = [];
         this.guestParatransitItinerary = null;
+        this.taxiItineraries = [];
         this.walkItineraries = [];
         this.tripId = this.searchResults.trip_id;
         var currencyFilter = $filter('currency');
@@ -255,28 +256,32 @@ angular.module('applyMyRideApp')
         var itinerariesByModeReturn = itinerariesBySegmentThenMode ? itinerariesBySegmentThenMode[1] : null;
 
         if(itinerariesByModeOutbound){
-        	if(itinerariesByModeOutbound.mode_paratransit){
-          		var lowestPricedParatransitTrip = this.getLowestPricedParatransitTrip(itinerariesByModeOutbound.mode_paratransit);
-          		if(!this.email){
-            		//guest user, just use the first paratransit itinerary since the prices are unknown
-            		lowestPricedParatransitTrip = this.guestParatransitItinerary;
-          		}
-          		if(lowestPricedParatransitTrip){
-            		this.paratransitItineraries.push(lowestPricedParatransitTrip);
-            		fare_info.paratransitTravelTime = lowestPricedParatransitTrip.travelTime;
-            		fare_info.paratransitStartTime = lowestPricedParatransitTrip.startTime;
-         	 	}
-        	}
+          if(itinerariesByModeOutbound.mode_paratransit){
+              var lowestPricedParatransitTrip = this.getLowestPricedParatransitTrip(itinerariesByModeOutbound.mode_paratransit);
+              if(!this.email){
+                //guest user, just use the first paratransit itinerary since the prices are unknown
+                lowestPricedParatransitTrip = this.guestParatransitItinerary;
+              }
+              if(lowestPricedParatransitTrip){
+                this.paratransitItineraries.push(lowestPricedParatransitTrip);
+                fare_info.paratransitTravelTime = lowestPricedParatransitTrip.travelTime;
+                fare_info.paratransitStartTime = lowestPricedParatransitTrip.startTime;
+              }
+          }
         
 
-        	if(itinerariesByModeOutbound.mode_transit){
-          		this.transitItineraries.push(itinerariesByModeOutbound.mode_transit);
-        	}
+          if(itinerariesByModeOutbound.mode_transit){
+              this.transitItineraries.push(itinerariesByModeOutbound.mode_transit);
+          }
 
+          //Taxi trips are grouped by taxi company, ordered low to high
+          if(itinerariesByModeOutbound.mode_taxi){
+              this.taxiItineraries = itinerariesByModeOutbound.mode_taxi;
+          }
 
-        	if(itinerariesByModeOutbound.mode_walk){
-          		this.walkItineraries.push(itinerariesByModeOutbound.mode_walk[0]);
-        	}
+          if(itinerariesByModeOutbound.mode_walk){
+              this.walkItineraries.push(itinerariesByModeOutbound.mode_walk[0]);
+          }
         }
 
         //if a mode doesn't appear in both outbound and return itinerary lists, remove it
@@ -295,6 +300,22 @@ angular.module('applyMyRideApp')
             }else{
               this.paratransitItineraries = [];
             }
+          }
+
+          if(itinerariesByModeReturn.mode_taxi){
+            //merge the return itineraries into the other itineraries, matching the service_ids
+            console.log('b4', this.taxiItineraries)
+            itinerariesByModeReturn.mode_taxi.forEach(function(returnItinerary){
+              //find the matching taxiItinerary, merge into that
+              that.taxiItineraries.forEach(function(departItinerary){
+                if(departItinerary.service_id == returnItinerary.service_id){
+                  departItinerary.returnItinerary = returnItinerary;
+                }
+              })
+            });
+            console.log('aftr', this.taxiItineraries)
+          }else{
+            this.taxiItineraries = [];
           }
 
           if(itinerariesByModeReturn.mode_walk){
