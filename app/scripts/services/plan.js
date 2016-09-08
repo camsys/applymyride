@@ -23,6 +23,7 @@ angular.module('applyMyRideApp')
         delete this.walkSaved;
         delete this.walkCancelled;
         delete this.selectedBusOption;
+        delete this.selectedTaxiOption;
       }
 
       var urlPrefix = '//' + APIHOST + '/';
@@ -304,7 +305,6 @@ angular.module('applyMyRideApp')
 
           if(itinerariesByModeReturn.mode_taxi){
             //merge the return itineraries into the other itineraries, matching the service_ids
-            console.log('b4', this.taxiItineraries)
             itinerariesByModeReturn.mode_taxi.forEach(function(returnItinerary){
               //find the matching taxiItinerary, merge into that
               that.taxiItineraries.forEach(function(departItinerary){
@@ -313,7 +313,6 @@ angular.module('applyMyRideApp')
                 }
               })
             });
-            console.log('aftr', this.taxiItineraries)
           }else{
             this.taxiItineraries = [];
           }
