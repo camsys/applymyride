@@ -20,9 +20,13 @@
         .row{style:'padding:20px 0px;'}
           .col-md-8.col-md-offset-2.col-xs-12.text-center
             %h3
-              {{taxiItinerary.cost}} (each way)
+              {{taxiItinerary.cost | currency}} 
+              %span{'ng-show':'taxiItinerary.returnItinerary'}
+                (Going)
             %h3{'ng-show' => 'taxiItinerary.returnItinerary'}
-              {{taxiItinerary.returnItinerary.cost}} (return)
+              {{taxiItinerary.returnItinerary.cost | currency}}
+              %span
+                (Return)
         .row{style:'padding:20px 0px;'}
           .col-md-8.col-md-offset-2.col-xs-12
             %div
