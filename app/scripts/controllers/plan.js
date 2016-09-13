@@ -99,6 +99,9 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
     planService.backToConfirm = true;
     $location.path('/plan/purpose');
   }
+  $scope.goViewTransitOptions = function(){
+    $location.path('/plan/transit_details');
+  }
   $scope.goViewTransit = function(departId, returnId){
     //get the transit depart/return ids using the selectedBusOption (current tabs)
     departId = $scope.transitInfos[0][ $scope.selectedBusOption[0] ].id;
@@ -1350,6 +1353,11 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
     $scope.twoWeeksSelector = {months:months};
   }
 
+  $scope.toggleShowBusRides = function(){
+    $scope.showBusRides =! $scope.showBusRides;
+    planService.showBusRides = $scope.showBusRides;
+  }
+
 
 
 //initialize this step's state
@@ -1474,7 +1482,7 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
       $scope.hasTaxi = $scope.taxiItineraries.length > 0;
       $scope.noresults = false;
       $scope.request = planService.confirmRequest;
-
+      $scope.showBusRides = planService.showBusRides;
       $scope.hasParatransit = $scope.paratransitItineraries.length > 0;
       $scope.hasTransit = $scope.transitInfos.length > 0;
       $scope.hasWalk = $scope.walkItineraries.length > 0;
@@ -1482,6 +1490,16 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
       if($scope.paratransitItineraries.length < 1 && $scope.transitItineraries.length < 1 && $scope.walkItineraries.length < 1){
         $scope.noresults = true;
       }
+      $scope.$watch('selectedBusOption', function(n){
+        if(n && n.length && typeof n === 'object'){
+          planService.selectedBusOption = n;
+        }
+      })
+      break;
+    case 'transit_details' :
+      $scope.transitItineraries = planService.transitItineraries;
+      $scope.transitInfos = planService.transitInfos;
+      $scope.request = planService.confirmRequest;
       $scope.$watch('selectedBusOption', function(n){
         if(n && n.length && typeof n === 'object'){
           planService.selectedBusOption = n;

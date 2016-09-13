@@ -74,7 +74,7 @@
             {{fare_info["mode_paratransit"]}}
 
 
-  .row.rounded-border{style: "border: 0px;", ng:{show:'guestParatransitItinerary && !busRidesExpanded'}}
+  .row.rounded-border{style: "border: 0px;", ng:{show:'guestParatransitItinerary && !showBusRides'}}
     .col-xs-12.col-md-6.col-md-offset-3.col-sm-8.col-sm-offset-2
       %h3
         %strong
@@ -103,7 +103,7 @@
           %a.btn{href: "", back: '', ng: {click: "back()"}}
             Back
         .pull-right
-          %a.btn{ng:{show:'hasTransit || hasWalk', click: 'busRidesExpanded=true; showBusRides=!showBusRides'}}
+          %a.btn{ng:{show:'hasTransit || hasWalk', click: 'toggleShowBusRides();'}}
             View more ride options
 
 
@@ -174,84 +174,24 @@
         %h3
           %strong
             Bus
-            %span{ng:{show: 'busRidesExpanded || loggedIn'}} options
-
-    .row{ng: {hide: 'busRidesExpanded || loggedIn', click:'busRidesExpanded = !busRidesExpanded'}}
+    .row{ng: {click:'goViewTransitOptions()'}}
       .col-xs-12.col-md-6.col-md-offset-3.col-sm-8.col-sm-offset-2
-        .no_underline.row.rounded-border
-          .col-xs-3.col-md-2
-            %p.text-left
-              %strong
-                {{fare_info["mode_transit"]}}
-          .col-xs-9.col-md-10
+        .no_underline.row.rounded-border{style:'display:flex;'}
+          .col-xs-3.col-md-2{style:'margin:auto;'}
+            %strong {{transitItineraries[0][ selectedBusOption[0] ].cost | currency | free}}
+            .text-muted{ng:{show:'transitItineraries[1]'}}
+              (round trip)
+          .col-xs-5.col-md-6.text-center{style:'margin:auto;'}
+            %img{ng:{ src: '{{transitItineraries[0][ selectedBusOption[0] ].logo_url}}'}, alt:'{{transitItineraries[0][ selectedBusOption[0] ].service_name}}'}
             %h4.text-muted
-              Public Transportation
-
-    %div{ng: {show: 'busRidesExpanded || loggedIn' }}
-
-      .row.bus-itinerary-details
-        .col-xs-12.col-md-6.col-md-offset-3.col-sm-8.col-sm-offset-2
-          .row.rounded-border
-            %ul.nav.nav-tabs.bus-nav-tabs
-              %li{ng: {repeat:'busOption in transitInfos[0] | limitTo:3', class:'{active: selectedBusOption[0] == $index }'}}
-                .btn{ng: {click: 'selectedBusOption[0] = $index' }}
-                  {{busOption.label}}
-            %div{ng:{click:'goViewTransit()'}}
-              .col-xs-10
-                %h3{ng: {show: 'transitInfos[1]' } }
-                  Going
-                %h3{ng: {hide: 'transitInfos[1]' } }
-                  One Way
-              .col-xs-2.pull-right.bus-options-right
-                %img{ng: {src: 'images/modes/transit.png'}, style:'width: 50%; vertical-align: middle;'}
-                {{transitInfos[0][ selectedBusOption[0] ].route}}
-              .col-xs-12
-                .row{style:'padding: 0px 0px 10px 10px;'}
-                  .col-xs-10
-                    Leave {{transitItineraries[0][ selectedBusOption[0] ].start_time | date:'h:mm a'}}
-                  .col-xs-2
-                    {{transitInfos[0][ selectedBusOption[0] ].cost | currency | free}}
-                  .col-xs-10
-                    Arrive {{transitItineraries[0][ selectedBusOption[0] ].end_time | date:'h:mm a'}}
-                .row{style:'padding: 0px 0px 10px 10px;'}
-                  .col-xs-12
-                    Trip Time is {{transitItineraries[0][ selectedBusOption[0] ].travelTime}}
-                  .col-xs-12
-                    Walking time is {{transitItineraries[0][ selectedBusOption[0] ].walkTimeDesc}}
-
-      .row
-        .col-xs-12.col-md-6.col-md-offset-3.col-sm-8.col-sm-offset-2{ng: {show: 'transitInfos[1]' } }
-          .row.rounded-border
-            .col-xs-12.text-center
-              %h4.text-muted
-                {{request.purpose}} {{howLong.minutes | minutes}}
-
-      .row
-        .col-xs-12.col-md-6.col-md-offset-3.col-sm-8.col-sm-offset-2{ng: {show: 'transitInfos[1]' } }
-          .row.rounded-border
-            %ul.nav.nav-tabs.bus-nav-tabs
-              %li{ng: {repeat:'busOption in transitInfos[1] | limitTo: 3', class:'{active: selectedBusOption[1] == $index }'}}
-                .btn{ng: {click: 'selectedBusOption[1] = $index' }}
-                  {{busOption.label}}
-            %div{ng: {click: 'goViewTransit()' }}
-              .col-xs-10
-                %h3 Returning
-              .col-xs-2.pull-right.bus-options-right
-                %img{ng: {src: 'images/modes/transit.png'}, style:'width: 50%; vertical-align: middle;'}
-                {{transitInfos[1][ selectedBusOption[1] ].route}}
-              .col-xs-12
-                .row{style:'padding: 0px 0px 10px 10px;'}
-                  .col-xs-10
-                    Leave {{transitItineraries[1][ selectedBusOption[1] ].start_time | date:'h:mm a'}}
-                  .col-xs-2
-                    {{transitInfos[1][ selectedBusOption[1] ].cost | currency | free}}
-                  .col-xs-10
-                    Arrive {{transitItineraries[1][ selectedBusOption[1] ].end_time | date:'h:mm a'}}
-                .row{style:'padding: 0px 0px 10px 10px;'}
-                  .col-xs-12
-                    Trip Time is {{transitItineraries[1][ selectedBusOption[1] ].travelTime}}
-                  .col-xs-12
-                    Walking time is {{transitItineraries[1][ selectedBusOption[1] ].walkTimeDesc}}
+              {{transitItineraries[0][ selectedBusOption[0] ].service_name}}
+          .col-xs-4.col-md-4{style:'margin:auto;'}
+            %div  
+              Trip Time {{transitItineraries[0][ selectedBusOption[0] ].duration | seconds}}
+            %div
+              Wait {{transitItineraries[0][ selectedBusOption[0] ].wait_time | seconds}}
+            %div
+              Walk {{transitItineraries[0][ selectedBusOption[0] ].walk_time | seconds}}
 
   %div{style: "margin-top: 1em;", ng:{show:'hasTaxi && (showBusRides  || !hasParatransit)'}}
     .row
@@ -269,7 +209,7 @@
               %strong {{taxiOption.returnItinerary.cost | currency}}
               .text-muted (Returning)
           .col-xs-5.col-md-6.text-center{style:'margin:auto;'}
-            %img{ng:{ src: '{{taxiOption.logo_url}}'}}
+            %img{ng:{ src: '{{taxiOption.logo_url}}'}, alt:'{{taxiOption.service_name}}'}
             %h4.text-muted
               {{taxiOption.service_name}}
           .col-xs-4.col-md-4{style:'margin:auto;'}
@@ -289,18 +229,14 @@
   .row.btn-spacing{'ng-show'=>'showBusRides || !hasParatransit'}
     .col-xs-12.col-md-6.col-md-offset-3.col-sm-8.col-sm-offset-2.text-center
       .pull-left
-        %a.btn{ng:{hide:'!hasParatransit || transitSaved || transitCancelled || walkSaved || walkCancelled', click: 'showBusRides=!showBusRides'}}
+        %a.btn{ng:{hide:'!hasParatransit || transitSaved || transitCancelled || walkSaved || walkCancelled', click: 'toggleShowBusRides()'}}
           Back
       .pull-left
-        %a.btn{ng:{show:'!loggedIn && busRidesExpanded', click: 'busRidesExpanded=!busRidesExpanded'}}
-          Back
-        %a.btn{href:'', back:'', ng:{show:'!hasParatransit && !busRidesExpanded', click: 'back()'}}
+        %a.btn{href:'', back:'', ng:{show:'!hasParatransit && !showBusRides', click: 'back()'}}
           Back
         %a.btn{href: "", ng: {click: "logout()", show:'loggedIn && (transitSaved || transitCancelled || walkSaved || walkCancelled)'}}
           Logout
       .pull-right{'ng-show'=>'loggedIn'}
-        %a.btn.btn-primary{href: "", ng: {click: "saveBusTrip()", show:'hasTransit && !transitSaved && !transitCancelled'}}
-          Save this bus trip
         %a.btn.btn-primary{href: "", ng: {click: "saveWalkTrip()", show:'!hasTransit && hasWalk && !walkSaved && !walkCancelled'}}
           Save this walk trip
         %a.btn.btn-primary{href: "", style:'background-color:red;',ng: {click: 'cancelThisBusTrip', show:'transitSaved'}}
