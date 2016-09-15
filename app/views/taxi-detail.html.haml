@@ -33,15 +33,15 @@
               %span{style:'padding-right:4px;'}
                 Going to:
               %span
-                {{taxiItinerary.destination.line1}} {{taxiItinerary.destination.line2}}
+                {{taxiItinerary.destination.line1}} {{taxiItinerary.destination.line2 | noCountry}}
             %div
               %span{style:'padding-right:4px;'}
                 From:
               %span
-                {{taxiItinerary.origin.line1}} {{taxiItinerary.origin.line2}}
+                {{taxiItinerary.origin.line1}} {{taxiItinerary.origin.line2 | noCountry}}
         .row{style:'padding:20px 0px;'}
           .col-md-8.col-md-offset-2.col-xs-12.text-center
-            %a.btn.btn-primary.btn-block{ng: {href: "tel:+1{{taxiItinerary.phone}}", click: 'callService(taxiItinerary.phone);'}}
+            %a.btn.btn-primary.btn-block{ng: {href: "{{taxiItinerary.phone | telephoneLink }}", click: 'callService(taxiItinerary.phone);'}}
               Call {{taxiItinerary.service_name}}
         .row{style:'padding:20px 0px;'}
           .col-md-8.col-md-offset-2.col-xs-12.text-center

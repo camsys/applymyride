@@ -46,6 +46,17 @@ angular.module('applyMyRideApp')
     return (addressString || '').replace(country, '').trim();
   };
 })
+.filter('telephoneLink', function(){
+  return function(tel){
+    //strip all non-numeric chars
+    tel = tel.toString().trim().replace(/\D/g, '');
+    //prepend 1 if not there
+    if(tel.charAt(0) !== 1){
+      tel = '1'+tel;
+    }
+    return 'tel:+' + tel;
+  }
+})
 .filter('momentHMA', function() {
   return function(m) {
     if(!m || !m._isAMomentObject){ return ''; }
