@@ -114,7 +114,6 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
   }
   $scope.goViewTaxi = function(taxiOption){
     planService.selectedTaxiOption = taxiOption;
-    console.log('taxiOption', taxiOption);
     $location.path('/taxi');
   }
   $scope.goPlanLogin = function(){
