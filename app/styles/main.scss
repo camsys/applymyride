@@ -627,15 +627,11 @@ ul.bus-nav-tabs.nav-tabs {
   }
   li .btn{
     padding: 12px 14px;
-    background:#14834D;
     box-shadow:unset;
-    border-right:1px solid grey;
-    border-radius: 0px;
-    color:white;
+    color:#337ab7;
     width:100%;
-  }
-  li:last-child .btn{
-    border-right:unset;
+    border-radius:0px;
+    border-bottom: 1px solid #d3d3d3;
   }
   li.active {
     border-bottom: unset;
@@ -643,7 +639,8 @@ ul.bus-nav-tabs.nav-tabs {
     
     .btn{
       color:black;
-      background:white;
+      background-color: #f5f5f5;
+      border:1px solid #d3d3d3;
       border-bottom:none;
     }
   }
