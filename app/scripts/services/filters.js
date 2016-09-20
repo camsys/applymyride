@@ -49,6 +49,7 @@ angular.module('applyMyRideApp')
 .filter('telephoneLink', function(){
   return function(tel){
     //strip all non-numeric chars
+    if(!tel){return '';}
     tel = tel.toString().trim().replace(/\D/g, '');
     //prepend 1 if not there
     if(tel.charAt(0) !== 1){

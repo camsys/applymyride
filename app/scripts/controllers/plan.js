@@ -113,7 +113,11 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
     $location.path('/plan/transit/'+departId+'/'+returnId);
   }
   $scope.goViewTaxi = function(taxiOption){
-    planService.selectedTaxiOption = taxiOption;
+    if(taxiOption > -1){
+      planService.selectedTaxiOption = taxiOption;
+    }else{
+      planService.selectedTaxiOption = planService.selectedTaxiOption || 0;
+    }
     $location.path('/taxi');
   }
   $scope.goPlanLogin = function(){
@@ -519,7 +523,6 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
       bootbox.alert("Your trip has been saved", $scope.goViewWalk(departId, returnId));
     });
   }
-
 
   function _bookTrip(){
     planService.prepareConfirmationPage($scope);

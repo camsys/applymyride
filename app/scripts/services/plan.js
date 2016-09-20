@@ -20,6 +20,8 @@ angular.module('applyMyRideApp')
         delete this.driverInstructions;
         delete this.transitSaved;
         delete this.transitCancelled;
+        delete this.taxiSaved;
+        delete this.taxiCancelled;
         delete this.walkSaved;
         delete this.walkCancelled;
         delete this.selectedBusOption;
