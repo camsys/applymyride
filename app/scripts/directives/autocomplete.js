@@ -99,11 +99,15 @@ app.directive('autocomplete', function() {
           if($scope.onSelect)
             $scope.onSelect(suggestion);
         }
+        $scope.blurWait = false;
         watching = false;
         $scope.completing = false;
         setTimeout(function(){watching = true;},1000);
         $scope.setIndex(-1);
       };
+      $scope.ignoreBlur = function(){
+        $scope.blurWait = true;
+      }
 
 
     }],
@@ -243,10 +247,11 @@ app.directive('autocomplete', function() {
         // disable suggestions on blur
         // we do a timeout to prevent hiding it before a click event is registered
         setTimeout(function() {
+          if(scope.blurWait == true){return;}
           scope.select();
           scope.setIndex(-1);
           scope.$apply();
-        }, 150);
+        }, 750);
 
       }, true);
 
@@ -277,6 +282,7 @@ app.directive('autocomplete', function() {
               val="{{ suggestion.label }}"\
               ng-class="{ active: ($index === selectedIndex && suggestion.option), selectable: (suggestion.option) }"\
               ng-click="!suggestion.option || select(suggestion.label)"\
+              ng-mousedown="ignoreBlur()"\
               ng-bind-html="suggestion.label"></li>\
           </ul>\
         </div>'
