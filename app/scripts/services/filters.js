@@ -58,6 +58,12 @@ angular.module('applyMyRideApp')
     return 'tel:+' + tel;
   }
 })
+.filter('roundUp', function() {
+  return function(up){
+    //parse as float then round up
+    return ''+ Math.ceil( parseFloat( up || 1) )
+  }
+})
 .filter('momentHMA', function() {
   return function(m) {
     if(!m || !m._isAMomentObject){ return ''; }
