@@ -40,7 +40,7 @@
         .row{style:'padding:20px 0px;'}
           .col-md-8.col-md-offset-2.col-xs-12.text-center
             Their phone number is {{taxiItinerary.phone}}
-        .row{style: 'margin-top: 20px'}
+        .row{style: 'margin-top: 20px', ng: {hide: "savedItineraryView"}}
           .col-md-8.col-md-offset-2.col-xs-12.unstuck-foot.btn-spacing
             .pull-left
               %a.btn{href: "", back: '', ng: {click: "back()"}}

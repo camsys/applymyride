@@ -22,7 +22,6 @@ angular.module('applyMyRideApp')
 
         var promise = planService.selectItineraries($http, selectedItineraries);
         promise.then(function(result) {
-          console.log('result', result, selectedItineraries);
           ipCookie('rideCount', ipCookie('rideCount') + 1);
           $scope.rideCount = ipCookie('rideCount');
           $scope.taxiSaved = true;

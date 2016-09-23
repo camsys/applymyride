@@ -5,12 +5,25 @@ angular.module('applyMyRideApp')
     function ($scope, $routeParams, $location, flash, planService, $http, ipCookie) {
       $scope.showDiv = {};
       $scope.location = $location.path();
+      $scope.savedItineraryView = true;
       $scope.trip = planService.selectedTrip;
       angular.forEach($scope.trip.itineraries, function(itinerary, index) {
         planService.prepareItinerary(itinerary);
       });
       if($scope.trip.mode == 'mode_transit'){
         $scope.itineraries = $scope.trip.itineraries;
+      }else if($scope.trip.mode == 'mode_taxi'){
+        $scope.taxiItinerary = $scope.trip.itineraries[0];
+        if($scope.trip.itineraries.length > 1){
+          $scope.taxiItinerary.returnItinerary = $scope.trip.itineraries[1];
+        }
+        if( !$scope.taxiItinerary.cost){
+          $scope.taxiItinerary.cost = $scope.taxiItinerary.fare;
+        }
+        if( !$scope.taxiItinerary.destination.line1 && !$scope.taxiItinerary.destination.line2){
+          $scope.taxiItinerary.destination.line2 = $scope.taxiItinerary.destination.formatted_address;
+          $scope.taxiItinerary.origin.line2 = $scope.taxiItinerary.origin.formatted_address;
+        }
       }else if($scope.trip.mode == 'mode_walk'){
         $scope.walkItineraries = $scope.trip.itineraries;
       }else if($scope.trip.mode == 'mode_paratransit'){
@@ -76,7 +89,7 @@ angular.module('applyMyRideApp')
               cancel.bookingcancellation_request = [];
               angular.forEach($scope.trip.itineraries, function(itinerary, index) {
                 var bookingCancellation = {};
-                if(($scope.trip.mode == 'mode_transit' || $scope.trip.mode == 'mode_walk') && itinerary.id){
+                if(($scope.trip.mode == 'mode_transit' || $scope.trip.mode == 'mode_taxi' || $scope.trip.mode == 'mode_walk') && itinerary.id){
                   bookingCancellation.itinerary_id = itinerary.id;
                 }
                 else if($scope.trip.mode == 'mode_paratransit' && itinerary.booking_confirmation){
