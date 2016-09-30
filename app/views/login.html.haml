@@ -58,6 +58,12 @@
               Next
             %a.btn.disabled.btn-next{href: "", ng: {show: 'disableNext'}}
               Next
+        .row{ng: {hide: "location == '/plan/login-guest'"}}
+          %h5 Need Help?
+          %ul
+            %li 1-800-PA-4RIDE
+            %li Text us at 1-800-PA4-RIDE
+            %li Reach out via email
 
     %div{ng: {show: "location == '/authenticateSharedRideId'"}}
       .row
