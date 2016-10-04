@@ -494,7 +494,8 @@ img.official-logo {
   .day{
     display:inline-block;
     width:14.25%;
-    background-color: #DDD;
+    background-color: #1a27f6;
+    color: #FFF;
     border: 1px solid #EEE;
     padding: 15px 0px;
     text-align:center;
@@ -504,8 +505,8 @@ img.official-logo {
     font-weight:initial;
   }
   .day.selected{
-    color: #EEE;
-    background-color:#14834D;
+    color: #FFF;
+    background-color:#000;
   }
   .day.today,
   .day.disabled,
@@ -516,6 +517,7 @@ img.official-logo {
     background-color:#DDD;
   }
   .month-heading{
+    color: unset;
     background-color:unset;
     padding:3px;
   }

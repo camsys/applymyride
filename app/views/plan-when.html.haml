@@ -29,20 +29,30 @@
                 {{day.day}}
     .row{style:'padding:11px 0px;'}
       .col-lg-6.col-lg-offset-3.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1.col-xs-12
-        %h4{style:'display:inline-block;', ng:{show:'serviceOpen'}                  }
-          Service hours {{serviceOpen}} to {{serviceClose}}
+        .text-muted{style:'padding:7px 0px;', ng:{hide:'fromMoment.isAfter()'}}
+          If you want to see Shared Rides, choose from the next 10 business days
+        .text-muted{style:'padding:7px 0px;', ng:{show:'fromMoment.isAfter()'}}
+          {{fromMoment | momentFormat: 'dddd, MMM D'}}
+    .row
+      .col-lg-6.col-lg-offset-3.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1.col-xs-12
+        %h3 What time do you want to arrive?
+    .row
+      .col-lg-6.col-lg-offset-3.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1.col-xs-12
+        %cs-time-input{ng:{model:'fromMoment', focused:'backToConfirm'}}
+    .row{ng:{show:'serviceOpen'}}
+      .col-lg-6.col-lg-offset-3.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1.col-xs-12
+        .text-muted
+          If you want to see Shared Ride services, choose a time between service hours of {{serviceOpen}} to {{serviceClose}}
+    .return-trip-option{ng:{show:'fromMoment.isAfter()'}}
       .row
-      .col-lg-6.col-lg-offset-3.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1.col-xs-12
-        %cs-time-input{ng:{model:'fromMoment'}}
-    .row
-      .col-lg-6.col-lg-offset-3.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1.col-xs-12
-        %h3 How long do you want to stay?
-    .row
-      .col-lg-6.col-lg-offset-3.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1.col-xs-12
-        %select.form-control{required:'true', ng:{model:'$parent.howLong', options:'option.name for option in howLongOptions', change:'updateReturnTime(howLong)', class:'{disabled:!fromMoment.isAfter(moment()) }'}}
-    .row{'ng-show'=>'returnMoment'}
-      .col-lg-6.col-lg-offset-3.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1.col-xs-12
-        Return at {{returnMoment | momentHMA}}
+        .col-lg-6.col-lg-offset-3.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1.col-xs-12
+          %h3 How long do you want to stay?
+      .row
+        .col-lg-6.col-lg-offset-3.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1.col-xs-12
+          %select.form-control{required:'true', ng:{model:'$parent.howLong', options:'option.name for option in howLongOptions', change:'updateReturnTime(howLong)', class:'{disabled:!fromMoment.isAfter(moment()) }'}}
+      .row{'ng-show'=>'returnMoment'}
+        .col-lg-6.col-lg-offset-3.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1.col-xs-12
+          Return at {{returnMoment | momentHMA}}
     .row.unstuck-foot.btn-spacing
       .col-lg-6.col-lg-offset-3.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1.col-xs-12
         .pull-left

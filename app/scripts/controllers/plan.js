@@ -1444,7 +1444,7 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
             };// end _checkServiceHours
             fromOK = _checkServiceHours( $scope.fromMoment );
             returnOK = _checkServiceHours( $scope.returnMoment, true);
-            return fromOK && returnOK;
+            return fromOK && returnOK && $scope.fromTimeUpdated;
 
           }
           $scope.$watch('fromMoment', function(n){

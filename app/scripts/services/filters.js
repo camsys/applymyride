@@ -64,6 +64,12 @@ angular.module('applyMyRideApp')
     return ''+ Math.ceil( parseFloat( up || 1) )
   }
 })
+.filter('momentFormat', function() {
+  return function(m, f) {
+    if(!m || !m._isAMomentObject){ return ''; }
+    return m.format( f );
+  };
+})
 .filter('momentHMA', function() {
   return function(m) {
     if(!m || !m._isAMomentObject){ return ''; }
