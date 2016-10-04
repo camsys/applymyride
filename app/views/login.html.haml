@@ -38,12 +38,6 @@
         .row{ng:{show: 'errors.dob' }}
           .alert.alert-danger{role:'alert'}
             Check the birthdate for errors
-        .row{ng: {show: "location == '/plan/login-guest'"}}
-          %h5 Need Help?
-          %ul
-            %li 1-800-PA-4RIDE
-            %li Text us at 1-800-PA4-RIDE
-            %li Reach out via email
             
         .row{ng: {hide: "location == '/plan/login-guest'"}, style: 'margin-top: 1em'}
           %a.btn-block{"ng-href" => "#/plan/where"}
@@ -58,12 +52,8 @@
               Next
             %a.btn.disabled.btn-next{href: "", ng: {show: 'disableNext'}}
               Next
-        .row{ng: {hide: "location == '/plan/login-guest'"}}
-          %h5 Need Help?
-          %ul
-            %li 1-800-PA-4RIDE
-            %li Text us at 1-800-PA4-RIDE
-            %li Reach out via email
+        .row.text-center{style:'margin: 30px 0px 10px 0px;'}
+          Need Help? Call 1-800-PA-4RIDE
 
     %div{ng: {show: "location == '/authenticateSharedRideId'"}}
       .row
