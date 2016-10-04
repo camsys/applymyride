@@ -451,21 +451,38 @@ img.official-logo {
   background: rgb(177,215,254);
 }
 
+
 .from-to-where input::-webkit-input-placeholder {
   color: black;
   opacity: 1;
+}
+.from-to-where input:focus::-webkit-input-placeholder {
+  color: black;
+  opacity: .4;
 }
 .from-to-where input:-moz-placeholder {
   color: black;
   opacity: 1;
 }
+.from-to-where input:focus:-moz-placeholder {
+  color: black;
+  opacity: .4;
+}
 .from-to-where input::-moz-placeholder {
   color: black;
   opacity: 1;
 }
+.from-to-where input:focus::-moz-placeholder {
+  color: black;
+  opacity: .4;
+}
 .from-to-where input:-ms-input-placeholder {
   color: black;
   opacity: 1;
+}
+.from-to-where input:focus:-ms-input-placeholder {
+  color: black;
+  opacity: .4;
 }
 
 .cs-two-week-date-picker{
