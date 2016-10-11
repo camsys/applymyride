@@ -8,13 +8,23 @@ app.directive('csTimeInput', function() {
         restrict: "E",
         templateUrl: "views/cs-time-input.html",
         link: function(scope, element, attrs){
-            scope.hour = '';
-            scope.minute = '';
-            scope.rideTime = {};
-            scope.isAM = true;
+            
+            if( scope.$parent.fromMoment.isAfter() ){
+                var fromMoment = scope.$parent.fromMoment;
+                scope.hour = fromMoment.format('h');
+                scope.minute = fromMoment.format('m');
+                scope.isAM = ('am' == fromMoment.format('a'));
+                scope.rideTime = { value: fromMoment.toDate() };
+                scope.inputFocused = true;
+            }else{
+                scope.hour = '';
+                scope.minute = '';
+                scope.rideTime = {};
+                scope.isAM = true;
+                scope.inputFocused = false;
+            }
             scope.isMobile = scope.$parent.isMobile;
             var lastVal = {hour: scope.hour, minute: scope.minute};
-            scope.inputFocused = !!scope.$parent.backToConfirm;
 
             //update the displayed time when from Moment updates
             scope.$parent.$watch('fromMoment', function( newStartTime ){
@@ -30,7 +40,6 @@ app.directive('csTimeInput', function() {
             });
             //mobile interface uses native time input
             //when that value updates, update the fromMoment
-            scope.rideTime = {};
             scope.$watch(function(){return scope.rideTime.value;}, function(n){
               if(scope.rideTime.value && scope.rideTime.value instanceof Date){
                 var fromTime = scope.$parent.fromMoment.toDate();
