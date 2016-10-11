@@ -81,6 +81,13 @@ app.directive('csTimeInput', function() {
                 return true;
             }
 
+            scope.blurMinute = function(){
+              //if scope.minute is blank, set to '00' and update the time
+              if(!scope.minute){
+                  scope.minute = '00';
+                  scope.updateTime('minute')
+              }
+            }
             scope.updateTime = function(updatingElement) {
                 var from, hour, minute;
                 //validate the time
