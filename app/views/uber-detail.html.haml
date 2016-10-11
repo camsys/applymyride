@@ -1,0 +1,53 @@
+#transit
+  .container
+    .row
+      .col-md-6.col-md-offset-3.col-xs-12
+        %h1
+          %strong
+            Uber
+      .col-md-8.col-md-offset-2.col-xs-12
+        .row
+          .col-md-8.col-md-offset-2.col-xs-12
+            .text-muted
+              {{uberItinerary.comment}}
+        .row
+          .col-md-8.col-md-offset-2.col-xs-12
+            %hr
+        .row
+          .col-md-8.col-md-offset-2.col-xs-12
+            %h3.text-muted{style:'display:inline-block'}
+              Estimated fare is:
+            %h3.text-center{style:'display:inline-block'}
+              {{uberItinerary.cost | roundUp | currency}} 
+              %span{'ng-show':'uberItinerary.returnItinerary'}
+                (Each Way)
+        .row{style:'padding:20px 0px;'}
+          .col-md-8.col-md-offset-2.col-xs-12
+            %div
+              %span{style:'padding-right:4px;'}
+                Going to:
+              %span
+                {{uberItinerary.destination.line1}} {{uberItinerary.destination.line2 | noCountry}}
+            %div
+              %span{style:'padding-right:4px;'}
+                From:
+              %span
+                {{uberItinerary.origin.line1}} {{uberItinerary.origin.line2 | noCountry}}
+        .row{style:'padding:20px 0px;'}
+          .col-md-8.col-md-offset-2.col-xs-12.text-center
+            %a.btn.btn-primary.btn-block{ng: {href: "{{uberItinerary.phone | telephoneLink }}", click: 'callService(uberItinerary.phone);'}}
+              Call {{uberItinerary.service_name}}
+        .row{style:'padding:20px 0px;'}
+          .col-md-8.col-md-offset-2.col-xs-12.text-center
+            Their phone number is {{uberItinerary.phone}}
+        .row{style: 'margin-top: 20px', ng: {hide: "savedItineraryView"}}
+          .col-md-8.col-md-offset-2.col-xs-12.unstuck-foot.btn-spacing
+            .pull-left
+              %a.btn{href: "", back: '', ng: {click: "back()"}}
+                Back
+            .pull-right
+              %a.btn.btn-primary{href: "", ng: {click: "saveUberTrip()", hide: "uberSaved"}}
+                Save this Uber ride
+              %a.btn.btn-primary{href: "", style:'background-color:red;', ng: {click: "cancelThisUberTrip()", show: "uberSaved"}}
+                Cancel this ride
+

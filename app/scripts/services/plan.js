@@ -22,10 +22,13 @@ angular.module('applyMyRideApp')
         delete this.transitCancelled;
         delete this.taxiSaved;
         delete this.taxiCancelled;
+        delete this.uberSaved;
+        delete this.uberCancelled;
         delete this.walkSaved;
         delete this.walkCancelled;
         delete this.selectedBusOption;
         delete this.selectedTaxiOption;
+        delete this.selectedUberOption;
         delete this.showBusRides;
       }
 
@@ -210,6 +213,7 @@ angular.module('applyMyRideApp')
         this.paratransitItineraries = [];
         this.guestParatransitItinerary = null;
         this.taxiItineraries = [];
+        this.uberItineraries = [];
         this.walkItineraries = [];
         this.tripId = this.searchResults.trip_id;
         var currencyFilter = $filter('currency');
@@ -282,6 +286,10 @@ angular.module('applyMyRideApp')
           if(itinerariesByModeOutbound.mode_taxi){
               this.taxiItineraries = itinerariesByModeOutbound.mode_taxi;
           }
+          
+          if(itinerariesByModeOutbound.mode_ride_hailing ){
+              this.uberItineraries = itinerariesByModeOutbound.mode_ride_hailing;
+          }
 
           if(itinerariesByModeOutbound.mode_walk){
               this.walkItineraries.push(itinerariesByModeOutbound.mode_walk[0]);
@@ -318,6 +326,20 @@ angular.module('applyMyRideApp')
             });
           }else{
             this.taxiItineraries = [];
+          }
+          
+          if(itinerariesByModeReturn.mode_ride_hailing){
+            //merge the return itineraries into the other itineraries, matching the service_ids
+            itinerariesByModeReturn.mode_ride_hailing.forEach(function(returnItinerary){
+              //find the matching itinerary, merge into that
+              that.uberItineraries.forEach(function(departItinerary){
+                if(departItinerary.service_id == returnItinerary.service_id){
+                  departItinerary.returnItinerary = returnItinerary;
+                }
+              })
+            });
+          }else{
+            this.uberItineraries = [];
           }
 
           if(itinerariesByModeReturn.mode_walk){

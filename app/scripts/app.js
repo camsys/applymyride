@@ -88,6 +88,10 @@ angular.module('applyMyRideApp', [
         templateUrl: 'views/taxi-detail.html',
         controller: 'TaxiController'
       })
+      .when('/uber', {
+        templateUrl: 'views/uber-detail.html',
+        controller: 'UberController'
+      })
       .when('/itinerary', {
         templateUrl: 'views/itinerary.html',
         controller: 'ItineraryController'

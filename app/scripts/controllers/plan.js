@@ -120,6 +120,14 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
     }
     $location.path('/taxi');
   }
+  $scope.goViewUber = function(uberOption){
+    if(uberOption > -1){
+      planService.selectedUberOption = uberOption;
+    }else{
+      planService.selectedUberOption = planService.selectedUberOption || 0;
+    }
+    $location.path('/uber');
+  }
   $scope.goPlanLogin = function(){
     $location.path('/plan/login-guest');
   }
@@ -1482,6 +1490,8 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
       $scope.transitInfos = planService.transitInfos;
       $scope.taxiItineraries = planService.taxiItineraries;
       $scope.hasTaxi = $scope.taxiItineraries.length > 0;
+      $scope.uberItineraries = planService.uberItineraries;
+      $scope.hasUber = $scope.uberItineraries.length > 0;
       $scope.noresults = false;
       $scope.request = planService.confirmRequest;
       $scope.showBusRides = planService.showBusRides;
