@@ -1,6 +1,8 @@
 .container
   #itinerary{ng: {show: 'mode==="mode_taxi"'}}
     .row{ng:{include:"'views/taxi-detail.html'"}}
+  #itinerary{ng: {show: 'mode==="mode_ride_hailing"'}}
+    .row{ng:{include:"'views/uber-detail.html'"}}
   #itinerary{ng: {show: 'mode==="mode_transit"'}}
     .row{style: 'margin-bottom: 1em;'}
       .col-xs-12.col-md-8.col-md-offset-2.no-padding

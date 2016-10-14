@@ -8,8 +8,9 @@
       .col-md-8.col-md-offset-2.col-xs-12
         .row
           .col-md-8.col-md-offset-2.col-xs-12
-            .text-muted
-              {{uberItinerary.comment}}
+            Uber is a ride sharing service. Drivers are people from the community who use their own cars to provide rides to others.
+          .col-md-8.col-md-offset-2.col-xs-12
+            To request an Uber ride, you'll need to download the App.
         .row
           .col-md-8.col-md-offset-2.col-xs-12
             %hr
@@ -35,11 +36,8 @@
                 {{uberItinerary.origin.line1}} {{uberItinerary.origin.line2 | noCountry}}
         .row{style:'padding:20px 0px;'}
           .col-md-8.col-md-offset-2.col-xs-12.text-center
-            %a.btn.btn-primary.btn-block{ng: {href: "{{uberItinerary.phone | telephoneLink }}", click: 'callService(uberItinerary.phone);'}}
-              Call {{uberItinerary.service_name}}
-        .row{style:'padding:20px 0px;'}
-          .col-md-8.col-md-offset-2.col-xs-12.text-center
-            Their phone number is {{uberItinerary.phone}}
+            %a.btn.btn-primary.btn-block{ng: {href: "https://m.uber.com/ul?&client_id=Qu7RDPXW65A6G-JqqIgnbsfYglolUTIm&action=setPickup&pickup[latitude]={{uberItinerary.start_location.geometry.location.lat}}&pickup[longitude]={{uberItinerary.start_location.geometry.location.lng}}&pickup[formatted_address]={{uberItinerary.start_location.formatted_address | encodeURI}}&dropoff[latitude]={{uberItinerary.end_location.geometry.location.lat}}&dropoff[longitude]={{uberItinerary.end_location.geometry.location.lng}}&dropoff[formatted_address]={{uberItinerary.end_location.formatted_address | encodeURI}}&product_id={{uberItinerary.product_id}}"}}
+              Open Uber App
         .row{style: 'margin-top: 20px', ng: {hide: "savedItineraryView"}}
           .col-md-8.col-md-offset-2.col-xs-12.unstuck-foot.btn-spacing
             .pull-left

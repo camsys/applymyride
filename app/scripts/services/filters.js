@@ -70,6 +70,9 @@ angular.module('applyMyRideApp')
     return m.format( f );
   };
 })
+.filter('encodeURI', function() {
+    return window.encodeURIComponent;
+})
 .filter('momentHMA', function() {
   return function(m) {
     if(!m || !m._isAMomentObject){ return ''; }
