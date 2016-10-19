@@ -103,7 +103,7 @@
           %a.btn{href: "", back: '', ng: {click: "back()"}}
             Back
         .pull-right
-          %a.btn{ng:{show:'hasTransit || hasWalk', click: 'toggleShowBusRides();'}}
+          %a.btn{ng:{show:'hasTransit || hasWalk || hasUber || hasTaxi', click: 'toggleShowBusRides();'}}
             View more ride options
 
 
