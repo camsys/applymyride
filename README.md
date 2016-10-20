@@ -9,6 +9,8 @@ although the app doesn't use ruby, build process requires haml rubygem installed
 
 + npm install grunt-contrib-compass --save-dev
 
++ npm install grunt@~0.4 --save-dev
+
 + npm install
 
 + bower install
