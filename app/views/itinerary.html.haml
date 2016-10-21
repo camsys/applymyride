@@ -299,7 +299,7 @@
 
   .row.unstuck-foot.btn-spacing{style: 'margin-top: 1em;'}
     .col-md-8.col-md-offset-2.col-xs-12
-      %a.btn.btn-primary.btn-block{href: "", ng: {click: 'toggleEmail($event);'}}
+      %a.btn.btn-primary.btn-block{href: "", ng: {click: 'toggleEmail($event);', hide: 'tripCancelled'}}
         Email this ride
       %a.btn.btn-primary.btn-block{href: "", style:'background-color:red;',ng: {click: 'cancelTrip()', hide:'tripCancelled'}}
         Cancel this ride
