@@ -39,15 +39,39 @@
             %a.btn.btn-primary.btn-block{ng: {href: "https://m.uber.com/ul?&client_id=Qu7RDPXW65A6G-JqqIgnbsfYglolUTIm&action=setPickup&pickup[latitude]={{uberItinerary.start_location.geometry.location.lat}}&pickup[longitude]={{uberItinerary.start_location.geometry.location.lng}}&pickup[formatted_address]={{uberItinerary.start_location.formatted_address | encodeURI}}&dropoff[latitude]={{uberItinerary.end_location.geometry.location.lat}}&dropoff[longitude]={{uberItinerary.end_location.geometry.location.lng}}&dropoff[formatted_address]={{uberItinerary.end_location.formatted_address | encodeURI}}&product_id={{uberItinerary.product_id}}"}}
               Open Uber App
         .row{style: 'margin-top: 20px', ng: {hide: "savedItineraryView"}}
-          .col-md-8.col-md-offset-2.col-xs-12.unstuck-foot.btn-spacing
-            .pull-left
-              %a.btn{href: "", back: '', ng: {click: "back()", hide:'uberSaved || uberCancelled'}}
-                Back
-              %a.btn{href: "", ng: {click: "logout()", show:'loggedIn && (uberSaved || uberCancelled)'}}
-                Logout
-            .pull-right
-              %a.btn.btn-primary{href: "", ng: {click: "saveUberTrip()", hide: "!loggedIn || uberSaved"}}
-                Save this Uber ride
-              %a.btn.btn-primary{href: "", style:'background-color:red;', ng: {click: "cancelThisUberTrip()", show: "uberSaved"}}
+          %div{style: 'margin-top: 1em', ng: {show: 'showEmail'}}
+            .row
+              .col-xs-12.col-sm-8.col-sm-offset-2.text-left
+                Email your ride details to a friend (or yourself).
+            .row
+              .col-xs-12.col-sm-8.col-sm-offset-2.text-left.text-muted
+                Use a comma to separate multiple addresses
+            .row
+              .col-xs-8.col-sm-6.col-sm-offset-2{'style' => 'line-height: 2em; padding-right: 0px;'}
+                %input.form-control{style: 'font-size: .9em; border-top-right-radius:0px; border-bottom-right-radius:0px;', ng: {model: 'emailString'}}
+              .col-xs-4.col-sm-2{'style' => 'line-height: 2em; padding-left: 0px;'}
+                %a.btn.btn-success.btn-block{style: 'padding-left: 0px; padding-right: 0px;min-width: 20px; border-top-left-radius:0px; border-bottom-left-radius:0px;', ng: {click: 'sendEmail($event)'}}
+                  %i.fa.fa-envelope-o{style:'color: white;'}
+                    %span
+                      Send
+            .row{ng: {show: 'invalidEmail == true'}}
+              .col-xs-12.col-sm-8.col-sm-offset-2.text-left{style: 'color: red'}
+                Please enter only valid email addresses
+
+          .btn-spacing
+            .col-md-8.col-md-offset-2.col-xs-12
+              %a.btn.btn-primary.btn-block{href: "", ng: {click: 'toggleEmail($event);', show: 'uberSaved && !uberCancelled'}}
+                Email this ride        
+            .col-md-8.col-md-offset-2.col-xs-12{ng: {show: 'loggedIn' } }  
+              %a.btn.btn-primary.btn-block{href: "", style:'background-color:red;', ng: {click: "cancelThisUberTrip()", show: "uberSaved"}}
                 Cancel this ride
+            .col-md-8.col-md-offset-2.col-xs-12.unstuck-foot
+              .pull-left
+                %a.btn{href: "", back: '', ng: {click: "back()", hide:'uberSaved || uberCancelled'}}
+                  Back
+                %a.btn{href: "", ng: {click: "logout()", show:'loggedIn && (uberSaved || uberCancelled)'}}
+                  Logout
+              .pull-right
+                %a.btn.btn-primary{href: "", ng: {click: "saveUberTrip()", hide: "!loggedIn || uberSaved"}}
+                  Save this Uber ride
 
