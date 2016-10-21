@@ -46,7 +46,7 @@
               %a.btn{href: "", back: '', ng: {click: "back()"}}
                 Back
             .pull-right
-              %a.btn.btn-primary{href: "", ng: {click: "saveTaxiTrip()", hide: "taxiSaved"}}
+              %a.btn.btn-primary{href: "", ng: {click: "saveTaxiTrip()", hide: "!loggedIn || taxiSaved"}}
                 Save this taxi ride
               %a.btn.btn-primary{href: "", style:'background-color:red;', ng: {click: "cancelThisTaxiTrip()", show: "taxiSaved"}}
                 Cancel this ride
