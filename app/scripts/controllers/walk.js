@@ -7,6 +7,7 @@ angular.module('applyMyRideApp')
         $scope.location = $location.path();
         $scope.disableNext = true;
 
+      $scope.loggedIn = !!planService.email;
       $scope.showEmail = false;
 
       $scope.reset = function() {

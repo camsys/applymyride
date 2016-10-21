@@ -43,8 +43,10 @@
         .row{style: 'margin-top: 20px', ng: {hide: "savedItineraryView"}}
           .col-md-8.col-md-offset-2.col-xs-12.unstuck-foot.btn-spacing
             .pull-left
-              %a.btn{href: "", back: '', ng: {click: "back()"}}
+              %a.btn{href: "", back: '', ng: {click: "back()", hide:'taxiSaved || taxiCancelled'}}
                 Back
+              %a.btn{href: "", ng: {click: "logout()", show:'loggedIn && (taxiSaved || taxiCancelled)'}}
+                Logout
             .pull-right
               %a.btn.btn-primary{href: "", ng: {click: "saveTaxiTrip()", hide: "!loggedIn || taxiSaved"}}
                 Save this taxi ride

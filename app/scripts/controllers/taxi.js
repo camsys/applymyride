@@ -4,6 +4,7 @@ angular.module('applyMyRideApp')
   .controller('TaxiController', ['$scope','$routeParams', '$location', 'flash', 'planService', 'ipCookie', 'usSpinnerService', '$http',
     function ($scope, $routeParams, $location, flash, planService, ipCookie, usSpinnerService, $http) {
 
+      $scope.loggedIn = !!planService.email;
       //pull the selected taxi out from selected taxi option, or send to plan again
       if( planService.selectedTaxiOption >= 0 ){
         $scope.taxiItinerary = planService.taxiItineraries[ (planService.selectedTaxiOption||0) ];

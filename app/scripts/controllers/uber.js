@@ -4,6 +4,7 @@ angular.module('applyMyRideApp')
   .controller('UberController', ['$scope','$routeParams', '$location', 'flash', 'planService', 'ipCookie', 'usSpinnerService', '$http',
     function ($scope, $routeParams, $location, flash, planService, ipCookie, usSpinnerService, $http) {
 
+      $scope.loggedIn = !!planService.email;
       //pull the selected Uber out from selected uber option, or send to plan again
       if( planService.selectedUberOption >= 0 ){
         $scope.uberItinerary = planService.uberItineraries[ (planService.selectedUberOption||0) ];

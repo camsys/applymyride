@@ -41,8 +41,10 @@
         .row{style: 'margin-top: 20px', ng: {hide: "savedItineraryView"}}
           .col-md-8.col-md-offset-2.col-xs-12.unstuck-foot.btn-spacing
             .pull-left
-              %a.btn{href: "", back: '', ng: {click: "back()"}}
+              %a.btn{href: "", back: '', ng: {click: "back()", hide:'uberSaved || uberCancelled'}}
                 Back
+              %a.btn{href: "", ng: {click: "logout()", show:'loggedIn && (uberSaved || uberCancelled)'}}
+                Logout
             .pull-right
               %a.btn.btn-primary{href: "", ng: {click: "saveUberTrip()", hide: "!loggedIn || uberSaved"}}
                 Save this Uber ride

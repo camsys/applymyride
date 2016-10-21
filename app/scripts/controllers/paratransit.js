@@ -8,6 +8,7 @@ angular.module('applyMyRideApp')
       $scope.disableNext = true;
       $scope.tripid = $routeParams.tripid;
       $scope.showDiv = {};
+      $scope.loggedIn = !!planService.email;
 
       $scope.reset = function() {
         planService.reset();

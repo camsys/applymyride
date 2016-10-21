@@ -23,6 +23,7 @@ angular.module('applyMyRideApp')
       $scope.transitCancelled = planService.transitCancelled || false;
       $scope.walkSaved = planService.walkSaved || false;
       $scope.walkCancelled = planService.walkCancelled || false;
+      $scope.loggedIn = !!planService.email;
 
 
       $scope.reset = function() {
