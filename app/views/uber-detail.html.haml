@@ -44,7 +44,7 @@
               %a.btn{href: "", back: '', ng: {click: "back()"}}
                 Back
             .pull-right
-              %a.btn.btn-primary{href: "", ng: {click: "saveUberTrip()", hide: "uberSaved"}}
+              %a.btn.btn-primary{href: "", ng: {click: "saveUberTrip()", hide: "!loggedIn || uberSaved"}}
                 Save this Uber ride
               %a.btn.btn-primary{href: "", style:'background-color:red;', ng: {click: "cancelThisUberTrip()", show: "uberSaved"}}
                 Cancel this ride
