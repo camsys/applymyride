@@ -74,4 +74,6 @@
               .pull-right
                 %a.btn.btn-primary{href: "", ng: {click: "saveUberTrip()", hide: "!loggedIn || uberSaved"}}
                   Save this Uber ride
+                %a.btn.btn-link{ng: {show:"loggedIn && uberSaved", click: "reset()"}}
+                  Book another ride
 
