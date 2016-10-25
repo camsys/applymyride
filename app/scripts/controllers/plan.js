@@ -30,7 +30,7 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
   $scope.placeIds = [];
   $scope.showConfirmLocationMap = false;
   $scope.mapOptions = {
-    zoom: 17,
+    zoom: 11,
     mapTypeId: google.maps.MapTypeId.ROADMAP
   };
   //disable some map options if mobile user
@@ -999,6 +999,10 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
             });
             map.setCenter(bounds.getCenter());
             map.fitBounds(bounds);
+            var markerCount = $scope.toFromMarkers
+            if( Object.keys($scope.toFromMarkers).length === 1 ){
+              map.setZoom(15);
+            }
             if(toFrom == 'from'){
               planService.fromDetails = result;
               planService.from = place;
