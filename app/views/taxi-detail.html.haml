@@ -19,7 +19,7 @@
               Estimated fare is:
             %h3.text-center{style:'display:inline-block'}
               {{taxiItinerary.cost | roundUp | currency}} 
-              %span{'ng-show':'taxiItinerary.returnItinerary'}
+              %span{'ng-show'=>'taxiItinerary.returnItinerary'}
                 (Each Way)
         .row{style:'padding:20px 0px;'}
           .col-md-8.col-md-offset-2.col-xs-12
