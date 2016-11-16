@@ -1,7 +1,7 @@
 Applymyride
 ================
 
-although the app doesn't use ruby, build process requires haml rubygem installed.
+although the app doesn't use ruby, build process requires haml rubygem installed. (works with ruby version 2.2.2)
 
 You may need to install node.js first.
 
