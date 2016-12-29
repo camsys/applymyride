@@ -54,13 +54,13 @@
                                         'on-type'=> 'getToLocations',
                                         'on-focus'=> 'focusTo',
                                         'on-blur'=> 'mapTo',
-                                        'on-select' => 'selectTo', 
+                                        'on-select' => 'selectTo',
                                         'autocomplete-required' => 'true',
                                         ng: { model: 'to'} }
-            
+
             .alert.alert-danger{role:'alert', ng:{show:'errors.noResultsto'}}
               Address is not recognized.  Try entering it another way.
-            
+
             .alert.alert-danger{role:'alert', ng:{show:'errors.rangeErrorto'}}
               The location you selected is outside the service area.
 
@@ -172,7 +172,7 @@
 
   .confirm{ng: {show: 'step==="confirm"', include:"'views/plan-confirm.html'"}}
   .confirm{ng: {show: 'step==="transit_details"', include:"'views/plan-transit-details.html'"}}
-  
+
   .list_itineraries{ng: {show: 'step==="list_itineraries" && noresults == true'}}
     .col-xs-12.col-sm-8.col-sm-offset-2.no-padding
       %h3
@@ -308,7 +308,7 @@
             .row{style: "border: 0px; margin: 0px; padding: 0px"}
               .col-xs-12
                 %p.text-left.text-muted{style: "border: 0px; margin: 0px; padding: 0px"}
-                  Distance: {{itinerary.walkDistanceDesc}} miles
+                  Distance: {{itinerary.walkDistanceDesc}}
               .col-xs-12
                 %p.text-left.text-muted{style: "border: 0px; margin: 0px; padding: 0px"}
                   Travel time: {{itinerary.walkTimeDesc}}
@@ -347,7 +347,7 @@
           %a.btn{href: "", back: '', ng: {click: "back()"}}
             Back
 
-    
+
   .depart-time{ng: {show: 'step==="assistant"'}}
     .col-md-8.col-md-offset-2.col-xs-12
       .row
@@ -448,7 +448,7 @@
               Sign in
 
   .discounts{ng: {show: 'step==="my_rides"', include: "'views/plan-myrides.html'"}}
-    
+
   .depart-time{ng: {show: 'step==="rebook"'}}
     %form
       .row.text-center
@@ -532,4 +532,3 @@
           %a.btn{href: "", back: '', ng: {click: "back()"}}
             %span{ng: {include: "'views/button-chevron-left.html'"}}
             Back
-

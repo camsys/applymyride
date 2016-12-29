@@ -89,7 +89,7 @@ angular.module('applyMyRideApp')
         var that = this;
         return $http.get(urlPrefix + urlPath, this.getHeaders()).
           success(function(data) {
-    
+
             var sortable = [],
                 tripDivs = [],
                 trips = [];
@@ -103,21 +103,21 @@ angular.module('applyMyRideApp')
             angular.forEach(data.trips, function(trip, index) {
 
               if(trip[0].departure && trip[0].status && (trip[0].status != "canceled" || tripType == 'past')){
-                
+
                 var i = 0;
                 var trip_with_itineraries = {};
-                
+
                 trip_with_itineraries.itineraries = [];
-                
+
                 while(typeof trip[i] !== 'undefined'){
 
                   // Check for first itinerary to set Trip values
-                  if(i == 0){ 
+                  if(i == 0){
                     trip_with_itineraries.mode = trip[i].mode;
                     trip_with_itineraries.startDesc = that.getDateDescription(trip[i].wait_start || trip[i].departure);
                     trip_with_itineraries.startDesc += " at " + moment(trip[i].wait_start || trip[i].departure).format('h:mm a');
 
-                    
+
 
                     var origin_addresses = trip[0].origin.address_components;
                     for(var n = 0; n < origin_addresses.length; n++){
@@ -125,7 +125,7 @@ angular.module('applyMyRideApp')
                       if(address_types.length > 0 && address_types.indexOf("street_address") != -1){
                         trip_with_itineraries.from_place = origin_addresses[n].short_name;
                         break;
-                      }  
+                      }
                     }
 
                     if(!trip_with_itineraries.from_place && trip[0].origin.name){
@@ -150,15 +150,15 @@ angular.module('applyMyRideApp')
                   trip_with_itineraries.itineraries.push(trip[i]);
                   i++;
                 }
-                
+
                 trip_with_itineraries.roundTrip = typeof trip[1] !== 'undefined' ? true : false;
-                
+
                 sortable.push([trip_with_itineraries, trip[0].departure])
               }
             });
 
             sortable.sort(function(a,b){ return a[1].localeCompare(b[1]); })
-            
+
             angular.forEach(sortable, function(trip_and_departure_array, index) {
               trips.push(trip_and_departure_array[0]);
             });
@@ -276,7 +276,7 @@ angular.module('applyMyRideApp')
                 fare_info.paratransitStartTime = lowestPricedParatransitTrip.startTime;
               }
           }
-        
+
 
           if(itinerariesByModeOutbound.mode_transit){
               this.transitItineraries.push(itinerariesByModeOutbound.mode_transit);
@@ -286,7 +286,7 @@ angular.module('applyMyRideApp')
           if(itinerariesByModeOutbound.mode_taxi){
               this.taxiItineraries = itinerariesByModeOutbound.mode_taxi;
           }
-          
+
           if(itinerariesByModeOutbound.mode_ride_hailing ){
               this.uberItineraries = itinerariesByModeOutbound.mode_ride_hailing;
           }
@@ -327,7 +327,7 @@ angular.module('applyMyRideApp')
           }else{
             this.taxiItineraries = [];
           }
-          
+
           if(itinerariesByModeReturn.mode_ride_hailing){
             //merge the return itineraries into the other itineraries, matching the service_ids
             itinerariesByModeReturn.mode_ride_hailing.forEach(function(returnItinerary){
@@ -352,7 +352,7 @@ angular.module('applyMyRideApp')
         this.transitInfos = [];
         if(itinerariesByModeOutbound && itinerariesByModeOutbound.mode_transit){
           this.transitInfos.push(this.prepareTransitOptionsPage(itinerariesBySegmentThenMode[0].mode_transit));
-          
+
           //check for return, reseet transitInfos if this is round trip and no return
           if(itinerariesByModeReturn && itinerariesByModeReturn.mode_transit){
             //for round trips, show the fare as the sum of the two recommended fares
@@ -500,6 +500,17 @@ angular.module('applyMyRideApp')
         }
       }
 
+      // Returns a string describing the distance in appropriate units (miles or feet)
+      this.getDistanceDescription = function(distance_in_meters) {
+        var distance_in_miles = distance_in_meters * 0.000621371;
+        if(distance_in_miles <= 0.189394) {
+          var distance_in_feet = Math.ceil(distance_in_miles * 5280);
+          return distance_in_feet + " feet";
+        } else {
+          return distance_in_miles.toFixed(2) + " miles";
+        }
+      }
+
       this.setItineraryDescriptions = function(itinerary){
         var startTime = itinerary.wait_start || itinerary.departure || itinerary.start_time;
         itinerary.startDesc = this.getDateDescription(startTime);
@@ -511,8 +522,8 @@ angular.module('applyMyRideApp')
         itinerary.dayAndDateDesc = moment(startTime).format('dddd, MMMM Do');
         itinerary.startTimeDesc = moment(itinerary.wait_start || itinerary.departure).format('h:mm a');
         itinerary.endTimeDesc = itinerary.arrival ? moment(itinerary.arrival).format('h:mm a') : "Arrive";
-        itinerary.distanceDesc = ( itinerary.distance * 0.000621371 ).toFixed(2);
-        itinerary.walkDistanceDesc = ( itinerary.walk_distance * 0.000621371 ).toFixed(2);
+        itinerary.distanceDesc = this.getDistanceDescription(itinerary.distance);
+        itinerary.walkDistanceDesc = this.getDistanceDescription(itinerary.walk_distance);
       }
 
       this.setItineraryLegDescriptions = function(itinerary){
@@ -523,12 +534,12 @@ angular.module('applyMyRideApp')
         itinerary.endTimeDesc = moment(itinerary.endTime).format('h:mm a');
         itinerary.endDesc = itinerary.endDateDesc + " at " + itinerary.endTimeDesc;
         itinerary.travelTime = humanizeDuration(itinerary.duration * 1000,  { units: ["hours", "minutes"], round: true });
-        itinerary.distanceDesc = ( itinerary.distance * 0.000621371 ).toFixed(2);
+        itinerary.distanceDesc = this.getDistanceDescription(itinerary.distance);
         itinerary.dayAndDateDesc = moment(itinerary.startTime).format('dddd, MMMM Do');
       }
 
       this.setWalkingDescriptions = function(step){
-        step.distanceDesc = ( step.distance * 0.000621371 ).toFixed(2);
+        step.distanceDesc = this.getDistanceDescription(step.distance);
         step.arrow = 'straight';
 
         if(step.relativeDirection.indexOf('RIGHT') > -1){
@@ -899,4 +910,3 @@ angular.module('applyMyRideApp')
 
     return LocationSearch;
   });
-

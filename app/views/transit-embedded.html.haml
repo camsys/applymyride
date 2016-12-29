@@ -4,7 +4,7 @@
       .row
         .col-xs-10.text-left
           %h4
-            {{itinerary.travelTime}} 
+            {{itinerary.travelTime}}
         .col-xs-2.text-right
           %h4{style: 'font-weight:bold; float:right; vertical-align: bottom;'} {{itinerary.cost | currency | free}}
   .row
@@ -29,7 +29,7 @@
                   %h5.text-muted "{{leg.route}} - {{leg.headsign}}"
               .row
                 .leg-info.col-xs-12
-                  %h5.text-muted {{leg.distanceDesc}} Miles ({{leg.travelTime}})
+                  %h5.text-muted {{leg.distanceDesc}} ({{leg.travelTime}})
             .walk-info{ng: {show: 'leg.mode == "WALK"'}}
               .row
                 .leg-info.col-xs-12.leg-header
@@ -45,7 +45,7 @@
                       %i.fa.fa-chevron-up.fa-lg{style: 'color: grey', ng: {show: 'showDiv[$index] == true'}}
                     .col-height-master
                       %h5.text-muted Walk
-                      %h5.text-muted {{leg.distanceDesc}} Miles ({{leg.travelTime}})
+                      %h5.text-muted {{leg.distanceDesc}} ({{leg.travelTime}})
               .animate-show.blah{ng: {show: 'showDiv[$index]'}}
                 .row{ng: {repeat: 'step in leg.steps'}}
                   .leg-info.col-xs-12{style: 'padding-left: 50px;'}
@@ -56,9 +56,9 @@
                     .row.text-muted
                       .leg-info.col-xs-12
                         .walk-step{ng: {show: '!$last'}}
-                          {{step.distanceDesc}} miles
+                          {{step.distanceDesc}}
                         %div{ng: {show: '$last'}}
-                          {{step.distanceDesc}} miles
+                          {{step.distanceDesc}}
       .border-between.timeline{style: 'margin-bottom: 1em;'}
         .row.even-height-row
           .col-xs-2.right-side
@@ -71,4 +71,3 @@
                 .leg-info.col-xs-12.leg-header
                   %h5.text-muted Arrive at
                   %h4 {{itinerary.end_location.name}}
-

@@ -11,7 +11,7 @@
             %h1
               %span
                 Bus Rides
-              %span{style:'font-size: 22px;',ng: {hide: 'tripCancelled'}} 
+              %span{style:'font-size: 22px;',ng: {hide: 'tripCancelled'}}
                 (saved)
               %span{style: 'color: red; font-size: 22px;', ng: {show: 'tripCancelled'}}
                 (cancelled)
@@ -66,7 +66,7 @@
                       %h5.text-muted "{{leg.route}} - {{leg.headsign}}"
                   .row
                     .leg-info.col-xs-12
-                      %h5.text-muted {{leg.distanceDesc}} Miles ({{leg.travelTime}})
+                      %h5.text-muted {{leg.distanceDesc}} ({{leg.travelTime}})
                 .walk-info{ng: {show: 'leg.mode == "WALK"'}}
                   .row
                     .leg-info.col-xs-12.leg-header
@@ -82,7 +82,7 @@
                         %i.fa.fa-chevron-up.fa-lg{style: 'color: grey', ng: {show: 'showDiv[$index] == true'}}
                       .col-height-master
                         %h5.text-muted Walk
-                        %h5.text-muted {{leg.distanceDesc}} Miles ({{leg.travelTime}})
+                        %h5.text-muted {{leg.distanceDesc}} ({{leg.travelTime}})
                   .animate-show.blah{ng: {show: 'showDiv[$index]'}}
                     .row{ng: {repeat: 'step in leg.steps'}}
                       .leg-info.col-xs-12{style: 'padding-left: 50px;'}
@@ -93,9 +93,9 @@
                         .row.text-muted
                           .leg-info.col-xs-12
                             .walk-step{ng: {show: '!$last'}}
-                              {{step.distanceDesc}} miles
+                              {{step.distanceDesc}}
                             %div{ng: {show: '$last'}}
-                              {{step.distanceDesc}} miles
+                              {{step.distanceDesc}}
           .border-between.timeline{style: 'margin-bottom: 1em;'}
             .row.even-height-row
               .col-xs-2.right-side
@@ -117,7 +117,7 @@
             %h1
               %span
                 Shared Ride
-              %span{style:'font-size: 22px;', ng: {hide: 'tripCancelled'}} 
+              %span{style:'font-size: 22px;', ng: {hide: 'tripCancelled'}}
                 (booked)
               %span{style: 'color: red; font-size: 22px;', ng: {show: 'tripCancelled'}}
                 (cancelled)
@@ -129,7 +129,7 @@
               %span.tab1
                 (Outbound)
             %h5.text-muted{ng: {show: 'paratransitItineraries.length > 1'}}
-              %span 
+              %span
                 CONFIRMATION
               %span.tab1
                 %strong &num;{{paratransitItineraries[1].booking_confirmation}}
@@ -207,7 +207,7 @@
             %h1
               %span
                 Walk Details
-              %span{style:'font-size: 22px;', ng: {hide: 'tripCancelled'}} 
+              %span{style:'font-size: 22px;', ng: {hide: 'tripCancelled'}}
                 (saved)
               %span{style: 'color: red; font-size: 22px;', ng: {show: 'tripCancelled'}}
                 (cancelled)
@@ -251,7 +251,7 @@
                 .row
                   .leg-info.col-xs-12
                     %h4.text-muted Walk
-                    %h4.text-muted {{leg.distanceDesc}} Miles ({{leg.travelTime}})
+                    %h4.text-muted {{leg.distanceDesc}} ({{leg.travelTime}})
                 .animate-show.blah{ng: {hide: 'showDiv[$index]'}}
                   .row{ng: {repeat: 'step in leg.steps'}}
                     .leg-info.col-xs-12{style: 'padding-left: 50px;'}
@@ -263,9 +263,9 @@
                       .row.text-muted
                         .leg-info.col-xs-12
                           .walk-step{ng: {show: '!$last'}}
-                            {{step.distanceDesc}} miles
+                            {{step.distanceDesc}}
                           %div{ng: {show: '$last'}}
-                            {{step.distanceDesc}} miles
+                            {{step.distanceDesc}}
         .border-between.timeline{style: 'margin-bottom: 1em;'}
           .row.even-height-row
             .col-xs-2.right-side

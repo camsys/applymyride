@@ -80,7 +80,7 @@
               .row
                 .leg-info.col-xs-12
                   %h4.text-muted Walk
-                  %h4.text-muted {{leg.distanceDesc}} Miles ({{leg.travelTime}})
+                  %h4.text-muted {{leg.distanceDesc}} ({{leg.travelTime}})
               .animate-show.blah{ng: {hide: 'showDiv[$index]'}}
                 .row{ng: {repeat: 'step in leg.steps'}}
                   .leg-info.col-xs-12{style: 'padding-left: 50px;'}
@@ -92,9 +92,9 @@
                     .row.text-muted
                       .leg-info.col-xs-12
                         .walk-step{ng: {show: '!$last'}}
-                          {{step.distanceDesc}} miles
+                          {{step.distanceDesc}}
                         %div{ng: {show: '$last'}}
-                          {{step.distanceDesc}} miles
+                          {{step.distanceDesc}}
       .border-between.timeline{style: 'margin-bottom: 1em;'}
         .row.even-height-row
           .col-xs-2.right-side
