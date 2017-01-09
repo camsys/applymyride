@@ -5,7 +5,7 @@ angular.module('applyMyRideApp')
     function ($scope, $location, flash, planService, $http, ipCookie, $window, localStorageService) {
       //skip initializing this controller if we're not on the page
       if( ['/','/loginError','/plan/login-guest'].indexOf( $location.path() ) == -1){ return; }
-      
+
       //this should probably be in a service if there's anything more
       $http({
         method: 'GET',
@@ -29,6 +29,11 @@ angular.module('applyMyRideApp')
         $scope.dob = {month:dob.month()+1, day:dob.date(), year:dob.year()};
       }
       $scope.errors = {dob:false};
+      $scope.showLookupIdForm = false;
+      $scope.toggleLookupIdForm = function() {
+        $scope.showLookupIdForm = !$scope.showLookupIdForm;
+        console.log("Toggling Lookup ID Form", $scope.showLookupIdForm);
+      };
 
       var authentication_token = ipCookie('authentication_token');
       var email = ipCookie('email');
@@ -61,11 +66,11 @@ angular.module('applyMyRideApp')
         }else{
           $scope.dateofbirth = false;
         }
-        $scope.disableNext = !($scope.loginform.month.$valid 
-                          && $scope.loginform.day.$valid 
-                          && $scope.loginform.year.$valid 
-                          && $scope.dateofbirth 
-                          && $scope.sharedRideId 
+        $scope.disableNext = !($scope.loginform.month.$valid
+                          && $scope.loginform.day.$valid
+                          && $scope.loginform.year.$valid
+                          && $scope.dateofbirth
+                          && $scope.sharedRideId
                           && $scope.county
                           && true);
       }
@@ -180,5 +185,18 @@ angular.module('applyMyRideApp')
           })
         });
       }
+
+      // Look Up User Ecolane ID
+      $scope.lookupId = function() {
+        console.log("Looking Up User ID...", $scope);
+
+        var promise = $http.get('//'+APIHOST+'/api/v1/users/lookup?booking_agency=ecolane&last_name=' + $scope.lastName + '&ssn_last_4=' + $scope.ssnLast4 + '&county=' + $scope.county);
+        promise.error(function(result) {
+          console.log("ERROR: ", result);
+        });
+        promise.then(function(result) {
+          console.log("SUCCESS! ", result);
+        });
+      };
     }
   ]);

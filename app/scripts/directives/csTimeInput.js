@@ -8,7 +8,7 @@ app.directive('csTimeInput', function() {
         restrict: "E",
         templateUrl: "views/cs-time-input.html",
         link: function(scope, element, attrs){
-            
+
             if( scope.$parent.fromMoment.isAfter() ){
                 var fromMoment = scope.$parent.fromMoment;
                 scope.hour = fromMoment.format('h');
@@ -72,7 +72,7 @@ app.directive('csTimeInput', function() {
             function validMinute(){
                 var minute = parseInt(scope.minute);
                 //ok if minute is '', or between 0 and 59. reset if out of range
-                if(scope.minute == ''){ 
+                if(scope.minute == ''){
                     return false;
                 }
                 if(minute < 0 || minute > 59 || isNaN(minute) ){
@@ -151,7 +151,7 @@ app.directive('csTimeInput', function() {
                     }, 1);
                 }
             }
-            
+
             element[0].addEventListener("keydown", function(e)
             {
                 var lvIndex = e.srcElement.classList.contains('cs-hour') ? 'hour' : 'minute';
