@@ -1,27 +1,27 @@
 'use strict';
 
 angular.module('applyMyRideApp')
-  .controller('LoginController', ['$scope', '$location', 'flash', 'planService', '$http', 'ipCookie', '$window', 'localStorageService',
-    function ($scope, $location, flash, planService, $http, ipCookie, $window, localStorageService) {
+  .controller('LoginController', ['$scope', '$location', 'flash', 'planService', '$http', 'ipCookie', '$window', 'localStorageService', 'util',
+    function ($scope, $location, flash, planService, $http, ipCookie, $window, localStorageService, util) {
       //skip initializing this controller if we're not on the page
       if( ['/','/loginError','/plan/login-guest'].indexOf( $location.path() ) == -1){ return; }
 
-      //this should probably be in a service if there's anything more
-      $http({
-        method: 'GET',
-        url: '//'+ APIHOST + '/api/v1/services/ids_humanized'
-      }).then(function successCallback(response) {
-        //update the counties
-        $scope.counties = response.data.service_ids;
-      }, function errorCallback(response) {
-            console.error(response);
-      });
+      util.getCounties(
+        function(response) {
+          var counties = response.data.service_ids;
+          $scope.counties = counties;
+          localStorageService.set("counties", counties);
+        }
+      );
+
+
+
       $scope.location = $location.path();
       $scope.rememberme = true;
       $scope.disableNext = true;
-      $scope.counties = [];
-      $scope.sharedRideId = ipCookie('sharedRideId');
-      $scope.county = ipCookie('county');
+      $scope.counties = localStorageService.get("counties") || [];
+      $scope.sharedRideId = localStorageService.get("customer_number") || ipCookie('sharedRideId');
+      $scope.county = localStorageService.get("county") || ipCookie('county');
       $scope.dateofbirth = sessionStorage.getItem('dateofbirth') || false;
       $scope.dob = {month:'', day:'', year:''};
       if($scope.dateofbirth){
@@ -29,11 +29,6 @@ angular.module('applyMyRideApp')
         $scope.dob = {month:dob.month()+1, day:dob.date(), year:dob.year()};
       }
       $scope.errors = {dob:false};
-      $scope.showLookupIdForm = false;
-      $scope.toggleLookupIdForm = function() {
-        $scope.showLookupIdForm = !$scope.showLookupIdForm;
-        console.log("Toggling Lookup ID Form", $scope.showLookupIdForm);
-      };
 
       var authentication_token = ipCookie('authentication_token');
       var email = ipCookie('email');
@@ -123,6 +118,10 @@ angular.module('applyMyRideApp')
           checkNextValid();
           return;
       });
+      $scope.$watch('sharedRideId', function(n) {
+        $('#LoginTemplate input.shared-ride-id').focus();
+        return;
+      });
 
       $scope.authenticate = function(){
         planService.dateofbirth = $scope.dateofbirth;
@@ -186,17 +185,5 @@ angular.module('applyMyRideApp')
         });
       }
 
-      // Look Up User Ecolane ID
-      $scope.lookupId = function() {
-        console.log("Looking Up User ID...", $scope);
-
-        var promise = $http.get('//'+APIHOST+'/api/v1/users/lookup?booking_agency=ecolane&last_name=' + $scope.lastName + '&ssn_last_4=' + $scope.ssnLast4 + '&county=' + $scope.county);
-        promise.error(function(result) {
-          console.log("ERROR: ", result);
-        });
-        promise.then(function(result) {
-          console.log("SUCCESS! ", result);
-        });
-      };
     }
   ]);

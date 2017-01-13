@@ -40,6 +40,14 @@ angular.module('applyMyRideApp', [
         templateUrl: 'views/login.html',
         controller: 'LoginController'
       })
+      .when('/lookupIdForm', {
+        templateUrl: 'views/lookup-id.html',
+        controller: 'LookupIdController'
+      })
+      .when('/lookupError', {
+        templateUrl: 'views/lookup-id.html',
+        controller: 'LookupIdController'
+      })
       .when('/plan', {
         templateUrl: 'views/plan.html',
         controller: 'PlanController'

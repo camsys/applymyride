@@ -1,29 +1,38 @@
-.row
-  %h1{style: 'font-weight:600;'} Look Up Your Shared Ride ID
-.row{style: 'margin-top: 2em'}
-  %h3 Enter your last name
-.row
-  %input.form-control{style: 'font-size: .9em; width: 50%;',
-                      placeholder: '00000',
-                      ng: { model: 'lastName',
-                            required: 'true'}}
-.row{style: 'margin-top: 1em'}
-  %h3 Your county
-.row
-  %select.btn-lg{style: 'width: 100%', ng: {model: 'county', options: 'county for county in counties', enter: 'next()'}}
-    %option{value: '', disabled: '', selected: ''}
-      Select your county
-.row
-  %h3 Last 4 digits of your SSN
-.row
-  %input.form-control{style: 'font-size: .9em; width: 50%;',
-                      placeholder: '00000',
-                      ng: { model: 'ssnLast4',
-                            required: 'true'}}
-.row{style: 'margin-top: 1em'}
-  .pull-left
-    %a.btn-block{href: "", ng: {click: 'toggleLookupIdForm()'}}
-      Cancel
-  .pull-right
-    %a.btn.btn-primary.btn-next{href: "", ng: {click: 'lookupId()'}}
-      Find my ID
+.lookup-id-form{ng:{controller:'LookupIdController'}}
+  %form#LookupIdTemplate.container{name:'lookupIdForm'}
+    .row
+      .col-md-4.col-md-offset-4.col-sm-6.col-sm-offset-3.col-sm-6.col-sm-offset-3.col-xs-12
+        .row{ng: {show: "location == '/lookupIdForm'"}}
+          %h1{style: 'font-weight:600;'} Look Up Your Shared Ride ID
+        .row{ng: {show: "location == '/lookupError'"}, style:'background-color:#FFFFEB;'}
+          %h1{style: 'font-weight:600;'} Sorry! We could not find a match.
+          Please try again or call 555-555-5555 for help. In the meantime, you can use this site as a guest.
+        .row{style: 'margin-top: 2em'}
+          %h3 Enter your last name
+        .row
+          %input.form-control{style: 'font-size: .9em; width: 50%;',
+                              placeholder: 'enter your last name',
+                              ng: { model: 'lastName',
+                                    required: 'true'}}
+        .row{style: 'margin-top: 1em'}
+          %h3 Your county
+        .row
+          %select.btn-lg{style: 'width: 100%', ng: {model: 'county', options: 'county for county in counties', enter: 'next()'}}
+            %option{value: '', disabled: '', selected: ''}
+              Select your county
+        .row{style: 'margin-top: 1em'}
+          %h3 Last 4 digits of your SSN
+        .row
+          %input.form-control{style: 'font-size: .9em; width: 50%;',
+                              placeholder: 'XXXX',
+                              ng: { model: 'ssnLast4',
+                                    required: 'true'}}
+        .row{style: 'margin-top: 1em'}
+          %a.btn-block{href: '#/'}
+            Cancel
+        .row{style: 'margin-top: 1em'}
+          .pull-right
+            %a.btn.btn-primary.btn-next{href: "", ng: {click: 'lookupId()'}}
+              Find my ID
+        .row.text-center{style:'margin: 30px 0px 10px 0px;'}
+          Need Help? Call 1-800-PA-4RIDE
