@@ -6,7 +6,8 @@
           %h1{style: 'font-weight:600;'} Look Up Your Shared Ride ID
         .row{ng: {show: "location == '/lookupError'"}, style:'background-color:#FFFFEB;'}
           %h1{style: 'font-weight:600;'} Sorry! We could not find a match.
-          Please try again or call 555-555-5555 for help. In the meantime, you can use this site as a guest.
+          %span Please try again or call 1-844-PA-4RIDE for help. In the meantime,
+          %a{href: "#/plan/where"}you can use this site as a guest.
         .row{style: 'margin-top: 2em'}
           %h3 Enter your last name
         .row
@@ -35,4 +36,4 @@
             %a.btn.btn-primary.btn-next{href: "", ng: {click: 'lookupId()'}}
               Find my ID
         .row.text-center{style:'margin: 30px 0px 10px 0px;'}
-          Need Help? Call 1-800-PA-4RIDE
+          Need Help? Call 1-844-PA-4RIDE
