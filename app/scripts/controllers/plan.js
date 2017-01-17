@@ -253,11 +253,11 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
               bookingCancellation.itinerary_id = itinerary.id;
             }
             else if(itinerary.booking_confirmation){
-              bookingCancellation.booking_confirmation = itinerary.booking_confirmation;     
+              bookingCancellation.booking_confirmation = itinerary.booking_confirmation;
             }
             cancel.bookingcancellation_request.push(bookingCancellation);
           });
-          
+
           var cancelPromise = planService.cancelTrip($http, cancel)
           cancelPromise.error(function(data) {
             bootbox.alert("An error occurred, your trip was not cancelled.  Please call 1-844-PA4-RIDE for more information.");
@@ -316,7 +316,7 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
         bootbox.alert('Your email was sent');
       }else{
         $scope.invalidEmail = true;
-      } 
+      }
     }
   }
 
@@ -429,7 +429,7 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
         }else{
           planService.numberOfCompanions = 0;
         }
-        
+
         $location.path('/plan/instructions_for_driver');
         break;
       case 'instructions_for_driver':
@@ -500,7 +500,7 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
       selectedItineraries.push({"trip_id":tripId, "itinerary_id":planService.transitInfos[1][ $scope.selectedBusOption[1] ].id});
     }
     var selectedItineraries = {"select_itineraries": selectedItineraries};
-    
+
     var promise = planService.selectItineraries($http, selectedItineraries);
     promise.then(function(result) {
       ipCookie('rideCount', ipCookie('rideCount') + 1);
@@ -519,7 +519,7 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
       selectedItineraries.push({"trip_id":tripId, "itinerary_id":planService.walkItineraries[1].id});
     }
     var selectedItineraries = {"select_itineraries": selectedItineraries};
-    
+
     var promise = planService.selectItineraries($http, selectedItineraries);
     promise.then(function(result) {
       ipCookie('rideCount', ipCookie('rideCount') + 1);
@@ -602,7 +602,7 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
       var config = planService.getHeaders();
       $scope.suggestions = LocationSearch.getLocations(typed, config, planService.email != null);
       $scope.suggestions.then(function(data){
- 
+
         $scope.placeLabels = [];
         $scope.placeIds = [];
         $scope.placeAddresses = [];
@@ -692,7 +692,7 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
   }
 
   $scope.whereShowNext = function(){
-    if( !$scope.toFromMarkers.from || !$scope.toFromMarkers.to){ 
+    if( !$scope.toFromMarkers.from || !$scope.toFromMarkers.to){
       return false;
     }
     return (!!$scope.toFromMarkers.from.map && !!$scope.toFromMarkers.to.map);
@@ -761,7 +761,7 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
       $scope.checkServiceArea($scope.poi, $scope.poi.formatted_address, toFrom);
     }
     else{
-      
+
       var placeId = $scope.placeIds[selectedIndex];
       if(placeId) {
         placeIdPromise.resolve(placeId);
@@ -805,7 +805,7 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
               placeIdPromise.resolve(placeId);
             }
           });
-      }  
+      }
 
       placeIdPromise.promise.then(function(placeId) {
         var placesService = new google.maps.places.PlacesService($scope.whereToMap);
@@ -878,7 +878,7 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
 
               if(result.place_id){
                 placeIdPromise.resolve();
-              } 
+              }
               else{
                 $scope.stopSpin();
               }
@@ -939,7 +939,7 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
           }
         }
         $scope.checkServiceArea(result, place, toFrom, updateInput);
-      } 
+      }
       else {
         alert('Geocode was not successful for the following reason: ' + status);
         $scope.stopSpin();
@@ -1079,7 +1079,7 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
     planService.to = '';
     planService.from = '';
   };
- 
+
   $scope.specifySharedRideCompanion = function(hasCompanion) {
     if(hasCompanion == 'true'){
       $location.path("/plan/assistant");
@@ -1119,7 +1119,7 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
 
   $scope.submitRebookedTrip = function(){
     $scope.message = null;
-    
+
     var fromDate = $scope.fromDate;
     if(!fromDate){
       $scope.message = 'Please enter a departure date.';
@@ -1232,10 +1232,10 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
     }
     splitTime = day.serviceHours.open.split(':');
     $scope.serviceOpen = moment().set({hour:splitTime[0], minute:splitTime[1]}).format('h:mm a');
-    
+
     splitTime = day.serviceHours.close.split(':');
     $scope.serviceClose = moment().set({hour:splitTime[0], minute:splitTime[1]}).format('h:mm a');
-    
+
     $scope.fromMoment = day.moment.clone();
     //set the hour/minute to start times
     $scope.fromMoment.hour( hour ).minute( minute ).seconds(0);
@@ -1246,11 +1246,11 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
   $scope.whenShowNext = function(){ return false; };
 
   function _setupHowLongOptions(){
-    var from, endOfDay, beginOfDay, splitTime, diff, name, fromDiff,
+    var from, endOfDay, beginOfDay, splitTime, minDiff, hrsDiff, name, fromDiff,
       selectedServiceHours, selectedIndex;
     //can only setup howlong if fromMoment is within service hours
     if(!$scope.fromMoment || !$scope.serviceHours || !$scope.serviceHours[ $scope.fromMoment.format('YYYY-MM-DD') ] ){ return; }
-    selectedServiceHours = $scope.serviceHours[ $scope.fromMoment.format('YYYY-MM-DD') ];    
+    selectedServiceHours = $scope.serviceHours[ $scope.fromMoment.format('YYYY-MM-DD') ];
 
     $scope.howLongOptions = [{
         minutes: 0,
@@ -1260,7 +1260,7 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
     from = $scope.fromMoment.clone();
     splitTime = selectedServiceHours.close.split(':');
     endOfDay = from.clone().hour(splitTime[0]).minute(splitTime[1]).seconds(0);
-    
+
     splitTime = selectedServiceHours.open.split(':');
     beginOfDay = from.clone().hour(splitTime[0]).minute(splitTime[1]).seconds(0);
     if(from.isBefore(beginOfDay)){
@@ -1269,23 +1269,25 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
     }else{
       fromDiff = from.clone();
     }
+    from.add(45, 'm'); // Start at one hour after arrival.
     while( from.isBefore(endOfDay) ){
       name ='';
       from.add(15, 'm');
-      diff = from.diff(fromDiff, 'minutes');
-      if(diff < 60){
-        name = ''+ diff +' Minutes';
-      }else if( 0 === (diff % 60)){
+      minDiff = from.diff(fromDiff, 'minutes');
+      hrsDiff = from.diff(fromDiff, 'hours');
+      if(minDiff < 60){
+        name = ''+ minDiff +' Minutes';
+      }else if( 0 === (minDiff % 60)){
         //no minutes
-        name = '' + from.diff(fromDiff, 'hours') + ' Hours';
+        name = '' + hrsDiff + (hrsDiff === 1 ? ' Hour' : ' Hours');
       }else{
-        name = '' + from.diff(fromDiff, 'hours') + ' Hours ' + (diff % 60) + ' Minutes';
+        name = '' + hrsDiff + (hrsDiff === 1 ? ' Hour ' : ' Hours ') + (minDiff % 60) + ' Minutes';
       }
       $scope.howLongOptions.push({
-        minutes: diff,
+        minutes: minDiff,
         name: name
       });
-      if($scope.howLong && diff == $scope.howLong.minutes){
+      if($scope.howLong && minDiff == $scope.howLong.minutes){
         selectedIndex = $scope.howLongOptions.length-1;
       }
     }
@@ -1300,13 +1302,13 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
       today = moment(),
       date = today.clone().day(0),
       openCount = 0,
-      openDays = Object.keys($scope.serviceHours).length, 
+      openDays = Object.keys($scope.serviceHours).length,
       maxDays = openDays *10,
       newWeek,
       totalCount = 0;
     var makeWeek = function(startDate)
     {
-      var i, week = [], 
+      var i, week = [],
           somethingOpen = false,
           loopDay, isOpen, sameMonth;
       //set the loopDate to sunday
@@ -1350,7 +1352,7 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
         //setup weeks array
         months.push( {name: currentMonth, weeks: [] } );
 
-        //if the 1st of the month isn't on 0 (Sunday), need to back up date and make the 1st week again.  
+        //if the 1st of the month isn't on 0 (Sunday), need to back up date and make the 1st week again.
         if(0 !== date.clone().date(1).day() ){
           newWeek = makeWeek( date.clone().date(1) );
           months[ months.length-1 ].weeks.push( newWeek );
@@ -1428,7 +1430,7 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
           _setupTwoWeekSelector();
           $scope.whenShowNext = function(){
             //true to show next
-            var fromOK, returnOK, 
+            var fromOK, returnOK,
             _checkServiceHours = function(day, okNull)
             {
               var index, splitTime, startMoment, endMoment;
@@ -1480,7 +1482,7 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
     case 'confirm' :
       $scope.transitResult = planService.transitResult;
       $scope.paratransitResult = planService.paratransitResult;
-      
+
       planService.prepareTripSearchResultsPage();
       $scope.fare_info = planService.fare_info;
       $scope.paratransitItineraries = planService.paratransitItineraries;
@@ -1716,10 +1718,10 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
       planService.reset();
       var pastRides = planService.getPastRides($http, $scope, ipCookie);
       var futureRides = planService.getFutureRides($http, $scope, ipCookie);
-      
+
       $scope.hideButtonBar = true;
 
-      
+
       futureRides.then(function() {
         var navbar = $routeParams.navbar;
         if(navbar){
@@ -1941,4 +1943,3 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
 
 }
 ]);
-
