@@ -836,7 +836,6 @@ angular.module('applyMyRideApp')
       this.placeIds = [];
       this.results = [];
       var that = this;
-
       autocompleteService.getPlacePredictions(
         {
           input: text,
@@ -845,14 +844,16 @@ angular.module('applyMyRideApp')
                     new google.maps.LatLng(39.719799, -80.519895),
                     new google.maps.LatLng(42.273734, -74.689502)
                   ),
-          componentRestrictions: { state: 'PA' }
+          strictBounds: true
         }, function(list, status) {
           angular.forEach(list, function(value, index) {
             var formatted_address;
             //verify the location has a street address
-            if(that.results.length < 10 && ((value.types.indexOf('route') > -1) || (value.types.indexOf('establishment') > -1) || (value.types.indexOf('street_address') > -1))){
-              //var terms = [];
-              //angular.forEach(value.terms, function(term, index) { terms.push(term.value); }, terms);
+            if( (that.results.length < 10) &&
+                value.terms.some((t) => t.value === "PA") && // Filter out anything not in PA
+                ( (value.types.indexOf('route') > -1) ||
+                  (value.types.indexOf('establishment') > -1) ||
+                  (value.types.indexOf('street_address') > -1) ) ) {
               formatted_address = countryFilter( value.description );
               that.results.push(formatted_address);
               that.placeIds.push(value.place_id);
