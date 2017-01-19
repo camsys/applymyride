@@ -780,10 +780,11 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
           {
             input: address,
             bounds: new google.maps.LatLngBounds(
-                      //PA 7 county region
-                      new google.maps.LatLng(39.719635, -79.061985),
-                      new google.maps.LatLng(40.730426, -76.153193)
-                    )
+                      // ALL PA
+                      new google.maps.LatLng(39.719799, -80.519895),
+                      new google.maps.LatLng(42.273734, -74.689502)
+                    ),
+            componentRestrictions: { state: 'PA' }
           }, function(list, status)
           {
             if(status == "ZERO_RESULTS" || list == null){
