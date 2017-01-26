@@ -352,7 +352,7 @@ $kioskfonts: "Avenir Next", "Helvetica Neue", Helvetica, sans-serif;
   }
 }
 
-#walk, #transit, #transit-confirm, #itinerary, #paratransit { 
+#walk, #transit, #transit-confirm, #itinerary, #paratransit {
   h1,
   h2,
   h3,
@@ -396,7 +396,7 @@ a.login-btns .btn-branded {
 img.official-logo {
   height: 3em;
   margin-top: 1em;
-  
+
   &:nth-child(2) {
     margin: 1em 1em 0 1em;
   }
@@ -569,23 +569,25 @@ button{
   pointer-events:none;
 }
 
+#LoginTemplate, #LookupIdTemplate {
 
+  .dob .invalid {
+   border:1px solid red;
+   background-color:pink;
+  }
 
+  .dob {
+    display:inline-block;
+  }
 
-#LoginTemplate .dob .invalid{
-  border:1px solid red;
-  background-color:pink;
-}
-#LoginTemplate .dob{
-  display:inline-block;
-}
-#LoginTemplate .dob.month,
-#LoginTemplate .dob.day{
-  width: 3em;
-  padding:6px;
-}
-#LoginTemplate .dob.year{
-  width: 6em;
+  .dob.month, .dob.day {
+    width: 3em;
+    padding:6px;
+  }
+
+  .dob.year {
+    width: 6em;
+  }
 }
 
 i.cs-map-marker{
@@ -655,7 +657,7 @@ ul.bus-nav-tabs.nav-tabs {
   li.active {
     border-bottom: unset;
     outline-width: 0;
-    
+
     .btn{
       color:black;
       background-color: #f5f5f5;
@@ -669,5 +671,3 @@ ul.bus-nav-tabs.nav-tabs {
 .tab2 { margin-left: 3.0em; }
 .tab3 { margin-left: 4.5em; }
 .tab4 { margin-left: 6.0em; }
-
-

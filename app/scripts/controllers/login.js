@@ -23,10 +23,10 @@ angular.module('applyMyRideApp')
       $scope.sharedRideId = localStorageService.get("customer_number") || ipCookie('sharedRideId');
       $scope.county = localStorageService.get("county") || ipCookie('county');
       $scope.dateofbirth = sessionStorage.getItem('dateofbirth') || false;
-      $scope.dob = {month:'', day:'', year:''};
+      $scope.dob = localStorageService.get("dob") || {month:'', day:'', year:''};
       if($scope.dateofbirth){
         var dob = moment($scope.dateofbirth);
-        $scope.dob = {month:dob.month()+1, day:dob.date(), year:dob.year()};
+        $scope.dob = $scope.dob || {month:dob.month()+1, day:dob.date(), year:dob.year()};
       }
       $scope.errors = {dob:false};
 
