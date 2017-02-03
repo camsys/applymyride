@@ -63,7 +63,8 @@
               <ul class="nav navbar-nav navbar-right">
                 <li ng-show="email">
                   <a class="navbar-icon" href="#/plan/my_rides?navbar=true" style="margin-top: .5em;">
-                    My Rides <div class="badge alert-success">{{rideCount}}</div>
+                    My Rides
+                    <div class="badge alert-success" ng-class="{'live-trip': liveTrip}">{{rideCount}}</div>
                   </a>
                 </li>
                 <li ng-show="email">

@@ -136,19 +136,6 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
     $location.path('/plan/walk/'+departId+'/'+returnId);
   }
 
-  $scope.toggleMyRideButtonBar = function(type, index) {
-    $scope.showEmail = false;
-    var selectionIndex = index;
-    angular.forEach(Object.keys($scope.tripDivs), function(key, index) {
-      var divs = $scope.tripDivs[key];
-      angular.forEach(divs, function(div, index) {
-        if(key != type || index != selectionIndex)
-        divs[index] = false;
-      });
-    });
-    $scope.tripDivs[type][index] = !$scope.tripDivs[type][index];
-  };
-
   $scope.updateReturnTime = function(o){
     if(!o){return;}
     var destinationDuration = parseInt(o.minutes);
@@ -223,7 +210,6 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
 
   $scope.cancelTrip = function($event, tab, index) {
     $event.stopPropagation();
-    $scope.tripDivs[tab][index] = false;
     var trip = $scope.trips[tab][index];
     var mode = trip.mode;
     var message = "Are you sure you want to drop this ride?";
@@ -264,7 +250,6 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
           });
           cancelPromise.success(function(data) {
             bootbox.alert(successMessage);
-            $scope.tripDivs[tab].splice(index, 1);
             $scope.trips[tab].splice(index, 1);
             ipCookie('rideCount', ipCookie('rideCount') - 1);
           })
@@ -1102,21 +1087,6 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
     $scope.step = 'from';
   };
 
-  $scope.toggleRidePanelVisible = function(type, divIndex) {
-    $scope.showEmail = false;
-    var tripDivs = $scope.tripDivs;
-    angular.forEach(Object.keys(tripDivs), function(key, index) {
-      var tripTab = tripDivs[key];
-      angular.forEach(tripTab, function(trip, index) {
-        if(key == type && index == divIndex){
-          tripTab[index] = !tripTab[index];
-        }else{
-          tripTab[index] = false;
-        }
-      });
-    });
-  };
-
   $scope.submitRebookedTrip = function(){
     $scope.message = null;
 
@@ -1724,6 +1694,11 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
         var unpackedTrips = planService.unpackTrips(data.data.trips, 'future');
         planService.populateScopeWithTripsData($scope, unpackedTrips, 'future');
         ipCookie('rideCount', unpackedTrips.length);
+
+        var liveTrip = planService.findLiveTrip($scope.trips.future);
+        $scope.liveTrip = liveTrip;
+        ipCookie('liveTrip', liveTrip || null); // Set cookie to store liveTrip or lack thereof
+        console.log('$scope.liveTrip: ', $scope.liveTrip);
 
         var navbar = $routeParams.navbar;
         if(navbar){

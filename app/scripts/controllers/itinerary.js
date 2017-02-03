@@ -39,8 +39,9 @@ angular.module('applyMyRideApp')
       }else if($scope.trip.mode == 'mode_walk'){
         $scope.walkItineraries = $scope.trip.itineraries;
       }else if($scope.trip.mode == 'mode_paratransit'){
-        
+
         $scope.paratransitItineraries = $scope.trip.itineraries;
+        $scope.liveTrip = ipCookie('liveTrip');
 
         var firstItinerary = $scope.trip.itineraries[0];
 
@@ -79,11 +80,11 @@ angular.module('applyMyRideApp')
       $scope.cancelTrip = function(){
 
         $scope.trip = planService.selectedTrip;
-        
+
 
         var message = "Are you sure you want to cancel this ride?";
         var successMessage = 'Your trip has been cancelled.';
-        
+
         bootbox.confirm({
           message: message,
           buttons: {
@@ -105,11 +106,11 @@ angular.module('applyMyRideApp')
                   bookingCancellation.itinerary_id = itinerary.id;
                 }
                 else if($scope.trip.mode == 'mode_paratransit' && itinerary.booking_confirmation){
-                  bookingCancellation.booking_confirmation = itinerary.booking_confirmation;     
+                  bookingCancellation.booking_confirmation = itinerary.booking_confirmation;
                 }
                 cancel.bookingcancellation_request.push(bookingCancellation);
               });
-              
+
               var cancelPromise = planService.cancelTrip($http, cancel)
               cancelPromise.error(function(data) {
                 bootbox.alert("An error occurred, your trip was not cancelled.  Please call 1-844-PA4-RIDE for more information.");
@@ -158,7 +159,7 @@ angular.module('applyMyRideApp')
                 if(index == 0){
                   emailRequest.booking_confirmations = [];
                 }
-                emailRequest.booking_confirmations.push(itinerary.booking_confirmation);            
+                emailRequest.booking_confirmations.push(itinerary.booking_confirmation);
               }
               else if(index == 0){
                 emailRequest.trip_id = itinerary.trip_id.toString();
@@ -172,7 +173,7 @@ angular.module('applyMyRideApp')
             bootbox.alert('Your email was sent');
           }else{
             $scope.invalidEmail = true;
-          } 
+          }
         }
       }
 
