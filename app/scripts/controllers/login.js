@@ -144,8 +144,14 @@ angular.module('applyMyRideApp')
           planService.email = result.data.email;
           planService.first_name = result.data.first_name;
           planService.last_name = result.data.last_name;
-          planService.getPastRides($http, $scope, ipCookie);
-          planService.getFutureRides($http, $scope, ipCookie);
+          planService.getPastRides($http).then(function(data) {
+            planService.populateScopeWithTripsData($scope, planService.unpackTrips(data.data.trips, 'past'), 'past');
+          });
+          planService.getFutureRides($http).then(function(data) {
+            var unpackedTrips = planService.unpackTrips(data.data.trips, 'future');
+            planService.populateScopeWithTripsData($scope, unpackedTrips, 'future');
+            ipCookie('rideCount', unpackedTrips.length);
+          });
           var lastDest, lastOrigin;
           if(result.data.last_destination && typeof '' !== typeof result.data.last_destination && result.data.last_destination.formatted_address){
             lastDest = result.data.last_destination.formatted_address;

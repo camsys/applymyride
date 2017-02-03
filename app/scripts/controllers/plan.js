@@ -1716,19 +1716,23 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
       break;
     case 'my_rides':
       planService.reset();
-      var pastRides = planService.getPastRides($http, $scope, ipCookie);
-      var futureRides = planService.getFutureRides($http, $scope, ipCookie);
+      // var pastRides = planService.getPastRides($http, (d) => console.log(d));
+      planService.getPastRides($http).then(function(data) {
+        planService.populateScopeWithTripsData($scope, planService.unpackTrips(data.data.trips, 'past'), 'past');
+      });
+      planService.getFutureRides($http).then(function(data) {
+        var unpackedTrips = planService.unpackTrips(data.data.trips, 'future');
+        planService.populateScopeWithTripsData($scope, unpackedTrips, 'future');
+        ipCookie('rideCount', unpackedTrips.length);
 
-      $scope.hideButtonBar = true;
-
-
-      futureRides.then(function() {
         var navbar = $routeParams.navbar;
         if(navbar){
           $scope.tabFuture = true;
           delete $scope.tabPast;
         }
       });
+
+      $scope.hideButtonBar = true;
       $window.visited = true;
 
       break;
