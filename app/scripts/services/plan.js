@@ -73,107 +73,96 @@ angular.module('applyMyRideApp')
         return re.test(email);
       }
 
-      this.getPastRides = function($http, $scope, ipCookie) {
-        var tripType = 'past',
-            urlPath = 'api/v1/trips/past_trips';
-        return this.getRidesByType($http, $scope, ipCookie, tripType, urlPath);
+      this.getPastRides = function($http) {
+        return this.getRidesByType($http, 'api/v1/trips/past_trips');
       }
 
-      this.getFutureRides = function($http, $scope, ipCookie) {
-        var tripType = 'future',
-            urlPath = 'api/v1/trips/future_trips';
-        return this.getRidesByType($http, $scope, ipCookie, tripType, urlPath);
+      this.getFutureRides = function($http) {
+        return this.getRidesByType($http, 'api/v1/trips/future_trips');
       }
 
-      this.getRidesByType = function($http, $scope, ipCookie, tripType, urlPath) {
+      // Make API call to get past or future trips
+      this.getRidesByType = function($http, urlPath) {
+        return $http.get(urlPrefix + urlPath, this.getHeaders());
+      }
+
+      // Takes trips data and unpacks/processes them into an array of trip objects
+      this.unpackTrips = function(tripsData, tripType) {
         var that = this;
-        return $http.get(urlPrefix + urlPath, this.getHeaders()).
-          success(function(data) {
+        var sortable = [],
+            trips = [];
+        angular.forEach(tripsData, function(trip, index) {
+          if(trip[0].departure && trip[0].status && (trip[0].status != "canceled" || tripType == 'past')){
+            var trip_with_itineraries = that.addItinerariesToTrip(trip);
+            sortable.push([trip_with_itineraries, trip[0].departure])
+          }
+        });
 
-            var sortable = [],
-                tripDivs = [],
-                trips = [];
+        sortable.sort(function(a,b){ return a[1].localeCompare(b[1]); })
 
-            if(!$scope.trips)
-              $scope.trips = {};
+        angular.forEach(sortable, function(trip_and_departure_array, index) {
+          trips.push(trip_and_departure_array[0]);
+        });
 
-            if(!$scope.tripDivs)
-              $scope.tripDivs = {};
+        return trips;
+      }
 
-            angular.forEach(data.trips, function(trip, index) {
+      // Adds itineraries to trip object
+      this.addItinerariesToTrip = function(trip) {
+        var i = 0;
+        var trip_with_itineraries = {};
+        var that = this;
 
-              if(trip[0].departure && trip[0].status && (trip[0].status != "canceled" || tripType == 'past')){
+        trip_with_itineraries.itineraries = [];
 
-                var i = 0;
-                var trip_with_itineraries = {};
+        while(typeof trip[i] !== 'undefined'){
 
-                trip_with_itineraries.itineraries = [];
+          // Check for first itinerary to set Trip values
+          if(i == 0){
+            trip_with_itineraries.mode = trip[i].mode;
+            trip_with_itineraries.startDesc = that.getDateDescription(trip[i].wait_start || trip[i].departure);
+            trip_with_itineraries.startDesc += " at " + moment(trip[i].wait_start || trip[i].departure).format('h:mm a');
 
-                while(typeof trip[i] !== 'undefined'){
-
-                  // Check for first itinerary to set Trip values
-                  if(i == 0){
-                    trip_with_itineraries.mode = trip[i].mode;
-                    trip_with_itineraries.startDesc = that.getDateDescription(trip[i].wait_start || trip[i].departure);
-                    trip_with_itineraries.startDesc += " at " + moment(trip[i].wait_start || trip[i].departure).format('h:mm a');
-
-
-
-                    var origin_addresses = trip[0].origin.address_components;
-                    for(var n = 0; n < origin_addresses.length; n++){
-                      var address_types = origin_addresses[n].types ;
-                      if(address_types.length > 0 && address_types.indexOf("street_address") != -1){
-                        trip_with_itineraries.from_place = origin_addresses[n].short_name;
-                        break;
-                      }
-                    }
-
-                    if(!trip_with_itineraries.from_place && trip[0].origin.name){
-                      trip_with_itineraries.from_place = trip[0].origin.name;
-                    }
-
-                    var destination_addresses = trip[0].destination.address_components;
-                    for(var j = 0; j < destination_addresses.length; j++){
-                      var address_types = destination_addresses[j].types ;
-                      if(address_types.length > 0 && address_types.indexOf("street_address") != -1){
-                        trip_with_itineraries.to_place = destination_addresses[j].short_name;
-                        break;
-                      }
-                    }
-
-                    if(!trip_with_itineraries.to_place && trip[0].destination.name){
-                      trip_with_itineraries.to_place = trip[0].destination.name;
-                    }
-
-                  }
-
-                  trip_with_itineraries.itineraries.push(trip[i]);
-                  i++;
-                }
-
-                trip_with_itineraries.roundTrip = typeof trip[1] !== 'undefined' ? true : false;
-
-                sortable.push([trip_with_itineraries, trip[0].departure])
+            var origin_addresses = trip[0].origin.address_components;
+            for(var n = 0; n < origin_addresses.length; n++){
+              var address_types = origin_addresses[n].types ;
+              if(address_types.length > 0 && address_types.indexOf("street_address") != -1){
+                trip_with_itineraries.from_place = origin_addresses[n].short_name;
+                break;
               }
-            });
-
-            sortable.sort(function(a,b){ return a[1].localeCompare(b[1]); })
-
-            angular.forEach(sortable, function(trip_and_departure_array, index) {
-              trips.push(trip_and_departure_array[0]);
-            });
-
-            if(tripType == 'future'){
-              $scope.trips.future = trips;
-              $scope.tripDivs.future = tripDivs;
-              ipCookie('rideCount', trips.length);
-            }
-            else {
-              $scope.trips.past = trips;
-              $scope.tripDivs.past = tripDivs;
             }
 
-          });
+            if(!trip_with_itineraries.from_place && trip[0].origin.name){
+              trip_with_itineraries.from_place = trip[0].origin.name;
+            }
+
+            var destination_addresses = trip[0].destination.address_components;
+            for(var j = 0; j < destination_addresses.length; j++){
+              var address_types = destination_addresses[j].types ;
+              if(address_types.length > 0 && address_types.indexOf("street_address") != -1){
+                trip_with_itineraries.to_place = destination_addresses[j].short_name;
+                break;
+              }
+            }
+
+            if(!trip_with_itineraries.to_place && trip[0].destination.name){
+              trip_with_itineraries.to_place = trip[0].destination.name;
+            }
+
+          }
+
+          trip_with_itineraries.itineraries.push(trip[i]);
+          i++;
+        }
+
+        trip_with_itineraries.roundTrip = typeof trip[1] !== 'undefined' ? true : false;
+
+        return trip_with_itineraries;
+      }
+
+      this.populateScopeWithTripsData = function($scope, trips, tripType) {
+        $scope.trips = $scope.trips || {};
+        $scope.trips[tripType] = trips;
       }
 
       this.prepareConfirmationPage = function($scope) {
