@@ -795,6 +795,24 @@ angular.module('applyMyRideApp')
         });
       }
 
+      // returns eta of trip based on estimated pickup time
+      this.tripEta = function(trip) {
+        var eta = Date.parse(trip.itineraries[0].estimated_pickup_time);
+        if(isNaN(eta)) {return false;}
+        return $filter('minutes')(Math.floor(moment.duration(eta - Date.now()).asMinutes()));
+      }
+
+      // Updates Live Trip info in the necessary places
+      this.updateLiveTrip = function(trip, ipCookie) {
+        var that = this;
+        if(trip) {
+          that.selectedTrip = trip; // Find Live Trip and Select it
+          trip.isLive = true;  // Set the liveTrip value in the appropriate trip
+          trip.eta = that.tripEta(trip); // Update Estimated Arrival Time
+        }
+        if(ipCookie) {ipCookie('liveTrip', trip || null);} // Set cookie to store liveTrip or lack thereof
+      }
+
     }
   ]
 );
