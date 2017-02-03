@@ -46,6 +46,7 @@ angular.module('applyMyRideApp')
           that.$scope.walkingSpeed = planService.walkingSpeed;
         }
         $scope.rideCount = ipCookie('rideCount');
+        $scope.liveTrip = ipCookie('liveTrip');
         return true;
       };
 

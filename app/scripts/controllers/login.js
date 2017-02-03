@@ -151,6 +151,14 @@ angular.module('applyMyRideApp')
             var unpackedTrips = planService.unpackTrips(data.data.trips, 'future');
             planService.populateScopeWithTripsData($scope, unpackedTrips, 'future');
             ipCookie('rideCount', unpackedTrips.length);
+
+            // Then, if a trip is live, select it and go to its details page
+            var liveTrip = planService.findLiveTrip($scope.trips.future);
+            ipCookie('liveTrip', liveTrip || null); // Set cookie to store liveTrip or lack thereof
+            if(liveTrip) {
+              planService.selectedTrip = liveTrip; // Find Active Trip and Select it
+              $location.path('/itinerary'); // If it exists, go to itinerary page
+            }
           });
           var lastDest, lastOrigin;
           if(result.data.last_destination && typeof '' !== typeof result.data.last_destination && result.data.last_destination.formatted_address){
@@ -179,15 +187,15 @@ angular.module('applyMyRideApp')
             ipCookie.remove('county');
             sessionStorage.setItem('dateofbirth', null);
           }
-          promise = planService.getProfile($http);
-          promise.then(function(result) {
+          planService.getProfile($http).then(function(result) {
             planService.profile = result.data;
+            if($location.path() === "/itinerary") { return; } // Don't redirect if already redirecting to Itinerary.
             if(planService.to && planService.from && planService.fromDate){
                 $location.path('/plan/purpose');
             }else{
                 $location.path('/plan/where');
             }
-          })
+          });
         });
       }
 

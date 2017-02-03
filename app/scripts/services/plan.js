@@ -788,6 +788,13 @@ angular.module('applyMyRideApp')
         return headers;
       }
 
+      // Finds an Live Trip from a list of Trips, or returns undefined if not there
+      this.findLiveTrip = function(trips) {
+        return trips.find(function(trip) {
+          return trip.itineraries.some((i) => i.status == "ordered");
+        });
+      }
+
     }
   ]
 );

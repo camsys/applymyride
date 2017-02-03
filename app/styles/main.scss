@@ -671,3 +671,21 @@ ul.bus-nav-tabs.nav-tabs {
 .tab2 { margin-left: 3.0em; }
 .tab3 { margin-left: 4.5em; }
 .tab4 { margin-left: 6.0em; }
+
+// LiveTrip stylings
+.badge.live-trip {
+  background-color: yellow;
+  box-shadow: 0 0 10px gray;
+}
+
+.myride.live-trip {
+  background-color: yellow;
+  box-shadow: 0 0 10px silver;
+  &:hover {
+    background-color: darken(yellow, 5%);
+  }
+}
+
+#itinerary .row.live-trip {
+  background-color: yellow;
+}
