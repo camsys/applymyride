@@ -1696,9 +1696,12 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
         ipCookie('rideCount', unpackedTrips.length);
 
         var liveTrip = planService.findLiveTrip($scope.trips.future);
-        $scope.liveTrip = liveTrip;
         ipCookie('liveTrip', liveTrip || null); // Set cookie to store liveTrip or lack thereof
-        console.log('$scope.liveTrip: ', $scope.liveTrip);
+        if(liveTrip) {
+          liveTrip.isLive = true;  // Set the liveTrip value in the appropriate trip
+          liveTrip.eta = planService.tripEta(liveTrip);
+        }
+        console.log("Future Trips: ", $scope.trips.future);
 
         var navbar = $routeParams.navbar;
         if(navbar){

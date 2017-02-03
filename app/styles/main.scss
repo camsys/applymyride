@@ -13,6 +13,7 @@ $red: #f34c51;
 $blue: #00b8d0;
 $green: #03763a;
 $yellow: #fdd73e;
+$live-yellow: #fffc66;
 
 $kioskfonts: "Avenir Next", "Helvetica Neue", Helvetica, sans-serif;
 
@@ -674,18 +675,18 @@ ul.bus-nav-tabs.nav-tabs {
 
 // LiveTrip stylings
 .badge.live-trip {
-  background-color: yellow;
-  box-shadow: 0 0 10px gray;
+  background-color: $live-yellow;
+  box-shadow: 0 0 5px gray;
 }
 
 .myride.live-trip {
-  background-color: yellow;
+  background-color: $live-yellow;
   box-shadow: 0 0 10px silver;
   &:hover {
-    background-color: darken(yellow, 5%);
+    background-color: darken($live-yellow, 7%);
   }
 }
 
 #itinerary .row.live-trip {
-  background-color: yellow;
+  background-color: $live-yellow;
 }

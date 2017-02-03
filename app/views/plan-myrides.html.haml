@@ -7,7 +7,10 @@
   .col-md-8.col-md-offset-2.col-xs-12
     %tabset
       %tab{'heading' => 'Upcoming ({{trips.future.length}})', 'active' => 'tabFuture'}
-        .myride{'index' => '{{$index}}', ng: {init: 'tab = "future"', click: 'selectTrip($event, tab, $index)', repeat: 'trip in trips.future', class: '{"live-trip": liveTrip}'}}
+        .myride{'index' => '{{$index}}', ng: {init: 'tab = "future"',
+                                              click: 'selectTrip($event, tab, $index)',
+                                              repeat: 'trip in trips.future',
+                                              class: '{"live-trip": trip.isLive}'}}
           .row
             .col-xs-2.col-height-slave
               %img.img-responsive{ng: {src: 'images/modes/paratransit.png', show: 'trip.mode == "mode_paratransit"'}}
@@ -17,8 +20,12 @@
               %img.img-responsive{ng: {src: 'images/modes/auto.png', show: 'trip.mode == "mode_ride_hailing"'}}
             .col-xs-10.col-height-master{style: 'width: 60em !important;'}
               .row
-                .col-xs-12
+                .col-xs-8
                   %h4 {{trip.from_place}} to {{trip.to_place}}
+                .col-xs-4{ng: {show: 'trip.isLive'}}
+                  %h4.text-right
+                    ETA:
+                    %b {{ trip.eta }}
               .row
                 .col-xs-8
                   %h5.blue-text {{trip.startDesc}}
