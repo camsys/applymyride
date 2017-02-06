@@ -2,7 +2,7 @@
 
 
 angular.module('applyMyRideApp')
-    .service('planService', ['$rootScope', '$filter', function($rootScope, $filter) {
+    .service('planService', ['$rootScope', '$filter', '$interval', function($rootScope, $filter, $interval) {
 
       this.reset = function(){
         delete this.fromDate;
@@ -788,18 +788,34 @@ angular.module('applyMyRideApp')
         return headers;
       }
 
-      // Finds an Live Trip from a list of Trips, or returns undefined if not there
-      this.findLiveTrip = function(trips) {
-        return trips.find(function(trip) {
-          return trip.itineraries.some((i) => i.status == "ordered");
+      // Returns true if a trip is live
+      this.tripIsLive = function(trip) {
+        var planService = this;
+        return trip.itineraries.some( function(i) {
+          var isOrdered = (i.status == "ordered"); // Is the trip ordered?
+          var isSoon = planService.tripEta(trip, true) <= 180; // Is it arriving in less than 3 hours?
+          return isOrdered && isSoon;
         });
       }
 
-      // returns eta of trip based on estimated pickup time
-      this.tripEta = function(trip) {
-        var eta = Date.parse(trip.itineraries[0].estimated_pickup_time);
-        if(isNaN(eta)) {return false;}
-        return $filter('minutes')(Math.floor(moment.duration(eta - Date.now()).asMinutes()));
+      // Finds an Live Trip from a list of Trips, or returns undefined if not there
+      this.findLiveTrip = function(trips) {
+        var planService = this;
+        return trips.find(function(trip) {
+          return planService.tripIsLive(trip);
+        });
+      }
+
+      // returns eta of trip based on estimated pickup time, in minutes
+      this.tripEta = function(trip, raw) {
+        var pickup_time = Date.parse(trip.itineraries[0].estimated_pickup_time);
+        if(isNaN(pickup_time)) {return false;}
+        var eta = (Math.floor(moment.duration(pickup_time - Date.now()).asMinutes()))
+        if(raw) {
+          return eta;
+        } else {
+          return $filter('minutes')(eta);
+        }
       }
 
       // Updates Live Trip info in the necessary places
@@ -811,6 +827,48 @@ angular.module('applyMyRideApp')
           trip.eta = that.tripEta(trip); // Update Estimated Arrival Time
         }
         if(ipCookie) {ipCookie('liveTrip', trip || null);} // Set cookie to store liveTrip or lack thereof
+      }
+
+      // Process Future Trips Data and Updates Live Trip info. Returns Live Trip if it exists.
+      this.processFutureAndLiveTrips = function(data, $scope, ipCookie) {
+        var planService = this;
+        var unpackedTrips = planService.unpackTrips(data.data.trips, 'future');
+        planService.populateScopeWithTripsData($scope, unpackedTrips, 'future');
+        ipCookie('rideCount', unpackedTrips.length);
+
+        var liveTrip = $scope.trip || planService.findLiveTrip($scope.trips.future);
+        planService.updateLiveTrip(liveTrip, ipCookie);
+
+        return liveTrip;
+      }
+
+      // Creates an eta checker object
+      this.createEtaChecker = function($scope, $http, ipCookie) {
+        var planService = this;
+
+        // Stop the checker if it already exists.
+        if(planService.etaChecker) {
+          planService.etaChecker.stop();
+        }
+
+        // Set etaChecker to a new object with the appropriate scope and dependencies.
+        planService.etaChecker = {
+          // planService: this,
+          interval: 10000,
+          start: function(checkFunction) {
+            this.timer = $interval(function() {
+              planService.getFutureRides($http).then(function(data) {
+                planService.processFutureAndLiveTrips(data, $scope, ipCookie);
+              });
+            }, this.interval);
+          },
+          stop: function() {
+            $interval.cancel(this.timer);
+          }
+        }
+
+        // Start the checker.
+        planService.etaChecker.start();
       }
 
     }

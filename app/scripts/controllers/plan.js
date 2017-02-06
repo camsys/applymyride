@@ -1686,24 +1686,24 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
       break;
     case 'my_rides':
       planService.reset();
-      // var pastRides = planService.getPastRides($http, (d) => console.log(d));
       planService.getPastRides($http).then(function(data) {
         planService.populateScopeWithTripsData($scope, planService.unpackTrips(data.data.trips, 'past'), 'past');
       });
       planService.getFutureRides($http).then(function(data) {
-        var unpackedTrips = planService.unpackTrips(data.data.trips, 'future');
-        planService.populateScopeWithTripsData($scope, unpackedTrips, 'future');
-        ipCookie('rideCount', unpackedTrips.length);
-
-        var liveTrip = planService.findLiveTrip($scope.trips.future);
-        planService.updateLiveTrip(liveTrip, ipCookie);
+        var liveTrip = planService.processFutureAndLiveTrips(data, $scope, ipCookie);
+        if (liveTrip) { // If there's a live trip, check for realtime updates
+          planService.createEtaChecker($scope, $http, ipCookie);
+        }
 
         var navbar = $routeParams.navbar;
         if(navbar){
           $scope.tabFuture = true;
           delete $scope.tabPast;
         }
+
       });
+
+
 
       $scope.hideButtonBar = true;
       $window.visited = true;

@@ -42,6 +42,9 @@ angular.module('applyMyRideApp')
 
         $scope.paratransitItineraries = $scope.trip.itineraries;
         $scope.liveTrip = ipCookie('liveTrip');
+        if($scope.liveTrip) {
+          planService.createEtaChecker($scope, $http, ipCookie);
+        }
 
         var firstItinerary = $scope.trip.itineraries[0];
 
