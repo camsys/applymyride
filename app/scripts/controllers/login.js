@@ -148,13 +148,8 @@ angular.module('applyMyRideApp')
             planService.populateScopeWithTripsData($scope, planService.unpackTrips(data.data.trips, 'past'), 'past');
           });
           planService.getFutureRides($http).then(function(data) {
-            var unpackedTrips = planService.unpackTrips(data.data.trips, 'future');
-            planService.populateScopeWithTripsData($scope, unpackedTrips, 'future');
-            ipCookie('rideCount', unpackedTrips.length);
+            var liveTrip = planService.processFutureAndLiveTrips(data, $scope, ipCookie);
 
-            // If a trip is live, select it, update ETA info, and go to its details page
-            var liveTrip = planService.findLiveTrip($scope.trips.future);
-            planService.updateLiveTrip(liveTrip, ipCookie);
             if(liveTrip) {
               $location.path('/itinerary'); // If it exists, go to itinerary page
             }
