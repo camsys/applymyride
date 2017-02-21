@@ -792,7 +792,7 @@ angular.module('applyMyRideApp')
       this.tripIsLive = function(trip) {
         var planService = this;
         return trip.itineraries.some( function(i) {
-          var isOrdered = (i.status == "ordered"); // Is the trip ordered?
+          var isOrdered = (i.status == "ordered" || i.status == "dispatch"); // Is the trip ordered?
           var isSoon = planService.tripEta(trip, true) <= 180; // Is it arriving in less than 3 hours?
           return isOrdered && isSoon;
         });
@@ -808,7 +808,8 @@ angular.module('applyMyRideApp')
 
       // returns eta of trip based on estimated pickup time, in minutes
       this.tripEta = function(trip, raw) {
-        var pickup_time = Date.parse(trip.itineraries[0].estimated_pickup_time);
+        var pickup_time = new Date(trip.itineraries[0].estimated_pickup_time);
+        pickup_time = moment(pickup_time).add(pickup_time.getTimezoneOffset(), 'minutes');
         if(isNaN(pickup_time)) {return false;}
         var eta = (Math.floor(moment.duration(pickup_time - Date.now()).asMinutes()))
         if(raw) {
