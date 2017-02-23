@@ -791,7 +791,7 @@ angular.module('applyMyRideApp')
       // Returns true if a trip is live
       this.tripIsLive = function(trip) {
         var planService = this;
-        var isSoon = planService.tripEta(trip, true) <= 360; // Is it arriving in less than 3 hours?
+        var isSoon = planService.tripEta(trip, true) <= 180; // Is it arriving in less than 3 hours?
         return trip.itineraries.some( function(i) {
           var isOrdered = (i.status == "ordered" || i.status == "dispatch"); // Is the trip ordered?
           return isOrdered && isSoon;
