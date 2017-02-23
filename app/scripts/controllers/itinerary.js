@@ -40,7 +40,7 @@ angular.module('applyMyRideApp')
         $scope.walkItineraries = $scope.trip.itineraries;
       }else if($scope.trip.mode == 'mode_paratransit'){
         $scope.paratransitItineraries = $scope.trip.itineraries;
-        $scope.liveTrip = ipCookie('liveTrip') || $scope.trip.isLive;
+        $scope.liveTrip = $scope.trip.isLive ? $scope.trip : null;
         if($scope.liveTrip) {
           planService.createEtaChecker($scope, $http, ipCookie);
         }
