@@ -790,6 +790,7 @@ angular.module('applyMyRideApp')
 
       // Returns true if a trip is live
       this.tripIsLive = function(trip) {
+        if(!trip) {return false;} // Return false if no trip is passed
         var planService = this;
         var isSoon = planService.tripEta(trip, true) <= 180; // Is it arriving in less than 3 hours?
         return trip.itineraries.some( function(i) {
@@ -848,7 +849,7 @@ angular.module('applyMyRideApp')
         planService.populateScopeWithTripsData($scope, unpackedTrips, 'future');
         ipCookie('rideCount', unpackedTrips.length);
 
-        var liveTrip = $scope.trip || planService.findLiveTrip($scope.trips.future);
+        var liveTrip = (planService.tripIsLive($scope.trip) && $scope.trip) || planService.findLiveTrip($scope.trips.future);
         planService.updateLiveTrip(liveTrip, $scope, ipCookie);
 
         return liveTrip;
