@@ -838,7 +838,7 @@ angular.module('applyMyRideApp')
           trip.eta = that.tripEta(trip); // Update Estimated Arrival Time
         }
         if($scope) {$scope.liveTrip = trip || null;} // Set $scope variable to liveTrip
-        if(ipCookie) {ipCookie('liveTrip', trip || null);} // Set cookie to store liveTrip or lack thereof
+        if(ipCookie) {ipCookie('liveTrip', !!trip);} // Set cookie to store liveTrip or lack thereof
       }
 
       // Process Future Trips Data and Updates Live Trip info. Returns Live Trip if it exists.
