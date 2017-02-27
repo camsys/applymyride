@@ -792,10 +792,10 @@ angular.module('applyMyRideApp')
       this.tripIsLive = function(trip) {
         if(!trip) {return false;} // Return false if no trip is passed
         var planService = this;
-        var isSoon = planService.tripEta(trip, true) <= 180; // Is it arriving in less than 3 hours?
+        //var isSoon = planService.tripEta(trip, true) <= 180; // Is it arriving in less than 3 hours?
         return trip.itineraries.some( function(i) {
-          var isOrdered = (i.status == "ordered" || i.status == "dispatch" || i.status == "active"); // Is the trip ordered?
-          return isOrdered && isSoon;
+          var isOnItsWay = (i.status == "dispatch" || i.status == "active"); // Is the trip on its way?
+          return isOnItsWay //&& isSoon;
         });
       }
 
