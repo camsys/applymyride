@@ -793,9 +793,10 @@ angular.module('applyMyRideApp')
         if(!trip) {return false;} // Return false if no trip is passed
         var planService = this;
         //var isSoon = planService.tripEta(trip, true) <= 180; // Is it arriving in less than 3 hours?
+        var isSharedRide = trip.mode == "mode_paratransit";
         return trip.itineraries.some( function(i) {
           var isOnItsWay = (i.status == "dispatch" || i.status == "active"); // Is the trip on its way?
-          return isOnItsWay //&& isSoon;
+          return isSharedRide && isOnItsWay //&& isSoon;
         });
       }
 
