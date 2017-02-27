@@ -794,7 +794,7 @@ angular.module('applyMyRideApp')
         var planService = this;
         var isSoon = planService.tripEta(trip, true) <= 180; // Is it arriving in less than 3 hours?
         return trip.itineraries.some( function(i) {
-          var isOrdered = (i.status == "ordered" || i.status == "dispatch"); // Is the trip ordered?
+          var isOrdered = (i.status == "ordered" || i.status == "dispatch" || i.status == "active"); // Is the trip ordered?
           return isOrdered && isSoon;
         });
       }
@@ -830,13 +830,24 @@ angular.module('applyMyRideApp')
         }
       }
 
+      // returns true/false if ride is arrived
+      this.tripIsHere = function(trip) {
+        var planService = this;
+        var isLive = planService.tripIsLive(trip);
+        if(!trip) {return false;} // Return false if no trip is passed
+        return trip.itineraries.some( function(i) {
+          return !!i.actual_pickup_time && isLive;
+        });
+      }
+
       // Updates Live Trip info in the necessary places
       this.updateLiveTrip = function(trip, $scope, ipCookie) {
-        var that = this;
+        var planService = this;
         if(trip) {
-          that.selectedTrip = trip; // Find Live Trip and Select it
+          planService.selectedTrip = trip; // Find Live Trip and Select it
           trip.isLive = true;  // Set the liveTrip value in the appropriate trip
-          trip.eta = that.tripEta(trip); // Update Estimated Arrival Time
+          trip.eta = planService.tripEta(trip); // Update Estimated Arrival Time
+          trip.isHere = planService.tripIsHere(trip); // Is ride actually there?
         }
         if($scope) {$scope.liveTrip = trip || null;} // Set $scope variable to liveTrip
         if(ipCookie) {ipCookie('liveTrip', !!trip);} // Set cookie to store liveTrip or lack thereof

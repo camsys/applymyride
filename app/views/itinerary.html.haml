@@ -115,9 +115,12 @@
         .row{ng: {show: 'liveTrip', class: '{"live-trip": liveTrip}'}}
           .col-xs-12{style:' padding:10px;'}
             %h3
-              %span
-                Your ride will arrive in 
+              %span{ng: {hide: 'trip.isHere'}}
+                Your ride will arrive in
                 %b {{ trip.eta }}
+              %span{ng: {show: 'trip.isHere'}}
+                %b Your ride is here!
+                Call 1-844-PA-4RIDE if you have any questions.
         .row
           .col-xs-12{style:' background-color: rgb(205,254,206); padding:10px;'}
             %h1

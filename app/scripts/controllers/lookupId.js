@@ -34,7 +34,7 @@ angular.module('applyMyRideApp')
 
       // date of birth picker validity checker
       function checkNextValid(){
-        console.log("Month changed", $scope, $scope.lookupidform);
+        // console.log("Month changed", $scope, $scope.lookupidform);
         var bd;
         try{
           bd = moment()
