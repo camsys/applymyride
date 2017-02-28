@@ -788,6 +788,11 @@ angular.module('applyMyRideApp')
         return headers;
       }
 
+      // Returns true if itinerary is live
+      this.itinIsLive = function(i) {
+        return (i.status == "dispatch" || i.status == "active");
+      }
+
       // Returns true if a trip is live
       this.tripIsLive = function(trip) {
         if(!trip) {return false;} // Return false if no trip is passed
@@ -795,7 +800,7 @@ angular.module('applyMyRideApp')
         //var isSoon = planService.tripEta(trip, true) <= 180; // Is it arriving in less than 3 hours?
         var isSharedRide = trip.mode == "mode_paratransit";
         return trip.itineraries.some( function(i) {
-          var isOnItsWay = (i.status == "dispatch" || i.status == "active"); // Is the trip on its way?
+          var isOnItsWay = planService.itinIsLive(i); // Is the trip on its way?
           return isSharedRide && isOnItsWay //&& isSoon;
         });
       }
@@ -810,8 +815,9 @@ angular.module('applyMyRideApp')
 
       // Returns the first itinerary that isn't past
       this.getLiveItinerary = function(trip) {
+        var planService = this;
         return trip.itineraries.find(function(i) {
-          return (i.status == "ordered" || i.status == "dispatch");
+          return planService.itinIsLive(i);
         });
       }
 
