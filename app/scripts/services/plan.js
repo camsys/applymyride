@@ -162,7 +162,6 @@ angular.module('applyMyRideApp')
 
       this.populateScopeWithTripsData = function($scope, trips, tripType) {
         var planService = this;
-        console.log($scope);
         if($scope.trip) {
           // Itinerary View
           $scope.trip = planService.findLiveTrip(trips);
@@ -897,7 +896,6 @@ angular.module('applyMyRideApp')
           interval: 10000,
           start: function(checkFunction) {
             this.timer = $interval(function() {
-              console.log("Checking ETA for", $scope);
               planService.getFutureRides($http).then(function(data) {
                 planService.processFutureAndLiveTrips(data, $scope, ipCookie);
               });
