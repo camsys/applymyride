@@ -161,8 +161,16 @@ angular.module('applyMyRideApp')
       }
 
       this.populateScopeWithTripsData = function($scope, trips, tripType) {
-        $scope.trips = $scope.trips || {};
-        $scope.trips[tripType] = trips;
+        var planService = this;
+        console.log($scope);
+        if($scope.trip) {
+          // Itinerary View
+          $scope.trip = planService.findLiveTrip(trips);
+        } else {
+          // Plan/MyTrips View
+          $scope.trips = $scope.trips || {};
+          $scope.trips[tripType] = trips;
+        }
       }
 
       this.prepareConfirmationPage = function($scope) {
@@ -790,7 +798,7 @@ angular.module('applyMyRideApp')
 
       // Returns true if itinerary is live
       this.itinIsLive = function(i) {
-        return (i.status == "dispatch" || i.status == "active");
+        return (i.status == "dispatch" || i.status == "active" || i.status == "ordered");
       }
 
       // Returns true if a trip is live
@@ -824,7 +832,7 @@ angular.module('applyMyRideApp')
       // returns eta of trip based on estimated pickup time, in minutes
       this.tripEta = function(trip, raw) {
         var planService = this;
-        var pickup_time = new Date(planService.getLiveItinerary(trip).estimated_pickup_time);
+        var pickup_time = new Date(planService.getLiveItinerary(trip).estimated_pickup_time + "Z"); // Have to append Z to the end of the time string to get the same results in Chrome and Firefox
         pickup_time = moment(pickup_time).add(pickup_time.getTimezoneOffset(), 'minutes');
         if(isNaN(pickup_time)) {return false;}
         var eta = (Math.floor(moment.duration(pickup_time - Date.now()).asMinutes()));
@@ -843,12 +851,13 @@ angular.module('applyMyRideApp')
         var isLive = planService.tripIsLive(trip);
         if(!trip) {return false;} // Return false if no trip is passed
         return trip.itineraries.some( function(i) {
+          // return moment(Date.now()).minutes() % 2 == 0;
           return !!i.actual_pickup_time && isLive;
         });
       }
 
       // Updates Live Trip info in the necessary places
-      this.updateLiveTrip = function(trip, $scope, ipCookie) {
+      this.updateLiveTrip = function(trip) {
         var planService = this;
         if(trip) {
           planService.selectedTrip = trip; // Find Live Trip and Select it
@@ -856,8 +865,6 @@ angular.module('applyMyRideApp')
           trip.eta = planService.tripEta(trip); // Update Estimated Arrival Time
           trip.isHere = planService.tripIsHere(trip); // Is ride actually there?
         }
-        if($scope) {$scope.liveTrip = trip || null;} // Set $scope variable to liveTrip
-        if(ipCookie) {ipCookie('liveTrip', !!trip);} // Set cookie to store liveTrip or lack thereof
       }
 
       // Process Future Trips Data and Updates Live Trip info. Returns Live Trip if it exists.
@@ -868,7 +875,9 @@ angular.module('applyMyRideApp')
         ipCookie('rideCount', unpackedTrips.length);
 
         var liveTrip = (planService.tripIsLive($scope.trip) && $scope.trip) || planService.findLiveTrip($scope.trips.future);
-        planService.updateLiveTrip(liveTrip, $scope, ipCookie);
+        planService.updateLiveTrip(liveTrip);
+        if($scope) {$scope.liveTrip = liveTrip || null;} // Set $scope variable to liveTrip
+        if(ipCookie) {ipCookie('liveTrip', !!liveTrip);} // Set cookie to store liveTrip or lack thereof
 
         return liveTrip;
       }
@@ -888,6 +897,7 @@ angular.module('applyMyRideApp')
           interval: 10000,
           start: function(checkFunction) {
             this.timer = $interval(function() {
+              console.log("Checking ETA for", $scope);
               planService.getFutureRides($http).then(function(data) {
                 planService.processFutureAndLiveTrips(data, $scope, ipCookie);
               });
