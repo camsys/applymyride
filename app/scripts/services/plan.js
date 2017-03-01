@@ -798,7 +798,7 @@ angular.module('applyMyRideApp')
 
       // Returns true if itinerary is live
       this.itinIsLive = function(i) {
-        return (i.status == "dispatch" || i.status == "active" || i.status == "ordered");
+        return (i.status == "dispatch" || i.status == "active");
       }
 
       // Returns true if a trip is live
