@@ -263,8 +263,6 @@
         %a.btn{href: "", ng: {click: "logout()", show:'loggedIn && (transitSaved || transitCancelled || walkSaved || walkCancelled)'}}
           Logout
       .pull-right{'ng-show'=>'loggedIn'}
-        %a.btn.btn-primary{href: "", ng: {click: "saveWalkTrip()", show:'!hasTransit && hasWalk && !walkSaved && !walkCancelled'}}
-          Save this walk trip
         %a.btn.btn-primary{href: "", style:'background-color:red;',ng: {click: 'cancelThisBusTrip', show:'transitSaved'}}
           Cancel this trip
         %a.btn.btn-primary{href: "", style:'background-color:red;',ng: {click: 'cancelThisWalkTrip', show:'walkSaved'}}
