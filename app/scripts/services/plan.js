@@ -1007,9 +1007,20 @@ angular.module('applyMyRideApp')
       $http.get(urlPrefix + 'api/v1/places/search?include_user_pois=true&search_string=%25' + text + '%25', config).
         success(function(data) {
           var locations = data.places_search_results.locations;
+          var filter = /[^a-zA-Z0-9]/g;
           angular.forEach(locations, function(value, index) {
+            var address;
             if(that.savedPlaceResults.length < 10){
-              that.savedPlaceResults.push(value.name + " " + value.formatted_address);
+              //use the formatted_address if the name is basically the same
+              //compare by going to upper case then stripping non-alpha-numeric characters
+              if(value.formatted_address.toUpperCase().replace(filter, '') === value.name.toUpperCase().replace(filter, '')){
+                //they're the same, just show one.
+                address = value.formatted_address;
+              }else{
+                //they're different. show both
+                address = value.name+' '+value.formatted_address;
+              }
+              that.savedPlaceResults.push(address);
               that.savedPlaceAddresses.push(value.formatted_address);
               that.savedPlaceIds.push(value.place_id);
               that.poiData.push(value);
