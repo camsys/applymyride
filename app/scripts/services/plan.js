@@ -922,24 +922,42 @@ angular.module('applyMyRideApp')
     var autocompleteService = new google.maps.places.AutocompleteService();
 
     var LocationSearch = new Object();
-
+    var compositePromise = false;
     LocationSearch.getLocations = function(text, config, includeRecentSearches) {
 
-      var compositePromise = $q.defer();
+      // setup compositePromise deferred object. but first, if compositePromise isn't false, reject the old promise
+      if(compositePromise !== false){
+        compositePromise.reject();
+      }
+      compositePromise = $q.defer();
 
+      // setup all the individual promises that result in compositePromise resolving
+      var promises = [
+          LocationSearch.getGooglePlaces(text), 
+          LocationSearch.getSavedPlaces(text, config)
+        ];
+
+      // add the getRecentSearches if they are to be included
       if(includeRecentSearches == true){
-        $q.all([LocationSearch.getGooglePlaces(text), LocationSearch.getSavedPlaces(text, config), LocationSearch.getRecentSearches(text)]).then(function(results){
-          compositePromise.resolve(results);
-        });
-      }else{
-        $q.all([LocationSearch.getGooglePlaces(text), LocationSearch.getSavedPlaces(text, config)]).then(function(results){
-          compositePromise.resolve(results);
-        });
+        promises.push(LocationSearch.getRecentSearches(text) );
       }
 
+      // when all the promises are resolved, then resolve the compositePromise
+      $q.all(promises).then(function(results){
+        if(compositePromise !== false){
+          compositePromise.resolve(results);
+        }
+      });
 
+      // reset compositePromise to false when its promise is finished
+      compositePromise.promise.then(function(){
+        compositePromise = false;
+      }).catch(function(){
+        compositePromise = false;
+      });
+
+      // compositePromise triggers when promises are finished
       return compositePromise.promise;
-
     }
 
     LocationSearch.getGooglePlaces = function(text) {

@@ -585,8 +585,9 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
   $scope.getLocations = function(typed, addCurrentLocation){
     if(typed){
       var config = planService.getHeaders();
-      $scope.suggestions = LocationSearch.getLocations(typed, config, planService.email != null);
-      $scope.suggestions.then(function(data){
+      //if this is run before the last promise is resolved, abort the promise, start over.
+      var getLocationsPromise = LocationSearch.getLocations(typed, config, planService.email != null);
+      getLocationsPromise.then(function(data){
 
         $scope.placeLabels = [];
         $scope.placeIds = [];
@@ -637,7 +638,7 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
 
         $scope.locations = choices;
       });
-      return $scope.suggestions;
+      return getLocationsPromise;
     }
     return false;
   }
