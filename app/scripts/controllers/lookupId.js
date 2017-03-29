@@ -7,7 +7,7 @@ angular.module('applyMyRideApp')
       if( ['/lookupIdForm', '/lookupError'].indexOf( $location.path() ) == -1){ return; }
 
       $scope.location = $location.path();
-      $scope.counties = localStorageService.get("counties") || util.getCounties((r) => $scope.counties = r.data.service_ids);
+      $scope.counties = localStorageService.get("counties") || util.getCounties(function(r){ $scope.counties = r.data.service_ids; });
       $scope.county = localStorageService.get("county") || ipCookie('county');
       $scope.lastName = localStorageService.get("lastName") || null;
       $scope.errors = {dob:false};

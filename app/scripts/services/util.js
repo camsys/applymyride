@@ -14,10 +14,9 @@ angular.module('applyMyRideApp')
 
     // Makes an HTTP request for county names, and calls callback functions.
     // Default callbacks log array on success, log error message on fail.
-    this.getCounties = function(
-      successCallback = (r) => r.data.service_ids,
-      errorCallback = (e) => console.log(e)
-    ) {
+    this.getCounties = function(successCallback, errorCallback) {
+      successCallback = successCallback || function(r){ console.log(r.data.service_ids); };
+      errorCallback = errorCallback || console.log;
       $http({
         method: 'GET',
         url: '//'+ APIHOST + '/api/v1/services/ids_humanized'
