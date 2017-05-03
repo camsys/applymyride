@@ -933,7 +933,7 @@ angular.module('applyMyRideApp')
 
       // setup all the individual promises that result in compositePromise resolving
       var promises = [
-          LocationSearch.getGooglePlaces(text), 
+          LocationSearch.getGooglePlaces(text),
           LocationSearch.getSavedPlaces(text, config)
         ];
 
@@ -979,7 +979,9 @@ angular.module('applyMyRideApp')
             var formatted_address;
             //verify the location has a street address
             if( (that.results.length < 10) &&
-                value.terms.some((t) => t.value === "PA") && // Filter out anything not in PA
+                value.terms.some(function(t) {
+                  return t.value === "PA";
+                }) && // Filter out anything not in PA
                 ( (value.types.indexOf('route') > -1) ||
                   (value.types.indexOf('establishment') > -1) ||
                   (value.types.indexOf('street_address') > -1) ) ) {
