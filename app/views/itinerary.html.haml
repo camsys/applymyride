@@ -50,7 +50,10 @@
           .border-between.timeline{'index' => '{{$index}}', ng: {click: 'show($event)', repeat: 'leg in itinerary.json_legs track by $index', class: '{"mode_bus": leg.mode == "BUS", "mode_walk": leg.mode == "WALK"}'}}
             .row.even-height-row
               .col-xs-2.right-side
-                %h4 {{leg.startTimeDesc}}
+                .row
+                  %h4 {{leg.startTimeDesc}}
+                .row
+                  .itinerary-logo-image
               .col-xs-1.right-side
                 %i.fa.fa-circle-o.fa-lg.waypoint
               .col-xs-9.leg-info.pull-left.left-side
@@ -175,8 +178,11 @@
       .col-xs-12.col-md-8.col-md-offset-2.paratransit-body
         .border-between.timeline.mode_wait
           .row.even-height-row
-            .col-xs-2.right-side.no-padding
-              %h4 {{itinerary.startTimeDesc}}
+            .col-xs-2.right-side
+              .row
+                %h4 {{itinerary.startTimeDesc}}
+              .row
+                .itinerary-logo-image
             .col-xs-1.right-side
             .col-xs-9.leg-info.left-side
               .wait-info
@@ -188,8 +194,11 @@
                     %h4.text-muted {{itinerary.origin.formatted_address}}
         .border-between.timeline.mode_paratransit
           .row.even-height-row
-            .col-xs-2.right-side.no-padding
-              %h4 {{itinerary.wait_endDesc}}
+            .col-xs-2.right-side
+              .row
+                %h4 {{itinerary.wait_endDesc}}
+              .row
+                .itinerary-logo-image
             .col-xs-1.right-side
               %i.fa.fa-circle-o.fa-lg.waypoint{style: 'color: #0E5302;'}
             .col-xs-9.leg-info.left-side
@@ -197,8 +206,11 @@
                 .row{style: 'height: 100px'}
         .border-between.timeline.mode_paratransit
           .row.even-height-row
-            .col-xs-2.right-side.no-padding
-              %h4 {{itinerary.endTimeDesc}}
+            .col-xs-2.right-side
+              .row
+                %h4 {{itinerary.endTimeDesc}}
+              .row
+                .itinerary-logo-image
             .col-xs-1.right-side.no-pseudo
               %i.fa.fa-circle-o.fa-lg.waypoint{style: 'color: #0E5302;'}
             .col-xs-9.leg-info.left-side
@@ -249,7 +261,10 @@
         .border-between.timeline{'index' => '{{$index}}', ng: {click: 'test()', repeat: 'leg in itinerary.json_legs track by $index', class: '{"mode_bus": leg.mode == "BUS", "mode_walk": leg.mode == "WALK"}'}}
           .row.even-height-row
             .col-xs-2.right-side
-              %h4 {{leg.startTimeDesc}}
+              .row
+                %h4 {{leg.startTimeDesc}}
+              .row
+                .itinerary-logo-image
             .col-xs-1.right-side
               %i.fa.fa-circle-o.fa-lg.waypoint
             .col-xs-9.leg-info.pull-left.left-side

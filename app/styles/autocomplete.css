@@ -258,6 +258,58 @@ only screen and (min-device-pixel-ratio : 1.5) {
   margin-left: -13px !important;
 }
 
+.itin-logo-image {
+  height: 20px;
+  width: 20px;
+  margin: 15% 0 0 35%;
+}
+
+.mode_walk .itinerary-logo-image {
+  display: block;
+  width: 20px;
+  height: 20px;
+  background-image: url(../images/modes/walk.png);
+  background-size: contain;
+  content: " ";
+  position: absolute;
+  margin-top: 10%;
+  right: 50%;
+}
+
+.mode_bus .itinerary-logo-image {
+  width: 20px;
+  height: 20px;
+  background-image: url(../images/modes/transit.png);
+  background-size: contain;
+  content: " ";
+  position: absolute;
+  margin-top: 10%;
+  right: 50%;
+}
+
+.mode_wait .itinerary-logo-image {
+  width: 20px;
+  height: 20px;
+  background-image: url(../images/clock.png);
+  background-size: contain;
+  content: " ";
+  position: absolute;
+  margin-top: 10%;
+  right: 50%;
+}
+
+.mode_paratransit .itinerary-logo-image {
+  width: 20px;
+  height: 20px;
+  background-image: url(../images/modes/paratransit.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+  content: " ";
+  position: absolute;
+  margin-top: 10%;
+  right: 50%;
+}
+
 .mode_walk > .row > [class*='col-']:nth-child(2):before {
   width: 5px;
   background:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAACACAYAAADDEqOOAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAABESURBVEhL7c8xDgAgCEPR4sm9n94JF+LQycSkOvQtECZ+YGQHCczM2rdW843zly6PMi4iLhJwEXGRgIuIiwRcRL4rAhaEQCb9w6AeBAAAAABJRU5ErkJggg==) repeat;
@@ -282,39 +334,6 @@ only screen and (min-device-pixel-ratio : 1.5) {
   z-index: -1;
 }
 
-.mode_walk > .row > [class*='col-']:first-child:before {
-  width: 20px;
-  height: 20px;
-  background-image: url(../images/modes/walk.png);
-  background-size: contain;
-  content: " ";
-  position: absolute;
-  top: 50%;
-  right: 50%;
-}
-
-.mode_bus > .row > [class*='col-']:first-child:before {
-  width: 20px;
-  height: 20px;
-  background-image: url(../images/modes/transit.png);
-  background-size: contain;
-  content: " ";
-  position: absolute;
-  top: 50%;
-  right: 50%;
-}
-
-.mode_wait > .row > [class*='col-']:first-child:before {
-  width: 20px;
-  height: 20px;
-  background-image: url(../images/clock.png);
-  background-size: contain;
-  content: " ";
-  position: absolute;
-  top: 50%;
-  right: 50%;
-}
-
 .mode_wait > .row > [class*='col-']:nth-child(2):before {
   width: 5px;
   background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAB5CAYAAADxj+tfAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAABCSURBVEhL7c8xCgAwCENR7cl7P71TXaTQTIVCuuQtipPfI2Ia8MxcvW+j5x/3Lz0eaVQEVESgIqAiAhUBFRGo6GBW+/EvVaeAm1YAAAAASUVORK5CYII=) repeat;
@@ -325,18 +344,6 @@ only screen and (min-device-pixel-ratio : 1.5) {
   top: 10px;
   height: 100%;
   z-index: -1;
-}
-
-.mode_paratransit > .row > [class*='col-']:first-child:before {
-  width: 20px;
-  height: 20px;
-  background-image: url(../images/modes/paratransit.png);
-  background-size: contain;
-  background-repeat: no-repeat;
-  content: " ";
-  position: absolute;
-  top: 50%;
-  right: 50%;
 }
 
 .mode_paratransit > .row > [class*='col-']:nth-child(2):before {

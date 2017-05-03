@@ -28,7 +28,12 @@
       .border-between.timeline{'index' => '{{$index}}', ng: {click: 'show($event)', repeat: 'leg in itinerary.json_legs track by $index', class: '{"mode_bus": leg.mode == "BUS", "mode_walk": leg.mode == "WALK"}'}}
         .row.even-height-row
           .col-xs-2.right-side
-            %h4 {{leg.startTimeDesc}}
+            .row
+              %h4 {{leg.startTimeDesc}}
+            .row
+              .itinerary-logo-image
+          -# .col-xs-2.right-side
+          -#   %h4 {{leg.startTimeDesc}}
           .col-xs-1.right-side
             %i.fa.fa-circle-o.fa-lg.waypoint
           .col-xs-9.leg-info.pull-left.left-side
