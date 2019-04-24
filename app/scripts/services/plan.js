@@ -984,7 +984,8 @@ angular.module('applyMyRideApp')
                 }) && // Filter out anything not in PA
                 ( (value.types.indexOf('route') > -1) ||
                   (value.types.indexOf('establishment') > -1) ||
-                  (value.types.indexOf('street_address') > -1) ) ) {
+                  (value.types.indexOf('street_address') > -1) ||
+                  (value.types.indexOf('premise') > -1) ) ) {
               formatted_address = countryFilter( value.description );
               that.results.push(formatted_address);
               that.placeIds.push(value.place_id);
