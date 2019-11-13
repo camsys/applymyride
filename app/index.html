@@ -24,17 +24,7 @@
       //initialize APIHOST by depending on environment
       var APIHOST = (function( docHost )
       {
-        var env = docHost.match(/^findmyridepa2-(.+)\.camsys-apps\.com$/);
-        var apiHosts = {
-          'demo': 'oneclick-pa-demo.herokuapp.com',
-          'dev': 'oneclick-pa-dev.herokuapp.com',
-          'qa': 'oneclick-pa-qa.herokuapp.com'
-        };
-        //use docHost by default, for local environments
-        if(!env || !env[1]){
-          return docHost;
-        }
-        return apiHosts[ env[1] ];
+        return 'localhost:3000'
       }( document.location.hostname ));
     </script>
   </head>

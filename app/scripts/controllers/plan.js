@@ -626,7 +626,7 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
         }
 
         var googlePlaceData = data[0].googleplaces;
-        if(googlePlaceData.length > 0){
+        if(false){
           choices.push({label:'Suggestions', option: false});
           angular.forEach(googlePlaceData, function(googleplace, index) {
             choices.push({label:googleplace, option: true});
