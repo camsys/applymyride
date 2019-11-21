@@ -84,7 +84,7 @@ angular.module('applyMyRideApp')
         $scope.trip = planService.selectedTrip;
         var message = "Are you sure you want to cancel this ride?";
 
-        if($scope.trip.itineraries.length > 1){
+        if($scope.trip.itineraries.length > 1 ||  $scope.outboundCancelled ||  $scope.returnCancelled){
           
           // DEAL WITH Round Trips
           bootbox.prompt({
@@ -171,12 +171,14 @@ angular.module('applyMyRideApp')
         });
         cancelPromise.success(function(data) {
           bootbox.alert(successMessage);
-          ipCookie('rideCount', ipCookie('rideCount') - 1);
           if(result == 'BOTH'){
             $scope.tripCancelled = true;
+            ipCookie('rideCount', ipCookie('rideCount') - 1);
           }
           else if(result == 'OUTBOUND'){
-            $scope.outboundTripCancelled=true;
+            $scope.outboundCancelled = true;
+          }else if(result == 'RETURN'){
+            $scope.returnCancelled = true;
           }
         })
       }
