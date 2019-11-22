@@ -55,12 +55,20 @@
       .col-xs-12.col-md-8.col-md-offset-2.no-padding
         .row
           .col-xs-12
-            %h2 Outbound Trip
+            %h2
+              %span 
+                Outbound Trip
+              %span{style: 'color: red; font-size: 22px;', ng: {show: 'outboundCancelled'}}
+                (cancelled)
     .row{ng: {show: '$index == 1', style: "$index == 1 ? {'margin-top': '2em'} : {}"}}
       .col-xs-12.col-md-8.col-md-offset-2.no-padding
         .row
           .col-xs-12
-            %h2 Return Trip
+            %h2 
+              %span 
+                Return Trip
+              %span{style: 'color: red; font-size: 22px;', ng: {show: 'returnCancelled'}}
+                (cancelled)
     .row
       .col-xs-12.col-md-8.col-md-offset-2.no-padding
         .row
