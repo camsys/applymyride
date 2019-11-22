@@ -72,8 +72,44 @@ angular.module('applyMyRideApp')
         var message = "Are you sure you want to cancel this ride?";
         var successMessage = 'Your trip has been cancelled.'
 
-        var paratransitItineraries = planService.paratransitItineraries;
-        
+        $scope.paratransitItineraries = planService.paratransitItineraries;
+
+        if($scope.paratransitItineraries.length > 1 &&  !$scope.outboundCancelled &&  !$scope.returnCancelled){
+          
+          // DEAL WITH Round Trips
+          bootbox.prompt({
+              title: message,
+              message: '<p>Please select an option below:</p>',
+              inputType: 'radio',
+              inputOptions: [
+              {
+                  text: 'Cancel Entire Trip',
+                  value: 'BOTH',
+              },
+              {
+                  text: 'Cancel Outbound Trip Only',
+                  value: 'OUTBOUND',
+              },
+              {
+                  text: 'Cancel Return Trip Only',
+                  value: 'RETURN',
+              }
+              ],
+              buttons: {
+                  'cancel': {
+                    label: 'Keep Ride'
+                  },
+                  'confirm': {
+                    label: 'Cancel Ride'
+                  }
+              },
+              callback: function(result){
+                $scope.cancelCall(result);
+              }
+          });
+        }else{
+
+        // DEAL WITH 1 Way Trips
         bootbox.confirm({
           message: message,
           buttons: {
@@ -84,38 +120,79 @@ angular.module('applyMyRideApp')
               label: 'Cancel Ride'
             }
           },
-          callback: function(result) {
-            if(result == true){
-              $scope.tripCancelled = true;
-              var cancel = {};
-              cancel.bookingcancellation_request = [];
-              angular.forEach(paratransitItineraries, function(itinerary, index) {
-                var bookingCancellation = {};
-                if(itinerary.id){
-                  bookingCancellation.itinerary_id = itinerary.id;
-                }
-                else if(itinerary.booking_confirmation){
-                  bookingCancellation.booking_confirmation = itinerary.booking_confirmation;     
-                }
-                cancel.bookingcancellation_request.push(bookingCancellation);
-              });
-              
-              var cancelPromise = planService.cancelTrip($http, cancel)
-              cancelPromise.error(function(data) {
-                $scope.tripCancelled = false;
-                bootbox.alert("An error occurred, your trip was not cancelled.  Please call 1-844-PA4-RIDE for more information.");
-              });
-              cancelPromise.success(function(data) {
-                $scope.tripCancelled = true;
-                bootbox.alert(successMessage, function(){
-                    ipCookie('rideCount', ipCookie('rideCount') - 1);
-                });
-               
-
-              })
+          callback: function(result){
+            if(result){
+              if($scope.outboundCancelled){
+                 $scope.cancelCall('RETURN')
+              } else if($scope.returnCancelled){
+                 $scope.cancelCall('OUTBOUND')
+              } else {
+                $scope.cancelCall('BOTH')
+              }
             }
           }
+        })
+      }
+      }
+
+      $scope.cancelCall = function(result){
+        if(result != 'BOTH' && result != 'OUTBOUND' && result != 'RETURN'){
+          return;
+        }
+
+        var itinsToCancel; 
+        var successMessage;
+        if(result == 'BOTH'){
+          itinsToCancel = $scope.paratransitItineraries
+          successMessage = 'Your trip has been cancelled.';
+        }
+        else if(result == 'OUTBOUND'){
+          itinsToCancel = [$scope.paratransitItineraries[0]];
+          successMessage = 'Your outbound trip has been cancelled.';
+        } else if(result == 'RETURN'){
+          itinsToCancel = [$scope.paratransitItineraries[$scope.paratransitItineraries.length - 1]];
+          successMessage = 'Your return trip has been cancelled.';
+        }
+        
+        var cancel = {};
+
+        cancel.bookingcancellation_request = [];
+        
+        angular.forEach(itinsToCancel, function(itinerary, index) {
+          var bookingCancellation = {};
+          if(itinerary.id){
+            bookingCancellation.itinerary_id = itinerary.id;
+          } else if(itinerary.booking_confirmation){
+            bookingCancellation.booking_confirmation = itinerary.booking_confirmation;     
+          }
+          cancel.bookingcancellation_request.push(bookingCancellation);
         });
+
+
+        
+        var cancelPromise = planService.cancelTrip($http, cancel)
+        cancelPromise.error(function(data) {
+          bootbox.alert("An error occurred, your trip was not cancelled.  Please call 1-844-PA4-RIDE for more information.");
+        });
+        
+        cancelPromise.success(function(data) {
+          bootbox.alert(successMessage);
+          if(result == 'BOTH'){
+            $scope.tripCancelled = true;
+            ipCookie('rideCount', ipCookie('rideCount') - 1);
+          }
+          else if(result == 'OUTBOUND'){
+            $scope.outboundCancelled = true;
+            if($scope.returnCancelled){
+              ipCookie('rideCount', ipCookie('rideCount') - 1);
+            }
+          }else if(result == 'RETURN'){
+            $scope.returnCancelled = true;
+            if($scope.outboundCancelled){
+              ipCookie('rideCount', ipCookie('rideCount') - 1);
+            }
+          }
+        })
       }
       $scope.bookSharedRide = function(){
         var promise = planService.bookSharedRide($http);
