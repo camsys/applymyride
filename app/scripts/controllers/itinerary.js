@@ -138,6 +138,11 @@ angular.module('applyMyRideApp')
       }
 
       $scope.cancelCall = function(result){
+        if(result != 'BOTH' && result != 'OUTBOUND' && result != 'INBOUND'){
+          return;
+        }
+
+
         var itinsToCancel; 
         var successMessage;
         if(result == 'BOTH'){
