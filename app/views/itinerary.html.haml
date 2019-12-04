@@ -10,7 +10,7 @@
           .col-xs-12{style:' background-color: rgb(205,254,206); padding:10px;'}
             %h1
               %span
-                Bus Rides
+                Bus & Rail Rides
               %span{style:'font-size: 22px;',ng: {hide: 'tripCancelled'}}
                 (saved)
               %span{style: 'color: red; font-size: 22px;', ng: {show: 'tripCancelled'}}
@@ -53,9 +53,10 @@
             .blah{ng: {repeat: 'leg in itinerary.json_legs track by $index'}}
               %img{ng: {if: 'leg.mode == "WALK"', src: 'images/modes/walk.png'}}
               %img{ng: {if: 'leg.mode == "BUS"', src: 'images/modes/transit.png'}}
+              %img{ng: {if: 'leg.mode == "SUBWAY"', src: 'images/modes/rail.png'}}
               %i.fa.fa-lg.fa-chevron-right{ng: {if: '!$last'}}
         .col-xs-12.col-md-8.col-md-offset-2.transit-body
-          .border-between.timeline{'index' => '{{$index}}', ng: {click: 'show($event)', repeat: 'leg in itinerary.json_legs track by $index', class: '{"mode_bus": leg.mode == "BUS", "mode_walk": leg.mode == "WALK"}'}}
+          .border-between.timeline{'index' => '{{$index}}', ng: {click: 'show($event)', repeat: 'leg in itinerary.json_legs track by $index', class: '{"mode_bus": leg.mode == "BUS", "mode_rail": leg.mode == "SUBWAY", "mode_walk": leg.mode == "WALK"}'}}
             .row.even-height-row
               .col-xs-2.right-side
                 .row
@@ -72,6 +73,19 @@
                       %h4{ng: {show: '!$first'}}  Bus {{leg.route}} @ {{leg.from.name}}
                       %h5.text-muted{ng: {show: '$first'}} Begin at {{leg.serviceName}}
                       %h4{ng: {show: '$first'}}  Bus {{leg.route}} @ {{itinerary.origin.name}}
+                  .row
+                    .leg-info.col-xs-12
+                      %h5.text-muted "{{leg.route}} - {{leg.headsign}}"
+                  .row
+                    .leg-info.col-xs-12
+                      %h5.text-muted {{leg.distanceDesc}} ({{leg.travelTime}})
+                .rail-info{ng: {show: 'leg.mode == "SUBWAY"'}}
+                  .row
+                    .leg-info.col-xs-12.leg-header
+                      %h5.text-muted{ng: {show: '!$first'}} Get on {{leg.serviceName}}
+                      %h4{ng: {show: '!$first'}}  Train {{leg.route}} @ {{leg.from.name}}
+                      %h5.text-muted{ng: {show: '$first'}} Begin at {{leg.serviceName}}
+                      %h4{ng: {show: '$first'}}  Train {{leg.route}} @ {{itinerary.origin.name}}
                   .row
                     .leg-info.col-xs-12
                       %h5.text-muted "{{leg.route}} - {{leg.headsign}}"
@@ -283,7 +297,7 @@
             %h4{style: 'float:right; vertical-align: bottom;'} Free
     .row
       .col-xs-12.col-md-8.col-md-offset-2.walk-body
-        .border-between.timeline{'index' => '{{$index}}', ng: {click: 'test()', repeat: 'leg in itinerary.json_legs track by $index', class: '{"mode_bus": leg.mode == "BUS", "mode_walk": leg.mode == "WALK"}'}}
+        .border-between.timeline{'index' => '{{$index}}', ng: {click: 'test()', repeat: 'leg in itinerary.json_legs track by $index', class: '{"mode_bus": leg.mode == "BUS", "mode_rail": leg.mode == "SUBWAY", "mode_walk": leg.mode == "WALK"}'}}
           .row.even-height-row
             .col-xs-2.right-side
               .row

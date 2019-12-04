@@ -438,7 +438,8 @@ angular.module('applyMyRideApp')
           transitInfo.duration = itinerary.duration;
           var found = false;
           angular.forEach(itinerary.json_legs, function(leg, index) {
-            if(!found && leg.mode == 'BUS'){
+            if(!found && (leg.mode == 'BUS' || leg.mode == 'SUBWAY')){
+              transitInfo.mode = leg.mode;
               transitInfo.route = leg.routeShortName;
               found = true;
             }
@@ -967,13 +968,13 @@ angular.module('applyMyRideApp')
       var that = this;
       autocompleteService.getPlacePredictions(
         {
-          input: text,
+          input: text/*,
           bounds: new google.maps.LatLngBounds(
                     // ALL PA
                     new google.maps.LatLng(39.719799, -80.519895),
                     new google.maps.LatLng(42.273734, -74.689502)
                   ),
-          strictBounds: true
+          strictBounds: true*/
         }, function(list, status) {
           angular.forEach(list, function(value, index) {
             var formatted_address;

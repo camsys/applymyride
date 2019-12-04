@@ -156,7 +156,7 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
     $scope.step = 'rebook';
     $location.path('/plan/rebook');
   };
-  $scope.cancelThisBusTrip = function() {
+  $scope.cancelThisOrRailTrip = function() {
     usSpinnerService.spin('spinner-1');
     var cancelRequest = {bookingcancellation_request: []};
     var leg1, leg2;
@@ -532,7 +532,7 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
     */
   };
 
-  $scope.saveBusTrip = function(){
+  $scope.saveBusOrRailTrip = function(){
     var tripId = planService.tripId;
     var selectedItineraries = [{"trip_id":tripId, "itinerary_id":planService.transitInfos[0][ $scope.selectedBusOption[0] ].id}];
 
@@ -1230,7 +1230,7 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
           }
         }, paratransitItineraries);
         if(paratransitItineraries.length != trip.itineraries.length){
-          bootbox.alert("No shared ride is available for your request.");
+          bootbox.alert("No shared ride is available for your request. Please call 1-844-PA4-RIDE for more information.");
           usSpinnerService.stop('spinner-1');
         }else{
           planService.paratransitItineraries = paratransitItineraries;
@@ -1474,7 +1474,7 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
               startMoment = day.clone().hour(splitTime[0]).minute(splitTime[1]).subtract(1, 'seconds');
               splitTime = $scope.serviceHours[index].close.split(':');
               endMoment = day.clone().hour(splitTime[0]).minute(splitTime[1]).add(1, 'seconds');
-              if( !day.isBetween(startMoment, endMoment ) ){return false;}
+              if( !day.isBetween(startMoment, endMoment ) ){ return false; }
 
               //make sure day is in the future
               if( moment().isAfter(day) ){ return false; }
@@ -1484,7 +1484,8 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
             };// end _checkServiceHours
             fromOK = _checkServiceHours( $scope.fromMoment );
             returnOK = _checkServiceHours( $scope.returnMoment, true);
-            return fromOK && returnOK && $scope.fromTimeUpdated;
+            var showNext = fromOK && returnOK && $scope.fromTimeUpdated;
+            return showNext;
 
           }
           $scope.$watch('fromMoment', function(n){

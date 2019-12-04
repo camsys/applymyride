@@ -19,7 +19,7 @@
       .col-md-8.col-md-offset-2.col-xs-12{style:' background-color: rgb(205,254,206); padding:10px;'}
         %h1
           %span{ng: {show: 'mode === "transit"'}}
-            Bus Ride
+            Transit Ride
           %span{ng: {show: 'mode === "walk"'}}
             Walk
           %span{style:'font-size: 22px;', ng: {show: 'transitSaved || walkSaved'}} 
@@ -71,9 +71,9 @@
             Email this ride
       .col-md-8.col-md-offset-2.col-xs-12{ng: {show: 'loggedIn' } }  
         .row{ng:{show: 'mode === "transit"'}}
-          %a.btn.btn-primary.btn-block{href: "", ng: {click: 'saveBusTrip()', hide:'transitSaved || transitCancelled'}}
+          %a.btn.btn-primary.btn-block{href: "", ng: {click: 'saveBusOrRailTrip()', hide:'transitSaved || transitCancelled'}}
             Save to my rides
-          %a.btn.btn-primary.btn-block{href: "", style:'background-color:red;',ng: {click: 'cancelThisBusTrip()', show: 'transitSaved'}}
+          %a.btn.btn-primary.btn-block{href: "", style:'background-color:red;',ng: {click: 'cancelThisBusOrRailTrip()', show: 'transitSaved'}}
             Cancel this ride
           
         .row{ng:{show: 'mode === "walk"'}}

@@ -17,7 +17,7 @@
               %h4{style: 'margin-left:5px;'} Click for details
 
       .row
-        .bus.rounded-border{style: "padding: 1em", ng: {repeat: 'transitInfo in transitInfos', click: 'viewTransitTrip(transitInfo.id, segmentid);'}}
+        .bus.rail.rounded-border{style: "padding: 1em", ng: {repeat: 'transitInfo in transitInfos', click: 'viewTransitTrip(transitInfo.id, segmentid);'}}
           .row{style: "background-color: #F2F2F2; margin: -1em;"}
             .col-xs-8{style: "padding-top: 0.5em;"}
               %h4{style: "font-weight: bold;"} {{transitInfo.label}}

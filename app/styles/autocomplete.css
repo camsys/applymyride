@@ -287,6 +287,17 @@ only screen and (min-device-pixel-ratio : 1.5) {
   right: 50%;
 }
 
+.mode_rail .itinerary-logo-image {
+  width: 20px;
+  height: 20px;
+  background-image: url(../images/modes/rail.png);
+  background-size: contain;
+  content: " ";
+  position: absolute;
+  margin-top: 10%;
+  right: 50%;
+}
+
 .mode_wait .itinerary-logo-image {
   width: 20px;
   height: 20px;
@@ -323,6 +334,18 @@ only screen and (min-device-pixel-ratio : 1.5) {
 }
 
 .mode_bus > .row > [class*='col-']:nth-child(2):before {
+  width: 5px;
+  background: #852303;
+  bottom: 0;
+  content: " ";
+  left: 8px;
+  position: absolute;
+  top: 10px;
+  height: 100%;
+  z-index: -1;
+}
+
+.mode_rail > .row > [class*='col-']:nth-child(2):before {
   width: 5px;
   background: #852303;
   bottom: 0;
@@ -450,6 +473,10 @@ only screen and (min-device-pixel-ratio : 1.5) {
   color: #852303;
 }
 
+.mode_rail i {
+  color: #852303;
+}
+
 .leg-info {
   padding-right: 0px;
 }
@@ -458,7 +485,7 @@ only screen and (min-device-pixel-ratio : 1.5) {
   margin: 0px;
 }
 
-.bus-info, .walk-info {
+.bus-info, .rail-info, .walk-info {
   display: table;
   width: 100%;
   /*padding-right:40px;*/
@@ -570,6 +597,16 @@ only screen and (min-device-pixel-ratio : 1.5) {
 }
 
 .bus_options .row {
+  margin-left: -1em;
+  margin-right: -1em;
+  cursor: pointer;
+}
+
+.rail {
+  padding: 1em;
+}
+
+.rail_options .row {
   margin-left: -1em;
   margin-right: -1em;
   cursor: pointer;

@@ -3,7 +3,7 @@
     .col-xs-12.col-md-6.col-md-offset-3.col-sm-8.col-sm-offset-2
       %h3
         %strong
-          Bus options
+          Bus & Rail options
 
   .row.bus-itinerary-details
     .col-xs-12.col-md-6.col-md-offset-3.col-sm-8.col-sm-offset-2
@@ -19,7 +19,8 @@
             %h3{ng: {hide: 'transitInfos[1]' } }
               One Way
           .col-xs-2.pull-right.bus-options-right
-            %img{ng: {src: 'images/modes/transit.png'}, style:'width: 50%; vertical-align: middle;'}
+            %img{ng: {if: 'transitInfos[0][ selectedBusOption[0] ].mode == "BUS"', src: 'images/modes/transit.png'}, style:'width: 50%; vertical-align: middle;'}
+            %img{ng: {if: 'transitInfos[0][ selectedBusOption[0] ].mode == "SUBWAY"', src: 'images/modes/rail.png'}, style:'width: 50%; vertical-align: middle;'}
             {{transitInfos[0][ selectedBusOption[0] ].route}}
           .col-xs-12
             .row{style:'padding: 0px 0px 10px 10px;'}
@@ -53,7 +54,8 @@
           .col-xs-10{style:'background-color: #f5f5f5;'}
             %h3 Returning
           .col-xs-2.pull-right.bus-options-right
-            %img{ng: {src: 'images/modes/transit.png'}, style:'width: 50%; vertical-align: middle;'}
+            %img{ng: {if: 'transitInfos[1][ selectedBusOption[1] ].mode == "BUS"', src: 'images/modes/transit.png'}, style:'width: 50%; vertical-align: middle;'}
+            %img{ng: {if: 'transitInfos[1][ selectedBusOption[1] ].mode == "SUBWAY"', src: 'images/modes/rail.png'}, style:'width: 50%; vertical-align: middle;'}
             {{transitInfos[1][ selectedBusOption[1] ].route}}
           .col-xs-12
             .row{style:'padding: 0px 0px 10px 10px;'}
@@ -71,7 +73,7 @@
   .row
     .col-xs-12.col-md-6.col-md-offset-3.col-sm-8.col-sm-offset-2
       %h4.btn-link{ng: {hide: 'viewMoreBusOptions', click:'viewMoreBusOptions=true'} }
-        View more bus options
+        View more bus & rail options
   .row.btn-spacing
     .col-xs-12.col-md-6.col-md-offset-3.col-sm-8.col-sm-offset-2.text-center
       .pull-left
@@ -79,5 +81,5 @@
           Back
       .pull-right
         %a.btn.btn-primary{href: "", ng: {show:'loggedIn', click: "saveBusTrip()"}}
-          Save this bus trip
+          Save this transit trip
 
