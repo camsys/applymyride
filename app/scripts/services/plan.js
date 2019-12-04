@@ -939,9 +939,9 @@ angular.module('applyMyRideApp')
         ];
 
       // add the getRecentSearches if they are to be included
-      if(includeRecentSearches == true){
-        promises.push(LocationSearch.getRecentSearches(text) );
-      }
+      //if(includeRecentSearches == true){
+      //  promises.push(LocationSearch.getRecentSearches(text) );
+      //}
 
       // when all the promises are resolved, then resolve the compositePromise
       $q.all(promises).then(function(results){
