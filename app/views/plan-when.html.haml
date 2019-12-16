@@ -43,7 +43,7 @@
       .col-lg-6.col-lg-offset-3.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1.col-xs-12
         .text-muted
           If you want to see Shared Ride services, choose a time between service hours of {{serviceOpen}} to {{serviceClose}}
-    .row{ng:{show:'!whenShowNext()', hide:'whenShowNext()'}}
+    .row{ng:{show:'fromTimeUpdated && !whenShowNext()', hide:'whenShowNext()'}}
       .col-lg-6.col-lg-offset-3.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1.col-xs-12
         .alert.alert-danger{role:'alert'}
           No shared ride is available for your request. Please call 1-844-PA4-RIDE for more information.
