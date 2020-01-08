@@ -65,7 +65,7 @@
           %h4{style: 'float:right; vertical-align: bottom;'} Free
   .row
     .col-xs-12.col-md-8.col-md-offset-2.walk-body
-      .border-between.timeline{'index' => '{{$index}}', ng: {click: 'test()', repeat: 'leg in itinerary.json_legs track by $index', class: '{"mode_bus": leg.mode == "BUS", "mode_rail": leg.mode == "SUBWAY", "mode_walk": leg.mode == "WALK"}'}}
+      .border-between.timeline{'index' => '{{$index}}', ng: {click: 'test()', repeat: 'leg in itinerary.json_legs track by $index', class: '{"mode_bus": leg.mode == "BUS", "mode_rail": leg.mode == "RAIL", "mode_subway": leg.mode == "SUBWAY", "mode_tram": leg.mode == "TRAM", "mode_walk": leg.mode == "WALK"}'}}
         .row.even-height-row
           .col-xs-2.right-side
             %h4 {{leg.startTimeDesc}}

@@ -20,7 +20,9 @@
               One Way
           .col-xs-2.pull-right.bus-options-right
             %img{ng: {if: 'transitInfos[0][ selectedBusOption[0] ].mode == "BUS"', src: 'images/modes/transit.png'}, style:'width: 50%; vertical-align: middle;'}
-            %img{ng: {if: 'transitInfos[0][ selectedBusOption[0] ].mode == "SUBWAY"', src: 'images/modes/rail.png'}, style:'width: 50%; vertical-align: middle;'}
+            %img{ng: {if: 'transitInfos[0][ selectedBusOption[0] ].mode == "RAIL"', src: 'images/modes/rail.png'}, style:'width: 50%; vertical-align: middle;'}
+            %img{ng: {if: 'transitInfos[0][ selectedBusOption[0] ].mode == "SUBWAY"', src: 'images/modes/subway.png'}, style:'width: 50%; vertical-align: middle;'}
+            %img{ng: {if: 'transitInfos[0][ selectedBusOption[0] ].mode == "TRAM"', src: 'images/modes/streetcar.png'}, style:'width: 50%; vertical-align: middle;'}
             {{transitInfos[0][ selectedBusOption[0] ].route}}
           .col-xs-12
             .row{style:'padding: 0px 0px 10px 10px;'}
@@ -55,7 +57,9 @@
             %h3 Returning
           .col-xs-2.pull-right.bus-options-right
             %img{ng: {if: 'transitInfos[1][ selectedBusOption[1] ].mode == "BUS"', src: 'images/modes/transit.png'}, style:'width: 50%; vertical-align: middle;'}
-            %img{ng: {if: 'transitInfos[1][ selectedBusOption[1] ].mode == "SUBWAY"', src: 'images/modes/rail.png'}, style:'width: 50%; vertical-align: middle;'}
+            %img{ng: {if: 'transitInfos[1][ selectedBusOption[1] ].mode == "RAIL"', src: 'images/modes/rail.png'}, style:'width: 50%; vertical-align: middle;'}
+            %img{ng: {if: 'transitInfos[1][ selectedBusOption[1] ].mode == "SUBWAY"', src: 'images/modes/subway.png'}, style:'width: 50%; vertical-align: middle;'}
+            %img{ng: {if: 'transitInfos[1][ selectedBusOption[1] ].mode == "TRAM"', src: 'images/modes/streetcar.png'}, style:'width: 50%; vertical-align: middle;'}
             {{transitInfos[1][ selectedBusOption[1] ].route}}
           .col-xs-12
             .row{style:'padding: 0px 0px 10px 10px;'}

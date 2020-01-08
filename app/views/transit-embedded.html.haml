@@ -11,7 +11,7 @@
     .col-xs-12.transit-container
       .row.row-eq-height.transit-header
     .col-xs-12.transit-body
-      .border-between.timeline{'index' => '{{$index}}', ng: {click: 'show($event)', repeat: 'leg in itinerary.json_legs track by $index', class: '{"mode_bus": leg.mode == "BUS", "mode_rail": leg.mode == "SUBWAY", "mode_walk": leg.mode == "WALK"}'}}
+      .border-between.timeline{'index' => '{{$index}}', ng: {click: 'show($event)', repeat: 'leg in itinerary.json_legs track by $index', class: '{"mode_bus": leg.mode == "BUS", "mode_rail": leg.mode == "RAIL", "mode_subway": leg.mode == "SUBWAY", "mode_tram": leg.mode == "TRAM", "mode_walk": leg.mode == "WALK"}'}}
         .row.even-height-row
           .col-xs-2.right-side
             .row
@@ -33,7 +33,7 @@
               .row
                 .leg-info.col-xs-12
                   %h5.text-muted {{leg.distanceDesc}} ({{leg.travelTime}})
-            .rail-info{ng: {show: 'leg.mode == "SUBWAY"'}}
+            .rail-info{ng: {show: 'leg.mode == "RAIL" || leg.mode == "SUBWAY" || leg.mode == "TRAM"'}}
               .row
                 .leg-info.col-xs-12.leg-header
                   %h5.text-muted Get on {{leg.serviceName}}

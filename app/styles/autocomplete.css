@@ -288,9 +288,31 @@ only screen and (min-device-pixel-ratio : 1.5) {
 }
 
 .mode_rail .itinerary-logo-image {
+  width: 22px;
+  height: 22px;
+  background-image: url(../images/modes/rail.png);
+  background-size: contain;
+  content: " ";
+  position: absolute;
+  margin-top: 10%;
+  right: 50%;
+}
+
+.mode_subway .itinerary-logo-image {
+  width: 17px;
+  height: 20px;
+  background-image: url(../images/modes/subway.png);
+  background-size: contain;
+  content: " ";
+  position: absolute;
+  margin-top: 10%;
+  right: 50%;
+}
+
+.mode_tram .itinerary-logo-image {
   width: 20px;
   height: 20px;
-  background-image: url(../images/modes/rail.png);
+  background-image: url(../images/modes/streetcar.png);
   background-size: contain;
   content: " ";
   position: absolute;
@@ -346,6 +368,30 @@ only screen and (min-device-pixel-ratio : 1.5) {
 }
 
 .mode_rail > .row > [class*='col-']:nth-child(2):before {
+  width: 5px;
+  background: #852303;
+  bottom: 0;
+  content: " ";
+  left: 8px;
+  position: absolute;
+  top: 10px;
+  height: 100%;
+  z-index: -1;
+}
+
+.mode_subway > .row > [class*='col-']:nth-child(2):before {
+  width: 5px;
+  background: #852303;
+  bottom: 0;
+  content: " ";
+  left: 8px;
+  position: absolute;
+  top: 10px;
+  height: 100%;
+  z-index: -1;
+}
+
+.mode_tram > .row > [class*='col-']:nth-child(2):before {
   width: 5px;
   background: #852303;
   bottom: 0;
