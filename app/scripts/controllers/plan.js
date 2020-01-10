@@ -710,7 +710,7 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
     //return if no change, return if place is empty, or we're supposed to ignore blur events
     if( (place && lastMappedPlaces[toFrom] === place) || true === ignoreBlur || (place && 6 > place.length)){
       //hide the place marker if place is empty or too short
-      if((!place || 6 > place.length) && $scope.toFromMarkers[toFrom]){
+      if((!place || 1 > place.length) && $scope.toFromMarkers[toFrom]){
         $scope.toFromMarkers[toFrom].setMap(null);
       }
       checkShowMap();
