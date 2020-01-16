@@ -655,6 +655,8 @@ angular.module('applyMyRideApp')
         return $http.get(urlPrefix + '/api/v1/services/hours', this.getHeaders());
       }
 
+
+      // Book a shared ride
       this.bookSharedRide = function($http) {
         var requestHolder = {};
         requestHolder.booking_request = [];
@@ -688,6 +690,7 @@ angular.module('applyMyRideApp')
 
       }
 
+      // Build an itinerary request object
       this.createItineraryRequest = function() {
         if(this.fromDetails && this.fromDetails.poi){
           this.fromDetails.name = this.fromDetails.poi.name

@@ -702,13 +702,14 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
   var lastTo = $scope.to || $scope.toDefault;
   var lastMappedPlaces = {};
   var ignoreBlur=false;
+
   function mapOnBlur( place, toFrom )
   {
     var defaulted = false;
     //blur handler runs each time the autocomplete input is blurred via selecting, or just blurring
     //If it was blurred because of a selection, we don't want it to run -- let the selectTo or selectFrom run instead
     //return if no change, return if place is empty, or we're supposed to ignore blur events
-    if( (place && lastMappedPlaces[toFrom] === place) || true === ignoreBlur || (place && 6 > place.length)){
+    if( (place && lastMappedPlaces[toFrom] === place) || true === ignoreBlur){
       //hide the place marker if place is empty or too short
       if((!place || 1 > place.length) && $scope.toFromMarkers[toFrom]){
         $scope.toFromMarkers[toFrom].setMap(null);
@@ -723,7 +724,7 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
     }else{
       $scope.showNext = false;
     }
-    lastMappedPlaces[toFrom] = place;
+    lastMappedPlaces[toFrom] = place; 
     setTimeout(function selectPlace(){
       //if $scope.to or $scope.from is different from place, the autocomplete input's select events are handling
       if(!defaulted && $scope[toFrom] !== place){ return; }
@@ -732,6 +733,9 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
     }, 500);
   }
 
+  // Determines whether or not to grey out the "Yes, looks good!" Button
+  // This runs each time a character is typed in the to/from fields
+  // It's also run when you hover over the map
   $scope.whereShowNext = function(){
     if( !$scope.toFromMarkers.from || !$scope.toFromMarkers.to){
       return false;
@@ -770,6 +774,8 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
     $scope.selectPlace(place, 'to');
   }
 
+  
+  // This is run when you click a place in the list, when you tap out of the to/from field, and when the to/from page is loaded
   $scope.selectPlace = function(place, toFrom, loadLocationsIfNeeded){
     //when a place is selected, update the map
     $scope.poi = null;
@@ -778,6 +784,7 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
     var placeIdPromise = $q.defer();
     $scope.placeLabels = $scope.placeLabels || [];
 
+    // If we are on mobile, you can use the current location 
     if(toFrom == 'from' && util.isMobile()){
       $scope.placeLabels.push(currentLocationLabel);
     }
@@ -792,17 +799,18 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
     }
     var selectedIndex = $scope.placeLabels.indexOf(place);
 
+    
     if(-1 < selectedIndex && $scope.placeLabels[selectedIndex] == currentLocationLabel){
       //this is a POI result, get the 1Click location name
       $scope.getCurrentLocation(toFrom);
     }
     else if(-1 < selectedIndex && selectedIndex < $scope.poiData.length){
-      //this is a POI result, get the 1Click location name
+      //this is a POI result ('Saved Places)') get the 1Click location name 
       $scope.poi = $scope.poiData[selectedIndex];
       $scope.checkServiceArea($scope.poi, $scope.poi.formatted_address, toFrom);
     }
     else{
-
+      // nothing was selected.
       var placeId = $scope.placeIds[selectedIndex];
       if(placeId) {
         placeIdPromise.resolve(placeId);
@@ -813,10 +821,12 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
         var address;
         //if no place has been found, use place as address (manual input)
         if(-1 === labelIndex){
+          //placeIdPromise.resolve(null);
           address = place;
         }else{
           address = $scope.placeAddresses[labelIndex];
         }
+
         autocompleteService.getPlacePredictions(
           {
             input: address,
@@ -988,6 +998,41 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
     });
   }
 
+  // Take in a Google Place object and return the format that is shown
+  // in the to/from fields in FMR
+  $scope.getDisplayAddress = function(gPlace){
+    var name = gPlace['name'] 
+    var vicinity = gPlace['vicinity'];
+    var formatted_address = gPlace['formatted_address']
+    var city = null;
+
+    // The formatted address works if the place doesn't have a name.
+    if((name == null || name == "") && formatted_address != null){
+      return formatted_address
+    }
+
+    // If we have a name and vicinity for the gPlace, return them.
+    if(name != null && vicinity != null){
+      return name + ', ' + vicinity;
+    }
+
+    // Find the City name from the address_components. In the Google framework, the city name is 'locality'
+    angular.forEach(gPlace['address_components'], function(value, key) {
+      var types = value['types'];
+      if($.inArray('locality',types) >= 0){
+        city = value['long_name']
+      }
+    })
+
+    // Check to see if we found a city name and return the string.
+    if(name != null && city != null ){
+      return name + ', ' + city;
+    }
+    else{
+      return "undefined"
+    }
+  }
+
   $scope.checkServiceArea = function(result, place, toFrom, updateInput){
     updateInput = util.assignDefaultValueIfEmpty(updateInput, false);
     var serviceAreaPromise = planService.checkServiceArea($http, result);
@@ -1047,15 +1092,13 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
             if(toFrom == 'from'){
               planService.fromDetails = result;
               planService.from = place;
-              if(updateInput){
-                $("#whereFromInput").val(place);
-              }
+              // Update the typed text to reflect the geocoded place
+              $("#whereFromInput").val($scope.getDisplayAddress(result));
             }else if(toFrom == 'to'){
               planService.toDetails = result;
               planService.to = place;
-              if(updateInput){
-                $("#whereToInput").val(place);
-              }
+              // Update the typed text to reflect the geocoded place
+              $("#whereToInput").val($scope.getDisplayAddress(result));
             }
           }, 1);
         }else{
