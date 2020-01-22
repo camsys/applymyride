@@ -22,6 +22,7 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
   eightAm.setHours(8);
   eightAm.setDate( eightAm.getDate() - 1 );
   $scope.minReturnDate = new Date();
+  $scope.locationClicked = true;
   $scope.marker = null;
   $scope.toFromMarkers = {};
   $scope.toFromIcons={'to' : '//maps.google.com/mapfiles/markerB.png',
@@ -639,6 +640,9 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
 
   $scope.getLocations = function(typed, addCurrentLocation){
     if(typed){
+      // The user has typed something, don't let the Next button activate until they have selected a location.
+      $scope.locationClicked = false;
+      
       var config = planService.getHeaders();
       //if this is run before the last promise is resolved, abort the promise, start over.
       var getLocationsPromise = LocationSearch.getLocations(typed, config, planService.email != null);
@@ -655,6 +659,7 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
           choices.push({label: currentLocationLabel, option: true})
         }
 
+        // Saved Places: These are POIs from 1-Click 
         var savedPlaceData = data[1].savedplaces;
         if(savedPlaceData && savedPlaceData.length > 0){
           choices.push({label:'Saved Places', option: false});
@@ -667,6 +672,7 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
           $scope.placeAddresses = $scope.placeAddresses.concat(data[1].savedplaceaddresses);
         }
 
+        // Recent Searches are stored locally.  
         if(data.length > 2){
           var recentSearchData = data[2].recentsearches;
           if(recentSearchData && recentSearchData.length > 0){
@@ -680,6 +686,7 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
           }
         }
 
+        // These come from Google auto complete
         var googlePlaceData = data[0].googleplaces;
         if(googlePlaceData.length > 0){
           choices.push({label:'Suggestions', option: false});
@@ -702,15 +709,16 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
   var lastTo = $scope.to || $scope.toDefault;
   var lastMappedPlaces = {};
   var ignoreBlur=false;
+
   function mapOnBlur( place, toFrom )
   {
     var defaulted = false;
     //blur handler runs each time the autocomplete input is blurred via selecting, or just blurring
     //If it was blurred because of a selection, we don't want it to run -- let the selectTo or selectFrom run instead
     //return if no change, return if place is empty, or we're supposed to ignore blur events
-    if( (place && lastMappedPlaces[toFrom] === place) || true === ignoreBlur || (place && 6 > place.length)){
+    if( (place && lastMappedPlaces[toFrom] === place) || true === ignoreBlur){
       //hide the place marker if place is empty or too short
-      if((!place || 6 > place.length) && $scope.toFromMarkers[toFrom]){
+      if((!place || 1 > place.length) && $scope.toFromMarkers[toFrom]){
         $scope.toFromMarkers[toFrom].setMap(null);
       }
       checkShowMap();
@@ -723,7 +731,7 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
     }else{
       $scope.showNext = false;
     }
-    lastMappedPlaces[toFrom] = place;
+    lastMappedPlaces[toFrom] = place; 
     setTimeout(function selectPlace(){
       //if $scope.to or $scope.from is different from place, the autocomplete input's select events are handling
       if(!defaulted && $scope[toFrom] !== place){ return; }
@@ -732,7 +740,14 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
     }, 500);
   }
 
+  // Determines whether or not to grey out the "Yes, looks good!" Button
+  // This runs each time a character is typed in the to/from fields
+  // It's also run when you hover over the map
   $scope.whereShowNext = function(){
+    if(!$scope.locationClicked){
+      return false;
+    }
+
     if( !$scope.toFromMarkers.from || !$scope.toFromMarkers.to){
       return false;
     }
@@ -770,7 +785,23 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
     $scope.selectPlace(place, 'to');
   }
 
+  
+  // This is run when you click a place in the list, 
+  // when you tap out of the to/from field, 
+  // and when the to/from page is loaded
   $scope.selectPlace = function(place, toFrom, loadLocationsIfNeeded){
+
+    // Check to see if we have reset to the original place. If so, we can turn the button back on.     
+    if(toFrom == 'from'){
+      if(place === $scope.fromDefault && place.length > 0){
+        $scope.locationClicked = true
+      }
+    }else{
+      if(place === $scope.toDefault && place.length > 0){
+        $scope.locationClicked = true
+      }
+    }
+
     //when a place is selected, update the map
     $scope.poi = null;
     $scope.showMap = true;
@@ -778,8 +809,10 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
     var placeIdPromise = $q.defer();
     $scope.placeLabels = $scope.placeLabels || [];
 
+    // If we are on mobile, you can use the current location 
     if(toFrom == 'from' && util.isMobile()){
       $scope.placeLabels.push(currentLocationLabel);
+      $scope.locationClicked = true;
     }
 
     $scope.errors['noResults'+toFrom] = false;
@@ -791,23 +824,30 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
       return;
     }
     var selectedIndex = $scope.placeLabels.indexOf(place);
-
+    
+    // The person selected the current location.
     if(-1 < selectedIndex && $scope.placeLabels[selectedIndex] == currentLocationLabel){
-      //this is a POI result, get the 1Click location name
       $scope.getCurrentLocation(toFrom);
+      $scope.locationClicked = true;
     }
+    // The person selected a POI
     else if(-1 < selectedIndex && selectedIndex < $scope.poiData.length){
-      //this is a POI result, get the 1Click location name
+      $scope.locationClicked = true;
       $scope.poi = $scope.poiData[selectedIndex];
       $scope.checkServiceArea($scope.poi, $scope.poi.formatted_address, toFrom);
     }
+    // The person selected either a recent place or a Google Place.
     else{
-
       var placeId = $scope.placeIds[selectedIndex];
+      // The person selected a Google Place
       if(placeId) {
         placeIdPromise.resolve(placeId);
+        $scope.locationClicked = true;
       }
       else{
+      // The person did not select a Google Place
+      // This means that we are going to use the string to determnie the location manually, or that a recent place was selected
+      // This is used when the page is first loaded to get the lat/lng of the recently used place.
         var labelIndex = $scope.placeLabels.indexOf(place);
         var autocompleteService = new google.maps.places.AutocompleteService();
         var address;
@@ -815,8 +855,11 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
         if(-1 === labelIndex){
           address = place;
         }else{
+          //A Recent place was selected
           address = $scope.placeAddresses[labelIndex];
+          $scope.locationClicked = true;
         }
+
         autocompleteService.getPlacePredictions(
           {
             input: address,
@@ -848,6 +891,10 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
           });
       }
 
+      
+      // After a location has been picked or entered into the to/from field, we then Geocode that location
+      // TODO: Why are we re-geocoding? If the autocomplete/Poi already has a lat/lng, this isn't necessary
+      // This is only necessary for manual entry, which we no longer do.
       placeIdPromise.promise.then(function(placeId) {
         var placesService = new google.maps.places.PlacesService($scope.whereToMap);
         placesService.getDetails( { 'placeId': placeId}, function(result, status) {
@@ -893,7 +940,14 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
               }
             }
 
-            $scope.checkServiceArea(result, place, toFrom);
+            // When we start typing we hide the Yes, looks good! button. 
+            // If we made it back here without selecting a place, then we shouldn't let the person continue.
+            // When the page is first loaded, then this is used to populate the lat/lng for the previous locations, since the showButton is true by default, the button will be green assuming all other tests pass.
+            if($scope.locationClicked){
+              $scope.checkServiceArea(result, place, toFrom);
+            } else{
+              bootbox.alert("Please select a location from the dropdown to continue.");
+            }
 
           } else {
             alert('Geocode was not successful for the following reason: ' + status);
@@ -988,6 +1042,41 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
     });
   }
 
+  // Take in a Google Place object and return the format that is shown
+  // in the to/from fields in FMR
+  $scope.getDisplayAddress = function(gPlace){
+    var name = gPlace['name'] 
+    var vicinity = gPlace['vicinity'];
+    var formatted_address = gPlace['formatted_address']
+    var city = null;
+
+    // The formatted address works if the place doesn't have a name.
+    if((name == null || name == "") && formatted_address != null){
+      return formatted_address
+    }
+
+    // If we have a name and vicinity for the gPlace, return them.
+    if(name != null && vicinity != null){
+      return name + ', ' + vicinity;
+    }
+
+    // Find the City name from the address_components. In the Google framework, the city name is 'locality'
+    angular.forEach(gPlace['address_components'], function(value, key) {
+      var types = value['types'];
+      if($.inArray('locality',types) >= 0){
+        city = value['long_name']
+      }
+    })
+
+    // Check to see if we found a city name and return the string.
+    if(name != null && city != null ){
+      return name + ', ' + city;
+    }
+    else{
+      return "undefined"
+    }
+  }
+
   $scope.checkServiceArea = function(result, place, toFrom, updateInput){
     updateInput = util.assignDefaultValueIfEmpty(updateInput, false);
     var serviceAreaPromise = planService.checkServiceArea($http, result);
@@ -1047,15 +1136,13 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
             if(toFrom == 'from'){
               planService.fromDetails = result;
               planService.from = place;
-              if(updateInput){
-                $("#whereFromInput").val(place);
-              }
+              // Update the typed text to reflect the geocoded place
+              $("#whereFromInput").val($scope.getDisplayAddress(result));
             }else if(toFrom == 'to'){
               planService.toDetails = result;
               planService.to = place;
-              if(updateInput){
-                $("#whereToInput").val(place);
-              }
+              // Update the typed text to reflect the geocoded place
+              $("#whereToInput").val($scope.getDisplayAddress(result));
             }
           }, 1);
         }else{
