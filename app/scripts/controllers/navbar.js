@@ -45,6 +45,10 @@ angular.module('applyMyRideApp')
           that.$scope.walkingDistance = planService.walkingDistance;
           that.$scope.walkingSpeed = planService.walkingSpeed;
         }
+        var currentBalancePathConditions = ['confirm_shared_ride', 'itinerary', 'plan', 'profile'];
+        $scope.currentBalance = ipCookie('currentBalance');
+        $scope.showCurrentBalance = that.$scope.email && currentBalancePathConditions.some(el => $location.path().includes(el)) 
+          && ($scope.currentBalance != null);
         $scope.rideCount = ipCookie('rideCount');
         $scope.liveTrip = ipCookie('liveTrip');
         return true;
@@ -53,6 +57,7 @@ angular.module('applyMyRideApp')
       $scope.logout = function() {
         delete ipCookie.remove('email');
         delete ipCookie.remove('authentication_token');
+        delete ipCookie.remove('currentBalance');
         sessionStorage.clear();
         localStorage.clear();
         delete $scope.email;

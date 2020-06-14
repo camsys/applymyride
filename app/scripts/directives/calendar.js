@@ -2,7 +2,7 @@
 
 var app = angular.module('applyMyRideApp');
 
-app.directive('datepickerPopup', ['datepickerPopupConfig', 'dateParser', 'dateFilter', function (datepickerPopupConfig, dateParser, dateFilter) {
+app.directive('datepickerPopup', ['uibDatepickerPopupConfig', 'uibDateParser', 'dateFilter', function (datepickerPopupConfig, dateParser, dateFilter) {
   return {
     'restrict': 'A',
     'require': '^ngModel',

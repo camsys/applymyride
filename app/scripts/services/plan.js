@@ -605,6 +605,19 @@ angular.module('applyMyRideApp')
         return description;
       }
 
+      this.getCurrentBalance = function($scope, $http, ipCookie) {
+        return $http.get(urlPrefix + 'api/v1/users/current_balance', this.getHeaders()).
+          success(function(data) {
+            if (data.current_balance != undefined){
+              if($scope) $scope.currentBalance = data.current_balance;
+              if(ipCookie) {ipCookie('currentBalance', data.current_balance);}
+            }
+          }).
+          error(function(data) {
+            console.log(data);
+          });
+      }
+
       this.getTripPurposes = function($scope, $http) {
         this.fixLatLon(this.fromDetails);
         return $http.post(urlPrefix + 'api/v1/trip_purposes/list', this.fromDetails, this.getHeaders()).

@@ -1490,7 +1490,14 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
 
 
 //initialize this step's state
+  if ($scope.loggedIn) {
+    planService.getCurrentBalance($scope, $http, ipCookie).then(function(){
+      // Service sets ipCookie with currentBalance
+    });
+  }
+
   switch($routeParams.step) {
+
     case undefined:
       break;
     case 'transit':
