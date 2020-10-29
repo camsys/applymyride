@@ -586,7 +586,25 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
           result.itineraries[i].origin = planService.getAddressDescriptionFromLocation(result.itineraries[i].start_location);
           result.itineraries[i].destination = planService.getAddressDescriptionFromLocation(result.itineraries[i].end_location);
           if(result.itineraries[i].returned_mode_code == "mode_paratransit"){
-            planService.paratransitResult = result.itineraries[i];
+            // If the trip purpose is eligible based on the valid date range, allow booking a shared ride. 
+            // Otherwise, display no shared ride message.
+            var allPurposes = $scope.top_purposes.concat($scope.purposes);
+            var tripPurposesFiltered = allPurposes.filter(e => e.code == planService.itineraryRequestObject.trip_purpose);
+            if (tripPurposesFiltered.length > 0) {
+              var tripPurposeObj = tripPurposesFiltered[0]
+              if (tripPurposeObj.valid_from && tripPurposeObj.valid_until &&
+                result.itineraries[i].start_time >= tripPurposeObj.valid_from &&
+                result.itineraries[i].start_time <= tripPurposeObj.valid_until) {
+                  // Check both dates if available.
+                  planService.paratransitResult = result.itineraries[i];
+              } else if (tripPurposeObj.valid_from && result.itineraries[i].start_time >= tripPurposeObj.valid_from) {
+                  // Otherwise check from date if available.
+                  planService.paratransitResult = result.itineraries[i];
+              } else if (!tripPurposeObj.valid_from && !tripPurposeObj.valid_until) {
+                  // If date range is not available, assume it's eligible.
+                  planService.paratransitResult = result.itineraries[i];
+              }
+            }
           }else{
             planService.transitResult.push(result.itineraries[i]);
           }
@@ -1609,6 +1627,10 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
       $scope.paratransitItineraries = planService.paratransitItineraries;
       if(planService.guestParatransitItinerary){
         //don't let there be paratransit itineraries if the guest itinerary is populated
+        $scope.paratransitItineraries = [];
+      }
+      if (!planService.paratransitResult) {
+        // Don't let there be paratransit itineraries if the purpose is not eligible.
         $scope.paratransitItineraries = [];
       }
       $scope.guestParatransitItinerary = planService.guestParatransitItinerary;
