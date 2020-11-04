@@ -376,8 +376,8 @@
                 {{'How Many' + (hasEscort ? ' (not including escort)?' : '?')}}
               %select{id:'numberofcompanions', ng: {model: 'numberOfCompanions', options: 'number for number in questions.limit'}}
         .row.unstuck-foot.btn-spacing
-          .col-md-8.col-md-offset-2.col-xs-12
-            %a.btn{href: "", back: '', ng: {click: "back()"}}
+          .col-xs-12
+            %a.btn.pull-left{href: "", back: '', ng: {click: "back()"}}
               Back
             %a.btn.btn-primary.pull-right{href: "", ng: {click: 'next()'}}
               Next
