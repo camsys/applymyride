@@ -366,7 +366,7 @@
     .col-md-8.col-md-offset-2.col-xs-12
       %a.btn.btn-primary.btn-block{href: "", ng: {click: 'toggleEmail($event);', hide: 'tripCancelled'}}
         Email this ride
-      %a.btn.btn-primary.btn-block{href: "", style:'background-color:red;',ng: {click: 'cancelTrip()', hide:'tripCancelled'}}
+      %a.btn.btn-primary.btn-block{href: "", style:'background-color:red;',ng: {click: 'cancelTrip()', hide:'tripCancelled|| trip.tab === "past"'}}
         Cancel this ride
       %a.btn.btn-primary.btn-block{href: "", ng: {click: "viewMyRides()", show:'tripCancelled'}}
         View all my rides
