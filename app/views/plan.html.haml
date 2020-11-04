@@ -373,7 +373,7 @@
           .col-xs-12{'ng-show'=>'hasCompanions'}
             %label{for:'numberofcompanions'}
               %h4{style:'display:inline;'}
-                How Many?
+                {{'How Many' + (hasEscort ? ' (not including escort)?' : '?')}}
               %select{id:'numberofcompanions', ng: {model: 'numberOfCompanions', options: 'number for number in questions.limit'}}
         .row.unstuck-foot.btn-spacing
           .col-md-8.col-md-offset-2.col-xs-12
