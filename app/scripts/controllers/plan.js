@@ -588,7 +588,7 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
           if(result.itineraries[i].returned_mode_code == "mode_paratransit"){
             // If the trip purpose is eligible based on the valid date range, allow booking a shared ride. 
             // Otherwise, display no shared ride message.
-            var allPurposes = $scope.top_purposes.concat($scope.purposes);
+            var allPurposes = [...$scope.top_purposes || [], ...$scope.purposes || []];
             var tripPurposesFiltered = allPurposes.filter(e => e.code == planService.itineraryRequestObject.trip_purpose);
             if (tripPurposesFiltered.length > 0) {
               var tripPurposeObj = tripPurposesFiltered[0]
