@@ -1062,10 +1062,10 @@ angular.module('applyMyRideApp')
               var normalizedAddress = value.formatted_address.split(',')[0].toUpperCase().replace(filter, '').replace('NORTH', 'N').replace('SOUTH', 'S').replace('EAST','E').replace('WEST','W').replace('DRIVE','DR').replace('ROAD','RD').replace('STREET','ST').substring(0,10);
               if(normalizedAddress === normalizedName){
                 //they're the same, just show one.
-                address = value.formatted_address;
+                address = 'POI ' + value.formatted_address;
               }else{
                 //they're different. show both
-                address = value.name+' '+value.formatted_address;
+                address = 'POI ' + value.name + ', ' + value.formatted_address;
               }
               that.savedPlaceResults.push(address);
               that.savedPlaceAddresses.push(value.formatted_address);
