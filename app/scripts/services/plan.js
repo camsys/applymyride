@@ -134,6 +134,8 @@ angular.module('applyMyRideApp')
 
             if(!trip_with_itineraries.from_place && trip[0].origin.name){
               trip_with_itineraries.from_place = trip[0].origin.name;
+            } else if (!trip_with_itineraries.from_place && trip[0].origin.formatted_address) {
+              trip_with_itineraries.from_place = trip[0].origin.formatted_address;
             }
 
             var destination_addresses = trip[0].destination.address_components;
@@ -147,6 +149,8 @@ angular.module('applyMyRideApp')
 
             if(!trip_with_itineraries.to_place && trip[0].destination.name){
               trip_with_itineraries.to_place = trip[0].destination.name;
+            } else if(!trip_with_itineraries.to_place && trip[0].destination.formatted_address){
+              trip_with_itineraries.to_place = trip[0].destination.formatted_address;
             }
 
           }
