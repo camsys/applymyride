@@ -19,6 +19,20 @@ angular.module('applyMyRideApp')
       url: '//'+ APIHOST + '/api/v1/services/ids_humanized'
     }).then(successCallback, errorCallback);
   }
+
+  this.dateISOSortComparer = function(isoA,isoB, earlierFirst)
+  {
+    var da = new Date(isoA);
+    var db = new Date(isoB);
+    if (isNaN(da) || isNaN(db))
+      return 0;
+    var ta = da.getTime();
+    var tb = db.getTime();
+    var comp = tb - ta;
+    if (earlierFirst) comp *= -1;
+    return comp;
+  };
+
 }]);
 
 
