@@ -8,7 +8,7 @@
     "es5-shim": "^4.0.0",
     "bootstrap-sass-official": "3.3.7",
     "angular-animate": "1.5.8",
-    "angular-aria": "1.6.1",
+    "angular-aria": "1.8.2",
     "angular-messages": "1.6.1",
     "angular-resource": "1.6.1",
     "angular-route": "1.6.1",
@@ -19,7 +19,7 @@
     "angular-ui-map": "~0.5.0",
     "angular-ui-utils": "bower-event",
     "angular-ui": "~0.4.0",
-    "angular-bootstrap": "0.12.1",
+    "angular-bootstrap": "2.5.0",
     "humanize-duration": "~2.6.1",
     "angular-local-storage": "~0.1.5",
     "ng-device-detector": "~1.1.5",
@@ -34,6 +34,8 @@
   "resolutions": {
     "angular": "1.5.8",
     "angular-ui-utils": "0.x",
-    "bootbox": "^5.3.4"
+    "bootbox": "^5.3.4",
+    "angular-bootstrap": "2.5.0",
+    "angular-aria": "1.6.1"
   }
 }

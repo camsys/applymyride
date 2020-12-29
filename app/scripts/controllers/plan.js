@@ -317,6 +317,7 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
   $scope.selectTrip = function($event, tab, index) {
     $event.stopPropagation();
     var trip = $scope.trips[tab][index];
+    trip.tab = tab;
     planService.selectedTrip = trip;
     switch(trip.mode) {
       case 'mode_paratransit':

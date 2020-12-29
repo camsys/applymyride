@@ -70,7 +70,7 @@
           .row.unstuck-foot.btn-spacing
             .col-lg-6.col-lg-offset-3.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1.col-xs-12
               .pull-left
-                %a.btn{href: "", back: '', ng: {click: "back()", hide:'backToConfirm'}}
+                %a.btn{href: "", back: '', ng: {click: "back()", hide:'backToConfirm || loggedIn'} }
                   Start over
               .pull-right
                 %a.btn.btn-primary.btn-next{href: "", ng: {class:'{disabled: false==whereShowNext()}', click: 'next()'}}
@@ -373,11 +373,11 @@
           .col-xs-12{'ng-show'=>'hasCompanions'}
             %label{for:'numberofcompanions'}
               %h4{style:'display:inline;'}
-                How Many?
+                {{'How Many' + (hasEscort ? ' (not including escort)?' : '?')}}
               %select{id:'numberofcompanions', ng: {model: 'numberOfCompanions', options: 'number for number in questions.limit'}}
         .row.unstuck-foot.btn-spacing
-          .col-md-8.col-md-offset-2.col-xs-12
-            %a.btn{href: "", back: '', ng: {click: "back()"}}
+          .col-xs-12
+            %a.btn.pull-left{href: "", back: '', ng: {click: "back()"}}
               Back
             %a.btn.btn-primary.pull-right{href: "", ng: {click: 'next()'}}
               Next

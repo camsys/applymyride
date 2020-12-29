@@ -2,7 +2,7 @@
 
 
 angular.module('applyMyRideApp')
-    .service('planService', ['$rootScope', '$filter', '$interval', function($rootScope, $filter, $interval) {
+    .service('planService', ['$rootScope', '$filter', '$interval', 'util', function($rootScope, $filter, $interval, util) {
 
       this.reset = function(){
         delete this.fromDate;
@@ -98,7 +98,9 @@ angular.module('applyMyRideApp')
           }
         });
 
-        sortable.sort(function(a,b){ return a[1].localeCompare(b[1]); })
+        sortable.sort(function(a,b) {
+          return util.dateISOSortComparer(a,b, tripType == 'next');
+        });
 
         angular.forEach(sortable, function(trip_and_departure_array, index) {
           trips.push(trip_and_departure_array[0]);

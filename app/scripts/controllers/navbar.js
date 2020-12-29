@@ -14,6 +14,7 @@ angular.module('applyMyRideApp')
       $scope.html5 = !(input.value === notADateValue);
       planService.html5 = $scope.html5;
       $scope.mobile = deviceDetector.isMobile();
+      $scope.isUnsupportedBrowser = deviceDetector.browser.normalize() == "ie";
       planService.mobile = $scope.mobile;
 
       $scope.flash = flash;
