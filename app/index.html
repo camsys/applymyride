@@ -21,20 +21,24 @@
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
     <base href="/">
     <script>
-      //initialize APIHOST by depending on environment
+      //initialize APIHOST by mapping from hostname
       var APIHOST = (function( docHost )
       {
-        var env = docHost.match(/^findmyridepa2-(.+)\.camsys-apps\.com$/);
-        var apiHosts = {
-          'demo': 'oneclick-pa-demo.herokuapp.com',
-          'dev': 'oneclick-pa-dev.herokuapp.com',
-          'qa': 'oneclick-pa-qa.herokuapp.com'
+	// Assume localhost rails server is running on port 3000
+        var apiHostMapping = {
+	  'www.findmyridepa.com': 'occ-pa-prod.herokuapp.com',
+	  'findmyridepa.com': 'occ-pa-prod.herokuapp.com',
+	  'ui-pa-qa2.s3-website-us-east-1.amazonaws.com': 'occ-pa-qa2.herokuapp.com',
+	  'findmyridepa-qa2.camsys-apps.com': 'occ-pa-qa2.herokuapp.com',
+	  'findmyridepa-dev2.camsys-apps.com': 'occ-pa-dev.herokuapp.com',
+	  '0.0.0.0': '0.0.0.0:3000',
+	  '127.0.0.1': '127.0.0.1:3000',
+	  'localhost': 'localhost:3000'
         };
-        //use docHost by default, for local environments
-        if(!env || !env[1]){
-          return docHost;
-        }
-        return apiHosts[ env[1] ];
+	var apiHost = apiHostMapping[docHost];
+        //use docHost by default if nothing else matches, could also be a specific fallback host
+	if (!apiHost) apiHost = docHost;
+        return apiHost;
       }( document.location.hostname ));
     </script>
   </head>
