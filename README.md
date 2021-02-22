@@ -30,7 +30,7 @@ Deploy
 
 + retreive your AWS user account security keys (you may need to generate them if they don't already exist)
 
-+ run  `aws configure`  to setup your AWS user security credentials (http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-set-up.html).
++ run  `aws configure`  to setup your AWS user security credentials (https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-quickstart.html#cli-configure-quickstart-config).
 
 + build the application with the command: `grunt --force`
 
