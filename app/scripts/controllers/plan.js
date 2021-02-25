@@ -939,7 +939,6 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
         placesService.getDetails( { 'placeId': placeId}, function(result, status) {
           if (status == google.maps.GeocoderStatus.OK) {
 
-            delete result.utc_offset;
             //verify the location has a street address
             var datatypes = [];
             var route;
