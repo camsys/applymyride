@@ -151,6 +151,7 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
   }
   $scope.goPlanLogin = function(){
     $location.path('/plan/login-guest');
+    $window.location.reload();
   }
 
   $scope.goViewWalk = function(departId, returnId){
