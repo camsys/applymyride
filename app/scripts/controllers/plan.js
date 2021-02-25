@@ -82,6 +82,26 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
   //plan/confirm bus options selected-tab placeholder
   $scope.selectedBusOption = planService.selectedBusOption || [0,0];
 
+  // if on /about: fetch counties from the API
+  if ($scope.location === '/about') {
+    util.getCounties(
+      function(response) {
+        var counties = response.data.service_ids;
+        $scope.counties = counties;
+        localStorageService.set('counties', counties);
+      }
+    );
+    $scope.counties = localStorageService.get('counties') || [];
+    $scope.counties_string = '';
+    angular.forEach($scope.counties, function(county, index) {
+      if ($scope.counties.length === 0) { return }
+      if (index === $scope.counties.length - 1) {
+          $scope.counties_string += county
+      } else {
+        $scope.counties_string += county + ', '
+      }
+  })}
+
 
   $scope.reset = function() {
     planService.reset();

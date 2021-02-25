@@ -5,7 +5,7 @@
   %p{style: "margin-top:1em;"}
     = "FindMyRidePA is a Pennsylvania-based service designed to help anyone identify and evaluate options to meet their transportation needs. In some cases, users can even book a trip directly."
   %p
-    = "Currently, FindMyRidePA is available in seven counties (Adams, Cambria, Cumberland, Dauphin, Franklin, Lebanon and York) and will be available in additional counties in the near future. At this time, the transportation services available through FindMyRidePA are limited to local public transportation options (i.e., fixed-route buses that operate on fixed schedules and "
+    = "Currently, FindMyRidePA is available in {{counties.length}} counties ({{counties_string}}) and will be available in additional counties in the near future. At this time, the transportation services available through FindMyRidePA are limited to local public transportation options (i.e., fixed-route buses that operate on fixed schedules and "
     = succeed ")" do
       %a{href: "#/about/sharedride", target: "_blank"}
         = "shared-ride services"
