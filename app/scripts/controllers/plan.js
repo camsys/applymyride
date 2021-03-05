@@ -130,9 +130,9 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
     }
     $location.path('/uber');
   }
+
   $scope.goPlanLogin = function(){
-    $location.path('/plan/login-guest');
-    $window.location.reload();
+    $location.path('/');
   }
 
   $scope.goViewWalk = function(departId, returnId){
