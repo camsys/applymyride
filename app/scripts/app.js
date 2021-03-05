@@ -106,15 +106,15 @@ angular.module('applyMyRideApp', [
       })
       .when('/about', {
         templateUrl: 'views/about.html',
-        controller: 'PlanController'
+        controller: 'AboutController'
       })
       .when('/about/sharedride', {
         templateUrl: 'views/about.html',
-        controller: 'PlanController'
+        controller: 'AboutController'
       })
       .when('/about/projecthistory', {
         templateUrl: 'views/about.html',
-        controller: 'PlanController'
+        controller: 'AboutController'
       })
       .when('/profile', {
         templateUrl: 'views/profile.html',
