@@ -188,10 +188,16 @@
             %strong {{transitItineraries[0][ selectedBusOption[0] ].cost | currency | free}}
             .text-muted{ng:{show:'transitItineraries[1]'}}
               (round trip)
-          .col-xs-5.col-md-6.text-center{style:'margin:auto;'}
-            %img{ng:{ src: '{{transitItineraries[0][ selectedBusOption[0] ].logo_url}}'}, alt:'{{transitItineraries[0][ selectedBusOption[0] ].service_name}}'}
-            %h4.text-muted
-              {{transitItineraries[0][ selectedBusOption[0] ].service_name}}
+          .col-xs-5.col-md-8.row{style:'margin:auto;'}
+            .col-sm-7.text-center
+              %img{ng:{ src: '{{transitItineraries[0][ selectedBusOption[0] ].logo_url}}'}, alt:'{{transitItineraries[0][ selectedBusOption[0] ].service_name}}'}
+              %h4.text-muted
+                {{transitItineraries[0][ selectedBusOption[0] ].service_name}}
+            .col-sm-5.text-center
+              %h4.text-muted
+                Route
+              %h4.text-muted
+                {{transitRoute || "N/A"}}
           .col-xs-4.col-md-4{style:'margin:auto;'}
             %div  
               Trip Time {{transitItineraries[0][ selectedBusOption[0] ].duration | seconds}}
