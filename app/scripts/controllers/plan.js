@@ -1651,8 +1651,9 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
       $scope.hasTransit = $scope.transitInfos.length > 0;
       $scope.hasWalk = $scope.walkItineraries.length > 0;
 
-      const firstTransit = $scope.transitItineraries[0][0]
-      $scope.transitRoute = firstTransit.json_legs.find(leg => leg.mode === 'BUS').route
+      const firstItinerary = $scope.transitItineraries[0][0]
+      const firstTransit = firstItinerary.json_legs.find(leg => leg.mode === 'BUS')
+      $scope.transitRoute = firstTransit ? firstTransit.route : undefined
 
       if($scope.paratransitItineraries.length < 1 && $scope.transitItineraries.length < 1 && $scope.walkItineraries.length < 1 && !$scope.hasUber && !$scope.hasTaxi){
         $scope.noresults = true;

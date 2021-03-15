@@ -194,10 +194,10 @@
               %h4.text-muted
                 {{transitItineraries[0][ selectedBusOption[0] ].service_name}}
             .col-sm-5.text-center
-              %h4.text-muted
+              %h4.text-muted{ng: {show: 'transitRoute'}}
                 Route
-              %h4.text-muted
-                {{transitRoute || "N/A"}}
+              %h4.text-muted{ng: {show: 'transitRoute'}}
+                {{transitRoute || ""}}
           .col-xs-4.col-md-4{style:'margin:auto;'}
             %div  
               Trip Time {{transitItineraries[0][ selectedBusOption[0] ].duration | seconds}}
