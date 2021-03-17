@@ -18,20 +18,36 @@ angular.module('applyMyRideApp')
       $scope.prepareTrip = function(){
 
         angular.forEach(planService.paratransitItineraries, function(result, index) {
-          result.wait_startDesc = moment(result.wait_start).format('h:mm a');
-          result.wait_endDesc = moment(result.wait_end).format('h:mm a');
-          result.arrivalDesc = moment(result.arrival).format('h:mm a');
+          planService.setItineraryDescriptions(result);
         });
         
         angular.forEach(planService.booking_results, function(result, index) {
           result.wait_startDesc = moment(result.wait_start).format('h:mm a');
           result.wait_endDesc = moment(result.wait_end).format('h:mm a');
+          // don't assume wait window is 30 minutes, get diff
+          var d1 = new Date(result.wait_end);
+          var d2 = new Date(result.wait_start);
+
           result.arrivalDesc = moment(result.arrival).format('h:mm a');
-          result.travelTime = humanizeDuration(result.negotiated_duration * 1000,  { units: ["hours", "minutes"], round: true });
+          if (result.negotiated_duration)
+            result.travelTime = humanizeDuration(result.negotiated_duration * 1000,  { units: ["hours", "minutes"], round: true });
+          else {
+            var itinDuration = null;
+            var itin_id = result.itinerary_id;
+            angular.forEach(planService.paratransitItineraries, function (itinerary, index) {
+              if (itinerary.id === itin_id)
+                itinDuration = itinerary.duration;
+            });
+            result.travelTime = humanizeDuration(itinDuration * 1000, { units: ["hours", "minutes"], round: true });
+            var arrival = new Date(d1.getTime() + ((d2 - d1) / 2) + (itinDuration * 1000));
+            result.arrivalDesc = moment(arrival).format('h:mm a');
+          }
           if(!result.booked  == true){
             $scope.booking_failed = true;
           }
         });
+
+
 
         $scope.purpose = planService.itineraryRequestObject.trip_purpose;
 

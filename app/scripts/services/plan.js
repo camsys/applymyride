@@ -525,6 +525,7 @@ angular.module('applyMyRideApp')
         itinerary.dayAndDateDesc = moment(startTime).format('dddd, MMMM Do');
         itinerary.startTimeDesc = moment(itinerary.wait_start || itinerary.departure).format('h:mm a');
         itinerary.endTimeDesc = itinerary.arrival ? moment(itinerary.arrival).format('h:mm a') : "Arrive";
+        itinerary.arrivalDesc = itinerary.arrival ? itinerary.endTimeDesc : moment(itinerary.end_time).format('h:mm a');
         itinerary.distanceDesc = this.getDistanceDescription(itinerary.distance);
         itinerary.walkDistanceDesc = this.getDistanceDescription(itinerary.walk_distance);
       }
