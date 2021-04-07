@@ -898,7 +898,7 @@ angular.module('applyMyRideApp')
         planService.populateScopeWithTripsData($scope, unpackedTrips, 'future');
         ipCookie('rideCount', unpackedTrips.length);
 
-        var liveTrip = (planService.tripIsLive($scope.trip) && $scope.trip) || planService.findLiveTrip($scope.trips.future);
+        var liveTrip = (planService.tripIsLive($scope.trip) && $scope.trip) || (!!$scope.trips && planService.findLiveTrip($scope.trips.future));
         planService.updateLiveTrip(liveTrip);
         if($scope) {$scope.liveTrip = liveTrip || null;} // Set $scope variable to liveTrip
         if(ipCookie) {ipCookie('liveTrip', !!liveTrip);} // Set cookie to store liveTrip or lack thereof
@@ -918,13 +918,16 @@ angular.module('applyMyRideApp')
         // Set etaChecker to a new object with the appropriate scope and dependencies.
         planService.etaChecker = {
           // planService: this,
-          interval: 10000,
+          intervalSeconds: 60,
+          count: 120,
           start: function(checkFunction) {
             this.timer = $interval(function() {
               planService.getFutureRides($http).then(function(data) {
+                var liveTrip =
                 planService.processFutureAndLiveTrips(data, $scope, ipCookie);
+                !liveTrip && planService.etaChecker.stop();
               });
-            }, this.interval);
+            }, this.intervalSeconds * 1000, this.count);
           },
           stop: function() {
             $interval.cancel(this.timer);
