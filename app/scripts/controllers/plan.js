@@ -159,7 +159,7 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
     $scope.step = 'rebook';
     $location.path('/plan/rebook');
   };
-  $scope.cancelThisOrRailTrip = function() {
+  $scope.cancelThisBusOrRailTrip = function() {
     usSpinnerService.spin('spinner-1');
     var cancelRequest = {bookingcancellation_request: []};
     var leg1, leg2;
