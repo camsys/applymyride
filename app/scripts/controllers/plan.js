@@ -81,8 +81,16 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
 
   //plan/confirm bus options selected-tab placeholder
   $scope.selectedBusOption = planService.selectedBusOption || [0,0];
-
-
+  // NOTE NOTIFICATIONS
+  var profilePromise = planService.getProfile($http);
+  profilePromise.then(function(results){
+    const avalable_reminders = results.data.details.notification_preferences.fixed_route
+    $scope.fixedRouteReminderPrefs = avalable_reminders.reduce(function(acc, curr) {
+      acc[acc.length] = {day: curr, enabled: false}
+      return acc
+    }, [])
+    console.log($scope.fixedRouteReminderPrefs)
+  });
 
   $scope.reset = function() {
     planService.reset();
@@ -159,6 +167,11 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
     $scope.step = 'rebook';
     $location.path('/plan/rebook');
   };
+
+  $scope.updateTransitTripReminders = function($event) {
+    $event.preventDefault()
+    console.log("updating trip reminders")
+  }
   $scope.cancelThisBusOrRailTrip = function() {
     usSpinnerService.spin('spinner-1');
     var cancelRequest = {bookingcancellation_request: []};

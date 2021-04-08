@@ -4,9 +4,16 @@ angular.module('applyMyRideApp')
   .controller('ItineraryController', ['$scope','$routeParams', '$location', 'flash', 'planService', '$http','ipCookie',
     function ($scope, $routeParams, $location, flash, planService, $http, ipCookie) {
       $scope.showDiv = {};
+      // TODO Make this fetch from the trip object instead
+      $scope.fixedRouteReminderPrefs = [
+        {day: 7, enabled: false},
+        {day: 3, enabled: false},
+        {day: 1, enabled: false}
+      ]
       $scope.location = $location.path();
       $scope.savedItineraryView = true;
       $scope.trip = planService.selectedTrip;
+      console.log($scope.trip)
       angular.forEach($scope.trip.itineraries, function(itinerary, index) {
         planService.prepareItinerary(itinerary);
       });
@@ -74,9 +81,13 @@ angular.module('applyMyRideApp')
 
       }
       $scope.mode = $scope.trip.mode;
-
       if($scope.trip.itineraries.length > 0){
         $scope.tripCancelled = $scope.trip.itineraries[0].status == "canceled" ? true : false;
+      }
+
+      $scope.updateTransitTripReminders = function($event) {
+        $event.preventDefault()
+        console.log("updating trip reminders")
       }
 
       $scope.cancelTrip = function(){
