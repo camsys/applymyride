@@ -83,6 +83,7 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
   $scope.selectedBusOption = planService.selectedBusOption || [0,0];
 
 
+
   $scope.reset = function() {
     planService.reset();
     $location.path("/plan/where");
@@ -129,8 +130,9 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
     }
     $location.path('/uber');
   }
+
   $scope.goPlanLogin = function(){
-    $location.path('/plan/login-guest');
+    $location.path('/');
   }
 
   $scope.goViewWalk = function(departId, returnId){
@@ -1648,6 +1650,10 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
       $scope.hasParatransit = $scope.paratransitItineraries.length > 0;
       $scope.hasTransit = $scope.transitInfos.length > 0;
       $scope.hasWalk = $scope.walkItineraries.length > 0;
+
+      const firstItinerary = $scope.transitItineraries[0][0]
+      const firstTransit = firstItinerary.json_legs.find(leg => leg.mode === 'BUS')
+      $scope.transitRoute = firstTransit ? firstTransit.route : undefined
 
       if($scope.paratransitItineraries.length < 1 && $scope.transitItineraries.length < 1 && $scope.walkItineraries.length < 1 && !$scope.hasUber && !$scope.hasTaxi){
         $scope.noresults = true;
