@@ -4,16 +4,18 @@ angular.module('applyMyRideApp')
   .controller('ItineraryController', ['$scope','$routeParams', '$location', 'flash', 'planService', '$http','ipCookie',
     function ($scope, $routeParams, $location, flash, planService, $http, ipCookie) {
       $scope.showDiv = {};
-      // TODO Make this fetch from the trip object instead
-      $scope.fixedRouteReminderPrefs = [
-        {day: 7, enabled: false},
-        {day: 3, enabled: false},
-        {day: 1, enabled: false}
-      ]
       $scope.location = $location.path();
       $scope.savedItineraryView = true;
       $scope.trip = planService.selectedTrip;
-      console.log($scope.trip)
+      // $scope.trip gets mutated directly/ in situ
+      const notificationPrefs = $scope.trip.details ? $scope.trip.details.notification_preferences : {fixed_route: []}
+      $scope.fixedRouteReminderPrefs = notificationPrefs && notificationPrefs.fixed_route.length > 0 ?
+        notificationPrefs.fixed_route : [
+          {day: 7, enabled: false},
+          {day: 3, enabled: false},
+          {day: 1, enabled: false}
+        ]
+
       angular.forEach($scope.trip.itineraries, function(itinerary, index) {
         planService.prepareItinerary(itinerary);
       });
@@ -87,7 +89,18 @@ angular.module('applyMyRideApp')
 
       $scope.updateTransitTripReminders = function($event) {
         $event.preventDefault()
-        console.log("updating trip reminders")
+        const tripDetails = {
+          ...$scope.trip.details,
+          notification_preferences: {
+            fixed_route: $scope.fixedRouteReminderPrefs
+          }
+        }
+        // tripDetails.notification_preferences.fixed_route
+        const updatedTrip = {...$scope.trip, details: tripDetails}
+        const planPromise = planService.updateTrip($http, updatedTrip)
+        planPromise.then(function(results) {
+          $scope.fixedRouteReminderPrefs = results.data.details.notification_preferences.fixed_route
+        })
       }
 
       $scope.cancelTrip = function(){

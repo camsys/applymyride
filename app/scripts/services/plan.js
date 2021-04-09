@@ -121,6 +121,8 @@ angular.module('applyMyRideApp')
 
           // Check for first itinerary to set Trip values
           if(i == 0){
+            trip_with_itineraries.id = trip[i].trip_id;
+            trip_with_itineraries.details = trip[i].details;
             trip_with_itineraries.mode = trip[i].mode;
             trip_with_itineraries.startDesc = that.getDateDescription(trip[i].wait_start || trip[i].departure);
             trip_with_itineraries.startDesc += " at " + moment(trip[i].wait_start || trip[i].departure).format('h:mm a');
@@ -162,7 +164,6 @@ angular.module('applyMyRideApp')
         }
 
         trip_with_itineraries.roundTrip = typeof trip[1] !== 'undefined' ? true : false;
-
         return trip_with_itineraries;
       }
 
@@ -768,6 +769,10 @@ angular.module('applyMyRideApp')
         }
         return request;
       };
+
+      this.updateTrip = function($http, updatedTrip) {
+        return $http.put(urlPrefix + 'api/v1/itineraries/update', {trip:updatedTrip} , this.getHeaders());
+      }
 
       this.addStreetAddressToLocation = function(location) {
         return;
