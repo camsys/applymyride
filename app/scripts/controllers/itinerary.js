@@ -253,5 +253,8 @@ angular.module('applyMyRideApp')
         }
       }
 
+      $scope.$on("$destroy", function () {
+        planService.killEtaChecker();
+      });
     }
 ]);

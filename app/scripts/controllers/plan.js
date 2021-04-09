@@ -2097,6 +2097,9 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
     }
   );
 
+  $scope.$on("$destroy", function () {
+    planService.killEtaChecker();
+  });
 
 }
 ]);

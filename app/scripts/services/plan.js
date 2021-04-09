@@ -911,9 +911,7 @@ angular.module('applyMyRideApp')
         var planService = this;
 
         // Stop the checker if it already exists.
-        if(planService.etaChecker) {
-          planService.etaChecker.stop();
-        }
+        planService.killEtaChecker();
 
         // Set etaChecker to a new object with the appropriate scope and dependencies.
         planService.etaChecker = {
@@ -925,7 +923,7 @@ angular.module('applyMyRideApp')
               planService.getFutureRides($http).then(function(data) {
                 var liveTrip =
                 planService.processFutureAndLiveTrips(data, $scope, ipCookie);
-                !liveTrip && planService.etaChecker.stop();
+                !liveTrip && planService.killEtaChecker();
               });
             }, this.intervalSeconds * 1000, this.count);
           },
@@ -933,11 +931,17 @@ angular.module('applyMyRideApp')
             $interval.cancel(this.timer);
           }
         }
-
         // Start the checker.
         planService.etaChecker.start();
       }
 
+      this.killEtaChecker = function () {
+        var planService = this;
+        if (planService.etaChecker) {
+          planService.etaChecker.stop();
+          planService.etaChecker = undefined;
+        }
+      }
     }
   ]
 );
