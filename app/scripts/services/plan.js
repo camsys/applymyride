@@ -676,7 +676,7 @@ angular.module('applyMyRideApp')
         return $http.get(urlPrefix + '/api/v1/services/hours', this.getHeaders());
       }
 
-      // Get user notification defaults
+      // Get user notification defaults for fixed trips
       this.getUserNotificationDefaults = function($http) {
         const self = this
         var profilePromise = this.getProfile($http);
