@@ -16,7 +16,6 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
       $scope.showMap = false;
     }
   }
-
   eightAm.setSeconds(0);
   eightAm.setMinutes(0);
   eightAm.setHours(8);
@@ -81,17 +80,8 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
 
   //plan/confirm bus options selected-tab placeholder
   $scope.selectedBusOption = planService.selectedBusOption || [0,0];
-  // NOTE NOTIFICATIONS
-  var profilePromise = planService.getProfile($http);
-  profilePromise.then(function(results){
-    const avalable_reminders = results.data.details.notification_preferences.fixed_route
-    $scope.fixedRouteReminderPrefs = avalable_reminders.reduce(function(acc, curr) {
-      acc[acc.length] = {day: curr, enabled: false}
-      return acc
-    }, [])
-    console.log($scope.fixedRouteReminderPrefs)
-  });
-
+  planService.getUserNotificationDefaults($http)
+  $scope.fixedRouteReminderPrefs = planService.fixedRouteReminderPrefs
   $scope.reset = function() {
     planService.reset();
     $location.path("/plan/where");
@@ -170,8 +160,23 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
 
   $scope.updateTransitTripReminders = function($event) {
     $event.preventDefault()
-    console.log("updating trip reminders")
+    // merge old notification preferences with updated ones
+    const tripDetails = {
+      notification_preferences: {
+        ...planService.selectedTrip.details.notification_preferences,
+        fixed_route: $scope.fixedRouteReminderPrefs
+      }
+    }
+    // grab trip id(s) and build update trip request object
+    const trips = $scope.trip.itineraries.map(itin => itin.trip_id)
+    const updateTripRequest = {trips, details: tripDetails}
+
+    const planPromise = planService.updateTripDetails($http, updateTripRequest)
+      planPromise.then(function(results) {
+        $scope.fixedRouteReminderPrefs = results.data.trip.details.notification_preferences.fixed_route
+      })
   }
+
   $scope.cancelThisBusOrRailTrip = function() {
     usSpinnerService.spin('spinner-1');
     var cancelRequest = {bookingcancellation_request: []};

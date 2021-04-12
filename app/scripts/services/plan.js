@@ -676,6 +676,18 @@ angular.module('applyMyRideApp')
         return $http.get(urlPrefix + '/api/v1/services/hours', this.getHeaders());
       }
 
+      // Get user notification defaults
+      this.getUserNotificationDefaults = function($http) {
+        const self = this
+        var profilePromise = this.getProfile($http);
+        profilePromise.then(function(results){
+          const avalable_reminders = results.data.details.notification_preferences.fixed_route
+          self.fixedRouteReminderPrefs = avalable_reminders.reduce(function(acc, curr) {
+            acc[acc.length] = {day: curr, enabled: false}
+            return acc
+          }, [])
+        });
+      }
 
       // Book a shared ride
       this.bookSharedRide = function($http) {
@@ -720,9 +732,10 @@ angular.module('applyMyRideApp')
           this.toDetails.name = this.toDetails.poi.name
         }
         var request = {};
+        const trip_details = { notification_preferences: null}
         request.trip_purpose = this.purpose;
         request.itinerary_request = [];
-        var outboundTrip = {};
+        var outboundTrip = { details: trip_details};
         outboundTrip.segment_index = 0;
         outboundTrip.start_location = this.fromDetails;
         outboundTrip.end_location = this.toDetails;
@@ -770,8 +783,8 @@ angular.module('applyMyRideApp')
         return request;
       };
 
-      this.updateTrip = function($http, updatedTrip) {
-        return $http.put(urlPrefix + 'api/v1/itineraries/update', {trip:updatedTrip} , this.getHeaders());
+      this.updateTripDetails = function($http, updateTripRequest) {
+        return $http.put(urlPrefix + 'api/v1/itineraries/update_trip_details', updateTripRequest , this.getHeaders());
       }
 
       this.addStreetAddressToLocation = function(location) {
