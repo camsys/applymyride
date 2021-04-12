@@ -1651,13 +1651,23 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
       $scope.hasTransit = $scope.transitInfos.length > 0;
       $scope.hasWalk = $scope.walkItineraries.length > 0;
 
-      const firstItinerary = $scope.transitItineraries[0][0]
-      const firstTransit = firstItinerary.json_legs.find(leg => leg.mode === 'BUS')
-      $scope.transitRoute = firstTransit ? firstTransit.route : undefined
-
+      // If itinerary results is 0, return no results
       if($scope.paratransitItineraries.length < 1 && $scope.transitItineraries.length < 1 && $scope.walkItineraries.length < 1 && !$scope.hasUber && !$scope.hasTaxi){
         $scope.noresults = true;
       }
+
+      // Check if Transit Itineraries exist before finding the name of the transit route
+      if ($scope.transitItineraries && $scope.transitItineraries.length > 0) {
+        /**
+         * TransitItineraries is an object of format and contains transit itineraries:
+         * @param $scope.transitItineraries
+         * structure: {0: {...fixedRouteItin}, 1: {...fixedRouteItin}}
+         */
+        const firstItinerary = $scope.transitItineraries[0][0]
+        const firstTransit = firstItinerary.json_legs.find(leg => leg.mode === 'BUS') // check to see what happens if leg.mode doesn't exist
+        $scope.transitRoute = firstTransit ? firstTransit.route : undefined
+      }
+
       $scope.$watch('selectedBusOption', function(n){
         if(n && n.length && typeof n === 'object'){
           planService.selectedBusOption = n;
