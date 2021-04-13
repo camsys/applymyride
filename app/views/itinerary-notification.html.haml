@@ -1,9 +1,11 @@
 %form#trip-notification-prefs{ng:{submit: 'updateTransitTripReminders($event)'}}
   %h3
     Set reminder notification preferences
-  %div{ng: { repeat: 'entry in fixedRouteReminderPrefs track by $index'}}
-    %input.form-check-input{type:'checkbox', id: '{{entry.day}}', ng: {model: 'entry.enabled'} }
+  %div{ng: { repeat: 'entry in fixedRouteReminderPrefs.reminders track by $index'}}
+    %input.form-check-input{type:'checkbox', id: '{{entry.day}}', ng: {model: 'entry.enabled',disabled:'fixedRouteReminderPrefs.disabled[$index]'} }
     %label.form-check-label{for: '{{entry.day}}'}
       Reminder {{entry.day}} day(s) before trip
-  %button.btn.btn-primary.btn-block{ng: {disabled: 'tripCancelled'}}
+  %button.btn.btn-primary.btn-block{ng: {disabled: 'tripCancelled', show: 'location === "/itinerary"'}}
     Update Notification Preference
+  %button.btn.btn-primary.btn-block{ng: {disabled: 'tripCancelled', show: 'location !== "/itinerary"'}}
+    Save Notification Preference
