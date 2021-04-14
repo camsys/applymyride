@@ -68,6 +68,7 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
   $scope.showAllPurposes = false;
   $scope.backToConfirm = planService.backToConfirm;
   $scope.loggedIn = !!planService.email;
+  $scope.tripId = planService.tripId
 
   $scope.toDefault = countryFilter( localStorage.getItem('last_destination') || '');
   $scope.to = countryFilter( planService.to || '');
@@ -162,8 +163,10 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
   $scope.updateTransitTripReminders = function($event) {
     $event.preventDefault()
     // build new trip details object
+    const oldNotifications = $scope.transitTripDetails || {}
     const tripDetails = {
       notification_preferences: {
+        ...oldNotifications,
         fixed_route: $scope.fixedRouteReminderPrefs
       }
     }
@@ -171,7 +174,8 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
     const updateTripRequest = {trip: planService.tripId, details: tripDetails}
     const planPromise = planService.updateTripDetails($http, updateTripRequest)
       planPromise.then(function(results) {
-        $scope.fixedRouteReminderPrefs = results.data.trip[0].details.notification_preferences.fixed_route
+        $scope.transitTripDetails = results.data.trip[0].details.notification_preferences
+        $scope.fixedRouteReminderPrefs = planService.syncFixedRouteNotifications($scope.transitTripDetails)
       })
   }
 
@@ -1667,13 +1671,18 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
       $scope.hasTransit = $scope.transitInfos.length > 0;
       $scope.hasWalk = $scope.walkItineraries.length > 0;
 
-      const firstItinerary = $scope.transitItineraries[0][0]
-      const firstTransit = firstItinerary.json_legs.find(leg => leg.mode === 'BUS')
-      $scope.transitRoute = firstTransit ? firstTransit.route : undefined
-
+      // If itinerary results is 0, return no results
       if($scope.paratransitItineraries.length < 1 && $scope.transitItineraries.length < 1 && $scope.walkItineraries.length < 1 && !$scope.hasUber && !$scope.hasTaxi){
         $scope.noresults = true;
       }
+
+      // Check if Transit Itineraries exist before finding the name of the transit route
+      if ($scope.transitItineraries && $scope.transitItineraries.length > 0) {
+        const firstItinerary = $scope.transitItineraries[0][0]
+        const firstTransit = firstItinerary.json_legs.find(leg => leg.mode === 'BUS') // check to see what happens if leg.mode doesn't exist
+        $scope.transitRoute = firstTransit ? firstTransit.route : undefined
+      }
+
       $scope.$watch('selectedBusOption', function(n){
         if(n && n.length && typeof n === 'object'){
           planService.selectedBusOption = n;

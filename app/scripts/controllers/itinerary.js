@@ -7,13 +7,13 @@ angular.module('applyMyRideApp')
       $scope.location = $location.path();
       $scope.savedItineraryView = true;
       $scope.trip = planService.selectedTrip;
-      // $scope.trip gets mutated directly/ in situ
-      const notificationPrefs = $scope.trip.details ? $scope.trip.details.notification_preferences : {fixed_route: []}
-      planService.getUserNotificationDefaults($http)
-      $scope.fixedRouteReminderPrefs = $scope.trip.details.notification_preferences ? 
-      $scope.trip.details.notification_preferences.fixed_route :
-      planService.fixedRouteReminderPrefs
-    
+      if ($scope.trip) {
+        const notificationPrefs = $scope.trip.details ? $scope.trip.details.notification_preferences : {fixed_route: []}
+        planService.getUserNotificationDefaults($http)
+
+        $scope.fixedRouteReminderPrefs = planService.syncFixedRouteNotifications(notificationPrefs)
+      }
+
       angular.forEach($scope.trip.itineraries, function(itinerary, index) {
         planService.prepareItinerary(itinerary);
       });
@@ -95,12 +95,12 @@ angular.module('applyMyRideApp')
           }
         }
         // grab trip id(s) and build update trip request object
-        const trips = $scope.trip.itineraries.map(itin => itin.trip_id)
-        const updateTripRequest = {trips, details: tripDetails}
+        const trip = $scope.trip.id
+        const updateTripRequest = {trip, details: tripDetails}
 
         const planPromise = planService.updateTripDetails($http, updateTripRequest)
           planPromise.then(function(results) {
-            $scope.fixedRouteReminderPrefs = results.data.trip.details.notification_preferences.fixed_route
+            $scope.fixedRouteReminderPrefs = results.data.trip[0].details.notification_preferences.fixed_route
           })
       }
 

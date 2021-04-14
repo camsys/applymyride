@@ -676,19 +676,58 @@ angular.module('applyMyRideApp')
         return $http.get(urlPrefix + '/api/v1/services/hours', this.getHeaders());
       }
 
-      // Get user notification defaults for fixed trips
-      this.getUserNotificationDefaults = function($http) {
-        const self = this
-        var profilePromise = this.getProfile($http);
-        profilePromise.then(function(results){
-          const avalable_reminders = results.data.details.notification_preferences.fixed_route
-          self.fixedRouteReminderPrefs = avalable_reminders.reduce(function(acc, curr) {
-            acc[acc.length] = {day: curr, enabled: false}
-            return acc
-          }, [])
-        });
-      }
+// Get user notification defaults for fixed trips
+this.getUserNotificationDefaults = function($http) {
+  const self = this
+  var profilePromise = this.getProfile($http);
+  profilePromise.then(function(results){
+    const avalable_reminders = results.data.details.notification_preferences.fixed_route
+    const enabled = false
+    const reminders = avalable_reminders.reduce(function(acc, curr) {
+      acc[acc.length] = {'day': curr, enabled }
+      return acc
+    }, [])
 
+    self.fixedRouteReminderPrefs = {
+      reminders,
+      disabled: self.buildDisableArray(reminders.length)
+    }
+  });
+}
+
+this.buildDisableArray = function(num) {
+  const ar = []
+  for (let i = 0; i < num; i++) {
+    ar[i] = false
+  }
+  return ar
+}
+
+// syncing trip notifications from the server side
+// add notes
+this.syncFixedRouteNotifications = function(notificationPrefs) {
+  const fixedRoute = notificationPrefs !== null ? notificationPrefs.fixed_route : {reminders: [], disabled: []}
+  const final = {
+    reminders: [],
+    disabled: {}
+  }
+  if (fixedRoute.reminders.length === 0) {
+    return this.fixedRouteReminderPrefs
+  }
+
+  this.fixedRouteReminderPrefs.reminders.forEach(({day, enabled}) => {
+    const notif = fixedRoute.reminders.find(entry => entry.day === day)
+    if (!notif) {
+      final.disabled[day] = true
+      final.reminders.push({day,enabled})
+    } else {
+      final.reminders.push({day, enabled: notif.enabled})
+      final.disabled[day] = false
+    }
+  })
+
+  return final
+}
       // Book a shared ride
       this.bookSharedRide = function($http) {
         var requestHolder = {};
