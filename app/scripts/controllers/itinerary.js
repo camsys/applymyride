@@ -7,10 +7,18 @@ angular.module('applyMyRideApp')
       $scope.location = $location.path();
       $scope.savedItineraryView = true;
       $scope.trip = planService.selectedTrip;
+      // If a trip exists, then fetch user notification preference defaults
       if ($scope.trip) {
         const notificationPrefs = $scope.trip.details ? $scope.trip.details.notification_preferences : {fixed_route: []}
         planService.getUserNotificationDefaults($http)
 
+        /**
+         *** $scope.fixedRouteReminderPref format
+         * @typedef {Object} NotificationPref
+          *  @property {{reminders: Object[], disabled: boolean[]}} fixed_route
+          *
+         * @type {NotificationPref}
+         */
         $scope.fixedRouteReminderPrefs = planService.syncFixedRouteNotifications(notificationPrefs)
       }
 
