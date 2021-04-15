@@ -52,67 +52,11 @@
     <!--[if lt IE 7]>
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
-
-    <div ng-show="showNavbar()" class="navbar navbar-default navbar-static-top" style="box-shadow: 0px 2px 8px rgba(0,0,0,0.4); margin-bottom: 1em;">
-      <div class="container-fluid">
-        <nav class="navbar navbar-static-top" role="navigation">
-          <div class="container">
-            <div class="navbar-header">
-              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-              </button>
-              <a class="navbar-brand" href="#/">
-                <img ng-src="images/FMR.png"/>
-              </a>
-            </div>
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-              <ul class="nav navbar-nav navbar-right">
-                <li ng-show="showCurrentBalance">
-                  <a class="navbar-icon" style="margin-top: .5em;"
-                     title="This balance represents the current prepaid balance for Shared Ride/Paratransit. Please contact your local transit agency regarding questions about this information.">
-                    Current Balance
-                    <div class="badge" ng-class="{'alert-danger': (currentBalance < 0), 'alert-success': (currentBalance >= 0)}">{{currentBalance | currency}}</div>
-                  </a>
-                </li>
-                <li ng-show="email">
-                  <a class="navbar-icon" href="#/plan/my_rides?navbar=true" style="margin-top: .5em;">
-                    My Rides
-                    <div class="badge alert-success" ng-class="{'live-trip': liveTrip}">{{rideCount}}</div>
-                  </a>
-                </li>
-                <li ng-show="email">
-                  <a class="navbar-icon" href="#/profile" style="margin-top: .5em;">
-                    {{first_name}} {{last_name}}
-                  </a>
-                </li>
-                <li ng-show="email">
-                  <a class="navbar-icon" ng-click="logout()" href="" style="margin-top: .5em;">
-                    Sign out
-                  </a>
-                </li>
-                <li ng-show="!email">
-                  <a class="navbar-icon" href="#/login" style="margin-top: .5em;">
-                    Sign in
-                  </a>
-                </li>
-                <li>
-                  <a class="navbar-icon" ng-click="reset()" style="cursor: pointer; margin-top: .5em;" href="">
-                    New trip
-                  </a>
-                </li>
-                <li>
-                  <a class="navbar-icon" href="#/about" style="margin-top: .5em;">
-                    About
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </nav>
-      </div>
+    <div
+      ng-show="showNavbar()"
+      class="navbar navbar-default navbar-static-top"
+      ng-include="'views/navbar.html'"
+      style="box-shadow: 0px 2px 8px rgba(0,0,0,0.4); margin-bottom: 1em;">
     </div>
 
     <!-- Add your site or application content here -->
