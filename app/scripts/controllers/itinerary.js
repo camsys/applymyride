@@ -99,7 +99,7 @@ angular.module('applyMyRideApp')
         const tripDetails = {
           notification_preferences: {
             ...planService.selectedTrip.details.notification_preferences,
-            fixed_route: $scope.fixedRouteReminderPrefs
+            fixed_route: $scope.fixedRouteReminderPrefs.reminders
           }
         }
         // grab trip id(s) and build update trip request object
@@ -108,7 +108,8 @@ angular.module('applyMyRideApp')
 
         const planPromise = planService.updateTripDetails($http, updateTripRequest)
           planPromise.then(function(results) {
-            $scope.fixedRouteReminderPrefs = results.data.trip[0].details.notification_preferences.fixed_route
+            const notificationPrefs = results.data.trip[0].details.notification_preferences
+            $scope.fixedRouteReminderPrefs = planService.syncFixedRouteNotifications(notificationPrefs)
           })
       }
 

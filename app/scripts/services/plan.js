@@ -708,23 +708,24 @@ angular.module('applyMyRideApp')
       }
 
       /**
-       *** Function params
+      *** Function params
       * @param {NotificationPref} notificationPrefs
       * @returns {NotificationPref} returns a NotificationPref object that's synced
       * ...between the front end User preferences and the backend Trip preference
       */
       this.syncFixedRouteNotifications = function(notificationPrefs) {
-        const fixedRoute = notificationPrefs !== null ? notificationPrefs.fixed_route : {reminders: [], disabled: []}
+        const fixedRoute = notificationPrefs !== null ? notificationPrefs.fixed_route : []
         const final = {
           reminders: [],
           disabled: {}
         }
-        if (fixedRoute.reminders.length === 0) {
+        if (fixedRoute.length === 0) {
           return this.fixedRouteReminderPrefs
         }
 
         this.fixedRouteReminderPrefs.reminders.forEach(({day, enabled}) => {
-          const notif = fixedRoute.reminders.find(entry => entry.day === day)
+          // Finding Trip notification that matches the current user notification day
+          const notif = fixedRoute.find(entry => entry.day === day)
           if (!notif) {
             final.disabled[day] = true
             final.reminders.push({day,enabled})

@@ -167,7 +167,7 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
     const tripDetails = {
       notification_preferences: {
         ...oldNotifications,
-        fixed_route: $scope.fixedRouteReminderPrefs
+        fixed_route: $scope.fixedRouteReminderPrefs.reminders
       }
     }
     // grab trip id(s) and build update trip request object
