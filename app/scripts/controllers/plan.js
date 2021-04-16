@@ -81,8 +81,11 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
 
   //plan/confirm bus options selected-tab placeholder
   $scope.selectedBusOption = planService.selectedBusOption || [0,0];
-  planService.getUserNotificationDefaults($http)
-  $scope.fixedRouteReminderPrefs = planService.syncFixedRouteNotifications(null)
+  if ($scope.step === 'transit') {
+    planService.getUserNotificationDefaults($http).then(() => {
+      $scope.fixedRouteReminderPrefs = planService.syncFixedRouteNotifications(null, new Date(planService.fromDate))
+    })
+  }
 
   $scope.reset = function() {
     planService.reset();
@@ -175,7 +178,8 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
     const planPromise = planService.updateTripDetails($http, updateTripRequest)
       planPromise.then(function(results) {
         $scope.transitTripDetails = results.data.trip[0].details.notification_preferences
-        $scope.fixedRouteReminderPrefs = planService.syncFixedRouteNotifications($scope.transitTripDetails)
+        $scope.fixedRouteReminderPrefs = planService.syncFixedRouteNotifications($scope.transitTripDetails, new Date(planService.fromDate))
+        bootbox.alert("Trip notification preferences updated!")
       })
   }
 

@@ -10,16 +10,16 @@ angular.module('applyMyRideApp')
       // If a trip exists, then fetch user notification preference defaults
       if ($scope.trip && $scope.trip.mode === 'mode_transit') {
         const notificationPrefs = $scope.trip.details ? $scope.trip.details.notification_preferences : {fixed_route: []}
-        planService.getUserNotificationDefaults($http)
-
+        planService.getUserNotificationDefaults($http).then(() => {
         /**
          *** $scope.fixedRouteReminderPref format
          * @typedef {Object} NotificationPref
-          *  @property {{reminders: Object[], disabled: boolean[]}} fixed_route
-          *
+         *  @property {{reminders: Object[], disabled: boolean[]}} fixed_route
+         *
          * @type {NotificationPref}
          */
-        $scope.fixedRouteReminderPrefs = planService.syncFixedRouteNotifications(notificationPrefs)
+          $scope.fixedRouteReminderPrefs = planService.syncFixedRouteNotifications(notificationPrefs, new Date($scope.trip.itineraries[0].departure))
+        })
       }
 
       angular.forEach($scope.trip.itineraries, function(itinerary, index) {
@@ -109,7 +109,8 @@ angular.module('applyMyRideApp')
         const planPromise = planService.updateTripDetails($http, updateTripRequest)
           planPromise.then(function(results) {
             const notificationPrefs = results.data.trip[0].details.notification_preferences
-            $scope.fixedRouteReminderPrefs = planService.syncFixedRouteNotifications(notificationPrefs)
+            $scope.fixedRouteReminderPrefs = planService.syncFixedRouteNotifications(notificationPrefs, new Date($scope.trip.itineraries[0].departure))
+            bootbox.alert("Trip notification preferences updated!")
           })
       }
 

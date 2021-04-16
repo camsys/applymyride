@@ -684,7 +684,7 @@ angular.module('applyMyRideApp')
       this.getUserNotificationDefaults = function($http) {
         const self = this
         var profilePromise = this.getProfile($http);
-        profilePromise.then(function(results){
+        return profilePromise.then(function(results){
           const avalable_reminders = results.data.details.notification_preferences.fixed_route
           const enabled = false
           const reminders = avalable_reminders.reduce(function(acc, curr) {
@@ -710,30 +710,52 @@ angular.module('applyMyRideApp')
       /**
       *** Function params
       * @param {NotificationPref} notificationPrefs
+      * @param {Date} tripDate is the trip date represented as a Date instance
+      *  - NOTE: this is a method param as planService.selectedTrip isn't necssarily
+      *  ...defined on the plan details page
       * @returns {NotificationPref} returns a NotificationPref object that's synced
       * ...between the front end User preferences and the backend Trip preference
       */
-      this.syncFixedRouteNotifications = function(notificationPrefs) {
+      this.syncFixedRouteNotifications = function(notificationPrefs = null, tripDate = null) {
+        const today = new Date()
         const fixedRoute = notificationPrefs !== null ? notificationPrefs.fixed_route : []
         const final = {
           reminders: [],
           disabled: {}
         }
         if (fixedRoute.length === 0) {
-          return this.fixedRouteReminderPrefs
-        }
+          final.reminders = this.fixedRouteReminderPrefs.reminders
+          // Disable reminder preferences for reminder days that are in the past
+          this.fixedRouteReminderPrefs.reminders.forEach(({day}) => {
+            // if there's a tripDate fed in, then use that, otherwise, null
+            const reminderDate = tripDate && new Date(tripDate - day * 24 * 60 * 60 * 1000)
 
-        this.fixedRouteReminderPrefs.reminders.forEach(({day, enabled}) => {
-          // Finding Trip notification that matches the current user notification day
-          const notif = fixedRoute.find(entry => entry.day === day)
-          if (!notif) {
-            final.disabled[day] = true
-            final.reminders.push({day,enabled})
-          } else {
-            final.reminders.push({day, enabled: notif.enabled})
-            final.disabled[day] = false
-          }
-        })
+            // If the reminder date already passed then disable the checkbox
+            const isNotInPast = reminderDate && (reminderDate.getMonth() < today.getMonth() || reminderDate.getDate() < today.getDate())
+            if (isNotInPast) {
+              final.disabled[day] = true
+            } else {
+              final.disabled[day] = false
+            }
+          })
+        } else {
+          this.fixedRouteReminderPrefs.reminders.forEach(({day, enabled}) => {
+            // Finding Trip notification that matches the current user notification day
+            const notif = fixedRoute.find(entry => entry.day === day)
+            // if there's a tripDate fed in, then use that, otherwise, null
+            const reminderDate = tripDate && new Date(tripDate - day * 24 * 60 * 60 * 1000)
+            // get trip time
+            // If the reminder date already passed then disable the checkbox
+            const isNotInPast = reminderDate && (reminderDate.getMonth() < today.getMonth() || reminderDate.getDate() < today.getDate())
+            if (isNotInPast) {
+              final.disabled[day] = true
+              final.reminders.push({day, enabled: notif.enabled})
+            } else {
+              final.reminders.push({day, enabled: notif.enabled})
+              final.disabled[day] = false
+            }
+          })
+        }
 
         return final
       }
