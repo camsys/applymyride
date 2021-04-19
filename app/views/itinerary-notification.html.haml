@@ -9,6 +9,6 @@
       %label.form-check-label{for: 'entry.day', ng: {class: '{"disabled": fixedRouteReminderPrefs.disabled[entry.day] === true}'}}
         {{entry.day}} day(s) before trip
   %button.btn.btn-primary{ng: {disabled: 'tripCancelled',show: 'tripId'}}
-    Save Notification Preference
-  %button.btn.btn-primary{ng: {disabled: 'tripCancelled', show: 'trip'}}
-    Update Notification Preference
+    Save Notification Preferences
+  %button.btn.btn-primary{ng: {disabled: 'tripCancelled || trip.tab === "past"', show: 'trip'}}
+    Update Notification Preferences
