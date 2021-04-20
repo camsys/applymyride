@@ -731,8 +731,8 @@ angular.module('applyMyRideApp')
             const reminderDate = tripDate && new Date(tripDate - day * 24 * 60 * 60 * 1000)
 
             // If the reminder date already passed then disable the checkbox
-            const isNotInPast = reminderDate && (reminderDate.getMonth() < today.getMonth() || reminderDate.getDate() < today.getDate())
-            if (isNotInPast) {
+            const isNotInPast = reminderDate && (reminderDate.getMonth() > today.getMonth() || reminderDate.getDate() > today.getDate())
+            if (!isNotInPast) {
               final.disabled[day] = true
             } else {
               final.disabled[day] = false
@@ -744,10 +744,10 @@ angular.module('applyMyRideApp')
             const notif = fixedRoute.find(entry => entry.day === day)
             // if there's a tripDate fed in, then use that, otherwise, null
             const reminderDate = tripDate && new Date(tripDate - day * 24 * 60 * 60 * 1000)
-            // get trip time
-            // If the reminder date already passed then disable the checkbox
-            const isNotInPast = reminderDate && (reminderDate.getMonth() < today.getMonth() || reminderDate.getDate() < today.getDate())
-            if (isNotInPast) {
+
+            // If the reminder date is in the past then disable the checkbox
+            const isNotInPast = reminderDate && (reminderDate.getMonth() > today.getMonth() || reminderDate.getDate() > today.getDate())
+            if (!isNotInPast) {
               final.disabled[day] = true
               final.reminders.push({day, enabled: notif.enabled})
             } else {
