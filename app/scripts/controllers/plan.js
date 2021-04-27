@@ -806,13 +806,34 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
     $scope.selectPlace(place, 'to');
   }
 
-  
-  // This is run when you click a place in the list, 
-  // when you tap out of the to/from field, 
-  // and when the to/from page is loaded
-  $scope.selectPlace = function(place, toFrom, loadLocationsIfNeeded){
+  /**
+   * Swap to/from click handler
+   * @returns {void}
+   */
+  $scope.swapToFromInputs = function() {
+    const to = $scope.to !== '' ? $scope.to : $scope.toDefault
+    const from = $scope.from !== '' ? $scope.from : $scope.fromDefault
 
-    // Check to see if we have reset to the original place. If so, we can turn the button back on.     
+    $scope.selectPlace(from , 'to', true)
+    $scope.selectPlace(to , 'from', true)
+    $scope.to = from
+
+    $scope.from = to
+  }
+
+  /**
+   * Select Place
+   * - This is run when you click a place in the list,
+   * ...when you tap out of the to/from field,
+   * ...and when the to/from page is loaded
+   * - if the place is selected successfully
+   * ...$scope.checkServiceArea is called
+   * @param {string} place - an address
+   * @param {string} toFrom - limited to a value of 'to' or 'from
+   * @param {unknown} loadLocationsIfneeded - unsure
+   */
+  $scope.selectPlace = function(place, toFrom, loadLocationsIfNeeded){
+    // Check to see if we have reset to the original place. If so, we can turn the button back on.
     if(toFrom == 'from'){
       if(place === $scope.fromDefault && place.length > 0){
         $scope.locationClicked = true
