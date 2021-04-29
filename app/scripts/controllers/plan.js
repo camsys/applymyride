@@ -918,8 +918,11 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
       // This is only necessary for manual entry, which we no longer do.
       placeIdPromise.promise.then(function(placeId) {
         var placesService = new google.maps.places.PlacesService($scope.whereToMap);
-        placesService.getDetails( { 'placeId': placeId}, function(result, status) {
-          if (status == google.maps.GeocoderStatus.OK) {
+        placesService.getDetails(
+          {
+            'placeId': placeId, fields: ['address_component', 'geometry', 'vicinity', 'place_id', 'type', 'name'],
+          }, function (result, status) {
+            if (status == google.maps.GeocoderStatus.OK) {
 
             //verify the location has a street address
             var datatypes = [];
