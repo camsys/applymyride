@@ -918,8 +918,11 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
       // This is only necessary for manual entry, which we no longer do.
       placeIdPromise.promise.then(function(placeId) {
         var placesService = new google.maps.places.PlacesService($scope.whereToMap);
-        placesService.getDetails( { 'placeId': placeId}, function(result, status) {
-          if (status == google.maps.GeocoderStatus.OK) {
+        placesService.getDetails(
+          {
+            'placeId': placeId, fields: ['address_component', 'geometry', 'vicinity', 'place_id', 'type', 'name'],
+          }, function (result, status) {
+            if (status == google.maps.GeocoderStatus.OK) {
 
             //verify the location has a street address
             var datatypes = [];
@@ -1651,9 +1654,9 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
       $scope.hasTransit = $scope.transitInfos.length > 0;
       $scope.hasWalk = $scope.walkItineraries.length > 0;
 
-      const firstItinerary = $scope.transitItineraries[0][0]
-      const firstTransit = firstItinerary.json_legs.find(leg => leg.mode === 'BUS')
-      $scope.transitRoute = firstTransit ? firstTransit.route : undefined
+      const firstItinerary = $scope.transitItineraries && $scope.transitItineraries[0] && $scope.transitItineraries[0][0];
+      const firstTransit = firstItinerary && firstItinerary.json_legs.find(leg => leg.mode === 'BUS');
+      $scope.transitRoute = firstTransit ? firstTransit.route : undefined;
 
       if($scope.paratransitItineraries.length < 1 && $scope.transitItineraries.length < 1 && $scope.walkItineraries.length < 1 && !$scope.hasUber && !$scope.hasTaxi){
         $scope.noresults = true;
