@@ -97,12 +97,12 @@ angular.module('applyMyRideApp')
         $scope.transitInfos = planService.transitInfos[$scope.segmentid];
         if(planService.fare_info.roundtrip == true){
           if ($scope.segmentid == "0") {
-            $scope.message = 'Outbound Bus & Rail Options';
+            $scope.message = 'Outbound Transit & Walk Options';
           } else {
-            $scope.message = 'Return Bus & Rail Options';
+            $scope.message = 'Return Transit & Walk Options';
           }
         }else{
-          $scope.message = 'Bus & Rail Options';
+          $scope.message = 'Transit & Walk Options';
         }
       }else if($location.$$path.indexOf('/transitconfirm') > -1){
         angular.forEach(planService.searchResults.itineraries, function(itinerary, index) {
