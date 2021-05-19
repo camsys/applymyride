@@ -208,10 +208,6 @@ $kioskfonts: "Avenir Next", "Helvetica Neue", Helvetica, sans-serif;
   box-shadow: 0px 2px 8px rgba(0,0,0,0.4);
 }
 
-.no-shadow {
-  box-shadow: none;
-}
-
 .debug {
   visibility: hidden;
 }
@@ -699,4 +695,22 @@ ul.bus-nav-tabs.nav-tabs {
 
 #itinerary .row.live-trip {
   background-color: $live-yellow;
+}
+
+.btn-no-bg {
+  background-color: transparent;
+  box-shadow: none;
+  color: black;
+  text-decoration: none;
+  &:hover, &:focus {
+    color:#00884B;
+    outline: #00884b solid 2px;
+    ;
+  }
+}
+
+.container--center-single-item {
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
 }
