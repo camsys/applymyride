@@ -576,7 +576,7 @@ angular.module('applyMyRideApp')
         }else if(location.name){
           description.line1 = location.name;
           description.line2 = location.formatted_address;
-          if(description.line2.indexOf(description.line1) > -1){
+          if(description.line2 && description.line2.indexOf(description.line1) > -1){
             description.line2 = description.line2.substr(description.line1.length + 2);
           }
         }else{
