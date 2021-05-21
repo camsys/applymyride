@@ -2,9 +2,9 @@
 
 var app = angular.module('applyMyRideApp');
 
-app.controller('PlanController', ['$scope', '$http','$routeParams', '$location', 'planService', 'util', 'flash', 'usSpinnerService', '$q', 'LocationSearch', 'localStorageService', 'ipCookie', '$timeout', '$window', '$filter',
+app.controller('PlanController', ['$scope', '$http','$routeParams', '$location', 'planService', 'util', 'flash', 'usSpinnerService', 'debounce', '$q', 'LocationSearch', 'localStorageService', 'ipCookie', '$timeout', '$window', '$filter',
 
-function($scope, $http, $routeParams, $location, planService, util, flash, usSpinnerService, $q, LocationSearch, localStorageService, ipCookie, $timeout, $window, $filter) {
+function($scope, $http, $routeParams, $location, planService, util, flash, usSpinnerService, debounce, $q, LocationSearch, localStorageService, ipCookie, $timeout, $window, $filter) {
 
   var currentLocationLabel = "Current Location";
   var urlPrefix = '//' + APIHOST + '/';
@@ -27,6 +27,8 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
   $scope.toFromMarkers = {};
   $scope.toFromIcons={'to' : '//maps.google.com/mapfiles/markerB.png',
                       'from' : '//maps.google.com/mapfiles/marker_greenA.png' };
+  // Disable Swap Address determines when to disable the swap address inputs button
+  $scope.disableSwapAddressButton = false
   $scope.locations = [];
   $scope.placeIds = [];
   $scope.showConfirmLocationMap = false;
@@ -810,17 +812,35 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
    * Swap to/from click handler
    * @returns {void}
    */
-  $scope.swapToFromInputs = function() {
+  $scope.swapAddressInputs = function() {
+    $scope.disableSwapAddressButton = true
     const to = $scope.to !== '' ? $scope.to : $scope.toDefault
     const from = $scope.from !== '' ? $scope.from : $scope.fromDefault
+    if (to === '' || from === '') {
+      $scope.disableSwapAddressButton = false
+      return
+    }
+    const asyncSwap = async function() {
+      setTimeout(function() {
 
-    $scope.selectPlace(from , 'to', true)
-    $scope.selectPlace(to , 'from', true)
-    $scope.to = from
-
-    $scope.from = to
+        $scope.to = from
+        $scope.locations = []
+        $scope.selectPlace(from , 'to', false)
+      }, 0.5 * 1000)
+    }
+    asyncSwap().then(function() {
+      $scope.from = to
+      $scope.locations = []
+      $scope.selectPlace(to , 'from', false)
+    })
+    $scope.disableSwapAddressButton = false
   }
 
+  $scope.debouncedSwapAddressInputs = async function() {
+    $scope.disableSwapAddressButton = true
+    await debounce($scope.swapAddressInputs, 450)()
+    $scope.disableSwapAddressButton = false
+  }
   /**
    * Select Place
    * - This is run when you click a place in the list,
@@ -941,7 +961,6 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
         var placesService = new google.maps.places.PlacesService($scope.whereToMap);
         placesService.getDetails( { 'placeId': placeId}, function(result, status) {
           if (status == google.maps.GeocoderStatus.OK) {
-
             //verify the location has a street address
             var datatypes = [];
             var route;

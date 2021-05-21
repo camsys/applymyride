@@ -41,7 +41,6 @@
                   %label.h3.h3--address-label{for: 'toInput'}
                     %i{class:'cs-map-marker B'}
                     Where are you going?
-
                   %autocomplete{ 'attr-placeholder'=> '{{toDefault}}',
                                               'attr-input-id' => 'whereToInput',
                                               'attr-clicktofocus' => 'true',
@@ -65,7 +64,7 @@
                   .alert.alert-danger{role:'alert', ng:{show:'errors.rangeErrorto'}}
                     The location you selected is outside the service area.
                 .col-lg-2.col-md-2.col-sm-2.container__swap-btn
-                  %button.btn.btn--no-outline{type:'button', ng: {click: 'swapToFromInputs()'}}
+                  %button.btn.btn--no-outline{type:'button', aria: {label: 'Swap Address Inputs'},ng: {click: 'debouncedSwapAddressInputs()', disabled: 'disableSwapAddressButton == true'}}
                     %i.glyphicon.glyphicon-sort
 
               %div.map-canvas{'ui-map' => 'whereToMap', 'ui-options' => 'mapOptions', ng: {show: 'showMap'}}

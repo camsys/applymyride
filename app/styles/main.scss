@@ -701,9 +701,8 @@ button.btn--no-outline {
   box-shadow: none;
   background: transparent;
   font-size: 24px;
-  &:hover {
-    // FIXME REPLACE THIS WITH SOMETHING PROPER
-    color: $green;
+  &:hover:not(:disabled) {
+    color: #00884b;
   }
 }
 
