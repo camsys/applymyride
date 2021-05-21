@@ -1125,10 +1125,13 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
       return name + ', ' + vicinity;
     }
 
-    // Find the City name from the address_components. In the Google framework, the city name is 'locality'
+    // Find the City name from the address_components.
+    // In the Google framework, the city name can be 'locality' or 'administrative_area_level_3' if 'locality' isn't present
     angular.forEach(gPlace['address_components'], function(value, key) {
       var types = value['types'];
       if($.inArray('locality',types) >= 0){
+        city = value['long_name']
+      } else if($.inArray('administrative_area_level_3',types) >= 0){
         city = value['long_name']
       }
     })
