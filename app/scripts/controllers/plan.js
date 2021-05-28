@@ -483,6 +483,9 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
         promise.then(function(result) {
           planService.booking_results = result.data.booking_results;
           $location.path('/paratransit/confirm_shared_ride');
+        }, function(failed_res) {
+          planService.booking_results = failed_res.data.booking_results;
+          $location.path('/paratransit/confirm_shared_ride');
         });
         break;
     }
