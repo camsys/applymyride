@@ -2,9 +2,9 @@
 
 var app = angular.module('applyMyRideApp');
 
-app.controller('PlanController', ['$scope', '$http','$routeParams', '$location', 'planService', 'util', 'flash', 'usSpinnerService', '$q', 'LocationSearch', 'localStorageService', 'ipCookie', '$timeout', '$window', '$filter',
+app.controller('PlanController', ['$scope', '$http','$routeParams', '$location', 'planService', 'util', 'flash', 'usSpinnerService', 'debounce', '$q', 'LocationSearch', 'localStorageService', 'ipCookie', '$timeout', '$window', '$filter',
 
-function($scope, $http, $routeParams, $location, planService, util, flash, usSpinnerService, $q, LocationSearch, localStorageService, ipCookie, $timeout, $window, $filter) {
+function($scope, $http, $routeParams, $location, planService, util, flash, usSpinnerService, debounce, $q, LocationSearch, localStorageService, ipCookie, $timeout, $window, $filter) {
 
   var currentLocationLabel = "Current Location";
   var urlPrefix = '//' + APIHOST + '/';
@@ -27,6 +27,8 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
   $scope.toFromMarkers = {};
   $scope.toFromIcons={'to' : '//maps.google.com/mapfiles/markerB.png',
                       'from' : '//maps.google.com/mapfiles/marker_greenA.png' };
+  // Disable Swap Address determines when to disable the swap address inputs button
+  $scope.disableSwapAddressButton = false
   $scope.locations = [];
   $scope.placeIds = [];
   $scope.showConfirmLocationMap = false;
@@ -806,13 +808,52 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
     $scope.selectPlace(place, 'to');
   }
 
-  
-  // This is run when you click a place in the list, 
-  // when you tap out of the to/from field, 
-  // and when the to/from page is loaded
-  $scope.selectPlace = function(place, toFrom, loadLocationsIfNeeded){
+  /**
+   * Swap to/from click handler
+   * @returns {void}
+   */
+  $scope.swapAddressInputs = function() {
+    $scope.disableSwapAddressButton = true
+    const to = $scope.to !== '' ? $scope.to : $scope.toDefault
+    const from = $scope.from !== '' ? $scope.from : $scope.fromDefault
+    if (to === '' || from === '') {
+      $scope.disableSwapAddressButton = false
+      return
+    }
+    const asyncSwap = async function() {
+      setTimeout(function() {
 
-    // Check to see if we have reset to the original place. If so, we can turn the button back on.     
+        $scope.to = from
+        $scope.locations = []
+        $scope.selectPlace(from , 'to', false)
+      }, 0.5 * 1000)
+    }
+    asyncSwap().then(function() {
+      $scope.from = to
+      $scope.locations = []
+      $scope.selectPlace(to , 'from', false)
+    })
+    $scope.disableSwapAddressButton = false
+  }
+
+  $scope.debouncedSwapAddressInputs = async function() {
+    $scope.disableSwapAddressButton = true
+    await debounce($scope.swapAddressInputs, 450)()
+    $scope.disableSwapAddressButton = false
+  }
+  /**
+   * Select Place
+   * - This is run when you click a place in the list,
+   * ...when you tap out of the to/from field,
+   * ...and when the to/from page is loaded
+   * - if the place is selected successfully
+   * ...$scope.checkServiceArea is called
+   * @param {string} place - an address
+   * @param {string} toFrom - limited to a value of 'to' or 'from
+   * @param {unknown} loadLocationsIfneeded - unsure
+   */
+  $scope.selectPlace = function(place, toFrom, loadLocationsIfNeeded){
+    // Check to see if we have reset to the original place. If so, we can turn the button back on.
     if(toFrom == 'from'){
       if(place === $scope.fromDefault && place.length > 0){
         $scope.locationClicked = true

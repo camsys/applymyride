@@ -697,6 +697,36 @@ ul.bus-nav-tabs.nav-tabs {
   background-color: $live-yellow;
 }
 
+button.btn--no-outline {
+  border: none;
+  box-shadow: none;
+  background: transparent;
+  font-size: 24px;
+  &:hover:not(:disabled) {
+    color: #00884b;
+  }
+}
+
+.input-row--address{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 -15px;
+}
+
+.h3--address-label {
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+  margin: 10px 0;
+}
+
+.container__swap-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 50px;
+
 .btn-no-bg {
   background-color: transparent;
   box-shadow: none;

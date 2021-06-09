@@ -9,61 +9,63 @@
         .form-group
           .row
             .col-lg-6.col-lg-offset-3.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1.col-xs-12
-              %h3
-                %strong
-                  %i{class:'cs-map-marker A'}
-                  Where are you starting?
+              .input-row--address
+                .col-lg-10.col-md-10.col-sm-10
+                  %label.h3.h3--address-label{for: 'fromInput'}
+                    %i{class:'cs-map-marker A'}
+                    Where are you starting?
 
-              %autocomplete{ 'attr-placeholder'=> '{{fromDefault}}',
-                                          'attr-input-id' => 'whereFromInput',
-                                          'attr-autofocus' => 'true',
-                                          'attr-clicktofocus' => 'true',
-                                          class: 'autocompleteWrapper',
-                                          id: 'fromInput',
-                                          tabindex: 'null',
-                                          required: 'true',
-                                          'inputclass' => 'clearable tripplanner__location form__input',
-                                          'disable-filter' => 'true',
-                                          'data' => 'locations',
-                                          'attr-input-class' => 'whereToFrom',
-                                          'on-type'=> 'getFromLocations',
-                                          'on-focus'=> 'focusFrom',
-                                          'on-blur'=> 'mapFrom',
-                                          'on-select' => 'selectFrom',
-                                          'autocomplete-required' => 'true',
-                                          ng: { model: 'from'} }
-              .alert.alert-danger{role:'alert', ng:{show:'errors.noResultsfrom'}}
-                Address is not recognized.  Try entering it another way.
-              .alert.alert-danger{role:'alert', ng:{show:'errors.rangeErrorfrom'}}
-                The location you selected is outside the service area.
+                  %autocomplete{ 'attr-placeholder'=> '{{fromDefault}}',
+                                              'attr-input-id' => 'whereFromInput',
+                                              'attr-autofocus' => 'true',
+                                              'attr-clicktofocus' => 'true',
+                                              class: 'autocompleteWrapper',
+                                              id: 'fromInput',
+                                              tabindex: 'null',
+                                              required: 'true',
+                                              'inputclass' => 'clearable tripplanner__location form__input',
+                                              'disable-filter' => 'true',
+                                              'data' => 'locations',
+                                              'attr-input-class' => 'whereToFrom',
+                                              'on-type'=> 'getFromLocations',
+                                              'on-focus'=> 'focusFrom',
+                                              'on-blur'=> 'mapFrom',
+                                              'on-select' => 'selectFrom',
+                                              'autocomplete-required' => 'true',
+                                              ng: { model: 'from'} }
+                  .alert.alert-danger{role:'alert', ng:{show:'errors.noResultsfrom'}}
+                    Address is not recognized.  Try entering it another way.
+                  .alert.alert-danger{role:'alert', ng:{show:'errors.rangeErrorfrom'}}
+                    The location you selected is outside the service area.
 
-              %h3
-                %strong
-                  %i{class:'cs-map-marker B'}
-                  Where are you going?
+                  %label.h3.h3--address-label{for: 'toInput'}
+                    %i{class:'cs-map-marker B'}
+                    Where are you going?
+                  %autocomplete{ 'attr-placeholder'=> '{{toDefault}}',
+                                              'attr-input-id' => 'whereToInput',
+                                              'attr-clicktofocus' => 'true',
+                                              class: 'autocompleteWrapper',
+                                              id: 'toInput',
+                                              tabindex: 'null',
+                                              required: 'true',
+                                              'inputclass' => 'clearable tripplanner__location form__input',
+                                              'disable-filter' => 'true',
+                                              'data' => 'locations',
+                                              'on-type'=> 'getToLocations',
+                                              'on-focus'=> 'focusTo',
+                                              'on-blur'=> 'mapTo',
+                                              'on-select' => 'selectTo',
+                                              'autocomplete-required' => 'true',
+                                              ng: { model: 'to'} }
 
-              %autocomplete{ 'attr-placeholder'=> '{{toDefault}}',
-                                          'attr-input-id' => 'whereToInput',
-                                          'attr-clicktofocus' => 'true',
-                                          class: 'autocompleteWrapper',
-                                          id: 'toInput',
-                                          tabindex: 'null',
-                                          required: 'true',
-                                          'inputclass' => 'clearable tripplanner__location form__input',
-                                          'disable-filter' => 'true',
-                                          'data' => 'locations',
-                                          'on-type'=> 'getToLocations',
-                                          'on-focus'=> 'focusTo',
-                                          'on-blur'=> 'mapTo',
-                                          'on-select' => 'selectTo',
-                                          'autocomplete-required' => 'true',
-                                          ng: { model: 'to'} }
+                  .alert.alert-danger{role:'alert', ng:{show:'errors.noResultsto'}}
+                    Address is not recognized.  Try entering it another way.
 
-              .alert.alert-danger{role:'alert', ng:{show:'errors.noResultsto'}}
-                Address is not recognized.  Try entering it another way.
-
-              .alert.alert-danger{role:'alert', ng:{show:'errors.rangeErrorto'}}
-                The location you selected is outside the service area.
+                  .alert.alert-danger{role:'alert', ng:{show:'errors.rangeErrorto'}}
+                    The location you selected is outside the service area.
+                .col-lg-2.col-md-2.col-sm-2.container__swap-btn
+                  %button.btn.btn--no-outline{type:'button', aria: {label: 'Swap Address Inputs'},ng: {click: 'debouncedSwapAddressInputs()', disabled: 'disableSwapAddressButton == true'}}
+                    %i.glyphicon.glyphicon-sort
 
               %div.map-canvas{'ui-map' => 'whereToMap', 'ui-options' => 'mapOptions', ng: {show: 'showMap'}}
 

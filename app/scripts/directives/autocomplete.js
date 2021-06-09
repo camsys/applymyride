@@ -273,6 +273,7 @@ app.directive('autocomplete', function() {
             class="clearable {{ attrs.inputclass }}"\
             id="{{ attrs.inputid }}"\
             autocomplete="off"\
+            ng-model-options="{ debounce: 100 }"\
             ng-required="{{ autocompleteRequired }}" />\
           <ul ng-show="completing && (suggestions | filter:searchFilter).length > 0">\
             <li\
