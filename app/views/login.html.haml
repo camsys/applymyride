@@ -43,9 +43,6 @@
           .row{ng: {hide: "location == '/plan/login-guest'"}, style: 'margin-top: 1em'}
             %a.btn-block{"ng-href" => "#/plan/where"}
               Or, continue as a guest
-          .row{style: 'margin-top: 1em'}
-            %a.btn-block{href: "https://cpta-bin.s3.us-east-2.amazonaws.com/documents/FMR-HIPAA-privacy-notice.pdf",target: "_blank", rel: "noopener noreferer"}
-              HIPAA Privacy Notice
 
           .row{style: 'margin-top: 1em'}
             .pull-left{ng: {show: "location == '/plan/login-guest'"}}
@@ -58,6 +55,9 @@
                 Next
         .row.text-center{style:'margin: 30px 0px 10px 0px;'}
           Need Help? Call 1-844-PA-4RIDE
+        .row.text-center{style: 'margin-top: 0.5em'}
+          %a.btn-block{href: "https://cpta-bin.s3.us-east-2.amazonaws.com/documents/FMR-HIPAA-privacy-notice.pdf",target: "_blank", rel: "noopener noreferer"}
+            HIPAA Privacy Notice
 
     %div{ng: {show: "location == '/authenticateSharedRideId'"}}
       .row
