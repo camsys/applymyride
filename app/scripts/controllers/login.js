@@ -14,7 +14,18 @@ angular.module('applyMyRideApp')
         }
       );
 
+      util.getCountiesInTransition(
+        function (response) {
+          $scope.transitionCounties = response.counties;
+        }
+      );
 
+      util.getTransitionMessages(
+        function (response) {
+          $scope.countyInTransitionMessage = response.countyInTransitionMessage;
+          $scope.transitionHelpMessage = response.helpMessage;
+        }
+      );
 
       $scope.location = $location.path();
       $scope.rememberme = true;
@@ -68,6 +79,11 @@ angular.module('applyMyRideApp')
                           && $scope.sharedRideId
                           && $scope.county
                           && true);
+      }
+
+      $scope.isTransitionCounty = function (county) {
+        return $scope.transitionCounties &&
+          $scope.transitionCounties.includes($scope.county);
       }
 
       $scope.checkId = function() {

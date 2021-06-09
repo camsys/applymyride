@@ -392,7 +392,10 @@ angular.module('applyMyRideApp')
           if( isNaN( parseInt( paratransitTrip.cost )) ){
             paratransitTrip.cost = 0;
           }
-          if(paratransitTrip.duration && paratransitTrip.start_time && paratransitTrip.cost >= 0) {
+          if (isNaN(parseInt(paratransitTrip.duration))) {
+            paratransitTrip.duration = 0;
+          }
+          if ((paratransitTrip.duration >= 0) && paratransitTrip.start_time && paratransitTrip.cost >= 0) {
             paratransitTrip.travelTime = humanizeDuration(paratransitTrip.duration * 1000, {
               units: ["hours", "minutes"],
               round: true

@@ -10,34 +10,40 @@
         .col-xs-3.col-md-2
           %p.text-left.text-muted
             From
-        .col-xs-9.col-md-10
+        .col-xs-6.col-md-8
           %h4.text-left
             {{request.fromLine1}}
           %h5.text-muted.text-left
             {{request.fromLine2 | noCountry}}
-
+        .col-xs-3.col-md-2.container--center-single-item
+          %button.btn.btn-no-bg{title:'Edit Trip Origin',ng:{click: 'goPlanWhere()'}, type: 'button'}
+            %i.glyphicon.glyphicon-pencil
       .no_underline.row.rounded-border{ng:{click:'goPlanWhere()'}}
         .col-xs-3.col-md-2
           %p.text-left.text-muted
             To
-        .col-xs-9.col-md-10
+        .col-xs-6.col-md-8
           %h4.text-left
             {{request.toLine1}}
           %h5.text-muted.text-left
             {{request.toLine2 | noCountry}}
-
+        .col-xs-3.col-md-2.container--center-single-item
+          %button.btn.btn-no-bg{title:'Edit Trip Destination',ng:{click: 'goPlanWhere()'}, type: 'button'}
+            %i.glyphicon.glyphicon-pencil
       .no_underline.row.rounded-border{ng: {show: '!request.roundtrip || request.sameday', click:'goPlanWhen()' } }
         .col-xs-3.col-md-2
           %p.text-left.text-muted
             When
-        .col-xs-9.col-md-10
+        .col-xs-6.col-md-8
           %h4.text-left
             {{request.when1}}
             %h5.text-muted.text-left
               {{request.when2}}
             %h5.text-muted.text-left{ng: {show: 'request.when4'}}
               {{request.when4}}
-
+        .col-xs-3.col-md-2.container--center-single-item
+          %button.btn.btn-no-bg{title:'Edit Trip Time',ng:{click: 'goPlanWhen()'}, type: 'button'}
+            %i.glyphicon.glyphicon-pencil
       .no_underline.rounded-border{style: "margin-left: -15px; margin-right: -15px;", ng: {show: 'request.roundtrip && !request.sameday', click:'goPlanWhen()'}}
         .row{style: "margin-left: 0px; margin-right: 0px;"}
           .col-xs-3.col-md-2
@@ -57,19 +63,21 @@
               {{request.when3}}
             %h5.text-muted.text-left
               {{request.when4}}
-
       .no_underline.row.rounded-border{ng:{show:'request.purpose', click:'goPlanPurpose()'}}
         .col-xs-3.col-md-2
           %p.text-left.text-muted
             Purpose
-        .col-xs-9.col-md-10
+        .col-xs-6.col-md-8
           %h4.text-left
             {{request.purpose}}
+        .col-xs-3.col-md-2.container--center-single-item
+          %button.btn.btn-no-bg{title:'Edit Trip Purpose',ng:{click: 'goPlanPurpose()'}, type: 'button'}
+            %i.glyphicon.glyphicon-pencil
       .row.rounded-border{'ng-hide'=>'showBusRides || paratransitItineraries.length == 0'}
         .col-xs-3.col-md-2
           %p.text-left.text-muted
             Cost
-        .col-xs-9.col-md-10
+        .col-xs-6.col-md-8
           %h4.text-left
             {{fare_info["mode_paratransit"]}}
 

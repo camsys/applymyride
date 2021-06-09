@@ -6,6 +6,23 @@ angular.module('applyMyRideApp')
       //skip initializing this controller if we're not on the page
       if( ['/lookupIdForm', '/lookupError'].indexOf( $location.path() ) == -1){ return; }
 
+      util.getCountiesInTransition(
+        function (response) {
+          $scope.transitionCounties = response.counties;
+        }
+      );
+
+      util.getTransitionMessages(
+        function (response) {
+          $scope.countyInTransitionMessage = response.countyInTransitionMessage;
+          $scope.transitionHelpMessage = response.helpMessage;
+        }
+      );
+      $scope.isTransitionCounty = function (county) {
+        return $scope.transitionCounties &&
+          $scope.transitionCounties.includes($scope.county);
+      }
+
       $scope.location = $location.path();
       $scope.counties = localStorageService.get("counties") || util.getCounties(function(r) {
         $scope.counties = r.data.service_ids;
