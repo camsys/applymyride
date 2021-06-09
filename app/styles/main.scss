@@ -726,18 +726,19 @@ button.btn--no-outline {
   justify-content: center;
   align-items: center;
   margin-top: 50px;
-
-.btn-no-bg {
-  background-color: transparent;
-  box-shadow: none;
-  color: black;
-  text-decoration: none;
-  &:hover, &:focus {
-    color:#00884B;
-    outline: #00884b solid 2px;
-    ;
-  }
 }
+  .btn-no-bg {
+    background-color: transparent;
+    box-shadow: none;
+    color: black;
+    text-decoration: none;
+    &:hover, &:focus {
+      color:#00884B;
+      outline: #00884b solid 2px;
+      ;
+    }
+  }
+
 
 .container--center-single-item {
   display: flex;
