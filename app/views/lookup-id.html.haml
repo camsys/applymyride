@@ -21,9 +21,16 @@
           %select.btn-lg{style: 'width: 100%', ng: {model: 'county', options: 'county for county in counties', enter: 'next()'}}
             %option{value: '', disabled: '', selected: ''}
               Select your county
-        .row{style: 'margin-top: 1em'}
+        .row.alert.alert-success{style: 'margin-top: 2em', ng:{if: 'isTransitionCounty(county)'}}
+          .col-md-2
+            .fa.fa-warning.fa-3x
+          .col-md-10.text-left
+            %h3 {{countyInTransitionMessage}}
+            %br
+            %h3 {{transitionHelpMessage}}
+        .row{style: 'margin-top: 1em', ng:{hide: 'isTransitionCounty(county)'}}
           %h3 Your birthdate
-        .row
+        .row{ng:{hide: 'isTransitionCounty(county)'}}
           %input.form-control.dob.month{type:'tel', placeholder: 'mm', name:'month', ng: {model: 'dob.month', required: 'true', pattern:'/(^0?[1-9]|^1[012])$/', class:'{invalid: lookupidform.month.$dirty && lookupidform.month.$invalid  }'  }}
           &#47;
           %input.form-control.dob.day{type:'tel', placeholder: 'dd', name:'day', ng: {model: 'dob.day', required: 'true', pattern:'/(^0?[1-9]|^[12][0-9]|^3[01])$/', class:'{invalid: lookupidform.day.$dirty && lookupidform.day.$invalid  }'  }}
@@ -43,7 +50,7 @@
           %a.btn-block{href: '#/'}
             Cancel
         .row{style: 'margin-top: 1em'}
-          .pull-right
+          .pull-right{ng:{hide: 'isTransitionCounty(county)'}}
             %a.btn.btn-primary.btn-next{href: "", ng: {click: 'lookupId()'}}
               Find my ID
         .row.text-center{style:'margin: 30px 0px 10px 0px;'}
