@@ -730,6 +730,12 @@ angular.module('applyMyRideApp')
         outboundTrip.end_location = this.toDetails;
         this.addStreetAddressToLocation(outboundTrip.start_location);
         this.addStreetAddressToLocation(outboundTrip.end_location);
+        /*
+          NOTE this is necessary because some locations returned by Google Places
+          ... include city in a format that OCC does not expect
+        */
+        this.addCityToLocation(outboundTrip.start_location);
+        this.addCityToLocation(outboundTrip.end_location);
         this.fixLatLon(outboundTrip.start_location);
         this.fixLatLon(outboundTrip.end_location);
         var fromTime = this.fromTime;
@@ -798,6 +804,36 @@ angular.module('applyMyRideApp')
           }
         )
         */
+      }
+
+      /**
+       * Add city to the location object if a 'locality' type address component doesn't exist
+       * @param {*} location : A location returned by the Google Place API
+       */
+      this.addCityToLocation = function(location) {
+        const ADMIN_AREA = 'administrative_area_level_3'
+        let street_address;
+        const localityAvailable = location.address_components.find(function(component) {
+          return component.types.includes('locality')
+        })
+
+        if (!localityAvailable) {
+          // pull administrative locality level 3 instead
+          street_address = location.address_components.find(function(component) {
+            const includesAdmin = component.types.includes(ADMIN_AREA)
+            return includesAdmin
+          }).long_name
+
+          location.address_components.push(
+            {
+              "long_name": street_address,
+              "short_name": street_address,
+              "types": [
+                "locality",
+                "political"
+              ]
+            })
+        }
       }
 
       this.fixLatLon = function(location) {
