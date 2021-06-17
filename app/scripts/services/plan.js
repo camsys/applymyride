@@ -811,17 +811,17 @@ angular.module('applyMyRideApp')
        * @param {*} location : A location returned by the Google Place API
        */
       this.addCityToLocation = function(location) {
-        const ADMIN_AREA = 'administrative_area_level_3'
+        const ADMIN_AREA_3 = 'administrative_area_level_3'
         let street_address;
         const localityAvailable = location.address_components.find(function(component) {
           return component.types.includes('locality')
         })
 
         if (!localityAvailable) {
-          // pull administrative locality level 3 instead
+          // pull administrative locality level 3 instead if locality isn't present
           street_address = location.address_components.find(function(component) {
-            const includesAdmin = component.types.includes(ADMIN_AREA)
-            return includesAdmin
+            const includesAdmin3 = component.types.includes(ADMIN_AREA_3)
+            return includesAdmin3 && component.long_name !== 'Pennsylvania'
           }).long_name
 
           location.address_components.push(
