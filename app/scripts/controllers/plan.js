@@ -841,6 +841,23 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
     await debounce($scope.swapAddressInputs, 450)()
     $scope.disableSwapAddressButton = false
   }
+
+  const validateCityPresence = function(place) {
+    const addressComponents = place.address_components
+    const ADMIN_AREA_3 = 'administrative_area_level_3'
+    const PENN = 'Pennsylvania'
+    const locality = addressComponents.find(function(component) {
+      const includesLocality = component.types.includes('locality') && component.long_name != null
+      const includesAdminArea = component.types.includes(ADMIN_AREA_3) && component.long_name !== PENN && component.long_name !== 'US'  && component.long_name != null
+      if (includesLocality || includesAdminArea) {
+        return true
+      } else {
+        return false
+      }
+    });
+    console.log(locality)
+   return locality != null
+  }
   /**
    * Select Place
    * - This is run when you click a place in the list,
@@ -894,9 +911,15 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
     }
     // The person selected a POI
     else if(-1 < selectedIndex && selectedIndex < $scope.poiData.length){
-      $scope.locationClicked = true;
-      $scope.poi = $scope.poiData[selectedIndex];
-      $scope.checkServiceArea($scope.poi, $scope.poi.formatted_address, toFrom);
+      const hasCity = validateCityPresence($scope.poiData[selectedIndex])
+      if (hasCity) {
+        $scope.locationClicked = true;
+        $scope.poi = $scope.poiData[selectedIndex];
+        $scope.checkServiceArea($scope.poi, $scope.poi.formatted_address, toFrom);
+      } else {
+        bootbox.alert("Selected Point of Interest has no city, please search for another address.")
+        return
+      }
     }
     // The person selected either a recent place or a Google Place.
     else{
@@ -953,7 +976,6 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
           });
       }
 
-      
       // After a location has been picked or entered into the to/from field, we then Geocode that location
       // TODO: Why are we re-geocoding? If the autocomplete/Poi already has a lat/lng, this isn't necessary
       // This is only necessary for manual entry, which we no longer do.
@@ -965,14 +987,17 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
           }, function (result, status) {
             if (status == google.maps.GeocoderStatus.OK) {
 
-            //verify the location has a street address
-            var datatypes = [];
-            var route;
+            /* Verify that a street number and a locality/ city exists in the returned place */
+            const datatypes = [];
+            let route;
             angular.forEach(result.address_components, function(component, index) {
               angular.forEach(component.types, function(type, index) {
-                datatypes.push(type);
-                if(type == 'route'){
-                  route = component.long_name;
+                // if the component isn't empty, then push it into datatypes and parse the route
+                if (component.long_name != null) {
+                  datatypes.push(type);
+                  if(type == 'route'){
+                    route = component.long_name;
+                  }
                 }
               });
             });
@@ -1003,6 +1028,10 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
                   return;
                 }
               }
+            } else if (datatypes.indexOf('locality') < 0 && datatypes.indexOf('administrative_area_level_3') < 0) {
+              checkShowMap();
+              bootbox.alert("The location you selected does not have a city associated to it, please select another location.");
+              return;
             }
 
             // When we start typing we hide the Yes, looks good! button. 
