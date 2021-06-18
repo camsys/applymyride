@@ -579,7 +579,13 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
   }
 
   function _bookTrip(){
-    planService.prepareConfirmationPage($scope);
+    try {
+      planService.prepareConfirmationPage($scope);
+    } catch (e) {
+      console.log(e.message)
+      bootbox.alert('The origin/ destination address does not have a city included. Please go back and use a different address with a city included.')
+      return
+    }
     planService.transitResult = [];
     planService.paratransitResult = null;
     usSpinnerService.spin('spinner-1');

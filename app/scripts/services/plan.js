@@ -814,15 +814,19 @@ angular.module('applyMyRideApp')
         const ADMIN_AREA_3 = 'administrative_area_level_3'
         let street_address;
         const localityAvailable = location.address_components.find(function(component) {
-          return component.types.includes('locality')
+          return component.types.includes('locality') && component.long_name !== null
         })
 
         if (!localityAvailable) {
           // pull administrative locality level 3 instead if locality isn't present
           street_address = location.address_components.find(function(component) {
             const includesAdmin3 = component.types.includes(ADMIN_AREA_3)
-            return includesAdmin3 && component.long_name !== 'Pennsylvania'
-          }).long_name
+            return includesAdmin3 && component.long_name !== 'Pennsylvania' && component.long_name !== null
+          })
+
+          if (!street_address || street_address.long_name === null) {
+            throw new Error(`The "${location.name}" address does not have a city. Please search again for an address with the city included.`)
+          }
 
           location.address_components.push(
             {
