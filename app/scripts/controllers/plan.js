@@ -29,7 +29,8 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
                       'from' : '//maps.google.com/mapfiles/marker_greenA.png' };
   // Disable Swap Address determines when to disable the swap address inputs button
   $scope.disableSwapAddressButton = false
-  $scope.locations = [];
+  $scope.fromLocations = [];
+  $scope.toLocations = [];
   $scope.placeIds = [];
   $scope.showConfirmLocationMap = false;
   $scope.mapOptions = {
@@ -654,14 +655,14 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
   }
 
   $scope.getFromLocations = function(typed){
-    $scope.getLocations(typed, true);
+    $scope.getLocations(typed, true, 'from');
   }
 
   $scope.getToLocations = function(typed){
-    $scope.getLocations(typed, false);
+    $scope.getLocations(typed, false, 'to');
   }
 
-  $scope.getLocations = function(typed, addCurrentLocation){
+  $scope.getLocations = function(typed, addCurrentLocation, toFrom){
     if(typed){
       // The user has typed something, don't let the Next button activate until they have selected a location.
       $scope.locationClicked = false;
@@ -721,7 +722,11 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
           $scope.placeAddresses = $scope.placeAddresses.concat(googlePlaceData);
         }
 
-        $scope.locations = choices;
+        if (toFrom === 'from') {
+          $scope.fromLocations = choices
+        } else if (toFrom === 'to') {
+          $scope.toLocations = choices
+        }
       });
       return getLocationsPromise;
     }
@@ -1209,11 +1214,13 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
               planService.from = place;
               // Update the typed text to reflect the geocoded place
               $("#whereFromInput").val($scope.getDisplayAddress(result));
+              $scope.fromLocations = []
             }else if(toFrom == 'to'){
               planService.toDetails = result;
               planService.to = place;
               // Update the typed text to reflect the geocoded place
               $("#whereToInput").val($scope.getDisplayAddress(result));
+              $scope.toLocations = []
             }
           }, 1);
         }else{
