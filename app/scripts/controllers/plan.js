@@ -837,9 +837,14 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
   }
 
   $scope.debouncedSwapAddressInputs = async function() {
+    // NOTE: DISABLE "Yes Looks Good" BUTTON
+    $scope.locationClicked = false
+
     $scope.disableSwapAddressButton = true
-    await debounce($scope.swapAddressInputs, 450)()
-    $scope.disableSwapAddressButton = false
+    await debounce($scope.swapAddressInputs, 450)().then(function() {
+      $scope.disableSwapAddressButton = false
+      $scope.locationClicked = true
+    })
   }
   /**
    * Select Place
