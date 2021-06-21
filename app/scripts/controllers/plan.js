@@ -812,28 +812,29 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
    * Swap to/from click handler
    * @returns {void}
    */
-  $scope.swapAddressInputs = function() {
-    $scope.disableSwapAddressButton = true
+  $scope.swapAddressInputs = async function() {
     const to = $scope.to !== '' ? $scope.to : $scope.toDefault
     const from = $scope.from !== '' ? $scope.from : $scope.fromDefault
+    const tempDetailsForSwap = planService.toDetails
+    const tempNameForSwap = planService.to
+    /**
+     * TODO: Make this handle invalid inputs
+     * - origin text doesn't match details when details are turned into a dislpay name
+     * - destination text doesn't match details when details are turned into a display name
+     * 
+     * TODO: Make this add updated map markers
+     */
     if (to === '' || from === '') {
-      $scope.disableSwapAddressButton = false
       return
     }
-    const asyncSwap = async function() {
-      setTimeout(function() {
+    planService.toDetails = {...planService.fromDetails}
+    planService.to = planService.from
 
-        $scope.to = from
-        $scope.locations = []
-        $scope.selectPlace(from , 'to', false)
-      }, 0.5 * 1000)
-    }
-    asyncSwap().then(function() {
-      $scope.from = to
-      $scope.locations = []
-      $scope.selectPlace(to , 'from', false)
-    })
-    $scope.disableSwapAddressButton = false
+    planService.fromDetails = {...tempDetailsForSwap}
+    planService.from = tempNameForSwap
+
+    $scope.to = from
+    $scope.from = to
   }
 
   $scope.debouncedSwapAddressInputs = async function() {
