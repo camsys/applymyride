@@ -806,11 +806,15 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
   $scope.selectFrom = function(place){
     ignoreBlur = true;
     $scope.selectPlace(place, 'from');
+    // If the user selected a place, then re-enable swap button
+    $scope.disableSwapAddressButton = false
   }
 
   $scope.selectTo = function(place){
     ignoreBlur = true;
     $scope.selectPlace(place, 'to');
+    // If the user selected a place, then re-enable swap button
+    $scope.disableSwapAddressButton = false
   }
 
   /**
@@ -845,7 +849,10 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
   $scope.debouncedSwapAddressInputs = async function() {
     // NOTE: DISABLE "Yes Looks Good" BUTTON
     $scope.locationClicked = false
-
+    if ($scope.disableSwapAddressButton) {
+      bootbox.alert("At least one address in the origin/ destination fields is invalid. Please search for another address and be sure to select one from the suggestions list.")
+      return
+    }
     $scope.disableSwapAddressButton = true
     await debounce($scope.swapAddressInputs, 450)().then(function() {
       $scope.disableSwapAddressButton = false
@@ -908,6 +915,9 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
       $scope.locationClicked = true;
       $scope.poi = $scope.poiData[selectedIndex];
       $scope.checkServiceArea($scope.poi, $scope.poi.formatted_address, toFrom);
+      if ($scope.disableSwapAddressButton == true) {
+        $scope.disableSwapAddressButton = false
+      }
     }
     // The person selected either a recent place or a Google Place.
     else{
@@ -956,6 +966,7 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
                 }
               }
               $scope.errors['noResults'+toFrom] = true;
+              $scope.disableSwapAddressButton = true
               checkShowMap();
             }else{
               var placeId = list[0].place_id;
@@ -992,7 +1003,9 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
               if(datatypes.indexOf('route') < 0){
                 $scope.toFromMarkers[toFrom].setMap(null);
                 checkShowMap();
-                bootbox.alert("The location you selected does not have have a street associated with it, please select another location.");
+                bootbox.alert("The location you selected does not have have a street associated with it, please select another location.", function() {
+                  $scope.disableSwapAddressButton = true
+                });
                 return;
               }else if(datatypes.indexOf('street_number') < 0){
                 var streetNameIndex = place.indexOf(route);
@@ -1010,7 +1023,9 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
                     $scope.toFromMarkers[toFrom].setMap(null);
                   }
                   checkShowMap();
-                  bootbox.alert("The location you selected does not have a street number associated, please select another location.");
+                  bootbox.alert("The location you selected does not have a street number associated, please select another location.", function() {
+                    $scope.disableSwapAddressButton = true
+                  });
                   return;
                 }
               }
@@ -1021,8 +1036,13 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
             // When the page is first loaded, then this is used to populate the lat/lng for the previous locations, since the showButton is true by default, the button will be green assuming all other tests pass.
             if($scope.locationClicked){
               $scope.checkServiceArea(result, place, toFrom);
+              $scope.disableSwapAddressButton = false
+              return
             } else{
-              bootbox.alert("Please select a location from the dropdown to continue.");
+              bootbox.alert("Please select a location from the dropdown to continue.", function() {
+                $scope.disableSwapAddressButton = true
+              });
+              return
             }
 
           } else {
@@ -1084,7 +1104,9 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
         if(datatypes.indexOf('street_number') < 0 || datatypes.indexOf('route') < 0){
           if(datatypes.indexOf('route') < 0){
             $scope.toFromMarkers[toFrom].setMap(null);
-            bootbox.alert("The location you selected does not have have a street associated with it, please select another location.");
+            bootbox.alert("The location you selected does not have have a street associated with it, please select another location.", function() {
+              $scope.disableSwapAddressButton = true
+            });
             $scope.stopSpin();
             return;
           }
@@ -1103,7 +1125,9 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
             else{
               $scope.toFromMarkers[toFrom].setMap(null);
               checkShowMap();
-              bootbox.alert("The location you selected does not have a street number associated, please select another location.");
+              bootbox.alert("The location you selected does not have a street number associated, please select another location.", function() {
+                $scope.disableSwapAddressButton = true
+              });
               $scope.stopSpin();
               return;
             }
