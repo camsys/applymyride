@@ -824,32 +824,64 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
   }
 
   /**
-   * Swap to/from click handler
-   * @returns {void}
+   * NOTE: implementation is similar to how $scope.checkServiceArea is implemented
+   * ... only it's fully synchronous whereas checkServiceArea performs at least one asynchronous action
    */
-  $scope.swapAddressInputs = async function() {
-    const to = $scope.to !== '' ? $scope.to : $scope.toDefault
-    const from = $scope.from !== '' ? $scope.from : $scope.fromDefault
-    const tempDetailsForSwap = planService.toDetails
-    const tempNameForSwap = planService.to
-    /**
-     * TODO: Make this handle invalid inputs
-     * - origin text doesn't match details when details are turned into a dislpay name
-     * - destination text doesn't match details when details are turned into a display name
-     * 
-     * TODO: Make this add updated map markers
-     */
-    if (to === '' || from === '') {
-      return
-    }
-    planService.toDetails = {...planService.fromDetails}
-    planService.to = planService.from
+  async function swapMapMarkers() {
+    const tempToDetails = {...planService.toDetails}
+    const tempToName = planService.to
+    const tempFromDetails = {...planService.fromDetails}
+    const tempFromName = planService.from
 
-    planService.fromDetails = {...tempDetailsForSwap}
-    planService.from = tempNameForSwap
+    // rebuild map markers
+    const map = $scope.whereToMap;
+    Object.values($scope.toFromMarkers).forEach(function(marker) {
+      marker.setMap(null)
+    })
+    const fromLocation = tempFromDetails.geometry.location
+    const toLocation = tempToDetails.geometry.location
+    google.maps.event.trigger(map, 'resize');
 
-    $scope.to = from
-    $scope.from = to
+    // Check if POI's have been selected, or if the location is in a format that isn't recognized by google maps
+    const toLatType = typeof toLocation.lat === 'number' || typeof toLocation.lat === 'string' 
+    const fromLatType = typeof fromLocation.lat === 'number' || typeof fromLocation.lat === 'string' 
+
+    const newFromLocation = toLatType ? new google.maps.LatLng(Number(toLocation.lat), Number(toLocation.lng)) : toLocation
+    const newToLocation = fromLatType ? new google.maps.LatLng(Number(fromLocation.lat), Number(fromLocation.lng)) : fromLocation
+
+    // Rebuild map markers
+    $scope.toFromMarkers.to = new google.maps.Marker({
+      map: map,
+      position: newToLocation,
+      animation: google.maps.Animation.DROP,
+      icon: $scope.toFromIcons.to
+    });
+
+    $scope.toFromMarkers.from = new google.maps.Marker({
+      map: map,
+      position: newFromLocation,
+      animation: google.maps.Animation.DROP,
+      icon: $scope.toFromIcons.from
+    });
+
+    // Rebuild map
+    const bounds = new google.maps.LatLngBounds();
+    Object.values($scope.toFromMarkers).forEach(function(marker) {
+      bounds.extend(marker.position);
+    })
+    map.setCenter(bounds.getCenter());
+    map.fitBounds(bounds);
+
+    // Swap to/ from
+    planService.fromDetails = tempToDetails
+    planService.from = tempToName;
+    $scope.from = tempToName;
+    $scope.fromLocations = []
+
+    planService.toDetails = tempFromDetails;
+    planService.to = tempFromName;
+    $scope.to = tempFromName;
+    $scope.toLocations = []
   }
 
   $scope.debouncedSwapAddressInputs = async function() {
@@ -860,7 +892,7 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
       return
     }
     $scope.disableSwapAddressButton = true
-    await debounce($scope.swapAddressInputs, 450)().then(function() {
+    await debounce(swapMapMarkers, 450)().then(function() {
       $scope.disableSwapAddressButton = false
       $scope.locationClicked = true
     })
