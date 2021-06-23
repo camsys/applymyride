@@ -29,6 +29,12 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
                       'from' : '//maps.google.com/mapfiles/marker_greenA.png' };
   // Disable Swap Address determines when to disable the swap address inputs button
   $scope.disableSwapAddressButton = false
+  /**
+   * NOTE: THE FMR CODEBASE HANDLES ASYNCHRONOUS CODE VERY BADLY
+   * - you'll see setTimeout in the codebase to handle asynchronous actions a lot
+   * ...and that's generally not the correct way to handle async actions
+   * - Ideally we'd return Promises and use then chaining to handle async code and callbacks
+  */
   $scope.fromLocations = [];
   $scope.toLocations = [];
   $scope.placeIds = [];
