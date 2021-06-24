@@ -785,9 +785,9 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
       //if $scope.to or $scope.from is different from place, the autocomplete input's select events are handling
       if(!defaulted && $scope[toFrom] !== place){
         return;
-      // Else if we are on initial focus(i.e the from input is focused, we haven't typed, and we clicked out of it)
+      // Else if we are on initial focus(i.e the from input is focused, inputs are still on defaults, and we clicked out of it)
       // ... toggle isOnInitFocus to false  and then return
-      } else if (isOnInitFocus === true && lastMappedPlaces[toFrom] === place) {
+      } if (isOnInitFocus === true && (place === $scope.fromDefault || place === $scope.toDefault)) {
         isOnInitFocus = false
         return
       }
