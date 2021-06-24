@@ -827,7 +827,7 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
    * NOTE: implementation is similar to how $scope.checkServiceArea is implemented
    * ... only it's fully synchronous whereas checkServiceArea performs at least one asynchronous action
    */
-  async function swapMapMarkers() {
+  function swapMapMarkers() {
     const tempToDetails = {...planService.toDetails}
     const tempToName = planService.to
     const tempFromDetails = {...planService.fromDetails}
@@ -884,6 +884,11 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
     $scope.toLocations = []
   }
 
+  /**
+   * Debounce swap address inputs
+   * - it's asynchronous as the function holds off on executing the swap
+   * ...operation for a bit to prevent from repeated calls within a short amount of time
+   */
   $scope.debouncedSwapAddressInputs = async function() {
     // NOTE: DISABLE "Yes Looks Good" BUTTON
     $scope.locationClicked = false
