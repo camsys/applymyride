@@ -5,7 +5,8 @@ var app = angular.module('applyMyRideApp');
 app.controller('PlanController', ['$scope', '$http','$routeParams', '$location', 'planService', 'util', 'flash', 'usSpinnerService', 'debounce', '$q', 'LocationSearch', 'localStorageService', 'ipCookie', '$timeout', '$window', '$filter',
 
 function($scope, $http, $routeParams, $location, planService, util, flash, usSpinnerService, debounce, $q, LocationSearch, localStorageService, ipCookie, $timeout, $window, $filter) {
-
+  // This variable exists to track whether or not we're still on initial focus with a default input
+  let isOnInitFocus = true
   var currentLocationLabel = "Current Location";
   var urlPrefix = '//' + APIHOST + '/';
 
@@ -768,7 +769,14 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
     lastMappedPlaces[toFrom] = place; 
     setTimeout(function selectPlace(){
       //if $scope.to or $scope.from is different from place, the autocomplete input's select events are handling
-      if(!defaulted && $scope[toFrom] !== place){ return; }
+      if(!defaulted && $scope[toFrom] !== place){
+        return;
+      // Else if we are on initial focus(i.e the from input is focused, we haven't typed, and we clicked out of it)
+      // ... toggle isOnInitFocus to false  and then return
+      } else if (isOnInitFocus === true && lastMappedPlaces[toFrom] === place) {
+        isOnInitFocus = false
+        return
+      }
       //otherwise, run selectPlace
       $scope.selectPlace(place, toFrom);
     }, 500);
