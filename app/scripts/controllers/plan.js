@@ -586,6 +586,20 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
     });
   }
 
+  // Rebuild and recenter the map
+  function rebuildRecenterMap() {
+    const map = $scope.whereToMap
+    const bounds = new google.maps.LatLngBounds();
+    Object.values($scope.toFromMarkers).forEach(function(marker) {
+      bounds.extend(marker.position);
+    })
+    map.setCenter(bounds.getCenter());
+    map.fitBounds(bounds);
+    if(Object.keys($scope.toFromMarkers).length === 1 ){
+      map.setZoom(15);
+    }
+  }
+
   function _bookTrip(){
     planService.prepareConfirmationPage($scope);
     planService.transitResult = [];
@@ -873,12 +887,7 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
     });
 
     // Rebuild map
-    const bounds = new google.maps.LatLngBounds();
-    Object.values($scope.toFromMarkers).forEach(function(marker) {
-      bounds.extend(marker.position);
-    })
-    map.setCenter(bounds.getCenter());
-    map.fitBounds(bounds);
+    rebuildRecenterMap()
 
     // Swap to/ from
     planService.fromDetails = tempToDetails
@@ -1274,16 +1283,7 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
               icon: $scope.toFromIcons[toFrom]
             });
 
-            var bounds = new google.maps.LatLngBounds();
-            angular.forEach($scope.toFromMarkers, function(marker, k){
-              bounds.extend(marker.position);
-            });
-            map.setCenter(bounds.getCenter());
-            map.fitBounds(bounds);
-            var markerCount = $scope.toFromMarkers
-            if( Object.keys($scope.toFromMarkers).length === 1 ){
-              map.setZoom(15);
-            }
+            rebuildRecenterMap()
             if(toFrom == 'from'){
               planService.fromDetails = result;
               planService.from = place;
