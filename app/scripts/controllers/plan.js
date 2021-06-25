@@ -853,9 +853,11 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
   function swapMapMarkers() {
     const tempToDetails = {...planService.toDetails}
     const tempToName = planService.to
+    const tempToDisplay = $scope.to !== '' ? $scope.to : $scope.toDefault
     const tempFromDetails = {...planService.fromDetails}
     const tempFromName = planService.from
-
+    const tempFromDisplay = $scope.from !== '' ? $scope.from : $scope.fromDefault
+    console.log(tempToDisplay, tempFromDisplay)
     // rebuild map markers
     const map = $scope.whereToMap;
     Object.values($scope.toFromMarkers).forEach(function(marker) {
@@ -899,12 +901,12 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
     // Swap to/ from
     planService.fromDetails = tempToDetails
     planService.from = tempToName;
-    $scope.from = tempToName;
+    $scope.from = tempToDisplay;
     $scope.fromLocations = []
 
     planService.toDetails = tempFromDetails;
     planService.to = tempFromName;
-    $scope.to = tempFromName;
+    $scope.to = tempFromDisplay;
     $scope.toLocations = []
   }
 
