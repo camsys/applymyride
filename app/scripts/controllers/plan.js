@@ -860,6 +860,12 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
     Object.values($scope.toFromMarkers).forEach(function(marker) {
       marker.setMap(null)
     })
+
+    // Check to ensure that at least the default inputs are present and if not, alert the user
+    if (Object.keys(tempToDetails).length === 0 || Object.keys(tempFromDetails).length === 0 ) {
+      bootbox.alert('One or more address inputs is empty. Please ensure both inputs have a valid address selected.')
+      return
+    }
     const fromLocation = tempFromDetails.geometry.location
     const toLocation = tempToDetails.geometry.location
     google.maps.event.trigger(map, 'resize');
