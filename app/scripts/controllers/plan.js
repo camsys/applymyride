@@ -36,6 +36,7 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
    * ...and that's generally not the correct way to handle async actions
    * - Ideally we'd return Promises and use then chaining to handle async code and callbacks
   */
+  // have 2 separate locations suggestions arrays for each field rather than having a single locations array
   $scope.fromLocations = [];
   $scope.toLocations = [];
   $scope.placeIds = [];
@@ -1295,12 +1296,14 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
               planService.from = place;
               // Update the typed text to reflect the geocoded place
               $("#whereFromInput").val($scope.getDisplayAddress(result));
+              // Reset locations array
               $scope.fromLocations = []
             }else if(toFrom == 'to'){
               planService.toDetails = result;
               planService.to = place;
               // Update the typed text to reflect the geocoded place
               $("#whereToInput").val($scope.getDisplayAddress(result));
+              // Reset locations array
               $scope.toLocations = []
             }
           }, 1);
