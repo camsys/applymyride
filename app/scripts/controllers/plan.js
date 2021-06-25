@@ -593,7 +593,7 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
           if(result.itineraries[i].returned_mode_code == "mode_paratransit"){
             // If the trip purpose is eligible based on the valid date range, allow booking a shared ride. 
             // Otherwise, display no shared ride message.
-            var allPurposes = [...$scope.top_purposes || [], ...$scope.purposes || []];
+            var allPurposes = [...planService.top_purposes || [], ...planService.purposes || []];
             var tripPurposesFiltered = allPurposes.filter(e => e.code == planService.itineraryRequestObject.trip_purpose);
             if (tripPurposesFiltered.length > 0) {
               var tripPurposeObj = tripPurposesFiltered[0]
@@ -1763,6 +1763,9 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
     case 'purpose':
       usSpinnerService.spin('spinner-1');
       planService.getTripPurposes($scope, $http).then(function(){
+        // pull trip purposes from planService after fetching them and then expose them for the front end to use
+        $scope.purposes = planService.purposes
+        $scope.top_purposes = planService.top_purposes
         usSpinnerService.stop('spinner-1');
       });
       $scope.showNext = false;
