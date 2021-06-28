@@ -582,7 +582,6 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
     try {
       planService.prepareConfirmationPage($scope);
     } catch (e) {
-      console.log(e.message)
       bootbox.alert('The origin/ destination address does not have a city included. Please go back and use a different address with a city included.')
       return
     }
@@ -861,7 +860,6 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
         return false
       }
     });
-    console.log(locality)
    return locality != null
   }
   /**
