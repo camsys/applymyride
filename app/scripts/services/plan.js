@@ -731,6 +731,12 @@ angular.module('applyMyRideApp')
         outboundTrip.end_location = this.toDetails;
         this.addStreetAddressToLocation(outboundTrip.start_location);
         this.addStreetAddressToLocation(outboundTrip.end_location);
+        /*
+          NOTE this is necessary because some locations returned by Google Places
+          ... include city in a format that OCC does not expect
+        */
+        this.addCityToLocation(outboundTrip.start_location);
+        this.addCityToLocation(outboundTrip.end_location);
         this.fixLatLon(outboundTrip.start_location);
         this.fixLatLon(outboundTrip.end_location);
         var fromTime = this.fromTime;
@@ -799,6 +805,40 @@ angular.module('applyMyRideApp')
           }
         )
         */
+      }
+
+      /**
+       * Add city to the location object if a 'locality' type address component doesn't exist
+       * @param {*} location : A location returned by the Google Place API
+       */
+      this.addCityToLocation = function(location) {
+        const ADMIN_AREA_3 = 'administrative_area_level_3'
+        let street_address;
+        const localityAvailable = location.address_components.find(function(component) {
+          return component.types.includes('locality') && component.long_name !== null
+        })
+
+        if (!localityAvailable) {
+          // pull administrative locality level 3 instead if locality isn't present
+          street_address = location.address_components.find(function(component) {
+            const includesAdmin3 = component.types.includes(ADMIN_AREA_3)
+            return includesAdmin3 && component.long_name !== 'Pennsylvania' && component.long_name !== null
+          })
+
+          if (!street_address || street_address.long_name === null) {
+            throw new Error(`The "${location.name}" address does not have a city. Please search again for an address with the city included.`)
+          }
+
+          location.address_components.push(
+            {
+              "long_name": street_address,
+              "short_name": street_address,
+              "types": [
+                "locality",
+                "political"
+              ]
+            })
+        }
       }
 
       this.fixLatLon = function(location) {
