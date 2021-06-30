@@ -36,7 +36,9 @@ angular.module('applyMyRideApp')
     // see [PAMF-698]
     this.getCountiesInTransition = function (successCallback, errorCallback) {
       //simulate back-end response
-      var response = { counties: ['Columbia', 'Montour', 'Northumberland', 'Snyder', 'Union'] };
+      //var response = { counties: ['Columbia', 'Montour', 'Northumberland', 'Snyder', 'Union'] };
+      // Return an emtpy array to disable display of the transition messages.
+      var response = { };
       successCallback(response);
     };
 

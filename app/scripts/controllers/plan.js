@@ -602,7 +602,12 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
   }
 
   function _bookTrip(){
-    planService.prepareConfirmationPage($scope);
+    try {
+      planService.prepareConfirmationPage($scope);
+    } catch (e) {
+      bootbox.alert('The origin/ destination address does not have a city included. Please go back and use a different address with a city included.')
+      return
+    }
     planService.transitResult = [];
     planService.paratransitResult = null;
     usSpinnerService.spin('spinner-1');
@@ -616,7 +621,7 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
           if(result.itineraries[i].returned_mode_code == "mode_paratransit"){
             // If the trip purpose is eligible based on the valid date range, allow booking a shared ride. 
             // Otherwise, display no shared ride message.
-            var allPurposes = [...$scope.top_purposes || [], ...$scope.purposes || []];
+            var allPurposes = [...planService.top_purposes || [], ...planService.purposes || []];
             var tripPurposesFiltered = allPurposes.filter(e => e.code == planService.itineraryRequestObject.trip_purpose);
             if (tripPurposesFiltered.length > 0) {
               var tripPurposeObj = tripPurposesFiltered[0]
@@ -928,6 +933,22 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
       $scope.locationClicked = true
     })
   }
+
+  const validateCityPresence = function(place) {
+    const addressComponents = place.address_components
+    const ADMIN_AREA_3 = 'administrative_area_level_3'
+    const PENN = 'Pennsylvania'
+    const locality = addressComponents.find(function(component) {
+      const includesLocality = component.types.includes('locality') && component.long_name != null
+      const includesAdminArea = component.types.includes(ADMIN_AREA_3) && component.long_name !== PENN && component.long_name !== 'US'  && component.long_name != null
+      if (includesLocality || includesAdminArea) {
+        return true
+      } else {
+        return false
+      }
+    });
+   return locality != null
+  }
   /**
    * Select Place
    * - This is run when you click a place in the list,
@@ -981,11 +1002,14 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
     }
     // The person selected a POI
     else if(-1 < selectedIndex && selectedIndex < $scope.poiData.length){
-      $scope.locationClicked = true;
-      $scope.poi = $scope.poiData[selectedIndex];
-      $scope.checkServiceArea($scope.poi, $scope.poi.formatted_address, toFrom);
-      if ($scope.disableSwapAddressButton == true) {
-        $scope.disableSwapAddressButton = false
+      const hasCity = validateCityPresence($scope.poiData[selectedIndex])
+      if (hasCity) {
+        $scope.locationClicked = true;
+        $scope.poi = $scope.poiData[selectedIndex];
+        $scope.checkServiceArea($scope.poi, $scope.poi.formatted_address, toFrom);
+      } else {
+        bootbox.alert("Selected Point of Interest has no city, please search for another address.")
+        return
       }
     }
     // The person selected either a recent place or a Google Place.
@@ -1044,7 +1068,6 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
           });
       }
 
-      
       // After a location has been picked or entered into the to/from field, we then Geocode that location
       // TODO: Why are we re-geocoding? If the autocomplete/Poi already has a lat/lng, this isn't necessary
       // This is only necessary for manual entry, which we no longer do.
@@ -1056,14 +1079,17 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
           }, function (result, status) {
             if (status == google.maps.GeocoderStatus.OK) {
 
-            //verify the location has a street address
-            var datatypes = [];
-            var route;
+            /* Verify that a street number and a locality/ city exists in the returned place */
+            const datatypes = [];
+            let route;
             angular.forEach(result.address_components, function(component, index) {
               angular.forEach(component.types, function(type, index) {
-                datatypes.push(type);
-                if(type == 'route'){
-                  route = component.long_name;
+                // if the component isn't empty, then push it into datatypes and parse the route
+                if (component.long_name != null) {
+                  datatypes.push(type);
+                  if(type == 'route'){
+                    route = component.long_name;
+                  }
                 }
               });
             });
@@ -1098,6 +1124,10 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
                   return;
                 }
               }
+            } else if (datatypes.indexOf('locality') < 0 && datatypes.indexOf('administrative_area_level_3') < 0) {
+              checkShowMap();
+              bootbox.alert("The location you selected does not have a city associated to it, please select another location.");
+              return;
             }
 
             // When we start typing we hide the Yes, looks good! button. 
@@ -1229,10 +1259,13 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
       return name + ', ' + vicinity;
     }
 
-    // Find the City name from the address_components. In the Google framework, the city name is 'locality'
+    // Find the City name from the address_components.
+    // In the Google framework, the city name can be 'locality' or 'administrative_area_level_3' if 'locality' isn't present
     angular.forEach(gPlace['address_components'], function(value, key) {
       var types = value['types'];
       if($.inArray('locality',types) >= 0){
+        city = value['long_name']
+      } else if($.inArray('administrative_area_level_3',types) >= 0){
         city = value['long_name']
       }
     })
@@ -1862,6 +1895,9 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
     case 'purpose':
       usSpinnerService.spin('spinner-1');
       planService.getTripPurposes($scope, $http).then(function(){
+        // pull trip purposes from planService after fetching them and then expose them for the front end to use
+        $scope.purposes = planService.purposes
+        $scope.top_purposes = planService.top_purposes
         usSpinnerService.stop('spinner-1');
       });
       $scope.showNext = false;

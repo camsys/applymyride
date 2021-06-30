@@ -630,19 +630,20 @@ angular.module('applyMyRideApp')
 
       this.getTripPurposes = function($scope, $http) {
         this.fixLatLon(this.fromDetails);
+        const that = this
         return $http.post(urlPrefix + 'api/v1/trip_purposes/list', this.fromDetails, this.getHeaders()).
           success(function(data) {
-            $scope.top_purposes = data.top_trip_purposes;
+            that.top_purposes = data.top_trip_purposes;
             data.trip_purposes = data.trip_purposes || [];
-            $scope.purposes = data.trip_purposes.filter(function(el){
-              var i;
-              for(i=0; i<$scope.top_purposes.length; i+=1){
-                if(el.code && $scope.top_purposes[i].code === el.code){
+            that.purposes = data.trip_purposes.filter(function(el){
+              for(let i = 0; i < that.top_purposes.length; i += 1){
+                if(el.code && that.top_purposes[i].code === el.code){
                   return false;
                 }
               }
               return true;
             });
+            // NOTE(wilsonj806) Is this dead code?
             if (data.default_trip_purpose != undefined && $scope.email == undefined){
               $scope.default_trip_purpose = data.default_trip_purpose;
               $scope.showNext = true;
@@ -730,6 +731,12 @@ angular.module('applyMyRideApp')
         outboundTrip.end_location = this.toDetails;
         this.addStreetAddressToLocation(outboundTrip.start_location);
         this.addStreetAddressToLocation(outboundTrip.end_location);
+        /*
+          NOTE this is necessary because some locations returned by Google Places
+          ... include city in a format that OCC does not expect
+        */
+        this.addCityToLocation(outboundTrip.start_location);
+        this.addCityToLocation(outboundTrip.end_location);
         this.fixLatLon(outboundTrip.start_location);
         this.fixLatLon(outboundTrip.end_location);
         var fromTime = this.fromTime;
@@ -798,6 +805,40 @@ angular.module('applyMyRideApp')
           }
         )
         */
+      }
+
+      /**
+       * Add city to the location object if a 'locality' type address component doesn't exist
+       * @param {*} location : A location returned by the Google Place API
+       */
+      this.addCityToLocation = function(location) {
+        const ADMIN_AREA_3 = 'administrative_area_level_3'
+        let street_address;
+        const localityAvailable = location.address_components.find(function(component) {
+          return component.types.includes('locality') && component.long_name !== null
+        })
+
+        if (!localityAvailable) {
+          // pull administrative locality level 3 instead if locality isn't present
+          street_address = location.address_components.find(function(component) {
+            const includesAdmin3 = component.types.includes(ADMIN_AREA_3)
+            return includesAdmin3 && component.long_name !== 'Pennsylvania' && component.long_name !== null
+          })
+
+          if (!street_address || street_address.long_name === null) {
+            throw new Error(`The "${location.name}" address does not have a city. Please search again for an address with the city included.`)
+          }
+
+          location.address_components.push(
+            {
+              "long_name": street_address,
+              "short_name": street_address,
+              "types": [
+                "locality",
+                "political"
+              ]
+            })
+        }
       }
 
       this.fixLatLon = function(location) {
