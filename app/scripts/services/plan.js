@@ -829,7 +829,8 @@ angular.module('applyMyRideApp')
             throw new Error(`The "${location.name}" address does not have a city. Please search again for an address with the city included.`)
           }
 
-          location.address_components.push(city_address_component)
+          // Waypoint locality is interpreted as the city in OCC
+          location.address_components.push({...city_address_component, types: ['locality', 'political']})
         }
       }
 
