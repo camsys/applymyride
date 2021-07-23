@@ -650,9 +650,25 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
         usSpinnerService.stop('spinner-1');
       });
   }
-  $scope.specifyTripPurpose = function(purpose){
-    planService.purpose = purpose;
-    _bookTrip();
+  /**
+   * @param {string} purpose - A string representing the trip purpose
+   * @param {boolean} [isEditTrip] - An optional arg that a dev can include
+   * ...to specify that the function call is the result of a user editing the trip purpose
+   * - In the context of fixing PAMF-709, we're passing in $scope.backToConfirm to check
+   * ...to make sure that we're not editing the trip
+   *
+   * Regardless of whether or not the trip is being edited, the trip purpose is updated
+   * - if we are editing a trip, we should call next() and let that function call handle rebooking the trip
+   * ...in order to prevent the app from trying to double book an updated trip(and subsequently hanging)
+   * - if we are not editing a trip, then book the trip as normal
+   */
+  $scope.specifyTripPurpose = function(purpose, isEditTrip){
+    planService.purpose = purpose
+    if (isEditTrip === true) {
+      $scope.next()
+    } else {
+      _bookTrip();
+    }
   }
 
   $scope.specifyFromTimeType = function(type){

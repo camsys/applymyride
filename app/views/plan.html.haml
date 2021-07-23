@@ -153,10 +153,10 @@
       .row
         .col-md-8.col-md-offset-2.col-sm-8.col-sm-offset-2
           .col-xs-6{style:'margin:7px 0px; padding-left:0px;', ng: {repeat: 'purpose in top_purposes'}}
-            %a.btn.btn-primary.btn-block{href: "", style: 'margin-bottom:4px; width:100%; padding-left:0px; padding-right:0px;', ng: {click: 'specifyTripPurpose(purpose.name)'}}
+            %a.btn.btn-primary.btn-block{href: "", style: 'margin-bottom:4px; width:100%; padding-left:0px; padding-right:0px;', ng: {click: 'specifyTripPurpose(purpose.name, backToConfirm)'}}
               {{ purpose.name }}
           .col-xs-6{style:'margin:7px 0px; padding-left:0px;', ng: {repeat: 'purpose in purposes', show:'showAllPurposes'}}
-            %a.btn.btn-primary.btn-block{href: "", style: 'margin-bottom:4px; width:100%; padding-left:0px; padding-right:0px;', ng: {click: 'specifyTripPurpose(purpose.name)'}}
+            %a.btn.btn-primary.btn-block{href: "", style: 'margin-bottom:4px; width:100%; padding-left:0px; padding-right:0px;', ng: {click: 'specifyTripPurpose(purpose.name, backToConfirm)'}}
               {{ purpose.name }}
           .col-xs-12
             .row{style:'margin-right:0px;'}
