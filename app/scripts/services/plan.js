@@ -631,6 +631,7 @@ angular.module('applyMyRideApp')
       this.getTripPurposes = function($scope, $http) {
         this.fixLatLon(this.fromDetails);
         const that = this
+        // TODO: Look at this and see if it needs to be a post request
         return $http.post(urlPrefix + 'api/v1/trip_purposes/list', this.fromDetails, this.getHeaders()).
           success(function(data) {
             that.top_purposes = data.top_trip_purposes;
