@@ -432,6 +432,12 @@ img.official-logo {
   color:#EEE;
   background-color: #14834D;
 }
+
+.btn.btn-danger {
+  color: #eee;
+  background-color: red;
+}
+
 .btn.btn-primary,
 .btn.btn-next{
   text-decoration: none;
@@ -614,7 +620,7 @@ i.cs-map-marker.A{
   padding:0px;
 }
 
-.btn.btn-primary:focus{
+.btn.btn-primary:focus,.btn.btn-primary:hover{
   border-color: rgb(31, 202,35);
   background-color: rgb(31, 202,35);
 }

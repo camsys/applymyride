@@ -73,13 +73,13 @@
         .row{ng:{show: 'mode === "transit"'}}
           %a.btn.btn-primary.btn-block{href: "", ng: {click: 'saveBusOrRailTrip()', hide:'transitSaved || transitCancelled'}}
             Save to my rides
-          %a.btn.btn-primary.btn-block{href: "", style:'background-color:red;',ng: {click: 'cancelThisBusOrRailTrip()', show: 'transitSaved'}}
+          %a.btn.btn-danger.btn-block{href: "",ng: {click: 'cancelThisBusOrRailTrip()', show: 'transitSaved'}}
             Cancel this ride
           
         .row{ng:{show: 'mode === "walk"'}}
           %a.btn.btn-primary.btn-block{href: "", ng: {click: 'saveWalkTrip()', hide:'walkSaved || walkCancelled'}}
             Save to my rides
-          %a.btn.btn-primary.btn-block{href: "", style:'background-color:red;',ng: {click: 'cancelThisWalkTrip()', show: 'walkSaved'}}
+          %a.btn.btn-danger.btn-block{href: "",ng: {click: 'cancelThisWalkTrip()', show: 'walkSaved'}}
             Cancel this ride
 
         .row{ng: {show:'transitCancelled || walkCancelled'}}

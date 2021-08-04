@@ -284,9 +284,9 @@
         %a.btn{href: "", ng: {click: "logout()", show:'loggedIn && (transitSaved || transitCancelled || walkSaved || walkCancelled)'}}
           Logout
       .pull-right{'ng-show'=>'loggedIn'}
-        %a.btn.btn-primary{href: "", style:'background-color:red;',ng: {click: 'cancelThisBusTrip', show:'transitSaved'}}
+        %a.btn.btn-danger{href: "",ng: {click: 'cancelThisBusTrip', show:'transitSaved'}}
           Cancel this trip
-        %a.btn.btn-primary{href: "", style:'background-color:red;',ng: {click: 'cancelThisWalkTrip', show:'walkSaved'}}
+        %a.btn.btn-danger{href: "",ng: {click: 'cancelThisWalkTrip', show:'walkSaved'}}
           Cancel this trip
         %a.btn{ng:{show:'transitCancelled || walkCancelled', click: 'reset()'}}
           Book another ride

@@ -65,7 +65,7 @@
               %a.btn.btn-primary.btn-block{href: "", ng: {click: 'toggleEmail($event);', show: 'taxiSaved && !taxiCancelled'}}
                 Email this ride        
             .col-md-8.col-md-offset-2.col-xs-12{ng: {show: 'loggedIn' } }  
-              %a.btn.btn-primary.btn-block{href: "", style:'background-color:red;', ng: {click: "cancelThisTaxiTrip()", show: "taxiSaved"}}
+              %a.btn.btn-danger.btn-block{href: "", ng: {click: "cancelThisTaxiTrip()", show: "taxiSaved"}}
                 Cancel this ride
             .col-md-8.col-md-offset-2.col-xs-12.unstuck-foot
               .pull-left
