@@ -1,0 +1,153 @@
+%article
+  :css
+    article:last-child {
+      margin-bottom: 32px;
+    }
+    section {
+      display: flex;
+      justify-content: center;
+      flex-flow: column nowrap;
+      align-items: center
+    }
+  %h1 Component Sandbox
+  %h2 Running on Bootstrap-Sass 3.3.7
+  %h3 This page showcases all components used in FMR
+  %section
+    %h2 Primary Button
+    %button.btn.btn-primary{type: "button"} Next
+    %h2 Primary Button; Block Button
+    %button.btn.btn-primary.btn-block{type: "button"} Next
+    %h2 Link Button
+    %button.btn.btn-link{type: "button"} Next
+    %h2 Link Button; Block Button
+    %button.btn.btn-link.btn-block{type: "button"} Next
+    %h2 Danger Button
+    %button.btn.btn-danger{type: "button"} Delete
+    %h2 Danger Button; Block Button
+    %button.btn.btn-danger.btn-block{type: "button"} Delete
+    %h2 Danger Button; Block Button
+    %button.btn.btn-danger.btn-block{type: "button"} Delete
+
+  %section
+    %h2 Thin Cards
+    .no_underline.row.rounded-border.card
+      .col-xs-3.col-md-2
+        %p.text-left.text-muted
+          Purpose
+      .col-xs-6.col-md-8
+        %h4.text-left
+          Medical
+      .col-xs-3.col-md-2.container--center-single-item
+        %button.btn.btn-no-bg{title:'Edit Trip Purpose', type: 'button'}
+          %i.glyphicon.glyphicon-pencil
+
+  %section
+    %h2 Cards
+    .row
+      .col-xs-12.col-md-8.col-md-offset-2.transit-container
+        .row.row-eq-height.transit-header
+          .blah
+            %img{src:"images/modes/walk.png"}
+            %i.fa.fa-lg.fa-chevron-right
+          .blah
+            %img{src:"images/modes/transit.png"}
+            %i.fa.fa-lg.fa-chevron-right
+          .blah
+            %img{src:"images/modes/transit.png"}
+            %i.fa.fa-lg.fa-chevron-right
+          .blah
+            %img{src:"images/modes/walk.png"}
+      .col-xs-12.col-md-8.col-md-offset-2.transit-body
+        .border-between.timeline.mode_walk
+          .row.even-height-row
+            .col-xs-2.right-side
+              .row
+                %h4 2:29 pm
+              .row
+                .itinerary-logo-image
+            .col-xs-1.right-side
+              %i.fa.fa-circle-o.fa-lg.waypoint
+            .col-xs-9.leg-info.pull-left.left-side
+              .walk-info
+                .row
+                  .leg-info.col-xs-12.leg-header
+                    %h5.text-muted Begin at
+                    %h4 315 N Zarfoss Dr
+                .leg-info.col-xs-12
+                  .row.even-height-row
+                    .col-height-slave{style:"width: 20px"}
+                      %i.fa.fa-chevron-up.fa-lg{style:"color: grey;"}
+                    .col-height-master
+                      %h5.text-muted Walk
+                      %h5.text-muted 603 feet (2 minutes)
+                .animate-show.blah
+                  .row
+                    .leg-info.col-xs-12{style:"padding-left: 50px"}
+                      %img.walk-arrow{src:"images/transit/straight.png",width:"30px",height:"30px"}
+                      .row
+                        .leg-info.col-xs-12 Head southeast on North Zarfoss Drive
+                      .row.text-muted
+                        .leg-info.col-xs-12
+                          %div 603 feet
+        .border-between.timeline.mode_walk
+          .row.even-height-row
+            .col-xs-2.right-side
+              .row
+                %h4 2:29 pm
+              .row
+                .itinerary-logo-image
+            .col-xs-1.right-side
+              %i.fa.fa-circle-o.fa-lg.waypoint
+            .col-xs-9.leg-info.pull-left.left-side
+              .walk-info
+                .row
+                  .leg-info.col-xs-12.leg-header
+                    %h5.text-muted Begin at
+                    %h4 315 N Zarfoss Dr
+                .leg-info.col-xs-12
+                  .row.even-height-row
+                    .col-height-slave{style:"width: 20px"}
+                      %i.fa.fa-chevron-up.fa-lg{style:"color: grey;"}
+                    .col-height-master
+                      %h5.text-muted Walk
+                      %h5.text-muted 603 feet (2 minutes)
+                .animate-show.blah
+                  .row
+                    .leg-info.col-xs-12{style:"padding-left: 50px"}
+                      %img.walk-arrow{src:"images/transit/straight.png",width:"30px",height:"30px"}
+                      .row
+                        .leg-info.col-xs-12 Head southeast on North Zarfoss Drive
+                      .row.text-muted
+                        .leg-info.col-xs-12
+                          %div 603 feet
+        .border-between.timeline.mode_walk
+          .row.even-height-row
+            .col-xs-2.right-side
+              .row
+                %h4 2:29 pm
+              .row
+                .itinerary-logo-image
+            .col-xs-1.right-side
+              %i.fa.fa-circle-o.fa-lg.waypoint
+            .col-xs-9.leg-info.pull-left.left-side
+              .walk-info
+                .row
+                  .leg-info.col-xs-12.leg-header
+                    %h5.text-muted Begin at
+                    %h4 315 N Zarfoss Dr
+                .leg-info.col-xs-12
+                  .row.even-height-row
+                    .col-height-slave{style:"width: 20px"}
+                      %i.fa.fa-chevron-up.fa-lg{style:"color: grey;"}
+                    .col-height-master
+                      %h5.text-muted Walk
+                      %h5.text-muted 603 feet (2 minutes)
+                .animate-show.blah
+                  .row
+                    .leg-info.col-xs-12{style:"padding-left: 50px"}
+                      %img.walk-arrow{src:"images/transit/straight.png",width:"30px",height:"30px"}
+                      .row
+                        .leg-info.col-xs-12 Head southeast on North Zarfoss Drive
+                      .row.text-muted
+                        .leg-info.col-xs-12
+                          %div 603 feet
