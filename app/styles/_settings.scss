@@ -1,0 +1,289 @@
+// Foundation Overrides
+
+// Global
+// ---------
+
+$primary-color: map-get($colors-brand, blue);
+$secondary-color: map-get($colors-neutral, darkgray);
+$success-color: map-get($colors-utility, green);
+$warning-color: map-get($colors-utility, gold);
+$alert-color: map-get($colors-utility, red);
+$light-gray: map-get($colors-neutral, lightgray);
+$medium-gray: #CACACA;
+$dark-gray: map-get($colors-neutral, darkgray);
+$black: map-get($colors-neutral, black);
+$white: map-get($colors-neutral, white);
+$off-white: map-get($colors-neutral, offwhite);
+
+$foundation-palette: (
+  primary: $primary-color,
+  secondary: $secondary-color,
+  success: $success-color,
+  warning: $warning-color,
+  alert: $alert-color,
+);
+
+$body-background: $white;
+$body-font-color: $black;
+$body-font-family: $font-montserrat;
+$body-antialiased: true;
+$text-direction: ltr;
+$global-margin: $token-2;
+$global-padding: $token-2;
+$global-margin: $token-2;
+$global-weight-normal: 400;
+$global-weight-bold: 700;
+$global-radius: 0;
+$global-text-direction: ltr;
+$global-font-size: 18px;
+$rem-base: 18px;
+
+// Breakpoints
+// --------------
+
+$breakpoints: (
+  small: 0,
+  medium: 760px,
+  large: 1024px,
+  xlarge: 1200px,
+  xxlarge: 1440px,
+);
+$breakpoint-classes: (small medium large xlarge xxlarge);
+
+
+// 4. Base Typography
+// ------------------
+
+$header-font-family: $body-font-family;
+$header-font-weight: $global-weight-normal;
+$header-font-style: normal;
+$font-family-monospace: Consolas, 'Liberation Mono', Courier, monospace;
+$fa-font-path: '../../vendor/fonts';
+$header-styles: (
+  small: (
+    'h1': ('font-size': 24),
+    'h2': ('font-size': 20),
+    'h3': ('font-size': 19),
+    'h4': ('font-size': 18),
+    'h5': ('font-size': 17),
+    'h6': ('font-size': 16),
+  ),
+  medium: (
+    'h1': ('font-size': 48),
+    'h2': ('font-size': 42),
+    'h3': ('font-size': 34),
+    'h4': ('font-size': 28),
+    'h5': ('font-size': 26),
+    'h6': ('font-size': 24),
+  ),
+);
+$header-color: $dark-gray;
+$header-lineheight: 1.4;
+$header-margin-bottom: 0.5rem;
+$header-text-rendering: optimizeLegibility;
+$small-font-size: 80%;
+
+
+// Tables
+$table-background: map-get($colors-neutral, offwhite);
+$table-color-scale: 5%;
+$table-border: 1px solid smart-scale($table-background, $table-color-scale);
+$table-padding: rem-calc(8 10 10);
+$table-hover-scale: 2%;
+$table-row-hover: map-get($colors-brand, lightblue);
+$table-row-stripe-hover: map-get($colors-brand, lightblue);
+$table-striped-background: smart-scale($table-background, $table-color-scale);
+$table-stripe: even;
+$table-head-background: $secondary-color;
+$table-head-row-hover: $secondary-color;
+$table-foot-background: $secondary-color;
+$table-foot-row-hover: $secondary-color;
+$table-head-font-color: $white;
+$show-header-for-stacked: false;
+
+// Buttons
+// ----------
+
+$button-padding: 0.85em 1em;
+$button-margin: 0 $global-margin $global-margin 0;
+$button-fill: solid;
+$button-background: $primary-color;
+$button-background-hover: scale-color($button-background, $lightness: -15%);
+$button-color: $off-white;
+$button-color-alt: $black;
+$button-radius: $global-radius;
+$button-sizes: (
+  tiny: 0.6rem,
+  small: 0.75rem,
+  default: 0.9rem,
+  large: 1.25rem,
+);
+$button-opacity-disabled: 0.25;
+
+// Alerts / Callouts
+// ----------------
+
+$callout-background: $dark-gray;
+$callout-background-fade: 0;
+$callout-border: none;
+$callout-margin: 0 0 1rem 0;
+$callout-padding: 1rem 7rem;
+$callout-font-color: $body-background;
+$callout-font-color-alt: $body-font-color;
+$callout-link-tint: 0;
+
+// Close Button
+// ----------------
+
+$closebutton-position: right top;
+$closebutton-offset-horizontal: 1rem;
+$closebutton-offset-vertical: 0.5rem;
+$closebutton-lineheight: 1;
+$closebutton-color: $white;
+$closebutton-color-hover: rgba($white, .5);
+
+
+// Table
+// ---------
+
+$table-background: map-get($colors-neutral, offwhite);
+$table-color-scale: 5%;
+$table-border: 1px solid smart-scale($table-background, $table-color-scale);
+$table-padding: $token-1;
+$table-row-hover: map-get($colors-brand, lightblue);
+$table-row-stripe-hover: map-get($colors-brand, lightblue);
+$table-striped-background: $medium-gray;
+$table-stripe: even;
+$table-head-background: $dark-gray;
+$table-foot-background: $dark-gray;
+$table-head-font-color: $white;
+$show-header-for-stacked: false;
+
+// Dropdown
+// ------------
+
+$dropdown-padding: 1rem;
+$dropdown-border: 1px solid $medium-gray;
+$dropdown-font-size: 1rem;
+$dropdown-width: 300px;
+$dropdown-radius: $global-radius;
+$dropdown-sizes: (
+  tiny: 100px,
+  small: 200px,
+  large: 400px,
+);
+
+// Dropdown Menu
+// -----------------
+
+$dropdownmenu-arrows: true;
+$dropdownmenu-min-width: 200px;
+$dropdownmenu-background: $white;
+$dropdown-border: 1px solid $medium-gray;
+
+// Accordion
+// ------------
+
+$accordion-plusminus: true;
+$accordion-plus-content: '\25BC';
+$accordion-minus-content: '\25B2';
+
+// Accordion Menu
+// -----------------
+
+$accordionmenu-arrows: true;
+$accordionmenu-arrow-color: $primary-color;
+$accordionmenu-item-background: $light-gray;
+$accordionmenu-submenu-toggle-background: $light-gray;
+
+// Pagination
+// --------------
+
+// $pagination-font-size: 14px;
+$pagination-margin-bottom: $global-margin;
+$pagination-item-color: $black;
+$pagination-item-padding: 3px 10px;
+$pagination-item-spacing: 1rem;
+$pagination-radius: $global-radius;
+$pagination-item-background-hover: $light-gray;
+$pagination-item-background-current: $dark-gray;
+$pagination-item-color-current: $white;
+$pagination-item-color-disabled: $light-gray;
+$pagination-ellipsis-color: $black;
+$pagination-mobile-items: false;
+$pagination-arrows: false;
+
+// Reveal
+// ----------
+
+$reveal-background: $white;
+$reveal-width: 600px;
+$reveal-max-width: 90%;
+$reveal-offset: 1rem;
+$reveal-padding: $global-padding;
+$reveal-border: 1px solid $medium-gray;
+$reveal-zindex: 1005;
+$reveal-overlay-background: rgba(#71767A, 0.45);
+
+
+// Card
+// ----------
+
+$card-background: map-get($colors-neutral, white);
+$card-font-color: $body-font-color;
+$card-padding: $token-3;
+
+// Forms
+// ---------
+$fieldset-border: 1px solid $dark-gray;
+$fieldset-padding: 1rem;
+$fieldset-margin: 1rem 0;
+$legend-padding: 0 1rem;
+$form-spacing: 1rem;
+$helptext-color: $dark-gray;
+$helptext-font-size: $rem-base;
+$helptext-font-style: none;
+$input-prefix-color: $dark-gray;
+$input-prefix-background: $light-gray;
+$input-prefix-padding: 1rem;
+$form-label-color: $black;
+$form-label-font-size: $rem-base;
+$form-label-font-weight: $global-weight-bold;
+$form-label-line-height: 22px;
+$select-background: map-get($colors-neutral, offwhite);
+$select-triangle-color: $dark-gray;
+$select-radius: $global-radius;
+$input-color: $dark-gray;
+$input-font-family: inherit;
+$input-font-size: 1rem;
+$input-background: map-get($colors-neutral, offwhite);
+$input-background-focus: map-get($colors-neutral, offwhite);
+$input-background-disabled: $light-gray;
+$input-shadow: none; // inset 0 1px 2px rgba($black, 0.1);
+$input-shadow-focus: none; // 0 0 5px $medium-gray;
+$input-cursor-disabled: default;
+// $input-transition: box-shadow 0.5s, border-color 0.25s ease-in-out;
+$input-number-spinners: true;
+$input-placeholder-color: rgba($secondary-color, 0.75);
+
+// Top Bar
+// -----------
+
+$topbar-unstack-breakpoint: large;
+$topbar-padding: 0.5rem;
+$topbar-background: map-get($colors-neutral, offwhite);
+$topbar-link-color: $black;
+$topbar-submenu-background: map-get($colors-neutral, offwhite);
+
+
+// Breadcrumbs
+// ---------------
+
+$breadcrumbs-margin: 0 0 $global-margin 0;
+$breadcrumbs-item-font-size: $rem-base;
+$breadcrumbs-item-color: $primary-color;
+$breadcrumbs-item-color-current: $black;
+$breadcrumbs-item-color-disabled: $light-gray;
+$breadcrumbs-item-margin: 0.75rem;
+$breadcrumbs-item-uppercase: false;
+$breadcrumbs-item-separator-item: '>';

@@ -1,18 +1,18 @@
 $icon-font-path: "../bower_components/bootstrap-sass-official/assets/fonts/bootstrap/";
 
 // KIOSK COLORS
-$white: #fff;
-$black: #000;
-$gray1: #f2f2f2;
-$gray2: #e6e6e6;
-$gray3: #d1cfcd;
-$gray4: #a49f9b;
-$gray5: #7d7874;
-$gray6: #45413d;
+// $white: #fff;
+// $black: #000;
+// $gray1: #f2f2f2;
+// $gray2: #e6e6e6;
+// $gray3: #d1cfcd;
+// $gray4: #a49f9b;
+// $gray5: #7d7874;
+// $gray6: #45413d;
 $red: #f34c51;
-$blue: #00b8d0;
+// $blue: #00b8d0;
 $green: #03763a;
-$yellow: #fdd73e;
+// $yellow: #fdd73e;
 $live-yellow: #fffc66;
 
 $kioskfonts: "Avenir Next", "Helvetica Neue", Helvetica, sans-serif;
@@ -20,6 +20,23 @@ $kioskfonts: "Avenir Next", "Helvetica Neue", Helvetica, sans-serif;
 // bower:scss
 @import "bootstrap-sass-official/assets/stylesheets/_bootstrap.scss";
 // endbower
+
+// NOTE: BELOW ASSETS ARE FROM PDS v1.1.2
+// SEE: https://www.pa.gov/design-standards/index
+
+// general imports
+@import "helpers/mixins";
+@import "helpers/tokens";
+@import "helpers/variables";
+
+// custom overrides
+@import "settings";
+
+// base style imports
+@import "base/typography";
+
+// component style imports
+@import "components/button";
 
 .browsehappy {
   margin: 0.2em 0;
@@ -204,10 +221,6 @@ $kioskfonts: "Avenir Next", "Helvetica Neue", Helvetica, sans-serif;
   // }
 }
 
-.btn {
-  box-shadow: 0px 2px 8px rgba(0,0,0,0.4);
-}
-
 .debug {
   visibility: hidden;
 }
@@ -390,15 +403,6 @@ a.login-btns .btn-branded {
   color: white;
 }
 
-.btn.btn-blue, .btn-blue:active:hover, .btn-blue:active:focus, .btn-blue:active.focus, .btn-blue.active:hover, .btn-blue.active:focus, .btn-blue.active.focus, .open > .btn-blue.dropdown-toggle:hover, .open > .btn-blue.dropdown-toggle:focus, .open > .btn-blue.dropdown-toggle.focus {
-  color:#EEE;
-  background-color: #19487D;
-}
-
-
-.btn-green { background-color: #00884B; color: #fff;}
-.btn-grey { background-color: #828282; color: #fff;}
-
 img.official-logo {
   height: 3em;
   margin-top: 1em;
@@ -424,18 +428,9 @@ img.official-logo {
   img.official-logo { height: 5em; }
 }
 
-.btn{
-  font-size: 18px;
-  padding: 12px 16px;
-}
-.btn.btn-primary, .btn-primary:active:hover, .btn-primary:active:focus, .btn-primary:active.focus, .btn-primary.active:hover, .btn-primary.active:focus, .btn-primary.active.focus, .open > .btn-primary.dropdown-toggle:hover, .open > .btn-primary.dropdown-toggle:focus, .open > .btn-primary.dropdown-toggle.focus {
-  color:#EEE;
-  background-color: #14834D;
-}
-
 .btn.btn-danger {
   color: #eee;
-  background-color: red;
+  background-color: $red;
 }
 
 .btn.btn-primary,
@@ -620,10 +615,6 @@ i.cs-map-marker.A{
   padding:0px;
 }
 
-.btn.btn-primary:focus,.btn.btn-primary:hover{
-  border-color: rgb(31, 202,35);
-  background-color: rgb(31, 202,35);
-}
 
 .rounded-border{
   border-color: lightgray !important;

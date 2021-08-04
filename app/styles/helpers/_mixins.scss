@@ -1,0 +1,47 @@
+// Mixins
+
+// FORMS
+// ---------------
+@mixin placeholder {
+  &::-webkit-input-placeholder,
+  &:-moz-placeholder,
+  &::-moz-placeholder,
+  &:-ms-input-placeholder {@content;}
+}
+
+// HYPERLINKS 
+// ----------------------
+// TODO: Incorportate WhatInput attributes
+// TODO: Replace hardcoded states with mixins throughout PDS
+
+// Hover States Mixin
+@mixin hover() {
+  &:hover {@content;}
+}
+
+// Focus States Mixin
+@mixin focus() {
+  &:focus {@content;}
+  // @include breakpoint(medium down){
+  //     @include hover {
+  //         @content;
+  //     }
+  // }
+}
+
+// Active State Mixin
+@mixin active() {
+  &:active {@content;}
+}
+
+// Hover and Focus States Mixin
+@mixin hoverfocus() {
+  &:focus,
+  &:hover {@content;}
+}
+
+// Disabled State
+@mixin disabled() {
+  &:disabled,
+  &[disabled] {@content;}
+}
