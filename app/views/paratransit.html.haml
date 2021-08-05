@@ -80,7 +80,8 @@
           .col-xs-2.text-right
             %h4{style: 'float:right; vertical-align: bottom;'} {{itinerary.cost | currency | free}}
     .row
-      .col-xs-12.col-md-8.col-md-offset-2.paratransit-body
+      -# Inline style is so that the timeline widget appears and to not mess with all the z-index: -1 styling
+      .col-xs-12.col-md-8.col-md-offset-2.card{style: "background: inherit; max-width: 100%;"}
         .border-between.timeline.mode_wait
           .row.even-height-row
             .col-xs-2.right-side.no-padding
