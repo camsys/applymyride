@@ -33,7 +33,7 @@
 
   %section
     %h2 Thin Cards
-    .no_underline.row.rounded-border.card
+    .card.card-thin.row{style: "width: 700px"}
       .col-xs-3.col-md-2
         %p.text-left.text-muted
           Purpose
@@ -41,11 +41,16 @@
         %h4.text-left
           Medical
       .col-xs-3.col-md-2.container--center-single-item
-        %button.btn.btn-no-bg{title:'Edit Trip Purpose', type: 'button'}
+        %button.btn.btn-icon{title:'Edit Trip Purpose', type: 'button'}
           %i.glyphicon.glyphicon-pencil
 
   %section
-    %h2 Cards
+    %h2 PDS Card
+    .card{style: "width: 700px;"}
+      %h3 Card Title
+      .card-body
+        %p card body
+    %h2 Trip Details Card
     .row
       .col-xs-12.col-md-8.col-md-offset-2.transit-container
         .row.row-eq-height.transit-header
