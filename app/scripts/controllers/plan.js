@@ -465,6 +465,7 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
       case 'confirm':
         $location.path('/plan/companions');
         break;
+        // FIXME: UNREACHABLE CODE. FIGURE OUT WHAT THIS DOES
         usSpinnerService.spin('spinner-1');
         var promise = planService.postItineraryRequest($http);
         promise.
