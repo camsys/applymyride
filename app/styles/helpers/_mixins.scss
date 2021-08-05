@@ -43,5 +43,6 @@
 // Disabled State
 @mixin disabled() {
   &:disabled,
-  &[disabled] {@content;}
+  &[disabled],
+  &.disabled {@content;}
 }
