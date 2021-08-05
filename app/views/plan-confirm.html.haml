@@ -3,13 +3,13 @@
     .col-xs-12.col-md-6.col-md-offset-3.col-sm-8.col-sm-offset-2
       %h3
         %strong
-          My ride request
+          My Ride Request
   .row.truncate
     .col-xs-12.col-md-6.col-md-offset-3.col-sm-8.col-sm-offset-2
-      .no_underline.row.rounded-border{ng:{click:'goPlanWhere()'}}
+      .row.card.card-thin{ng:{click:'goPlanWhere()'}}
         .col-xs-3.col-md-2
           %p.text-left.text-muted
-            From
+            From:
         .col-xs-6.col-md-8
           %h4.text-left
             {{request.fromLine1}}
@@ -18,10 +18,10 @@
         .col-xs-3.col-md-2.container--center-single-item
           %button.btn.btn-icon{title:'Edit Trip Origin',ng:{click: 'goPlanWhere()'}, type: 'button'}
             %i.glyphicon.glyphicon-pencil
-      .no_underline.row.rounded-border{ng:{click:'goPlanWhere()'}}
+      .row.card.card-thin{ng:{click:'goPlanWhere()'}}
         .col-xs-3.col-md-2
           %p.text-left.text-muted
-            To
+            To:
         .col-xs-6.col-md-8
           %h4.text-left
             {{request.toLine1}}
@@ -30,10 +30,10 @@
         .col-xs-3.col-md-2.container--center-single-item
           %button.btn.btn-icon{title:'Edit Trip Destination',ng:{click: 'goPlanWhere()'}, type: 'button'}
             %i.glyphicon.glyphicon-pencil
-      .no_underline.row.rounded-border{ng: {show: '!request.roundtrip || request.sameday', click:'goPlanWhen()' } }
+      .row.card.card-thin{ng: {show: '!request.roundtrip || request.sameday', click:'goPlanWhen()' } }
         .col-xs-3.col-md-2
           %p.text-left.text-muted
-            When
+            When:
         .col-xs-6.col-md-8
           %h4.text-left
             {{request.when1}}
@@ -44,11 +44,11 @@
         .col-xs-3.col-md-2.container--center-single-item
           %button.btn.btn-icon{title:'Edit Trip Time',ng:{click: 'goPlanWhen()'}, type: 'button'}
             %i.glyphicon.glyphicon-pencil
-      .no_underline.rounded-border{style: "margin-left: -15px; margin-right: -15px;", ng: {show: 'request.roundtrip && !request.sameday', click:'goPlanWhen()'}}
+      .card.card-thin{style: "margin-left: -15px; margin-right: -15px;", ng: {show: 'request.roundtrip && !request.sameday', click:'goPlanWhen()'}}
         .row{style: "margin-left: 0px; margin-right: 0px;"}
           .col-xs-3.col-md-2
             %p.text-left.text-muted
-              Depart
+              Depart:
           .col-xs-9.col-md-10
             %h4.text-left
               {{request.when1}}
@@ -57,23 +57,23 @@
         .row{style: "margin-left: 0px; margin-right: 0px;"}
           .col-xs-3.col-md-2
             %p.text-left.text-muted
-              Return
+              Return:
           .col-xs-9.col-md-10
             %h4.text-left
               {{request.when3}}
             %h5.text-muted.text-left
               {{request.when4}}
-      .no_underline.row.rounded-border{ng:{show:'request.purpose', click:'goPlanPurpose()'}}
+      .row.card.card-thin{ng:{show:'request.purpose', click:'goPlanPurpose()'}}
         .col-xs-3.col-md-2
           %p.text-left.text-muted
-            Purpose
+            Purpose:
         .col-xs-6.col-md-8
           %h4.text-left
             {{request.purpose}}
         .col-xs-3.col-md-2.container--center-single-item
           %button.btn.btn-icon{title:'Edit Trip Purpose',ng:{click: 'goPlanPurpose()'}, type: 'button'}
             %i.glyphicon.glyphicon-pencil
-      .row.rounded-border{'ng-hide'=>'showBusRides || paratransitItineraries.length == 0'}
+      .row.card.card-thin{'ng-hide'=>'showBusRides || paratransitItineraries.length == 0'}
         .col-xs-3.col-md-2
           %p.text-left.text-muted
             Cost
@@ -86,9 +86,9 @@
     .col-xs-12.col-md-6.col-md-offset-3.col-sm-8.col-sm-offset-2
       %h3
         %strong
-          Shared Ride options
+          Shared Ride Options
     .col-xs-12.col-md-6.col-md-offset-3.col-sm-8.col-sm-offset-2
-      .no_underline.row.rounded-border{ng:{repeat:'discount in guestParatransitItinerary.discounts', click:'goPlanLogin()'}}
+      .row.card.card-thin{ng:{repeat:'discount in guestParatransitItinerary.discounts', click:'goPlanLogin()'}}
         .col-xs-3.col-md-2
           %p.text-left
             %strong
@@ -103,7 +103,7 @@
     .row
       .col-xs-12.col-md-6.col-md-offset-3.col-sm-8.col-sm-offset-2.text-center{style:'padding:0px; margin-bottom:10px;'}
         %a.btn.btn-primary.btn-block{href: "", ng: {click: 'next()'}}
-          Book this Shared Ride
+          Book This Shared Ride
     .row.unstuck-foot.btn-spacing
       .col-xs-12.col-md-6.col-md-offset-3.col-sm-8.col-sm-offset-2.text-center{style:'padding:0px; '}
         .pull-left
@@ -111,7 +111,7 @@
             Back
         .pull-right
           %a.btn.btn-primary{ng:{show:'hasTransit || hasWalk || hasUber || hasTaxi', click: 'toggleShowBusRides();'}}
-            View more ride options
+            View More Ride Options
 
   .row{ng:{show:'!hasParatransit && email'}}
     .col-lg-6.col-lg-offset-3.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1.col-xs-12
@@ -128,7 +128,7 @@
       .col-xs-12.col-md-6.col-md-offset-3.col-sm-8.col-sm-offset-2
         %h3
           %strong
-            Walk options
+            Walk Options
     .row
       .col-xs-12.col-md-6.col-md-offset-3.col-sm-8.col-sm-offset-2{ng:{click:'goViewWalk(walkItineraries[0].id, (walkItineraries[1] ? walkItineraries[1].id : 0))'}}
         .row.rounded-border
@@ -191,7 +191,7 @@
             Transit/ Walk
     .row{ng: {click:'goViewTransitOptions()'}}
       .col-xs-12.col-md-6.col-md-offset-3.col-sm-8.col-sm-offset-2
-        .no_underline.row.rounded-border{style:'display:flex;'}
+        .row.card.card-thin{style:'display:flex;'}
           .col-xs-3.col-md-2{style:'margin:auto;'}
             %strong {{transitItineraries[0][ selectedBusOption[0] ].cost | currency | free}}
             .text-muted{ng:{show:'transitItineraries[1]'}}
@@ -222,7 +222,7 @@
             Taxi
     .row{ng: {repeat:'taxiOption in taxiItineraries', click:'goViewTaxi( $index )'}}
       .col-xs-12.col-md-6.col-md-offset-3.col-sm-8.col-sm-offset-2
-        .no_underline.row.rounded-border{style:'display:flex;'}
+        .row.card.card-thin{style:'display:flex;'}
           .col-xs-3.col-md-2{style:'margin:auto;'}
             %strong.text-muted {{taxiOption.cost | roundUp | currency}}
             %div{ng:{show:'taxiOption.returnItinerary'}}
@@ -248,7 +248,7 @@
             Uber
     .row{ng: {repeat:'uberOption in uberItineraries', click:'goViewUber( $index )'}}
       .col-xs-12.col-md-6.col-md-offset-3.col-sm-8.col-sm-offset-2
-        .no_underline.row.rounded-border{style:'display:flex;'}
+        .row.card.card-thin{style:'display:flex;'}
           .col-xs-3.col-md-2{style:'margin:auto;'}
             %strong.text-muted {{uberOption.cost | roundUp | currency}}
             %div{ng:{show:'uberOption.returnItinerary'}}
