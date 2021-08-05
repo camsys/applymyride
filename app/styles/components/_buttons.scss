@@ -1,9 +1,9 @@
 %button-default {
-  z-index: 1;
+//   z-index: 1;
   border-radius: 0;
   @include focus {
       outline: map-get($colors-utility, blue) solid 5px;
-      z-index: 999;
+    //   z-index: 999;
   }
 }
 
