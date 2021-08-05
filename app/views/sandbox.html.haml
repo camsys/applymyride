@@ -159,3 +159,20 @@
                       .row.text-muted
                         .leg-info.col-xs-12
                           %div 603 feet
+  %section
+    %h2 Modal With No Title
+    .modal-content
+      .modal-body
+        %button.bootbox-close-button.close{ type:"button", "aria-hidden": "true"} ×
+        .bootbox-body An error occured on the server, please retry your search or try again later.
+      .modal-footer
+        %button.btn.btn-primary.bootbox-accept{type:"button"} OK
+    %h2 Modal With Title
+    .modal-content
+      .modal-header
+        %button.bootbox-close-button.close{ type:"button", "aria-hidden": "true"} ×
+        %h5.modal-title Error
+      .modal-body
+        .bootbox-body An error occured on the server, please retry your search or try again later.
+      .modal-footer
+        %button.btn.btn-primary.bootbox-accept{type:"button"} OK
