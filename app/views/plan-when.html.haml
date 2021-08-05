@@ -63,7 +63,7 @@
           %a.btn{href: "", back: '', ng: {click: "back()", hide:'backToConfirm'}}
             Back
         .pull-right
-          %a.btn.btn-primary.btn-next{href: "", ng: {class:'{disabled:(!fromMoment.isAfter(moment()) || !fromTimeUpdated) }', click: 'next()'}}
+          %a.btn.btn-primary{href: "", ng: {class:'{disabled:(!fromMoment.isAfter(moment()) || !fromTimeUpdated) }', disabled:'(!fromMoment.isAfter(moment()) || !fromTimeUpdated)', click: 'next()'}}
             %span{ng:{hide:'backToConfirm'}}
               Next
             %span{ng:{show:'backToConfirm'}}
