@@ -1,0 +1,91 @@
+.alert {
+  &.alert-danger {
+      color: $white;
+      background-color: #d71a17;
+      .h3 {
+          color: $white
+      }
+  }
+  &.alert-success {
+      background-color: #029949;
+      color: $body-font-color;
+      .h3 {
+          color: $body-font-color;
+      }
+      .close-button {
+          color: $body-font-color;
+          &:hover {
+              color: rgba($body-font-color, .5);
+          }
+      }
+  }
+  &.alert-warning {
+      background-color: #e0ab06;
+      color: $body-font-color;
+      .h3 {
+          color: $body-font-color;
+      }
+      .close-button {
+          color: $body-font-color;
+          &:hover {
+              color: rgba($body-font-color, .5);
+          }
+      }
+  }
+  // Below styling is part of PA's design system, only commenting just in case we need it later
+  // &.-small {
+  //     padding-left: $token-6;
+  //     ul {
+  //         list-style: none;
+  //         margin-left: 0;
+  //     }
+  //     li {
+  //         position: relative;
+  //     }
+  // }
+  // .callout-title {
+  //     margin-bottom: 0;
+  // }
+  // // TODO MAKE ICON STYLES
+  // .icon-check {
+  //     &:after {
+  //         content: '';
+  //         position: absolute;
+
+  //         left: -25px;
+  //         top: 0;
+  //         width: 12px;
+  //         height: 19px;
+  //         border: solid $white;
+  //         border-width: 0 6px 6px 0;
+  //         -webkit-transform: rotate(45deg);
+  //         -ms-transform: rotate(45deg);
+  //         transform: rotate(45deg);
+  //     }
+  // }
+}
+
+// .close-button {
+//   font-size: 14px;
+//   line-height: 0;
+//   height: 60px;
+//   top: 10px;
+//   [role="button"] {
+//       float: left;
+//       clear: both;
+//       font-size: 70px;
+//       display: inline-block;
+//       height: 40px;
+//       line-height: 40px;
+//   }
+//   [role="label"] {
+//       float: left;
+//       clear: both;
+//       width: 100%;
+//       font-weight: $global-weight-bold;
+//       font-size: 14px;
+//       line-height: 1;
+//       font-variant: small-caps;
+//       text-align: center;
+//   }
+// }
