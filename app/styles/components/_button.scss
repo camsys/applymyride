@@ -29,34 +29,6 @@
   // TODO componentize buttons more, less tied to declaritive names like "back to top" and extend generic classes
 
   &.btn-primary {
-      color: $primary-color;
-      background: $off-white; 
-      border-color: $primary-color;
-      @include focus {
-          position: relative;
-      }
-      @include hover {
-          color: $off-white;
-          background: $primary-color;
-      }
-      &.btn-error {
-          color: $secondary-color;
-          border-color: $alert-color;
-          @include hover {
-              color: $off-white;
-          }
-      }
-      @include disabled {
-          @include hover {
-              border: 3px solid rgba(70, 70, 70, 0.2);
-              background: transparent;
-              color: rgba(70, 70, 70, 0.2);
-              cursor: not-allowed;
-          }
-      }
-  }
-
-  &.btn-secondary  {
       color: $off-white;
       background: $primary-color;
       border-color: $primary-color;
@@ -70,8 +42,12 @@
           background: $secondary-color;
           border-color: $secondary-color;
       }
-      &.-error {
-          border-color: $alert-color;
+      &.btn-error {
+        color: $secondary-color;
+        border-color: $alert-color;
+        @include hover {
+            color: $off-white;
+        }
       }
       @include disabled {
           @extend %button-secondary-disabled;
@@ -80,6 +56,52 @@
           }
       }
   }
+
+  &.btn-danger {
+      color: $off-white;
+      background: #cc2121;
+      border-color: #cc2121;
+      @include focus {
+          background: map-get($colors-brand, red);
+          border-color: map-get($colors-brand, red);
+          position: relative;
+      }
+      @include hover {
+          color: $off-white;
+          background: map-get($colors-brand, red);
+          border-color: map-get($colors-brand, red);
+      }
+      @include disabled {
+          @extend %button-secondary-disabled;
+          @include hover {
+              @extend %button-secondary-disabled;
+          }
+      }
+  }
+
+  &.btn-secondary {
+    color: $primary-color;
+    background: $off-white; 
+    border-color: $primary-color;
+    @include focus {
+        position: relative;
+    }
+    @include hover {
+        color: $off-white;
+        background: $primary-color;
+    }
+    &.btn-error {
+      border-color: $alert-color;
+  }
+    @include disabled {
+        @include hover {
+            border: 3px solid rgba(70, 70, 70, 0.2);
+            background: transparent;
+            color: rgba(70, 70, 70, 0.2);
+            cursor: not-allowed;
+        }
+    }
+}
 
   &.btn-top-nav {
       max-width: none;
