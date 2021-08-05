@@ -64,7 +64,8 @@
                   .alert.alert-danger{role:'alert', ng:{show:'errors.rangeErrorto'}}
                     The location you selected is outside the service area.
                 .col-lg-2.col-md-2.col-sm-2.container__swap-btn
-                  %button.btn.btn--no-outline{type:'button', aria: {label: 'Swap Address Inputs'},ng: {click: 'debouncedSwapAddressInputs()', disabled: 'disableSwapAddressButton == true'}}
+                  -# %button.btn.btn--no-outline{type:'button', aria: {label: 'Swap Address Inputs'},ng: {click: 'debouncedSwapAddressInputs()', disabled: 'disableSwapAddressButton == true'}}
+                  %button.btn.btn-icon.btn--lg-text{type:'button', aria: {label: 'Swap Address Inputs'},ng: {click: 'debouncedSwapAddressInputs()', disabled: 'disableSwapAddressButton == true'}}
                     %i.glyphicon.glyphicon-sort
 
               %div.map-canvas{'ui-map' => 'whereToMap', 'ui-options' => 'mapOptions', ng: {show: 'showMap'}}

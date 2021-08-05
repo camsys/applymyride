@@ -167,6 +167,18 @@
       }
   }
 
+  &.btn-icon {
+    border: none;
+    background: transparent;
+    @include hover {
+      color: $off-white;
+      background: $primary-color;
+}
+    &.btn--lg-text {
+      font-size: 24px;
+    }
+  }
+
 }
 
 button {
