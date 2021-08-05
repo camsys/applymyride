@@ -89,11 +89,11 @@
       .row
         .col-md-8.col-md-offset-2.col-xs-12
           .pull-left
-            %a.btn{href: "", back: '', ng: {click: "back()", hide:'transitSaved || transitCancelled || walkSaved || walkCancelled'}}
+            %a.btn.btn-secondary{href: "", back: '', ng: {click: "back()", hide:'transitSaved || transitCancelled || walkSaved || walkCancelled'}}
               Back
-            %a.btn{href: "", ng: {click: "logout()", show:'loggedIn && (transitSaved || transitCancelled || walkSaved || walkCancelled)'}}
+            %a.btn.btn-secondary{href: "", ng: {click: "logout()", show:'loggedIn && (transitSaved || transitCancelled || walkSaved || walkCancelled)'}}
               Logout
           .pull-right
-            %a.btn.btn-link{ng: {click: "reset()"}}
+            %a.btn.btn-secondary{ng: {click: "reset()"}}
               Book another ride
 

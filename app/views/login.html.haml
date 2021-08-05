@@ -53,7 +53,7 @@
 
           .row{style: 'margin-top: 1em'}
             .pull-left{ng: {show: "location == '/plan/login-guest'"}}
-              %a.btn{href: "", back:''}
+              %a.btn.btn-secondary{href: "", back:''}
                 Back
             .pull-right{ng:{hide: 'isTransitionCounty(county)'}}
               %a.btn.btn-primary{href: "", ng: {disabled: 'disableNext', click: 'next()'}, role: 'button'}
@@ -79,7 +79,7 @@
 
       .row.action-button
         .col-md-4.col-md-offset-4.col-sm-6.col-sm-offset-3.col-xs-12
-          %a.pull-left.btn-back{href: "", type: 'submit', ng: {click: "back()"}}
+          %a.pull-left.btn.btn-back{href: "", type: 'submit', ng: {click: "back()"}}
             %span{ng: {include: "'views/button-chevron-left.html'"}}
             Back
           %a.pull-right.btn.btn-primary{href: "", type: 'submit', ng: {click: "authenticate()", hide: 'disableNext'}}

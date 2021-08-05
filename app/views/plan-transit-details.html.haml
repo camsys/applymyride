@@ -76,12 +76,12 @@
                 Walking time is {{transitItineraries[1][ selectedBusOption[1] ].walkTimeDesc}}
   .row
     .col-xs-12.col-md-6.col-md-offset-3.col-sm-8.col-sm-offset-2
-      %h4.btn-link{ng: {hide: 'viewMoreBusOptions', click:'viewMoreBusOptions=true'} }
+      %h4.btn-secondary{ng: {hide: 'viewMoreBusOptions', click:'viewMoreBusOptions=true'} }
         View more transit & walking options
   .row.btn-spacing
     .col-xs-12.col-md-6.col-md-offset-3.col-sm-8.col-sm-offset-2.text-center
       .pull-left
-        %a.btn{href:'', back:'', ng:{click: 'back()'}}
+        %a.btn.btn-secondary{href:'', back:'', ng:{click: 'back()'}}
           Back
       .pull-right
         %a.btn.btn-primary{href: "", ng: {show:'loggedIn && false', click: "saveBusTrip()"}}

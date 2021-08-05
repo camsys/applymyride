@@ -69,13 +69,13 @@
                 Cancel this ride
             .col-md-8.col-md-offset-2.col-xs-12.unstuck-foot
               .pull-left
-                %a.btn{href: "", back: '', ng: {click: "back()", hide:'taxiSaved || taxiCancelled'}}
+                %a.btn.btn-secondary{href: "", back: '', ng: {click: "back()", hide:'taxiSaved || taxiCancelled'}}
                   Back
                 %a.btn{href: "", ng: {click: "logout()", show:'loggedIn && (taxiSaved || taxiCancelled)'}}
                   Logout
               .pull-right
                 %a.btn.btn-primary{href: "", ng: {click: "saveTaxiTrip()", hide: "!loggedIn || taxiSaved"}}
                   Save this taxi ride
-                %a.btn.btn-link{ng: {show:"loggedIn && taxiSaved", click: "reset()"}}
+                %a.btn.btn-secondary{ng: {show:"loggedIn && taxiSaved", click: "reset()"}}
                   Book another ride
 
