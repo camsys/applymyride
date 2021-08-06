@@ -228,7 +228,8 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
         var message = "Are you sure you want to cancel this ride?";
 
         if(planService.fare_info.roundtrip ||  $scope.outboundCancelled ||  $scope.returnCancelled){
-          
+          // NOTE: NOT RESTYLING THIS TO MATCH THE PDS AS THE PDS'S RADIO BUTTONS ARE MUCH MORE INVOLVED
+          //... AND MAKING BOOTBOX MATCH THAT DOES NOT SEEM EASILY DOABLE
           // DEAL WITH Round Trips
           bootbox.prompt({
               title: message,
