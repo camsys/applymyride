@@ -1,3 +1,4 @@
+-# TODO: Add padding so elements are centered inside their rows
 .profile
   .col-xs-12.col-md-6.col-md-offset-3
     .row
@@ -40,7 +41,7 @@
         .col-xs-9
           %h4{ng: {show: 'editable == false'}}
             {{email}}
-          %input.form-control{ng: {model: 'email', show: 'editable == true'}}
+          %input{type:'email',ng: {model: 'email', show: 'editable == true'}, style: 'width: 100%;'}
       .row{ng: {show: 'invalidEmail == true'}}
         .col-xs-12.col-sm-8.col-sm-offset-2.text-left{style: 'color: red'}
           Please enter only valid email addresses

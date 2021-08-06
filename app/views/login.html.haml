@@ -21,11 +21,12 @@
               %a.btn-block{href: "#/lookupIdForm"}
                 Forgot your ID?
           .row
-            %input.form-control.shared-ride-id{style: 'font-size: .9em; width: 50%;', placeholder: '00000', ng: {model: 'sharedRideId', required: 'true', change: 'checkId()', enter: 'next()'}}
+            -# %input.form-control.shared-ride-id{style: 'font-size: .9em; width: 50%;', placeholder: '00000', ng: {model: 'sharedRideId', required: 'true', change: 'checkId()', enter: 'next()'}}
+            %input.shared-ride-id{type:'text',style: 'font-size: .9em; width: 50%;', placeholder: '00000', ng: {model: 'sharedRideId', required: 'true', change: 'checkId()', enter: 'next()'}}
           .row{style: 'margin-top: 1em'}
             %h3 Your county
           .row
-            %select.btn-lg{style: 'width: 100%', ng: {model: 'county', change: 'checkId()', options: 'county for county in counties', enter: 'next()'}}
+            %select{ng: {model: 'county', change: 'checkId()', options: 'county for county in counties', enter: 'next()'}}
               %option{value: '', disabled: '', selected: ''}
                 Select your county
           .row.alert.alert-success{style: 'margin-top: 2em', ng:{if: 'isTransitionCounty(county)'}}
@@ -37,12 +38,13 @@
               %h3 {{transitionHelpMessage}}
           .row{style: 'margin-top: 1em', ng:{hide: 'isTransitionCounty(county)'}}
             %h3 Your birthdate
+          -# TODO: Refactor this so that it uses the native %input[type="date"] instead
           .row{ng:{hide: 'isTransitionCounty(county)'}}
-            %input.form-control.dob.month{type:'tel', placeholder: 'mm', name:'month', ng: {model: 'dob.month', required: 'true', pattern:'/(^0?[1-9]|^1[012])$/', class:'{invalid: loginform.month.$dirty && loginform.month.$invalid  }'  }}
-            &#47;
-            %input.form-control.dob.day{type:'tel', placeholder: 'dd', name:'day', ng: {model: 'dob.day', required: 'true', pattern:'/(^0?[1-9]|^[12][0-9]|^3[01])$/', class:'{invalid: loginform.day.$dirty && loginform.day.$invalid  }'  }}
-            &#47;
-            %input.form-control.dob.year{type:'tel', placeholder: 'yyyy', name:'year', ng: {model: 'dob.year', required: 'true', pattern:'/(^19|^20)\d\d$/', class:'{invalid: loginform.year.$dirty && loginform.year.$invalid  }' }}
+            %input.dob.month{type:'tel', placeholder: 'mm', name:'month', ng: {model: 'dob.month', required: 'true', pattern:'/(^0?[1-9]|^1[012])$/', class:'{invalid: loginform.month.$dirty && loginform.month.$invalid  }'}, style: 'width: 3.5em'}
+            %span{style:'margin: 0 8px;'} &#47;
+            %input.dob.day{type:'tel', placeholder: 'dd', name:'day', ng: {model: 'dob.day', required: 'true', pattern:'/(^0?[1-9]|^[12][0-9]|^3[01])$/', class:'{invalid: loginform.day.$dirty && loginform.day.$invalid  }'}, style: 'width: 3.5em'}
+            %span{style:'margin: 0 8px;'} &#47;
+            %input.dob.year{type:'tel', placeholder: 'yyyy', name:'year', ng: {model: 'dob.year', required: 'true', pattern:'/(^19|^20)\d\d$/', class:'{invalid: loginform.year.$dirty && loginform.year.$invalid  }' }}
           .row{ng:{show: 'errors.dob' }}
             .alert.alert-danger{role:'alert'}
               Check the birthdate for errors

@@ -396,7 +396,7 @@
             If you are visiting a doctor, please enter your doctor's name, suite number, and phone number.
         .row
           .form-group
-            %textarea.form-control{placeholder: 'Dear Driver, please...', rows: '5', ng: {model: 'driverInstructions'}}
+            %textarea{style:'width: 100%;',placeholder: 'Dear Driver, please...', rows: '5', ng: {model: 'driverInstructions'}}
         .row.unstuck-foot{style: 'margin-top: 30px'}
           .col-md-8.col-md-offset-2.col-xs-12{ style: 'padding:0px;' }
             %a.btn.btn-secondary{href: "", back: '', ng: {click: "back()"}}

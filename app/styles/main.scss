@@ -39,6 +39,7 @@ $kioskfonts: "Avenir Next", "Helvetica Neue", Helvetica, sans-serif;
 @import "components/alerts";
 @import "components/buttons";
 @import "components/cards";
+@import "components/forms";
 @import "components/modals";
 
 .browsehappy {
@@ -165,10 +166,10 @@ $kioskfonts: "Avenir Next", "Helvetica Neue", Helvetica, sans-serif;
   text-align: center;
   border-bottom: 1px solid #e5e5e5;
 
-  .btn {
+  // .btn {
     // font-size: 21px;
     // padding: 14px 24px;
-  }
+  // }
 }
 
 .marketing {
@@ -534,34 +535,45 @@ button{
 .cs-time-input{
   display:flex;
   flex-flow:row;
+  align-items: baseline;
 }
 .cs-time-input .cs-hour{
   border-right:none;
   padding-right:3px;
-  width:2em;
+  width:2.7em;
   text-align:right;
 }
 .cs-time-input .seperator-hour-minute{
   z-index:20;
-  padding-top: 7px;
+  padding: 20px 0;
   display:inline-block;
 }
 .cs-time-input .cs-minute{
   border-left:none;
   padding-left:10px;
-  width:3em;
+  width:3.3em;
   margin-left:-5px;
 }
 .cs-time-input input.cs-ampm{
   opacity: 0;
   width: 0px;
 }
+// NOTE: Pulling .btn.btn-secondary styling for the AM/ PM button
 .cs-time-input input.cs-ampm + .cs-ampmspan::after{
   display: inline-block;
   content:'PM';
-  border:1px solid #CCC;
-  padding: 4px;
-  border-radius: 4px;
+  border: 3px solid $primary-color;
+  padding: 15px;
+  color: $primary-color;
+    background: $off-white;
+    border-color: $primary-color;
+    @include focus {
+        position: relative;
+    }
+    @include hover {
+        color: $off-white;
+        background: $primary-color;
+    }
 }
 .cs-time-input input.cs-ampm:checked + .cs-ampmspan::after{
   content:'AM';
