@@ -360,23 +360,25 @@
               Who will be riding with you?
       .col-md-8.col-md-offset-2.col-xs-12{style:'margin-top:20px;'}
         .row{ng: {show: 'questions.assistant'}}
-          .col-xs-12
-            %h4.pull-left
-              %input{id:'hasescort', type: 'checkbox', ng: {model: 'hasEscort'}}
-            %label{for:'hasescort', style:'width:90%'}
-              %h4
-                {{questions.assistant}}
+          %fieldset.form-group.col-xs-12
+            %label.check-group.h4{for:'hasescort', style:'width:90%', ng: {model: 'hasEscort'}}
+              %input{type:"checkbox", id:"hasescort"}
+              %span{style:'margin-left: 8px;'} {{questions.assistant}}
+              %span.checkmark
         .row{ng: {show: 'questions.children'}}
-          .col-xs-12
-            %h4.pull-left
-              %input{id:'hascompanions', type: 'checkbox', ng: {model: 'hasCompanions'}}
-            %label{for:'hascompanions', style:'width:90%'}
-              %h4
-                {{questions.children}}
-          .col-xs-12{'ng-show'=>'hasCompanions'}
-            %label{for:'numberofcompanions'}
-              %h4{style:'display:inline;'}
-                {{'How Many' + (hasEscort ? ' (not including escort)?' : '?')}}
+          %fieldset.form-group.col-xs-12{style:'width:90%;'}
+            -# %h4.pull-left
+            -#   %input{id:'hascompanions', type: 'checkbox', ng: {model: 'hasCompanions'}}
+            -# %label{for:'hascompanions', style:'width:90%'}
+            -#   %h4
+            -#     {{questions.children}}
+            %label.check-group.h4{for:'hascompanions', style:'width:90%'}
+              %input{type:"checkbox", id:"hascompanions", ng: {model: 'hasCompanions'}}
+              %span{style:'margin-left: 8px;'} {{questions.children}}
+              %span.checkmark
+          %fieldset.form-group.col-xs-12{'ng-show'=>'hasCompanions'}
+            %label.h4{for:'numberofcompanions'}
+              {{'How Many' + (hasEscort ? ' (not including escort)?' : '?')}}
               %select{id:'numberofcompanions', ng: {model: 'numberOfCompanions', options: 'number for number in questions.limit'}}
         .row.unstuck-foot.btn-spacing
           .col-xs-12
