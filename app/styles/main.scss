@@ -648,6 +648,13 @@ i.cs-map-marker.A{
   }
 }
 
+ul.nav-tabs > li.uib-tab {
+  & a.nav-link {
+      text-decoration: none;
+      border-radius: 0;
+  }
+}
+
 ul.bus-nav-tabs.nav-tabs {
 
   display:flex;
@@ -657,7 +664,7 @@ ul.bus-nav-tabs.nav-tabs {
     flex-grow:1;
     min-width:20%;
   }
-  li .btn{
+  li .tab{
     padding: 12px 14px;
     box-shadow:unset;
     color:#337ab7;
@@ -669,7 +676,7 @@ ul.bus-nav-tabs.nav-tabs {
     border-bottom: unset;
     outline-width: 0;
 
-    .btn{
+    .tab{
       color:black;
       background-color: #f5f5f5;
       border:1px solid #d3d3d3;

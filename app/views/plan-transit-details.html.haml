@@ -10,7 +10,7 @@
       .row
         %ul.nav.nav-tabs.bus-nav-tabs{ng:{show:'viewMoreBusOptions'}}
           %li{ng: {repeat:'busOption in transitInfos[0] | limitTo:3', class:'{active: selectedBusOption[0] == $index }'}}
-            .btn{ng: {click: 'selectedBusOption[0] = $index' }}
+            .tab{ng: {click: 'selectedBusOption[0] = $index' }}
               {{busOption.label}}
         %div{ng:{click:'goViewTransit()'}, style:"overflow:auto; border: 1px solid #d3d3d3; border-top: unset;"}
           .col-xs-10{style:'background-color: #f5f5f5;'}
