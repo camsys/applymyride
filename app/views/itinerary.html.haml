@@ -4,17 +4,20 @@
   #itinerary{ng: {show: 'mode==="mode_ride_hailing"'}}
     .row{ng:{include:"'views/uber-detail.html'"}}
   #itinerary{ng: {show: 'mode==="mode_transit"'}}
-    .row{style: 'margin-bottom: 1em;'}
+    %header.row{style: 'margin-bottom: 1em;'}
       .col-xs-12.col-md-8.col-md-offset-2.no-padding
         .row
-          .col-xs-12{style:' background-color: rgb(205,254,206); padding:10px;'}
+          -# .col-xs-12{style:' background-color: rgb(205,254,206); padding:10px;'}
+          .col-xs-12{style:'background:rgb(250,250,250)'}
             %h1
               %span
                 Transit & Walk Trips
-              %span{style:'font-size: 22px;',ng: {hide: 'tripCancelled'}}
-                (saved)
-              %span{style: 'color: red; font-size: 22px;', ng: {show: 'tripCancelled'}}
-                (cancelled)
+              %p
+                %span{style:'font-size:22px'} Status:
+                %span{style:'font-size: 22px',ng: {hide: 'tripCancelled'}}
+                  (saved)
+                %span{style: 'color: red; font-size: 22px;', ng: {show: 'tripCancelled'}}
+                  (cancelled)
     .transititinerary{index: '{{$index}}', ng: {repeat: 'itinerary in itineraries'}}
       .row{ng: {show: '$index == 0 && itineraries.length > 1'}}
         .col-xs-12.col-md-8.col-md-offset-2.no-padding

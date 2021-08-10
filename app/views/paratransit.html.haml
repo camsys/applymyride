@@ -19,10 +19,10 @@
           %h2 Your trip has been saved
       
     .headerwrap{ng:{show: '$index == 0'}}
-      .row
+      %header.row
         .col-xs-12.col-md-8.col-md-offset-2.no-padding
           .row
-            .col-xs-12{style:'background-color: rgb(205,254,206); padding:10px;'}
+            .col-xs-12{style:'background-color: rgb(250,250,250); padding:10px;'}
               %h1
                 %span
                   Shared Ride
@@ -30,7 +30,7 @@
                   (booked)
                 %span{style: 'color: red; font-size: 22px;', ng: {show: 'tripCancelled'}}
                   (cancelled)
-              %h5.text-muted
+              %h5
                 %span
                   CONFIRMATION
                 %span.tab1

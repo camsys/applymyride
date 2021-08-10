@@ -1,31 +1,32 @@
 #transit
   .container
-    .row
-      .col-md-8.col-md-offset-2.col-xs-12
-        .row
-          .col-sm-6.col-xs-8
-            %h3
-              %span
-                {{startDay}}
+    %header
+      .row
+        .col-md-8.col-md-offset-2.col-xs-12
+          .row
+            .col-sm-6.col-xs-8
+              %h3
+                %span
+                  {{startDay}}
+                %span{style:'white-space:nowrap;'}
+                  {{startDate}}
+            .col-sm-6.col-xs-4.text-right
+              %span{style:'white-space:nowrap;line-height:34px;'}
+                {{startTime}}
               %span{style:'white-space:nowrap;'}
-                {{startDate}}
-          .col-sm-6.col-xs-4.text-right
-            %span{style:'white-space:nowrap;line-height:34px;'}
-              {{startTime}}
-            %span{style:'white-space:nowrap;'}
-              to {{endTime}}
+                to {{endTime}}
 
-    .row
-      .col-md-8.col-md-offset-2.col-xs-12{style:' background-color: rgb(205,254,206); padding:10px;'}
-        %h1
-          %span{ng: {show: 'mode === "transit"'}}
-            Transit Ride
-          %span{ng: {show: 'mode === "walk"'}}
-            Walk
-          %span{style:'font-size: 22px;', ng: {show: 'transitSaved || walkSaved'}} 
-            (saved)
-          %span{style: 'font-size: 22px; color: red;', ng: {show: 'transitCancelled || walkCancelled'}}
-            (cancelled)
+      .row
+        .col-md-8.col-md-offset-2.col-xs-12{style:' background-color: rgb(250,250,250); padding:10px;'}
+          %h1
+            %span{ng: {show: 'mode === "transit"'}}
+              Transit Ride
+            %span{ng: {show: 'mode === "walk"'}}
+              Walk
+            %span{style:'font-size: 22px;', ng: {show: 'transitSaved || walkSaved'}} 
+              (saved)
+            %span{style: 'font-size: 22px; color: red;', ng: {show: 'transitCancelled || walkCancelled'}}
+              (cancelled)
     .row
       .col-md-8.col-md-offset-2.col-xs-12
         %h3{ng:{show:'transitInfos[1] || walkItineraries[1]'}}
