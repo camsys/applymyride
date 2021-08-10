@@ -1,3 +1,5 @@
+// NOTE: Commented out styling is originally from the PDS styling,
+// ... and is kept for historical purposes
 %form-component {
   border: 1px solid #cacaca;
   background-color: #fafafa;
@@ -5,7 +7,7 @@
   border-radius: none;
   outline-offset: 0;
   padding: 20px 10px;
-  margin-bottom: 2rem;
+  // margin-bottom: 2rem;
   min-height: 60px;
   line-height: $form-label-line-height;
   letter-spacing: 0.06em;
