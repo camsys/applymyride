@@ -51,7 +51,7 @@ $kioskfonts: "Avenir Next", "Helvetica Neue", Helvetica, sans-serif;
 }
 
 * {
-  font-family: 'Avenir Next', Helvetica, sans-serif;
+  font-family: $body-font-family;
 }
 
 /*
