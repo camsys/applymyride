@@ -13,7 +13,7 @@
       .collapse.navbar-collapse#bs-example-navbar-collapse-1
         %ul.nav.navbar-nav.navbar-right.dropdown
           %li{ng:{show:'showCurrentBalance'}}
-            %p.navbar-icon{style:'margin-top: .5em; padding-top:0;display:inline-block;', title:'This balance represents the current prepaid balance for Shared Ride/Paratransit. Please contact your local transit agency regarding questions about this information.'}
+            %p.navbar-icon{title:'This balance represents the current prepaid balance for Shared Ride/Paratransit. Please contact your local transit agency regarding questions about this information.'}
               %span
                 = "Current Balance"
               %span.badge{ng: {class:'{"alert-danger": (currentBalance < 0),"alert-success": (currentBalance >= 0)}'}}

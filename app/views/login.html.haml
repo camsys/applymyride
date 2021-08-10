@@ -16,11 +16,12 @@
             %h1{style: 'font-weight:600;'} Already a Shared Ride member?
             In order to book a Shared Ride, you need to tell us a few things
 
-          .row{style: 'margin-top: 2em'}
+          .row{style: 'margin-top: 2em; margin-bottom: 0.25em;'}
             %h3 Your Shared Ride ID
-            %h4.text-muted
-              %a.btn-block{href: "#/lookupIdForm"}
-                Forgot your ID?
+            -# inline style coloring the link to the $colors-brand.lightblue value
+            -# %a.btn-block.h4{href: "#/lookupIdForm", style: "color: #6699C2;"}
+            %a.h4{href: "#/lookupIdForm"}
+              Forgot your ID?
           .row
             -# %input.form-control.shared-ride-id{style: 'font-size: .9em; width: 50%;', placeholder: '00000', ng: {model: 'sharedRideId', required: 'true', change: 'checkId()', enter: 'next()'}}
             %input.shared-ride-id{type:'text',style: 'font-size: .9em; width: 50%;', placeholder: '00000', ng: {model: 'sharedRideId', required: 'true', change: 'checkId()', enter: 'next()'}}
