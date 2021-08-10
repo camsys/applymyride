@@ -23,6 +23,15 @@ nav > .container > .navbar-header {
 
 ul.dropdown.navbar-right {
   > li {
+    // For the Current Balance nav element
+    // ...to match the link styling
+    > p.navbar-icon {
+      color: #002469;
+      display:inline-block;
+      margin-top: .5em;
+      padding: 1rem 1rem 1.167rem;
+      line-height: 1.723rem;
+    }
     > a {
         // color based on .brand-blue selector in pds toolkit.css
         color: #002469;
@@ -32,6 +41,9 @@ ul.dropdown.navbar-right {
         // @include breakpoint(xlarge down) {
         //     padding: 1.688rem 1rem;
         // }
+        &:link {
+          text-decoration: none;
+        }
         &:hover,
         &.-hover {
             color: $white;
