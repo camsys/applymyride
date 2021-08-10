@@ -65,7 +65,7 @@
         <h2>Internet Explorer is no longer supported. Please reopen FindMyRide using another browser such as Chrome, Edge, or Safari.</h2>
       </div>
     </div>
-    <div class="container-fluid">
+    <main class="container-fluid" id="main-content">
       <div class="alert alert-success alert-dismissible" role="alert" ng-show="flash.getMessage()" ng-cloak>
         <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         {{ flash.getMessage() }}
@@ -74,7 +74,7 @@
       <div style="position: relative;">
         <div ng-view="" class="at-view-fade-in at-view-fade-out"></div>
       </div>
-    </div>
+    </main>
 
     <div class="debug footer">
     <div class="container">
