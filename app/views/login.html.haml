@@ -7,7 +7,8 @@
             %h1{style: 'font-weight:600;'} Book a ride
             with just 3 things:
 
-          .row{ng: {show: "location == '/loginError'"}, style:'background-color:#FFFFEB;'}
+          -# .row{ng: {show: "location == '/loginError'"}, style:'background-color:#FFFFEB;'}
+          .row.alert.alert-danger{ng: {show: "location == '/loginError'"}}
             %h1{style: 'font-weight:600;'}Sorry! We do not see a match.
             Your Shared Ride ID may be entered incorrectly.
 
