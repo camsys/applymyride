@@ -4,6 +4,23 @@ nav > .container > .navbar-header {
   align-items: center;
 }
 
+// Based on Bootstrap v3's small breakpoint
+@media screen and (max-width: 768px) {
+  .navbar-header button.navbar-toggle {
+    width: 40px;
+    padding: 8px 4px;
+    border: none;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    & span.icon-bar {
+      height: 4px;
+      background-color: $primary-color;
+    }
+}
+}
+
 .title-bar, .navbar.navbar-default {
   padding: 8px 0;
   display: inline-block;
