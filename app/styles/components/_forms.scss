@@ -49,11 +49,20 @@ select {
   }
 }
 
-// select {
-//   font-size: 1.25em;
-//   padding-top: 1.5em;
-//   padding-bottom: 1.5em;
-// }
+.form-check.radio > label.form-check-label {
+  padding-left: 36px;
+  height: 36px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+input.bootbox-input-radio[type='radio'] {
+  height: 30px;
+  width: 30px;
+  margin-left: -36px;
+}
 
 textarea {
   min-height: 360px;
