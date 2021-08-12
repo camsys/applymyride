@@ -1,0 +1,11 @@
+.accordion {
+  & i.fa {
+    color: grey;
+  }
+  &:hover, :focus {
+    background-color: $secondary-color;
+    & h5, i {
+      color: white;
+    }
+  }
+}

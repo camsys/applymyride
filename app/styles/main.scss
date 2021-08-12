@@ -36,6 +36,7 @@ $kioskfonts: "Avenir Next", "Helvetica Neue", Helvetica, sans-serif;
 @import "base/typography";
 
 // component style imports
+@import "components/accordions";
 @import "components/alerts";
 @import "components/buttons";
 @import "components/cards";
@@ -43,6 +44,7 @@ $kioskfonts: "Avenir Next", "Helvetica Neue", Helvetica, sans-serif;
 @import "components/modals";
 @import "components/navigation";
 
+// App Specific Styling
 .browsehappy {
   margin: 0.2em 0;
   background: #ccc;
