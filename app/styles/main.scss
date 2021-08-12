@@ -50,10 +50,6 @@ $kioskfonts: "Avenir Next", "Helvetica Neue", Helvetica, sans-serif;
   padding: 0.2em 0;
 }
 
-* {
-  font-family: $body-font-family;
-}
-
 /*
   Allow angular.js to be loaded in body, hiding cloaked elements until
   templates compile.  The !important is important given that there may be

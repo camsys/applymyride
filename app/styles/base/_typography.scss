@@ -1,3 +1,12 @@
+// Global font settings
+* {
+  font-family: $body-font-family;
+  font-weight: 500;
+}
+// p {
+//   font-weight: 400;
+// }
+
 %header-default {
   // text-transform: capitalize;
   letter-spacing: 0.02em;
