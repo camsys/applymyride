@@ -495,7 +495,7 @@ img.official-logo {
   .day{
     display:inline-block;
     width:14.25%;
-    background-color: #1a27f6;
+    background-color: $primary-color;
     color: #FFF;
     border: 1px solid #EEE;
     padding: 15px 0px;
@@ -505,7 +505,11 @@ img.official-logo {
   .week.names .day{
     font-weight:initial;
   }
-  .day.selected{
+  .day:hover, .day:focus {
+    background-color: $dark-gray;
+  }
+
+  .day.selected {
     color: #FFF;
     background-color:#000;
   }
