@@ -41,6 +41,7 @@
         %h3
           Return Trip Here
       .col-md-8.col-md-offset-2.col-xs-12
+        -# Transit Trip Details partial
         %span{ segmentid:'1', ng:{ include: "'views/transit-embedded.html'", controller:'TransitController'}}
 
     %div{style: 'margin-top: 1em', ng: {show: 'showEmail'}}

@@ -191,7 +191,7 @@ angular.module('applyMyRideApp')
       }
 
       $scope.show = function(event){
-        var index = $(event.target).parents('.timeline').attr('index');
+        const index = $(event.target).parents('.accordion').attr('index');
         $scope.showDiv[index] = !$scope.showDiv[index];
       }
 
