@@ -140,7 +140,7 @@
                       %h4 {{itinerary.destination.name}}
 
   #itinerary{style: 'padding: 0;', index: '{{$index}}', ng: {show: 'mode==="mode_paratransit"', repeat: 'itinerary in paratransitItineraries'}}
-    .row{style: 'margin-bottom: 1em;', ng: {show: '$index == 0'}}
+    %header.row{style: 'margin-bottom: 1em;', ng: {show: '$index == 0'}}
       .col-xs-12.col-md-8.col-md-offset-2.no-padding
         .row{ng: {show: 'liveTrip', class: '{"live-trip": liveTrip}'}}
           .col-xs-12{style:' padding:10px;'}
@@ -151,8 +151,8 @@
               %span{ng: {show: 'trip.isHere'}}
                 %b Your ride is here!
                 Call 1-844-PA-4RIDE if you have any questions.
-        .row
-          .col-xs-12{style:' background-color: rgb(205,254,206); padding:10px;'}
+        .row{style:' background-color: rgb(250,250,250)'}
+          .col-xs-12{style:'padding:10px;'}
             %h1
               %span
                 Shared Ride
@@ -160,14 +160,14 @@
                 (booked)
               %span{style: 'color: red; font-size: 22px;', ng: {show: 'tripCancelled'}}
                 (cancelled)
-            %h5.text-muted
+            %h5
               %span
                 CONFIRMATION
               %span.tab1
                 %strong &num;{{itinerary.booking_confirmation}}
               %span.tab1
                 (Outbound)
-            %h5.text-muted{ng: {show: 'paratransitItineraries.length > 1'}}
+            %h5{ng: {show: 'paratransitItineraries.length > 1'}}
               %span
                 CONFIRMATION
               %span.tab1
@@ -175,12 +175,9 @@
               %span.tab1
                 (Return)
 
-    .headerwrap{ng: {show: '$index == 0'}}
-      .row
-        .col-xs-6.text-right.text-muted
-          Escorts/Companions:
-        .col-xs-6.text-left
-          {{escort}}
+            .headerwrap{ng: {show: '$index == 0'}}
+              %h5
+                ="Escorts/Companions: {{escort}}"
       .row
         .col-xs-12.col-md-8.col-md-offset-2.no-padding
           .row

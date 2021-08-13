@@ -739,7 +739,7 @@ only screen and (min-device-pixel-ratio : 1.5) {
 .discounts div.tab-content { text-align: left; }
 
 .nav-tabs > li.active {
-  border-bottom: 5px #238B00 solid;
+  border-bottom: 5px #002469 solid;
   outline-width: 0;
 }
 
