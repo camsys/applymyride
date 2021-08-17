@@ -11,6 +11,8 @@
     }
   %h1 Component Sandbox
   %h2 Running on Bootstrap-Sass 3.3.7
+  %h2 Running on Font Awesome 4.7
+  %p Library versions as of 2021/08/17
   %h3 This page showcases all components used in FMR
   %section
     %h2 Primary Button
@@ -182,3 +184,36 @@
       %input{type:'text'}
       %button.btn.btn-primary{type:'button'}>
         Send
+  %section
+    %h2 PDS Custom Radio Button
+    %fieldset.form-group
+      %legend Historical Figures
+      %label.check-group{for:"radio1"}
+        %span One
+        %input#radio1{type:"radio", checked:"checked", name:"radio"}
+        %span.radiobtn
+      %label.check-group{for:"radio2"}
+        %span Two
+        %input#radio2{type:"radio", checked:"checked", name:"radio"}
+        %span.radiobtn
+    %h2 Bootbox Radio button
+    %input.bootbox-input-radio{type:"radio"}
+    %h2 PDS Custom Checkbox
+    %fieldset.form-group
+      %legend Historical Figures
+      %label.check-group{:for => "checkbox1"}
+        %input#checkbox1{:checked => "checked", :type => "checkbox"}>/
+        One
+        %span.checkmark
+      %label.check-group{:for => "checkbox2"}
+        %input#checkbox2{:type => "checkbox"}>/
+        Two
+        %span.checkmark
+      %label.check-group{:for => "checkbox3"}
+        %input#checkbox3{:type => "checkbox"}>/
+        Three
+        %span.checkmark
+      %label.check-group{:for => "checkbox4"}
+        %input#checkbox4{:disabled => "disabled", :type => "checkbox"}>/
+        Four
+        %span.checkmark
