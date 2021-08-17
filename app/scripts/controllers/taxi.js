@@ -41,20 +41,19 @@ angular.module('applyMyRideApp')
           leg2 = {itinerary_id: planService.taxiItineraries[planService.selectedTaxiOption].returnItinerary.id}
           cancelRequest.bookingcancellation_request.push( leg2 );
         }
-        var cancelPromise = planService.cancelTrip($http, cancelRequest)
-        cancelPromise.error(function(data) {
-          bootbox.alert("An error occurred, your trip was not cancelled.  Please call 1-844-PA4-RIDE for more information.");
-          usSpinnerService.stop('spinner-1');
-        });
-        cancelPromise.success(function(data) {
-          bootbox.alert('Your trip has been cancelled');
-          ipCookie('rideCount', ipCookie('rideCount') - 1);
-          $scope.taxiSaved = false;
-          $scope.taxiCancelled = true;
-          planService.taxiSaved = false;
-          planService.taxiCancelled = true;
-          usSpinnerService.stop('spinner-1');
-        });
+        planService.cancelTrip($http, cancelRequest)
+          .then(function (data) {
+            bootbox.alert('Your trip has been cancelled');
+            ipCookie('rideCount', ipCookie('rideCount') - 1);
+            $scope.taxiSaved = false;
+            $scope.taxiCancelled = true;
+            planService.taxiSaved = false;
+            planService.taxiCancelled = true;
+            usSpinnerService.stop('spinner-1');
+          }, function (data) {
+            bootbox.alert("An error occurred, your trip was not cancelled.  Please call 1-844-PA4-RIDE for more information.");
+            usSpinnerService.stop('spinner-1');
+          })
 
       }
       $scope.toggleEmail = function($event) {
