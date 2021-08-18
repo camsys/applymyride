@@ -249,11 +249,11 @@ angular.module('applyMyRideApp')
               }
             });
 
-            var emailPromise = planService.emailItineraries($http, emailRequest);
-            emailPromise.error(function(data) {
+            planService.emailItineraries($http, emailRequest).then(function() {
+              bootbox.alert('Your email was sent');
+            }, function() {
               bootbox.alert("An error occurred on the server, your email was not sent.");
             });
-            bootbox.alert('Your email was sent');
           }else{
             $scope.invalidEmail = true;
           } 
