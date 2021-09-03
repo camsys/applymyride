@@ -42,12 +42,11 @@ angular.module('applyMyRideApp')
           '/api/v1/users/lookup?booking_agency=ecolane&last_name=' + $scope.lastName +
           '&date_of_birth=' + $scope.dob.year + '-' + $scope.dob.month + '-' + $scope.dob.day +
           '&county=' + $scope.county);
-        promise.error(function(result) {
-          $location.path('/lookupError');
-        });
         promise.then(function(result) {
           localStorageService.set("customer_number", result.data.customer_number);  // ...populate Shared Ride ID field with ID
           $location.path('/'); // On success, toggle back to login form, and...
+        },function(result) {
+          $location.path('/lookupError');
         });
       };
 

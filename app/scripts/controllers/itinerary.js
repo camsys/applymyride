@@ -178,10 +178,11 @@ angular.module('applyMyRideApp')
           cancel.bookingcancellation_request.push(bookingCancellation);
         });
         var cancelPromise = planService.cancelTrip($http, cancel)
-        cancelPromise.error(function(data) {
+        cancelPromise.then(successCallback, errorCallback)
+        function errorCallback(data) {
           bootbox.alert("An error occurred, your trip was not cancelled.  Please call 1-844-PA4-RIDE for more information.");
-        });
-        cancelPromise.success(function(data) {
+        };
+        function successCallback(data) {
           bootbox.alert(successMessage);
           if(result == 'BOTH'){
             $scope.tripCancelled = true;
@@ -198,7 +199,7 @@ angular.module('applyMyRideApp')
               ipCookie('rideCount', ipCookie('rideCount') - 1);
             }
           }
-        })
+        }
       }
 
       $scope.show = function(event){

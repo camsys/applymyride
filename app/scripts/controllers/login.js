@@ -152,9 +152,6 @@ angular.module('applyMyRideApp')
         sessionStorage.setItem('dateofbirth', login.session.dob);
 
         var promise = $http.post('//'+APIHOST+'/api/v1/sign_in', login);
-        promise.error(function(result) {
-          $location.path('/loginError');
-        });
         promise.then(function(result) {
           planService.authentication_token = result.data.authentication_token;
           planService.email = result.data.email;
@@ -207,6 +204,8 @@ angular.module('applyMyRideApp')
                 $location.path('/plan/where');
             }
           });
+        },function(result) {
+          $location.path('/loginError');
         });
       }
 

@@ -26,7 +26,8 @@ angular.module('applyMyRideApp', [
     'LocalStorageModule',
     'ng.deviceDetector',
     'ngBootbox',
-  ]).config(function ($routeProvider) {
+  ]).config(function ($routeProvider,$locationProvider) {
+    $locationProvider.hashPrefix('')
     $routeProvider
       .when('/', {
         templateUrl: 'views/login.html',
