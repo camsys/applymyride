@@ -181,12 +181,11 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
       cancelRequest.bookingcancellation_request.push( leg2 );
     }
     var cancelPromise = planService.cancelTrip($http, cancelRequest)
-    cancelPromise.then(successCallback, errorCallback)
-    function errorCallback(data) {
+    cancelPromise.error(function(data) {
       bootbox.alert("An error occurred, your trip was not cancelled.  Please call 1-844-PA4-RIDE for more information.");
       usSpinnerService.stop('spinner-1');
-    };
-    function successCallback(data) {
+    });
+    cancelPromise.success(function(data) {
       bootbox.alert('Your trip has been cancelled');
       ipCookie('rideCount', ipCookie('rideCount') - 1);
       $scope.transitSaved = false;
@@ -194,7 +193,7 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
       planService.transitSaved = false;
       planService.transitCancelled = true;
       usSpinnerService.stop('spinner-1');
-    }
+    })
   }
 
   $scope.cancelThisWalkTrip = function() {
@@ -207,19 +206,20 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
       leg2 = {itinerary_id: planService.walkItineraries[1].id};
       cancelRequest.bookingcancellation_request.push( leg2 );
     }
-    planService.cancelTrip($http, cancelRequest)
-      .then(function(data) {
-        bootbox.alert('Your trip has been cancelled');
-        ipCookie('rideCount', ipCookie('rideCount') - 1);
-        $scope.walkSaved = false;
-        $scope.walkCancelled = true;
-        planService.walkSaved = false;
-        planService.walkCancelled = true;
-        usSpinnerService.stop('spinner-1');
-      }, function (data) {
-        bootbox.alert("An error occurred, your trip was not cancelled.  Please call 1-844-PA4-RIDE for more information.");
-        usSpinnerService.stop('spinner-1');
-      })
+    var cancelPromise = planService.cancelTrip($http, cancelRequest)
+    cancelPromise.error(function(data) {
+      bootbox.alert("An error occurred, your trip was not cancelled.  Please call 1-844-PA4-RIDE for more information.");
+      usSpinnerService.stop('spinner-1');
+    });
+    cancelPromise.success(function(data) {
+      bootbox.alert('Your trip has been cancelled');
+      ipCookie('rideCount', ipCookie('rideCount') - 1);
+      $scope.walkSaved = false;
+      $scope.walkCancelled = true;
+      planService.walkSaved = false;
+      planService.walkCancelled = true;
+      usSpinnerService.stop('spinner-1');
+    })
   }
 
    $scope.cancelTrip = function(){
@@ -309,22 +309,22 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
           }
           cancel.bookingcancellation_request.push(bookingCancellation);
         });
-        planService.cancelTrip($http, cancel)
-          .then(function (data) {
-            bootbox.alert(successMessage);
-            if(result == 'BOTH'){
-              $scope.tripCancelled = true;
-              ipCookie('rideCount', ipCookie('rideCount') - 1);
-            }
-            else if(result == 'OUTBOUND'){
-              $scope.outboundCancelled = true;
-            }else if(result == 'RETURN'){
-              $scope.returnCancelled = true;
-            }
-          }, function (data) {
-            bootbox.alert("An error occurred, your trip was not cancelled.  Please call 1-844-PA4-RIDE for more information.");
-          })
-        ;
+        var cancelPromise = planService.cancelTrip($http, cancel)
+        cancelPromise.error(function(data) {
+          bootbox.alert("An error occurred, your trip was not cancelled.  Please call 1-844-PA4-RIDE for more information.");
+        });
+        cancelPromise.success(function(data) {
+          bootbox.alert(successMessage);
+          if(result == 'BOTH'){
+            $scope.tripCancelled = true;
+            ipCookie('rideCount', ipCookie('rideCount') - 1);
+          }
+          else if(result == 'OUTBOUND'){
+            $scope.outboundCancelled = true;
+          }else if(result == 'RETURN'){
+            $scope.returnCancelled = true;
+          }
+        })
       }
 
 
@@ -613,8 +613,9 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
     planService.transitResult = [];
     planService.paratransitResult = null;
     usSpinnerService.spin('spinner-1');
-    planService.postItineraryRequest($http)
-      .then(function({data: result}) {
+    var promise = planService.postItineraryRequest($http);
+    promise.
+      success(function(result) {
         var i;
         for(i=0; i<result.itineraries.length; i+=1){
           result.itineraries[i].origin = planService.getAddressDescriptionFromLocation(result.itineraries[i].start_location);
@@ -645,7 +646,8 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
         }
         planService.searchResults = result;
         $location.path("/plan/confirm");
-      },function(result) {
+      }).
+      error(function(result) {
         bootbox.alert("An error occured on the server, please retry your search or try again later.");
         usSpinnerService.stop('spinner-1');
       });
@@ -714,6 +716,7 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
       //if this is run before the last promise is resolved, abort the promise, start over.
       var getLocationsPromise = LocationSearch.getLocations(typed, config, planService.email != null);
       getLocationsPromise.then(function(data){
+
         $scope.placeLabels = [];
         $scope.placeIds = [];
         $scope.placeAddresses = [];
@@ -769,7 +772,6 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
         } else if (toFrom === 'to') {
           $scope.toLocations = choices
         }
-      }, function() {
       });
       return getLocationsPromise;
     }
@@ -1299,9 +1301,9 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
     updateInput = util.assignDefaultValueIfEmpty(updateInput, false);
     var serviceAreaPromise = planService.checkServiceArea($http, result);
     $scope.showNext = false;
-    serviceAreaPromise
-      .then(function(serviceAreaResult) {
-        if(serviceAreaResult.data.result == true){
+    serviceAreaPromise.
+      success(function(serviceAreaResult) {
+        if(serviceAreaResult.result == true){
           $scope.errors['rangeError'+toFrom] = false;
           var recentSearches = localStorageService.get('recentSearches');
           if(!recentSearches){
@@ -1370,7 +1372,8 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
           $scope.stopSpin();
         }
         $scope.stopSpin();
-      }, function(serviceAreaResult) {
+      }).
+      error(function(serviceAreaResult) {
         bootbox.alert("An error occured on the server, please retry your search or try again later.");
         $scope.stopSpin();
       });
@@ -1757,7 +1760,7 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
     case 'when':
       //re-populate service hours
       planService.getServiceHours($http)
-        .then(function({data}) {
+        .success(function(data) {
           $scope.serviceHours = data;
           _setupTwoWeekSelector();
           $scope.whenShowNext = function(){
@@ -1996,8 +1999,8 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
       break;
     case 'list_itineraries':
       if($routeParams.test){
-        $http.get('//' + APIHOST + '/data/bookingresult.json')
-          .then(function(data) {
+        $http.get('//' + APIHOST + '/data/bookingresult.json').
+          success(function(data) {
             planService.itineraryRequestObject = data.itinerary_request;
             planService.searchResults = data.itinerary_response;
             planService.booking_request = data.booking_request;
