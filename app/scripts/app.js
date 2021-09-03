@@ -32,6 +32,16 @@ angular.module('applyMyRideApp', [
         templateUrl: 'views/login.html',
         controller: 'MainController'
       })
+      /** NOTE: sandbox.html is for checking how app components look
+        UNCOMMENT THE BELOW IF YOU WANT TO SEE HOW UI ELEMENTS LOOK IN FMR
+        NOTE: NOT FOR USE LIVE
+       */
+      // .when('/', {
+      //   templateUrl: 'views/sandbox.html',
+      // })
+      // .when('/sandbox', {
+      //   templateUrl: 'views/sandbox.html',
+      // })
       .when('/loginError', {
         templateUrl: 'views/login.html',
         controller: 'MainController'

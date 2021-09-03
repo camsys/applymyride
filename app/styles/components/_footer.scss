@@ -1,0 +1,599 @@
+// Custom
+footer#main-footer {
+  background: #003e51;
+}
+
+.footer-row {
+  margin: 0 auto;
+  max-width: 75rem;
+}
+
+.main-footer {
+  margin-top: 16px;
+}
+@media screen and (min-width: 64rem) {
+
+  .footer-img img {
+    max-width: 240px;
+    width: 100%;
+    margin-bottom: 20px;
+  }
+}
+/* Based on Penn DoT's CSS file they sent us */
+.main-footer .state-footer-nav {
+  background-color: #2e2e2e;
+  padding: 50px 0;
+}
+
+#s4-workspace .main-footer .state-footer-nav a:first-child, #s4-workspace .main-footer .state-footer-nav li, #s4-workspace .main-footer .state-footer-nav p {
+  line-height: 1.5rem;
+}
+
+.main-footer > .state-footer-nav > .row {
+  max-width: 75em;
+}
+
+/* Put border to the right of footer-left instead of left of footer-right because we will have more content on left*/
+.main-footer .state-footer-nav .footer-left {
+  border-right: 1px solid #fafafa;
+}
+
+.main-footer .state-footer-nav .footer-right {
+  padding-left: 30px;
+}
+
+.main-footer .state-footer-nav {
+  background-color: #2e2e2e;
+  padding: 50px 0;
+}
+
+#s4-workspace .main-footer .state-footer-nav a:first-child, #s4-workspace .main-footer .state-footer-nav li, #s4-workspace .main-footer .state-footer-nav p {
+  line-height: 1.5rem;
+}
+
+.main-footer > .state-footer-nav > .row {
+  max-width: 75em;
+}
+
+/* Put border to the right of footer-left instead of left of footer-right because we will have more content on left*/
+.main-footer .state-footer-nav .footer-left {
+  border-right: 1px solid #fafafa;
+}
+
+.main-footer .state-footer-nav .footer-right {
+  padding-left: 30px;
+}
+
+.main-footer .copyright-nav {
+  background-color: #003146;
+  padding: 8px 20px;
+  width: 100%;
+  min-width: 100%;
+  margin: 0 auto;
+}
+
+.state-footer-nav ul {
+  list-style-type: none;
+  margin-bottom: 0;
+}
+
+.main-menu-link {
+  color: #fafafa;
+}
+
+.sub-menu-link {
+  font-size: 1rem;
+}
+
+.state-footer-nav span, #s4-workspace .state-footer-nav p, #s4-workspace .state-footer-nav a {
+  font-size: 1rem;
+}
+
+#s4-workspace .copyright-nav ul, #s4-workspace .copyright-nav span {
+  list-style-type: none;
+  margin: 0;
+  color: #fafafa;
+  font-size: .75rem;
+}
+
+.copyright-nav span {
+  padding-top: 0.1em;
+  font-size: .9rem;
+  letter-spacing: .1em;
+}
+
+.main-footer .commonwealth-title {
+  text-transform: uppercase;
+}
+
+.main-footer .copyright-nav ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.main-footer .copyright-nav a {
+  color: #fff;
+  font-size: .65em !important;
+  line-height: 1.5rem !important;
+  letter-spacing: .1em;
+  float: left;
+  border-right: solid 1px #666;
+}
+
+.main-footer .copyright-nav li:last-child a {
+  padding: 3px 20px;
+  border-right: 0;
+}
+
+
+
+.main-footer .state-footer-nav a.main-menu-link {
+  margin-bottom: 10px;
+  color: #fafafa;
+  display: inline-block;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+}
+
+.main-footer .state-footer-nav p, .main-footer .state-footer-nav a {
+  position: relative;
+  color: #b8b7b4;
+  margin-bottom: 8px;
+  padding: 0;
+  text-decoration: none;;
+}
+
+.main-footer .state-footer-nav p {
+  font-size: .9em
+}
+
+.main-footer a:focus, .main-footer a:active, .main-footer a:hover, .main-footer .state-footer-nav a.main-menu-link:focus, .main-footer .state-footer-nav a.main-menu-link:active, .main-footer .state-footer-nav a.main-menu-link:hover {
+  color: #b8b7b4 !important;
+  text-decoration: underline;
+}
+
+.main-footer .state-footer-nav .sub-menu-link .fa {
+  position: absolute;
+  top: 2px;
+  left: -24px;
+  padding-right: 4px;
+  width: 23px;
+}
+
+.main-footer .state-footer-nav .footer-img {
+  color: #b8b7b4;
+}
+
+/* TODO: Remove this once fa-external-link is styled in enterprise.css */
+.main-footer .state-footer-nav .sub-menu-link .fa-external-link {
+  position: static;
+}
+
+@media(max-width: 1023px) {
+  .main-footer .copyright-nav a {
+      font-size: .9em !important;
+  }
+
+  .main-footer .copyright-nav li a:last-child {
+      padding-left: 0px !important;
+  }
+
+  #s4-workspace .copyright-nav span {
+      padding-top: 4px;
+  }
+}
+
+@media screen and (max-width: 63.9375em) {
+  .main-footer .columns {
+      width: 100%;
+  }
+
+  .main-footer .state-footer-nav {
+      padding: 40px 20px 0 20px;
+  }
+
+      .main-footer .state-footer-nav .row {
+          padding: 0 20px;
+      }
+
+      .main-footer .state-footer-nav .footer-left .columns {
+          padding: 0;
+      }
+
+      .main-footer .state-footer-nav .footer-img {
+          text-align: center;
+      }
+
+          .main-footer .state-footer-nav .footer-img img {
+              max-width: 240px;
+              width: 100%;
+              margin-bottom: 20px;
+          }
+
+      .main-footer .state-footer-nav .footer-left {
+          padding-left: 0;
+          padding-right: 0;
+          border-right: 0;
+      }
+
+      .main-footer .state-footer-nav .footer-right {
+          padding-left: 0;
+          padding-right: 0;
+          border-left: 0;
+          border-bottom: 1px solid #fafafa;
+          border-top: 1px solid #fafafa;
+          padding-top: 10px;
+          padding-bottom: 10px;
+          margin-top: 10px;
+          margin-bottom: 15px;
+      }
+
+      .main-footer .state-footer-nav .footer-menu {
+          padding-left: 1em;
+          padding-right: 1em;
+      }
+
+      .main-footer .state-footer-nav .footer-right .columns {
+          border-bottom: 1px solid #fafafa;
+          padding-bottom: 10px;
+          margin-bottom: 10px;
+          padding-left: 0;
+      }
+
+      .main-footer .state-footer-nav .main-footer {
+          margin-top: 10px;
+          width: 100%;
+          text-align: left;
+      }
+
+          .main-footer .state-footer-nav .main-footer + ul {
+              margin-bottom: 10px;
+          }
+
+      .main-footer .state-footer-nav li {
+          padding: 0;
+      }
+
+          .main-footer .state-footer-nav li a {
+              width: 100%;
+          }
+
+  .main-footer .copyright-nav {
+      text-align: left;
+      background: #2e2e2e;
+      padding: 0 40px 40px 40px;
+  }
+
+      .main-footer .copyright-nav ul {
+          width: 100%;
+          padding: 0;
+      }
+
+          .main-footer .copyright-nav ul li {
+              float: none;
+              display: inline-block;
+              width: 100%;
+          }
+
+              .main-footer .copyright-nav ul li a {
+                  border: 0;
+                  padding: 0;
+                  width: 100%;
+                  text-align: left;
+              }
+
+      .main-footer .copyright-nav span {
+          padding-left: 0;
+          padding-right: 0;
+          text-align: left;
+      }
+
+  .main-footer .state-footer-nav .footer-right .footer-menu .columns:last-child {
+      border-bottom: 0;
+      padding-bottom: 0;
+      margin-bottom: 0;
+  }
+
+  .main-footer .copyright-nav li a {
+      font-size: .9em;
+      text-transform: capitalize;
+      text-decoration: underline;
+  }
+}
+
+
+@media screen and (min-width: 63.9376em) {
+  .copyright-nav span {
+      text-align: right;
+  }
+}
+
+/*Escape Button Styling*/
+.mobile-escape-footer {
+  background-color: #ffe066;
+  padding: .5rem 0rem;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  z-index: 9999;
+}
+
+  .mobile-escape-footer:hover, .mobile-escape-footer:focus {
+      text-decoration: underline;
+  }
+
+  .mobile-escape-footer p {
+      text-align: center;
+      color: #000;
+      margin: auto;
+      text-transform: uppercase;
+      font-weight: 700;
+      font-size: 1rem;
+  }
+
+.main-footer .copyright-nav {
+  background-color: #003146;
+  padding: 8px 20px;
+  width: 100%;
+  min-width: 100%;
+}
+
+.state-footer-nav ul {
+  list-style-type: none;
+  margin-bottom: 0;
+}
+
+.main-menu-link {
+  color: #fafafa;
+}
+
+.sub-menu-link {
+  font-size: .9rem;
+}
+
+.state-footer-nav span, #s4-workspace .state-footer-nav p, #s4-workspace .state-footer-nav a {
+  font-size: .9rem;
+}
+
+#s4-workspace .copyright-nav ul, #s4-workspace .copyright-nav span {
+  list-style-type: none;
+  margin: 0;
+  color: #fafafa;
+  font-size: .75rem;
+  line-height: 1.6em;
+}
+
+.copyright-nav span {
+  padding-top: 0.1em;
+  font-size: .9rem;
+  letter-spacing: .1em;
+}
+
+.main-footer .commonwealth-title {
+  text-transform: uppercase;
+}
+
+.main-footer .copyright-nav ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.main-footer .copyright-nav a {
+  color: #fff;
+  font-size: .65em !important;
+  line-height: 1.6em !important;
+  letter-spacing: .1em;
+  float: left;
+  border-right: solid 1px #666;
+  font-weight: 100;
+}
+
+  .main-footer .copyright-nav a:last-child {
+      padding: 3px 20px;
+  }
+
+.main-footer .copyright-nav li:first-child a:last-child {
+  padding-left: 0px !important;
+}
+
+.main-footer .copyright-nav > li:nth-child(1) > a {
+  padding-left: 0px;
+}
+
+.main-footer .state-footer-nav a.main-menu-link {
+  margin-bottom: 10px;
+  color: #fafafa;
+  display: inline-block;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+}
+
+.main-footer .state-footer-nav p, .main-footer .state-footer-nav a {
+  position: relative;
+  color: #b8b7b4;
+  margin-bottom: 8px;
+  padding: 0;
+}
+
+.main-footer .state-footer-nav p {
+  font-size: .9em
+}
+
+.main-footer a:focus, .main-footer a:active, .main-footer a:hover, .main-footer .state-footer-nav a.main-menu-link:focus, .main-footer .state-footer-nav a.main-menu-link:active, .main-footer .state-footer-nav a.main-menu-link:hover {
+  color: #b8b7b4 !important;
+  text-decoration: underline;
+}
+
+.main-footer .state-footer-nav .sub-menu-link .fa {
+  position: absolute;
+  top: 2px;
+  left: -24px;
+  padding-right: 4px;
+  width: 23px;
+}
+
+.main-footer .state-footer-nav .footer-img {
+  color: #b8b7b4;
+}
+
+/* TODO: Remove this once fa-external-link is styled in enterprise.css */
+.main-footer .state-footer-nav .sub-menu-link .fa-external-link {
+  position: static;
+}
+
+
+@media(max-width: 1023px) {
+  .main-footer .copyright-nav a {
+      font-size: .9em !important;
+  }
+}
+
+@media screen and (max-width: 63.9375em) {
+  .main-footer .columns {
+      width: 100%;
+  }
+
+  .main-footer .state-footer-nav {
+      padding: 40px 20px 0 20px;
+  }
+
+      .main-footer .state-footer-nav .row {
+          padding: 0 20px;
+      }
+
+      .main-footer .state-footer-nav .footer-left .columns {
+          padding: 0;
+      }
+
+      .main-footer .state-footer-nav .footer-img {
+          text-align: center;
+      }
+
+          .main-footer .state-footer-nav .footer-img img {
+              max-width: 240px;
+              width: 100%;
+              margin-bottom: 20px;
+          }
+
+      .main-footer .state-footer-nav .footer-left {
+          padding-left: 0;
+          padding-right: 0;
+          border-right: 0;
+      }
+
+      .main-footer .state-footer-nav .footer-right {
+          padding-left: 0;
+          padding-right: 0;
+          border-left: 0;
+          border-bottom: 1px solid #fafafa;
+          border-top: 1px solid #fafafa;
+          padding-top: 10px;
+          padding-bottom: 10px;
+          margin-top: 10px;
+          margin-bottom: 15px;
+      }
+
+      .main-footer .state-footer-nav .footer-menu {
+          padding-left: 1em;
+          padding-right: 1em;
+      }
+
+      .main-footer .state-footer-nav .footer-right .columns {
+          border-bottom: 1px solid #fafafa;
+          padding-bottom: 10px;
+          margin-bottom: 10px;
+          padding-left: 0;
+      }
+
+      .main-footer .state-footer-nav .main-footer {
+          margin-top: 10px;
+          width: 100%;
+          text-align: left;
+      }
+
+          .main-footer .state-footer-nav .main-footer + ul {
+              margin-bottom: 10px;
+          }
+
+      .main-footer .state-footer-nav li {
+          padding: 0;
+      }
+
+          .main-footer .state-footer-nav li a {
+              width: 100%;
+          }
+
+  .main-footer .copyright-nav {
+      text-align: left;
+      background: #2e2e2e;
+      padding: 0 40px 40px 40px;
+  }
+
+      .main-footer .copyright-nav ul {
+          width: 100%;
+          padding: 0;
+      }
+
+          .main-footer .copyright-nav ul li {
+              float: none;
+              display: inline-block;
+              width: 100%;
+          }
+
+              .main-footer .copyright-nav ul li a {
+                  border: 0;
+                  padding: 0;
+                  width: 100%;
+                  text-align: left;
+              }
+
+      .main-footer .copyright-nav span {
+          padding-left: 0;
+          padding-right: 0;
+          text-align: left;
+      }
+
+  .main-footer .state-footer-nav .footer-right .footer-menu .columns:last-child {
+      border-bottom: 0;
+      padding-bottom: 0;
+      margin-bottom: 0;
+  }
+
+  .main-footer .copyright-nav li a {
+      font-size: .9em;
+      text-transform: capitalize;
+      text-decoration: underline;
+  }
+}
+
+
+@media screen and (min-width: 63.9376em) {
+  .copyright-nav span {
+      text-align: right;
+  }
+}
+
+/*Escape Button Styling*/
+.mobile-escape-footer {
+  background-color: #ffe066;
+  padding: .5rem 0rem;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  z-index: 9999;
+}
+
+  .mobile-escape-footer:hover, .mobile-escape-footer:focus {
+      text-decoration: underline;
+  }
+
+  .mobile-escape-footer p {
+      text-align: center;
+      color: #000;
+      margin: auto;
+      text-transform: uppercase;
+      font-weight: 700;
+      font-size: 1rem;
+  }

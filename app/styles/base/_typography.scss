@@ -1,0 +1,188 @@
+// Global font settings
+* {
+  font-family: $body-font-family;
+  font-weight: 500;
+}
+
+%header-default {
+  // text-transform: capitalize;
+  letter-spacing: 0.02em;
+  line-height: 1.1;
+  font-weight: 400;
+  .hero-section & {
+      color: $white;
+  }
+  .hero-section.-card & {
+      color: $dark-gray;
+  }
+}
+
+h1,
+.h1 {
+  @extend %header-default;
+  font-weight: bold;
+  line-height: 146.28%;
+  &.section-header {
+      font-weight: bold;
+      font-size: 80px;
+      font-size: 4.444444444rem;
+      line-height: 100px;
+      // @include breakpoint(medium down){
+      //     font-size: 3.0555555556rem;
+      //     line-height: 67.05px;
+      // }
+      // @include breakpoint(small down){
+      //     font-size: 2rem;
+      //     line-height: 43.88px;
+      // }
+  }
+}
+
+h2,
+.h2 {
+  @extend %header-default;
+  font-weight: bold;
+  line-height: 51px;
+  margin-bottom: .5rem;
+  // @include breakpoint(medium down){
+  //     line-height: 36.57px;
+  // }
+  // @include breakpoint(small down){
+  //     line-height: 21.94px;
+  // }
+}
+
+h3,
+.h3 {
+  @extend %header-default;
+}
+
+h4,
+.h4 {
+  @extend %header-default;
+}
+
+h5,
+.h5 {
+  @extend %header-default;
+}
+
+h6,
+.h6 {
+  @extend %header-default;
+}
+
+h3,.h3,
+h4,.h4,
+h5,.h5,
+h6,.h6 {
+  font-weight: 500;
+}
+
+blockquote,
+blockquote p {
+  padding: $token-4;
+  border-left: none;
+  border-top: 8px solid $secondary-color;
+  border-bottom: 8px solid $secondary-color;
+  font-style: italic;
+  font-weight: 300;
+  font-size: 19.5px;
+  line-height: 175%;
+  // line-height: 34px;
+  letter-spacing: 0.04em;
+  cite {
+      font-size: inherit;
+      font-style: normal;
+      font-weight: 400;
+      color: $secondary-color;
+  }
+}
+
+
+address {
+  margin: $token-5 0;
+  padding: 0 $token-4;
+  color: $black;
+  border-left: 8px solid $secondary-color;
+}
+
+hr {
+  margin: $token-4 0;
+  max-width: none;
+  border-bottom: 8px solid $secondary-color;
+}
+
+figure {
+  margin: $token-3 0;
+  img {
+      padding-bottom: $token-1;
+  }
+}
+
+figcaption {
+  font-style: italic;
+  font-weight: $global-weight-normal;
+  font-size: 14px;
+  line-height: 150%;
+  line-height: 21px;
+
+  letter-spacing: 0.02em;
+  color: $secondary-color;
+}
+
+// Links
+a {
+  color: $primary-color;
+  text-decoration: underline;
+  @include hover {
+      color: $black;
+  }
+  @include focus {
+      color: $primary-color;
+      outline: map-get($colors-utility, blue) solid 5px;
+      position: relative;
+      z-index: 999;
+  }
+  &.-error {
+      color: map-get($colors-brand, red);
+  }
+  &:disabled,
+  &[disabled]
+  &:disabled:hover,
+  &[disabled]:hover {
+      color: rgba(70, 70, 70, 0.2);
+      cursor: not-allowed;
+  }
+}
+
+// This is to overwrite h4 styling on login page
+a.h1[href], a.h2[href],a.h3[href],a.h4[href] {
+  color: $primary-color;
+  @include hover {
+    color: $black;
+  }
+  @include focus {
+      color: $primary-color;
+      outline: map-get($colors-utility, blue) solid 5px;
+      position: relative;
+      z-index: 999;
+  }
+  &.-error {
+      color: map-get($colors-brand, red);
+  }
+  &:disabled,
+  &[disabled]
+  &:disabled:hover,
+  &[disabled]:hover {
+      color: rgba(70, 70, 70, 0.2);
+      cursor: not-allowed;
+  }
+}
+
+// Lists
+ol {
+  ol {
+      list-style: lower-alpha;
+  }
+}

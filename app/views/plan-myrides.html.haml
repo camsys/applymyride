@@ -7,7 +7,7 @@
   .col-md-8.col-md-offset-2.col-xs-12
     %uib_tabset
       %uib_tab{'heading' => 'Upcoming ({{trips.future.length}})', 'active' => 'tabFuture'}
-        .myride{'index' => '{{$index}}', ng: {init: 'tab = "future"',
+        .my-ride.card.card-thin{'index' => '{{$index}}', ng: {init: 'tab = "future"',
                                               click: 'selectTrip($event, tab, $index)',
                                               repeat: 'trip in trips.future',
                                               class: '{"live-trip": trip.isLive}'}}
@@ -35,7 +35,7 @@
                   %h5.text-muted.text-right{ng: {show: 'trip.itineraries.length > 1'}} (round trip)
                   %h5.text-muted.text-right{ng: {show: 'trip.itineraries.length == 1'}} (one way)
       %uib_tab{'heading' => 'History ({{trips.past.length}})', 'active' => 'tabPast'}
-        .myride{'index' => '{{$index}}', ng: {init: 'tab = "past"', click: 'selectTrip($event, tab, $index);', repeat: 'trip in trips.past'}}
+        .my-ride.card.card-thin{'index' => '{{$index}}', ng: {init: 'tab = "past"', click: 'selectTrip($event, tab, $index);', repeat: 'trip in trips.past'}}
           .row
             .col-xs-2.col-height-slave
               %img.img-responsive{ng: {src: 'images/modes/paratransit.png', show: 'trip.mode == "mode_paratransit"'}}

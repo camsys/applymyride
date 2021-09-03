@@ -9,14 +9,19 @@
           %span.icon-bar
           %span.icon-bar
         %a.navbar-brand{href:'#/'}
-          %img{src:'images/FMR.png', alt: 'Go to FMR homepage'}
+          .logo-container--title
+            %h1 FMR
+            %p SCHEDULE
+          %h2.logo-subtitle Find My Ride Schedule
       .collapse.navbar-collapse#bs-example-navbar-collapse-1
-        %ul.nav.navbar-nav.navbar-right
+        %ul.nav.navbar-nav.navbar-right.dropdown
           %li{ng:{show:'showCurrentBalance'}}
-            %a.navbar-icon{style:'margin-top: .5em;', title:'This balance represents the current prepaid balance for Shared Ride/Paratransit. Please contact your local transit agency regarding questions about this information.'}
-              Current Balance
-              .badge{ng: {class:'{"alert-danger": (currentBalance < 0),"alert-success": (currentBalance >= 0)}'}}
-              {{currentBalance | currency}}
+            %p.navbar-icon{title:'This balance represents the current prepaid balance for Shared Ride/Paratransit. Please contact your local transit agency regarding questions about this information.'}
+              %span
+                = "Current Balance"
+              %span.badge{ng: {class:'{"alert-danger": (currentBalance < 0),"alert-success": (currentBalance >= 0)}'}}
+              %span
+                = "{{currentBalance | currency}}"
           %li{ng:{show:'email'}}
             %a.navbar-icon{href:'#/plan/my_rides?navbar:true', style:'margin-top: .5em;'}
               My Rides

@@ -1,31 +1,30 @@
 #transit
   .container
-    .row
-      .col-md-8.col-md-offset-2.col-xs-12
-        .row
-          .col-sm-6.col-xs-8
-            %h3
-              %span
-                {{startDay}}
+    %header
+      .row{style: 'margin-bottom: 8px;'}
+        .col-md-8.col-md-offset-2.col-xs-12{style:' background-color: rgb(250,250,250); padding:10px; margin-bottom: 8px;'}
+          %h1
+            %span{ng: {show: 'mode === "transit"'}}
+              Transit Ride
+            %span{ng: {show: 'mode === "walk"'}}
+              Walk
+            %span{style:'font-size: 22px;', ng: {show: 'transitSaved || walkSaved'}} 
+              (saved)
+            %span{style: 'font-size: 22px; color: red;', ng: {show: 'transitCancelled || walkCancelled'}}
+              (cancelled)
+          .row
+            .col-sm-6.col-xs-8
+              %h3
+                %span
+                  {{startDay}}
+                %span{style:'white-space:nowrap;'}
+                  {{startDate}}
+            .col-sm-6.col-xs-4.text-right
+              %span{style:'white-space:nowrap;line-height:34px;'}
+                {{startTime}}
               %span{style:'white-space:nowrap;'}
-                {{startDate}}
-          .col-sm-6.col-xs-4.text-right
-            %span{style:'white-space:nowrap;line-height:34px;'}
-              {{startTime}}
-            %span{style:'white-space:nowrap;'}
-              to {{endTime}}
+                to {{endTime}}
 
-    .row
-      .col-md-8.col-md-offset-2.col-xs-12{style:' background-color: rgb(205,254,206); padding:10px;'}
-        %h1
-          %span{ng: {show: 'mode === "transit"'}}
-            Transit Ride
-          %span{ng: {show: 'mode === "walk"'}}
-            Walk
-          %span{style:'font-size: 22px;', ng: {show: 'transitSaved || walkSaved'}} 
-            (saved)
-          %span{style: 'font-size: 22px; color: red;', ng: {show: 'transitCancelled || walkCancelled'}}
-            (cancelled)
     .row
       .col-md-8.col-md-offset-2.col-xs-12
         %h3{ng:{show:'transitInfos[1] || walkItineraries[1]'}}
@@ -40,6 +39,7 @@
         %h3
           Return Trip Here
       .col-md-8.col-md-offset-2.col-xs-12
+        -# Transit Trip Details partial
         %span{ segmentid:'1', ng:{ include: "'views/transit-embedded.html'", controller:'TransitController'}}
 
     %div{style: 'margin-top: 1em', ng: {show: 'showEmail'}}
@@ -50,10 +50,9 @@
         .col-xs-12.col-sm-8.col-sm-offset-2.text-left.text-muted
           Use a comma to separate multiple addresses
       .row
-        .col-xs-8.col-sm-6.col-sm-offset-2{'style' => 'line-height: 2em; padding-right: 0px;'}
-          %input.form-control{style: 'font-size: .9em; border-top-right-radius:0px; border-bottom-right-radius:0px;', ng: {model: 'emailString'}}
-        .col-xs-4.col-sm-2{'style' => 'line-height: 2em; padding-left: 0px;'}
-          %a.btn.btn-success.btn-block{style: 'padding-left: 0px; padding-right: 0px;min-width: 20px; border-top-left-radius:0px; border-bottom-left-radius:0px;', ng: {click: 'sendEmail($event)'}}
+        %form.input-group
+          %input{type:'text', ng: {model: 'emailString'}}
+          %a.btn.btn-primary{ng: {click: 'sendEmail($event)'}}>
             %i.fa.fa-envelope-o{style:'color: white;'}
               %span
                 Send
@@ -73,13 +72,13 @@
         .row{ng:{show: 'mode === "transit"'}}
           %a.btn.btn-primary.btn-block{href: "", ng: {click: 'saveBusOrRailTrip()', hide:'transitSaved || transitCancelled'}}
             Save to my rides
-          %a.btn.btn-primary.btn-block{href: "", style:'background-color:red;',ng: {click: 'cancelThisBusOrRailTrip()', show: 'transitSaved'}}
+          %a.btn.btn-danger.btn-block{href: "",ng: {click: 'cancelThisBusOrRailTrip()', show: 'transitSaved'}}
             Cancel this ride
           
         .row{ng:{show: 'mode === "walk"'}}
           %a.btn.btn-primary.btn-block{href: "", ng: {click: 'saveWalkTrip()', hide:'walkSaved || walkCancelled'}}
             Save to my rides
-          %a.btn.btn-primary.btn-block{href: "", style:'background-color:red;',ng: {click: 'cancelThisWalkTrip()', show: 'walkSaved'}}
+          %a.btn.btn-danger.btn-block{href: "",ng: {click: 'cancelThisWalkTrip()', show: 'walkSaved'}}
             Cancel this ride
 
         .row{ng: {show:'transitCancelled || walkCancelled'}}
@@ -89,11 +88,11 @@
       .row
         .col-md-8.col-md-offset-2.col-xs-12
           .pull-left
-            %a.btn{href: "", back: '', ng: {click: "back()", hide:'transitSaved || transitCancelled || walkSaved || walkCancelled'}}
+            %a.btn.btn-secondary{href: "", back: '', ng: {click: "back()", hide:'transitSaved || transitCancelled || walkSaved || walkCancelled'}}
               Back
-            %a.btn{href: "", ng: {click: "logout()", show:'loggedIn && (transitSaved || transitCancelled || walkSaved || walkCancelled)'}}
+            %a.btn.btn-secondary{href: "", ng: {click: "logout()", show:'loggedIn && (transitSaved || transitCancelled || walkSaved || walkCancelled)'}}
               Logout
           .pull-right
-            %a.btn.btn-link{ng: {click: "reset()"}}
+            %a.btn.btn-secondary{ng: {click: "reset()"}}
               Book another ride
 

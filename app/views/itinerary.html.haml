@@ -4,17 +4,20 @@
   #itinerary{ng: {show: 'mode==="mode_ride_hailing"'}}
     .row{ng:{include:"'views/uber-detail.html'"}}
   #itinerary{ng: {show: 'mode==="mode_transit"'}}
-    .row{style: 'margin-bottom: 1em;'}
+    %header.row{style: 'margin-bottom: 1em;'}
       .col-xs-12.col-md-8.col-md-offset-2.no-padding
         .row
-          .col-xs-12{style:' background-color: rgb(205,254,206); padding:10px;'}
+          -# .col-xs-12{style:' background-color: rgb(205,254,206); padding:10px;'}
+          .col-xs-12{style:'background:rgb(250,250,250)'}
             %h1
               %span
                 Transit & Walk Trips
-              %span{style:'font-size: 22px;',ng: {hide: 'tripCancelled'}}
-                (saved)
-              %span{style: 'color: red; font-size: 22px;', ng: {show: 'tripCancelled'}}
-                (cancelled)
+              %p
+                %span{style:'font-size:22px'} Status:
+                %span{style:'font-size: 22px',ng: {hide: 'tripCancelled'}}
+                  (saved)
+                %span{style: 'color: red; font-size: 22px;', ng: {show: 'tripCancelled'}}
+                  (cancelled)
     .transititinerary{index: '{{$index}}', ng: {repeat: 'itinerary in itineraries'}}
       .row{ng: {show: '$index == 0 && itineraries.length > 1'}}
         .col-xs-12.col-md-8.col-md-offset-2.no-padding
@@ -58,7 +61,8 @@
               %img{ng: {if: 'leg.mode == "TRAM"', src: 'images/modes/streetcar.png'}}
               %i.fa.fa-lg.fa-chevron-right{ng: {if: '!$last'}}
         .col-xs-12.col-md-8.col-md-offset-2.transit-body
-          .border-between.timeline{'index' => '{{$index}}', ng: {click: 'show($event)', repeat: 'leg in itinerary.json_legs track by $index', class: '{"mode_bus": leg.mode == "BUS", "mode_rail": leg.mode == "RAIL","mode_subway": leg.mode == "SUBWAY", "mode_tram": leg.mode == "TRAM", "mode_walk": leg.mode == "WALK"}'}}
+          -# .border-between.timeline{'index' => '{{$index}}', ng: {click: 'show($event)', repeat: 'leg in itinerary.json_legs track by $index', class: '{"mode_bus": leg.mode == "BUS", "mode_rail": leg.mode == "RAIL","mode_subway": leg.mode == "SUBWAY", "mode_tram": leg.mode == "TRAM", "mode_walk": leg.mode == "WALK"}'}}
+          .border-between.timeline{ng: {repeat: 'leg in itinerary.json_legs track by $index', class: '{"mode_bus": leg.mode == "BUS", "mode_rail": leg.mode == "RAIL","mode_subway": leg.mode == "SUBWAY", "mode_tram": leg.mode == "TRAM", "mode_walk": leg.mode == "WALK"}'}}
             .row.even-height-row
               .col-xs-2.right-side
                 .row
@@ -101,16 +105,15 @@
                       %h4{ng: {show: '!$first'}} {{leg.from.name}}
                       %h5.text-muted{ng: {show: '$first'}} Begin at
                       %h4{ng: {show: '$first'}}  {{itinerary.origin.name}}
-                  .row
-                  .leg-info.col-xs-12
+                  .leg-info.accordion.col-xs-12{index: '{{$index}}',ng: {click: 'show($event)'}, 'aria-controls': 'walk-leg-{{$index}}'}
                     .row.even-height-row
-                      .col-height-slave{style: 'width: 20px'}
-                        %i.fa.fa-chevron-down.fa-lg{style: 'color: grey', ng: {show: '!showDiv[$index] || showDiv[$index] == false'}}
-                        %i.fa.fa-chevron-up.fa-lg{style: 'color: grey', ng: {show: 'showDiv[$index] == true'}}
                       .col-height-master
                         %h5.text-muted Walk
                         %h5.text-muted {{leg.distanceDesc}} ({{leg.travelTime}})
-                  .animate-show.blah{ng: {show: 'showDiv[$index]'}}
+                      .col-height-slave{style: 'width: 20px'}
+                        %i.fa.fa-caret-down.fa-lg{style: 'margin-right:8px;', ng: {show: '!showDiv[$index] || showDiv[$index] == false'}}
+                        %i.fa.fa-caret-up.fa-lg{style: 'margin-right:8px;', ng: {show: 'showDiv[$index] == true'}}
+                  .animate-show.blah{ng: {show: 'showDiv[$index]'}, id: 'walk-leg-{{$index}}'}
                     .row{ng: {repeat: 'step in leg.steps'}}
                       .leg-info.col-xs-12{style: 'padding-left: 50px;'}
                         %img.walk-arrow{height: '30px', width: '30px', ng: {src: 'images/transit/{{step.arrow}}.png'}}
@@ -137,7 +140,7 @@
                       %h4 {{itinerary.destination.name}}
 
   #itinerary{style: 'padding: 0;', index: '{{$index}}', ng: {show: 'mode==="mode_paratransit"', repeat: 'itinerary in paratransitItineraries'}}
-    .row{style: 'margin-bottom: 1em;', ng: {show: '$index == 0'}}
+    %header.row{style: 'margin-bottom: 1em;', ng: {show: '$index == 0'}}
       .col-xs-12.col-md-8.col-md-offset-2.no-padding
         .row{ng: {show: 'liveTrip', class: '{"live-trip": liveTrip}'}}
           .col-xs-12{style:' padding:10px;'}
@@ -148,8 +151,8 @@
               %span{ng: {show: 'trip.isHere'}}
                 %b Your ride is here!
                 Call 1-844-PA-4RIDE if you have any questions.
-        .row
-          .col-xs-12{style:' background-color: rgb(205,254,206); padding:10px;'}
+        .row{style:' background-color: rgb(250,250,250)'}
+          .col-xs-12{style:'padding:10px;'}
             %h1
               %span
                 Shared Ride
@@ -157,14 +160,14 @@
                 (booked)
               %span{style: 'color: red; font-size: 22px;', ng: {show: 'tripCancelled'}}
                 (cancelled)
-            %h5.text-muted
+            %h5
               %span
                 CONFIRMATION
               %span.tab1
                 %strong &num;{{itinerary.booking_confirmation}}
               %span.tab1
                 (Outbound)
-            %h5.text-muted{ng: {show: 'paratransitItineraries.length > 1'}}
+            %h5{ng: {show: 'paratransitItineraries.length > 1'}}
               %span
                 CONFIRMATION
               %span.tab1
@@ -172,12 +175,9 @@
               %span.tab1
                 (Return)
 
-    .headerwrap{ng: {show: '$index == 0'}}
-      .row
-        .col-xs-6.text-right.text-muted
-          Escorts/Companions:
-        .col-xs-6.text-left
-          {{escort}}
+            .headerwrap{ng: {show: '$index == 0'}}
+              %h5
+                ="Escorts/Companions: {{escort}}"
       .row
         .col-xs-12.col-md-8.col-md-offset-2.no-padding
           .row
@@ -208,7 +208,8 @@
           .col-xs-2.text-right
             %h4{style: 'float:right; vertical-align: bottom;'} {{itinerary.fare | currency | free}}
     .row
-      .col-xs-12.col-md-8.col-md-offset-2.paratransit-body
+      -# Inline style is so that the timeline widget appears and to not mess with all the z-index: -1 styling
+      .col-xs-12.col-md-8.col-md-offset-2.card{style: "background: inherit; max-width: 100%;"}
         .border-between.timeline.mode_wait
           .row.even-height-row
             .col-xs-2.right-side
@@ -351,10 +352,9 @@
       .col-xs-12.col-sm-8.col-sm-offset-2.text-left.text-muted
         Use a comma to separate multiple addresses
     .row
-      .col-xs-8.col-sm-6.col-sm-offset-2{'style' => 'line-height: 2em; padding-right: 0px;'}
-        %input.form-control{style: 'font-size: .9em; border-top-right-radius:0px; border-bottom-right-radius:0px;', ng: {model: 'emailString'}}
-      .col-xs-4.col-sm-2{'style' => 'line-height: 2em; padding-left: 0px;'}
-        %a.btn.btn-success.btn-block{style: 'padding-left: 0px; padding-right: 0px;min-width: 20px; border-top-left-radius:0px; border-bottom-left-radius:0px;', ng: {click: 'sendEmail($event)'}}
+      %form.input-group
+        %input{type:'text', ng: {model: 'emailString'}}
+        %a.btn.btn-primary{ng: {click: 'sendEmail($event)'}}>
           %i.fa.fa-envelope-o{style:'color: white;'}
             %span
               Send
@@ -366,14 +366,14 @@
     .col-md-8.col-md-offset-2.col-xs-12
       %a.btn.btn-primary.btn-block{href: "", ng: {click: 'toggleEmail($event);', hide: 'tripCancelled'}}
         Email this ride
-      %a.btn.btn-primary.btn-block{href: "", style:'background-color:red;',ng: {click: 'cancelTrip()', hide:'tripCancelled|| trip.tab === "past"'}}
+      %a.btn.btn-danger.btn-block{href: "",ng: {click: 'cancelTrip()', hide:'tripCancelled|| trip.tab === "past"'}}
         Cancel this ride
       %a.btn.btn-primary.btn-block{href: "", ng: {click: "viewMyRides()", show:'tripCancelled'}}
         View all my rides
     .col-md-8.col-md-offset-2.col-xs-12
       .pull-left
-        %a.btn{href: "", back: '', ng: {click: "back()"}}
+        %a.btn.btn-secondary{href: "", back: '', ng: {click: "back()"}}
           Back
       .pull-right
-        %a.btn.btn-link{href: "/#/"}
+        %a.btn.btn-secondary{href: "/#/"}
           Book another ride

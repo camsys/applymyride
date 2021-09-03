@@ -49,10 +49,9 @@
               .col-xs-12.col-sm-8.col-sm-offset-2.text-left.text-muted
                 Use a comma to separate multiple addresses
             .row
-              .col-xs-8.col-sm-6.col-sm-offset-2{'style' => 'line-height: 2em; padding-right: 0px;'}
-                %input.form-control{style: 'font-size: .9em; border-top-right-radius:0px; border-bottom-right-radius:0px;', ng: {model: 'emailString'}}
-              .col-xs-4.col-sm-2{'style' => 'line-height: 2em; padding-left: 0px;'}
-                %a.btn.btn-success.btn-block{style: 'padding-left: 0px; padding-right: 0px;min-width: 20px; border-top-left-radius:0px; border-bottom-left-radius:0px;', ng: {click: 'sendEmail($event)'}}
+              %form.input-group
+                %input{type:'text', ng: {model: 'emailString'}}
+                %a.btn.btn-primary{ng: {click: 'sendEmail($event)'}}>
                   %i.fa.fa-envelope-o{style:'color: white;'}
                     %span
                       Send
@@ -65,17 +64,17 @@
               %a.btn.btn-primary.btn-block{href: "", ng: {click: 'toggleEmail($event);', show: 'taxiSaved && !taxiCancelled'}}
                 Email this ride        
             .col-md-8.col-md-offset-2.col-xs-12{ng: {show: 'loggedIn' } }  
-              %a.btn.btn-primary.btn-block{href: "", style:'background-color:red;', ng: {click: "cancelThisTaxiTrip()", show: "taxiSaved"}}
+              %a.btn.btn-danger.btn-block{href: "", ng: {click: "cancelThisTaxiTrip()", show: "taxiSaved"}}
                 Cancel this ride
             .col-md-8.col-md-offset-2.col-xs-12.unstuck-foot
               .pull-left
-                %a.btn{href: "", back: '', ng: {click: "back()", hide:'taxiSaved || taxiCancelled'}}
+                %a.btn.btn-secondary{href: "", back: '', ng: {click: "back()", hide:'taxiSaved || taxiCancelled'}}
                   Back
                 %a.btn{href: "", ng: {click: "logout()", show:'loggedIn && (taxiSaved || taxiCancelled)'}}
                   Logout
               .pull-right
                 %a.btn.btn-primary{href: "", ng: {click: "saveTaxiTrip()", hide: "!loggedIn || taxiSaved"}}
                   Save this taxi ride
-                %a.btn.btn-link{ng: {show:"loggedIn && taxiSaved", click: "reset()"}}
+                %a.btn.btn-secondary{ng: {show:"loggedIn && taxiSaved", click: "reset()"}}
                   Book another ride
 

@@ -1,0 +1,20 @@
+.modal-content {
+  border-radius: 0;
+  // More work than desired to update Bootbox's dialogs to match the PDS,
+  // so we're just going to get as close as possible
+  & .close.bootbox-close-button {
+    color: $primary-color;
+    opacity: 0.8;
+  }
+  & > .modal-header {
+    border-bottom: none;
+    & > .modal-title {
+      font-size: 1.1em;
+      font-weight: 700;
+      color: $secondary-color;
+    }
+  }
+  & > .modal-footer {
+    border-top: none;
+  }
+}

@@ -63,17 +63,17 @@
               %a.btn.btn-primary.btn-block{href: "", ng: {click: 'toggleEmail($event);', show: 'uberSaved && !uberCancelled'}}
                 Email this ride        
             .col-md-8.col-md-offset-2.col-xs-12{ng: {show: 'loggedIn' } }  
-              %a.btn.btn-primary.btn-block{href: "", style:'background-color:red;', ng: {click: "cancelThisUberTrip()", show: "uberSaved"}}
+              %a.btn.btn-danger.btn-block{href: "", ng: {click: "cancelThisUberTrip()", show: "uberSaved"}}
                 Cancel this ride
             .col-md-8.col-md-offset-2.col-xs-12.unstuck-foot
               .pull-left
-                %a.btn{href: "", back: '', ng: {click: "back()", hide:'uberSaved || uberCancelled'}}
+                %a.btn.btn-secondary{href: "", back: '', ng: {click: "back()", hide:'uberSaved || uberCancelled'}}
                   Back
-                %a.btn{href: "", ng: {click: "logout()", show:'loggedIn && (uberSaved || uberCancelled)'}}
+                %a.btn.btn-secondary{href: "", ng: {click: "logout()", show:'loggedIn && (uberSaved || uberCancelled)'}}
                   Logout
               .pull-right
                 %a.btn.btn-primary{href: "", ng: {click: "saveUberTrip()", hide: "!loggedIn || uberSaved"}}
                   Save this Uber ride
-                %a.btn.btn-link{ng: {show:"loggedIn && uberSaved", click: "reset()"}}
+                %a.btn.btn-secondary{ng: {show:"loggedIn && uberSaved", click: "reset()"}}
                   Book another ride
 

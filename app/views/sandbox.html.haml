@@ -1,0 +1,219 @@
+%article
+  :css
+    article:last-child {
+      margin-bottom: 32px;
+    }
+    section {
+      display: flex;
+      justify-content: center;
+      flex-flow: column nowrap;
+      align-items: center
+    }
+  %h1 Component Sandbox
+  %h2 Running on Bootstrap-Sass 3.3.7
+  %h2 Running on Font Awesome 4.7
+  %p Library versions as of 2021/08/17
+  %h3 This page showcases all components used in FMR
+  %section
+    %h2 Primary Button
+    %button.btn.btn-primary{type: "button"} Next
+    %h2 Icon Button
+    %button.btn.btn-icon{type: "button"}
+      %i.glyphicon.glyphicon-sort
+    %h2 Primary Button; Block Button
+    %button.btn.btn-primary.btn-block{type: "button"} Next
+    %h2 Link Button
+    %button.btn.btn-secondary{type: "button"} Next
+    %h2 Link Button; Block Button
+    %button.btn.btn-secondary.btn-block{type: "button"} Next
+    %h2 Danger Button
+    %button.btn.btn-danger{type: "button"} Delete
+    %h2 Danger Button; Block Button
+    %button.btn.btn-danger.btn-block{type: "button"} Delete
+    %h2 Danger Button; Block Button
+    %button.btn.btn-danger.btn-block{type: "button"} Delete
+
+  %section
+    %h2 Thin Cards
+    .card.card-thin.row{style: "width: 700px"}
+      .col-xs-3.col-md-2
+        %p.text-left.text-muted
+          Purpose
+      .col-xs-6.col-md-8
+        %h4.text-left
+          Medical
+      .col-xs-3.col-md-2.container--center-single-item
+        %button.btn.btn-icon{title:'Edit Trip Purpose', type: 'button'}
+          %i.glyphicon.glyphicon-pencil
+
+  %section
+    %h2 PDS Card
+    .card{style: "width: 700px;"}
+      %h3 Card Title
+      .card-body
+        %p card body
+    %h2 Trip Details Card
+    .row
+      .col-xs-12.col-md-8.col-md-offset-2.transit-container
+        .row.row-eq-height.transit-header
+          .blah
+            %img{src:"images/modes/walk.png"}
+            %i.fa.fa-lg.fa-chevron-right
+          .blah
+            %img{src:"images/modes/transit.png"}
+            %i.fa.fa-lg.fa-chevron-right
+          .blah
+            %img{src:"images/modes/transit.png"}
+            %i.fa.fa-lg.fa-chevron-right
+          .blah
+            %img{src:"images/modes/walk.png"}
+      .col-xs-12.col-md-8.col-md-offset-2.transit-body
+        .border-between.timeline.mode_walk
+          .row.even-height-row
+            .col-xs-2.right-side
+              .row
+                %h4 2:29 pm
+              .row
+                .itinerary-logo-image
+            .col-xs-1.right-side
+              %i.fa.fa-circle-o.fa-lg.waypoint
+            .col-xs-9.leg-info.pull-left.left-side
+              .walk-info
+                .row
+                  .leg-info.col-xs-12.leg-header
+                    %h5.text-muted Begin at
+                    %h4 315 N Zarfoss Dr
+                .leg-info.col-xs-12
+                  .row.even-height-row
+                    .col-height-slave{style:"width: 20px"}
+                      %i.fa.fa-chevron-up.fa-lg{style:"color: grey;"}
+                    .col-height-master
+                      %h5.text-muted Walk
+                      %h5.text-muted 603 feet (2 minutes)
+                .animate-show.blah
+                  .row
+                    .leg-info.col-xs-12{style:"padding-left: 50px"}
+                      %img.walk-arrow{src:"images/transit/straight.png",width:"30px",height:"30px"}
+                      .row
+                        .leg-info.col-xs-12 Head southeast on North Zarfoss Drive
+                      .row.text-muted
+                        .leg-info.col-xs-12
+                          %div 603 feet
+        .border-between.timeline.mode_walk
+          .row.even-height-row
+            .col-xs-2.right-side
+              .row
+                %h4 2:29 pm
+              .row
+                .itinerary-logo-image
+            .col-xs-1.right-side
+              %i.fa.fa-circle-o.fa-lg.waypoint
+            .col-xs-9.leg-info.pull-left.left-side
+              .walk-info
+                .row
+                  .leg-info.col-xs-12.leg-header
+                    %h5.text-muted Begin at
+                    %h4 315 N Zarfoss Dr
+                .leg-info.col-xs-12
+                  .row.even-height-row
+                    .col-height-slave{style:"width: 20px"}
+                      %i.fa.fa-chevron-up.fa-lg{style:"color: grey;"}
+                    .col-height-master
+                      %h5.text-muted Walk
+                      %h5.text-muted 603 feet (2 minutes)
+                .animate-show.blah
+                  .row
+                    .leg-info.col-xs-12{style:"padding-left: 50px"}
+                      %img.walk-arrow{src:"images/transit/straight.png",width:"30px",height:"30px"}
+                      .row
+                        .leg-info.col-xs-12 Head southeast on North Zarfoss Drive
+                      .row.text-muted
+                        .leg-info.col-xs-12
+                          %div 603 feet
+        .border-between.timeline.mode_walk
+          .row.even-height-row
+            .col-xs-2.right-side
+              .row
+                %h4 2:29 pm
+              .row
+                .itinerary-logo-image
+            .col-xs-1.right-side
+              %i.fa.fa-circle-o.fa-lg.waypoint
+            .col-xs-9.leg-info.pull-left.left-side
+              .walk-info
+                .row
+                  .leg-info.col-xs-12.leg-header
+                    %h5.text-muted Begin at
+                    %h4 315 N Zarfoss Dr
+                .leg-info.col-xs-12
+                  .row.even-height-row
+                    .col-height-slave{style:"width: 20px"}
+                      %i.fa.fa-chevron-up.fa-lg{style:"color: grey;"}
+                    .col-height-master
+                      %h5.text-muted Walk
+                      %h5.text-muted 603 feet (2 minutes)
+                .animate-show.blah
+                  .row
+                    .leg-info.col-xs-12{style:"padding-left: 50px"}
+                      %img.walk-arrow{src:"images/transit/straight.png",width:"30px",height:"30px"}
+                      .row
+                        .leg-info.col-xs-12 Head southeast on North Zarfoss Drive
+                      .row.text-muted
+                        .leg-info.col-xs-12
+                          %div 603 feet
+  %section
+    %h2 Modal With No Title
+    .modal-content
+      .modal-body
+        %button.bootbox-close-button.close{ type:"button", "aria-hidden": "true"} ×
+        .bootbox-body An error occured on the server, please retry your search or try again later.
+      .modal-footer
+        %button.btn.btn-primary.bootbox-accept{type:"button"} OK
+    %h2 Modal With Title
+    .modal-content
+      .modal-header
+        %button.bootbox-close-button.close{ type:"button", "aria-hidden": "true"} ×
+        %h5.modal-title Error
+      .modal-body
+        .bootbox-body An error occured on the server, please retry your search or try again later.
+      .modal-footer
+        %button.btn.btn-primary.bootbox-accept{type:"button"} OK
+  %section
+    %h2 Input Group
+    %form.input-group
+      %input{type:'text'}
+      %button.btn.btn-primary{type:'button'}>
+        Send
+  %section
+    %h2 PDS Custom Radio Button
+    %fieldset.form-group
+      %legend Historical Figures
+      %label.check-group{for:"radio1"}
+        %span One
+        %input#radio1{type:"radio", checked:"checked", name:"radio"}
+        %span.radiobtn
+      %label.check-group{for:"radio2"}
+        %span Two
+        %input#radio2{type:"radio", checked:"checked", name:"radio"}
+        %span.radiobtn
+    %h2 Bootbox Radio button
+    %input.bootbox-input-radio{type:"radio"}
+    %h2 PDS Custom Checkbox
+    %fieldset.form-group
+      %legend Historical Figures
+      %label.check-group{:for => "checkbox1"}
+        %input#checkbox1{:checked => "checked", :type => "checkbox"}>/
+        One
+        %span.checkmark
+      %label.check-group{:for => "checkbox2"}
+        %input#checkbox2{:type => "checkbox"}>/
+        Two
+        %span.checkmark
+      %label.check-group{:for => "checkbox3"}
+        %input#checkbox3{:type => "checkbox"}>/
+        Three
+        %span.checkmark
+      %label.check-group{:for => "checkbox4"}
+        %input#checkbox4{:disabled => "disabled", :type => "checkbox"}>/
+        Four
+        %span.checkmark
