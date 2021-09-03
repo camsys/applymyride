@@ -568,7 +568,7 @@ angular.module('applyMyRideApp')
       }
 
       this.getAddressDescriptionFromLocation = function(location){
-        // console.log(location);
+        console.log(location);
         var description = {};
         if(location.poi){
           description.line1 = location.poi.name
@@ -616,41 +616,43 @@ angular.module('applyMyRideApp')
       }
 
       this.getCurrentBalance = function($scope, $http, ipCookie) {
-        return $http.get(urlPrefix + 'api/v1/users/current_balance', this.getHeaders())
-          .then(function({data}) {
-              if (data.current_balance != undefined){
-                if($scope) $scope.currentBalance = data.current_balance;
-                if(ipCookie) {ipCookie('currentBalance', data.current_balance);}
-              }
-            }, function(data) {
-              console.log(data);
-            });
+        return $http.get(urlPrefix + 'api/v1/users/current_balance', this.getHeaders()).
+          success(function(data) {
+            if (data.current_balance != undefined){
+              if($scope) $scope.currentBalance = data.current_balance;
+              if(ipCookie) {ipCookie('currentBalance', data.current_balance);}
+            }
+          }).
+          error(function(data) {
+            console.log(data);
+          });
       }
 
       this.getTripPurposes = function($scope, $http) {
         this.fixLatLon(this.fromDetails);
         const that = this
         // TODO: Look at this and see if it needs to be a post request
-        return $http.post(urlPrefix + 'api/v1/trip_purposes/list', this.fromDetails, this.getHeaders())
-          .then(function({data}) {
-              that.top_purposes = data.top_trip_purposes;
-              data.trip_purposes = data.trip_purposes || [];
-              that.purposes = data.trip_purposes.filter(function(el){
-                for(let i = 0; i < that.top_purposes.length; i += 1){
-                  if(el.code && that.top_purposes[i].code === el.code){
-                    return false;
-                  }
+        return $http.post(urlPrefix + 'api/v1/trip_purposes/list', this.fromDetails, this.getHeaders()).
+          success(function(data) {
+            that.top_purposes = data.top_trip_purposes;
+            data.trip_purposes = data.trip_purposes || [];
+            that.purposes = data.trip_purposes.filter(function(el){
+              for(let i = 0; i < that.top_purposes.length; i += 1){
+                if(el.code && that.top_purposes[i].code === el.code){
+                  return false;
                 }
-                return true;
-              });
-              // NOTE(wilsonj806) Is this dead code?
-              if (data.default_trip_purpose != undefined && $scope.email == undefined){
-                $scope.default_trip_purpose = data.default_trip_purpose;
-                $scope.showNext = true;
               }
-            }, function(data) {
-              alert(data);
+              return true;
             });
+            // NOTE(wilsonj806) Is this dead code?
+            if (data.default_trip_purpose != undefined && $scope.email == undefined){
+              $scope.default_trip_purpose = data.default_trip_purpose;
+              $scope.showNext = true;
+            }
+          }).
+          error(function(data) {
+            alert(data);
+          });
       }
 
       this.selectItineraries = function($http, itineraryObject) {
@@ -1093,8 +1095,8 @@ angular.module('applyMyRideApp')
       this.savedPlaceResults = [];
       this.poiData = [];
       var that = this;
-      $http.get(urlPrefix + 'api/v1/places/search?include_user_pois=true&search_string=%25' + text + '%25', config)
-      .then(function({data}) {
+      $http.get(urlPrefix + 'api/v1/places/search?include_user_pois=true&search_string=%25' + text + '%25', config).
+        success(function(data) {
           var locations = data.places_search_results.locations;
           var filter = /[^a-zA-Z0-9]/g;
           angular.forEach(locations, function(value, index) {

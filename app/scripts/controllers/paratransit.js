@@ -187,7 +187,11 @@ angular.module('applyMyRideApp')
 
         
         var cancelPromise = planService.cancelTrip($http, cancel)
-        cancelPromise.then(function(data) {
+        cancelPromise.error(function(data) {
+          bootbox.alert("An error occurred, your trip was not cancelled.  Please call 1-844-PA4-RIDE for more information.");
+        });
+        
+        cancelPromise.success(function(data) {
           bootbox.alert(successMessage);
           if(result == 'BOTH'){
             $scope.tripCancelled = true;
@@ -204,8 +208,6 @@ angular.module('applyMyRideApp')
               ipCookie('rideCount', ipCookie('rideCount') - 1);
             }
           }
-        },function(data) {
-
         })
       }
       $scope.bookSharedRide = function(){
@@ -249,11 +251,11 @@ angular.module('applyMyRideApp')
               }
             });
 
-            planService.emailItineraries($http, emailRequest).then(function() {
-              bootbox.alert('Your email was sent');
-            }, function() {
+            var emailPromise = planService.emailItineraries($http, emailRequest);
+            emailPromise.error(function(data) {
               bootbox.alert("An error occurred on the server, your email was not sent.");
             });
+            bootbox.alert('Your email was sent');
           }else{
             $scope.invalidEmail = true;
           } 

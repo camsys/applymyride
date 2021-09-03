@@ -45,16 +45,11 @@ angular.module('applyMyRideApp')
               });
               emailRequest.email_itineraries.push(emailRequestPart)
             });
-            // var emailPromise = planService.emailItineraries($http, emailRequest);
-            // emailPromise.error(function(data) {
-            //   bootbox.alert("An error occurred on the server, your email was not sent.");
-            // });
-            // flash.setMessage('Your email was sent');
-            planService.emailItineraries($http, emailRequest).then(function() {
-              bootbox.alert('Your email was sent');
-            }, function() {
+            var emailPromise = planService.emailItineraries($http, emailRequest);
+            emailPromise.error(function(data) {
               bootbox.alert("An error occurred on the server, your email was not sent.");
             });
+            flash.setMessage('Your email was sent');
           }else{
             $scope.invalidEmail = true;
           }
