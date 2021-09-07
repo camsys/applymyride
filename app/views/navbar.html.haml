@@ -1,0 +1,44 @@
+.container-fluid
+  %nav{role:'navigation'}
+    .container
+      .navbar-header
+        %button.navbar-toggle.collapsed{ type:'button', 'data-toggle':'collapse','data-target':'#bs-example-navbar-collapse-1'}
+          %span.sr-only
+            Toggle navigation
+          %span.icon-bar
+          %span.icon-bar
+          %span.icon-bar
+        %a.navbar-brand{href:'#/'}
+          .logo-container--title
+            %h1 FMR
+            %p SCHEDULE
+          %h2.logo-subtitle Find My Ride Schedule
+      .collapse.navbar-collapse#bs-example-navbar-collapse-1
+        %ul.nav.navbar-nav.navbar-right.dropdown
+          %li{ng:{show:'showCurrentBalance'}}
+            %p.navbar-icon{title:'This balance represents the current prepaid balance for Shared Ride/Paratransit. Please contact your local transit agency regarding questions about this information.'}
+              %span
+                = "Current Balance"
+              %span.badge{ng: {class:'{"alert-danger": (currentBalance < 0),"alert-success": (currentBalance >= 0)}'}}
+              %span
+                = "{{currentBalance | currency}}"
+          %li{ng:{show:'email'}}
+            %a.navbar-icon{href:'#/plan/my_rides?navbar:true', style:'margin-top: .5em;'}
+              My Rides
+              %div.badge.alert-success{ng:{class:'{"live-trip": liveTrip}'}}
+                {{rideCount}}
+          %li{ng:{show:'email'}}
+            %a.navbar-icon{ href:'#/profile', style:'margin-top: .5em;'}
+              {{ full_name }}
+          %li{ng:{show:'email'}}
+            %a.navbar-icon{ng: {click:'logout()'}, href:'', style:'margin-top: .5em;'}
+              Sign out
+          %li{ng: {show:'!email'}}
+            %a.navbar-icon{href:'#/login',style:'margin-top: .5em;'}
+              Sign in
+          %li
+            %a.navbar-icon{ng: {click:'reset()'}, style:'cursor: pointer; margin-top: .5em;', href:''}
+              New trip
+          %li
+            %a.navbar-icon{href:'#/about',style:'margin-top: .5em;'}
+              About

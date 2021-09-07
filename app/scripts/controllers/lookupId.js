@@ -6,6 +6,23 @@ angular.module('applyMyRideApp')
       //skip initializing this controller if we're not on the page
       if( ['/lookupIdForm', '/lookupError'].indexOf( $location.path() ) == -1){ return; }
 
+      util.getCountiesInTransition(
+        function (response) {
+          $scope.transitionCounties = response.counties;
+        }
+      );
+
+      util.getTransitionMessages(
+        function (response) {
+          $scope.countyInTransitionMessage = response.countyInTransitionMessage;
+          $scope.transitionHelpMessage = response.helpMessage;
+        }
+      );
+      $scope.isTransitionCounty = function (county) {
+        return $scope.transitionCounties &&
+          $scope.transitionCounties.includes($scope.county);
+      }
+
       $scope.location = $location.path();
       $scope.counties = localStorageService.get("counties") || util.getCounties(function(r) {
         $scope.counties = r.data.service_ids;
@@ -25,12 +42,11 @@ angular.module('applyMyRideApp')
           '/api/v1/users/lookup?booking_agency=ecolane&last_name=' + $scope.lastName +
           '&date_of_birth=' + $scope.dob.year + '-' + $scope.dob.month + '-' + $scope.dob.day +
           '&county=' + $scope.county);
-        promise.error(function(result) {
-          $location.path('/lookupError');
-        });
         promise.then(function(result) {
           localStorageService.set("customer_number", result.data.customer_number);  // ...populate Shared Ride ID field with ID
           $location.path('/'); // On success, toggle back to login form, and...
+        },function(result) {
+          $location.path('/lookupError');
         });
       };
 

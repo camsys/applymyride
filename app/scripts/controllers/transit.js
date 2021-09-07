@@ -60,11 +60,16 @@ angular.module('applyMyRideApp')
               });
               emailRequest.email_itineraries.push(emailRequestPart)
             });
-            var emailPromise = planService.emailItineraries($http, emailRequest);
-            emailPromise.error(function(data) {
+            // var emailPromise = planService.emailItineraries($http, emailRequest);
+            // emailPromise.error(function(data) {
+            //   bootbox.alert("An error occurred on the server, your email was not sent.");
+            // });
+            // flash.setMessage('Your email was sent');
+            planService.emailItineraries($http, emailRequest).then(function() {
+              bootbox.alert('Your email was sent');
+            }, function() {
               bootbox.alert("An error occurred on the server, your email was not sent.");
             });
-            flash.setMessage('Your email was sent');
           }else{
             $scope.invalidEmail = true;
           }
@@ -97,12 +102,12 @@ angular.module('applyMyRideApp')
         $scope.transitInfos = planService.transitInfos[$scope.segmentid];
         if(planService.fare_info.roundtrip == true){
           if ($scope.segmentid == "0") {
-            $scope.message = 'Outbound Bus & Rail Options';
+            $scope.message = 'Outbound Transit & Walk Options';
           } else {
-            $scope.message = 'Return Bus & Rail Options';
+            $scope.message = 'Return Transit & Walk Options';
           }
         }else{
-          $scope.message = 'Bus & Rail Options';
+          $scope.message = 'Transit & Walk Options';
         }
       }else if($location.$$path.indexOf('/transitconfirm') > -1){
         angular.forEach(planService.searchResults.itineraries, function(itinerary, index) {
@@ -191,7 +196,7 @@ angular.module('applyMyRideApp')
       }
 
       $scope.show = function(event){
-        var index = $(event.target).parents('.timeline').attr('index');
+        const index = $(event.target).parents('.accordion').attr('index');
         $scope.showDiv[index] = !$scope.showDiv[index];
       }
 

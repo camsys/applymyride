@@ -14,7 +14,18 @@ angular.module('applyMyRideApp')
         }
       );
 
+      util.getCountiesInTransition(
+        function (response) {
+          $scope.transitionCounties = response.counties;
+        }
+      );
 
+      util.getTransitionMessages(
+        function (response) {
+          $scope.countyInTransitionMessage = response.countyInTransitionMessage;
+          $scope.transitionHelpMessage = response.helpMessage;
+        }
+      );
 
       $scope.location = $location.path();
       $scope.rememberme = true;
@@ -68,6 +79,11 @@ angular.module('applyMyRideApp')
                           && $scope.sharedRideId
                           && $scope.county
                           && true);
+      }
+
+      $scope.isTransitionCounty = function (county) {
+        return $scope.transitionCounties &&
+          $scope.transitionCounties.includes($scope.county);
       }
 
       $scope.checkId = function() {
@@ -136,9 +152,6 @@ angular.module('applyMyRideApp')
         sessionStorage.setItem('dateofbirth', login.session.dob);
 
         var promise = $http.post('//'+APIHOST+'/api/v1/sign_in', login);
-        promise.error(function(result) {
-          $location.path('/loginError');
-        });
         promise.then(function(result) {
           planService.authentication_token = result.data.authentication_token;
           planService.email = result.data.email;
@@ -191,6 +204,8 @@ angular.module('applyMyRideApp')
                 $location.path('/plan/where');
             }
           });
+        },function(result) {
+          $location.path('/loginError');
         });
       }
 

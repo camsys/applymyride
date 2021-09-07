@@ -7,7 +7,8 @@
             %h1{style: 'font-weight:600;'} Book a ride
             with just 3 things:
 
-          .row{ng: {show: "location == '/loginError'"}, style:'background-color:#FFFFEB;'}
+          -# .row{ng: {show: "location == '/loginError'"}, style:'background-color:#FFFFEB;'}
+          .row.alert.alert-danger{ng: {show: "location == '/loginError'"}}
             %h1{style: 'font-weight:600;'}Sorry! We do not see a match.
             Your Shared Ride ID may be entered incorrectly.
 
@@ -15,27 +16,37 @@
             %h1{style: 'font-weight:600;'} Already a Shared Ride member?
             In order to book a Shared Ride, you need to tell us a few things
 
-          .row{style: 'margin-top: 2em'}
+          .row{style: 'margin-top: 2em; margin-bottom: 0.25em;'}
             %h3 Your Shared Ride ID
-            %h4.text-muted
-              %a.btn-block{href: "#/lookupIdForm"}
-                Forgot your ID?
+            -# inline style coloring the link to the $colors-brand.lightblue value
+            -# %a.btn-block.h4{href: "#/lookupIdForm", style: "color: #6699C2;"}
+            %a.h4{href: "#/lookupIdForm"}
+              Forgot your ID?
           .row
-            %input.form-control.shared-ride-id{style: 'font-size: .9em; width: 50%;', placeholder: '00000', ng: {model: 'sharedRideId', required: 'true', change: 'checkId()', enter: 'next()'}}
+            -# %input.form-control.shared-ride-id{style: 'font-size: .9em; width: 50%;', placeholder: '00000', ng: {model: 'sharedRideId', required: 'true', change: 'checkId()', enter: 'next()'}}
+            %input.shared-ride-id{type:'text',style: 'font-size: .9em; width: 50%;', placeholder: '00000', ng: {model: 'sharedRideId', required: 'true', change: 'checkId()', enter: 'next()'}}
           .row{style: 'margin-top: 1em'}
             %h3 Your county
           .row
-            %select.btn-lg{style: 'width: 100%', ng: {model: 'county', change: 'checkId()', options: 'county for county in counties', enter: 'next()'}}
-              %option{value: '', disabled: '', selected: ''}
+            %select{ng: {model: 'county', change: 'checkId()', options: 'county for county in counties'}}
+              %option{value: '', disabled: 'true'}
                 Select your county
-          .row{style: 'margin-top: 1em'}
+          .row.alert.alert-success{style: 'margin-top: 2em', ng:{if: 'isTransitionCounty(county)'}}
+            .col-md-2
+              .fa.fa-warning.fa-3x
+            .col-md-10.text-left
+              %h3 {{countyInTransitionMessage}}
+              %br
+              %h3 {{transitionHelpMessage}}
+          .row{style: 'margin-top: 1em', ng:{hide: 'isTransitionCounty(county)'}}
             %h3 Your birthdate
-          .row
-            %input.form-control.dob.month{type:'tel', placeholder: 'mm', name:'month', ng: {model: 'dob.month', required: 'true', pattern:'/(^0?[1-9]|^1[012])$/', class:'{invalid: loginform.month.$dirty && loginform.month.$invalid  }'  }}
-            &#47;
-            %input.form-control.dob.day{type:'tel', placeholder: 'dd', name:'day', ng: {model: 'dob.day', required: 'true', pattern:'/(^0?[1-9]|^[12][0-9]|^3[01])$/', class:'{invalid: loginform.day.$dirty && loginform.day.$invalid  }'  }}
-            &#47;
-            %input.form-control.dob.year{type:'tel', placeholder: 'yyyy', name:'year', ng: {model: 'dob.year', required: 'true', pattern:'/(^19|^20)\d\d$/', class:'{invalid: loginform.year.$dirty && loginform.year.$invalid  }' }}
+          -# TODO: Refactor this so that it uses the native %input[type="date"] instead
+          .row{ng:{hide: 'isTransitionCounty(county)'}}
+            %input.dob.month{type:'tel', placeholder: 'mm', name:'month', ng: {model: 'dob.month', required: 'true', pattern:'/(^0?[1-9]|^1[012])$/', class:'{invalid: loginform.month.$dirty && loginform.month.$invalid  }'}, style: 'width: 3.5em'}
+            %span{style:'margin: 0 8px;'} &#47;
+            %input.dob.day{type:'tel', placeholder: 'dd', name:'day', ng: {model: 'dob.day', required: 'true', pattern:'/(^0?[1-9]|^[12][0-9]|^3[01])$/', class:'{invalid: loginform.day.$dirty && loginform.day.$invalid  }'}, style: 'width: 3.5em'}
+            %span{style:'margin: 0 8px;'} &#47;
+            %input.dob.year{type:'tel', placeholder: 'yyyy', name:'year', ng: {model: 'dob.year', required: 'true', pattern:'/(^19|^20)\d\d$/', class:'{invalid: loginform.year.$dirty && loginform.year.$invalid  }' }}
           .row{ng:{show: 'errors.dob' }}
             .alert.alert-danger{role:'alert'}
               Check the birthdate for errors
@@ -46,12 +57,10 @@
 
           .row{style: 'margin-top: 1em'}
             .pull-left{ng: {show: "location == '/plan/login-guest'"}}
-              %a.btn{href: "", back:''}
+              %a.btn.btn-secondary{href: "", back:''}
                 Back
-            .pull-right
-              %a.btn.btn-primary.btn-next{href: "", ng: {click: 'next()', hide: 'disableNext'}}
-                Next
-              %a.btn.disabled.btn-next{href: "", ng: {show: 'disableNext'}}
+            .pull-right{ng:{hide: 'isTransitionCounty(county)'}}
+              %a.btn.btn-primary{href: "", ng: {disabled: 'disableNext', click: 'next()'}, role: 'button'}
                 Next
         .row.text-center{style:'margin: 30px 0px 10px 0px;'}
           Need Help? Call 1-844-PA-4RIDE
@@ -74,9 +83,9 @@
 
       .row.action-button
         .col-md-4.col-md-offset-4.col-sm-6.col-sm-offset-3.col-xs-12
-          %a.pull-left.btn-back{href: "", type: 'submit', ng: {click: "back()"}}
+          %a.pull-left.btn.btn-back{href: "", type: 'submit', ng: {click: "back()"}}
             %span{ng: {include: "'views/button-chevron-left.html'"}}
             Back
-          %a.pull-right.btn-next{href: "", type: 'submit', ng: {click: "authenticate()", hide: 'disableNext'}}
+          %a.pull-right.btn.btn-primary{href: "", type: 'submit', ng: {click: "authenticate()", hide: 'disableNext'}}
             Next
             %span{ng: {include: "'views/button-chevron-right.html'"}}

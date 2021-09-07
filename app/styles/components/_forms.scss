@@ -1,0 +1,274 @@
+// NOTE: Commented out styling is originally from the PDS styling,
+// ... and is kept for historical purposes
+%form-component {
+  border: 1px solid #cacaca;
+  background-color: #fafafa;
+  border-left: 6px solid $dark-gray;
+  border-radius: none;
+  outline-offset: 0;
+  padding: 20px 10px;
+  // margin-bottom: 2rem;
+  min-height: 60px;
+  line-height: $form-label-line-height;
+  letter-spacing: 0.06em;
+  &:focus{
+      position: relative;
+      outline: map-get($colors-utility, blue) solid 3px;
+  }
+  &.-small {
+      height: 50px;
+      min-height: initial;
+  }
+  // .input-group & {
+  //     @include breakpoint(medium down){
+  //         margin-bottom: 0;
+  //     }
+  // }
+}
+
+[type='text'],
+[type='password'],
+[type='date'],
+[type='datetime'],
+[type='datetime-local'],
+[type='month'],
+[type='week'],
+[type='email'],
+[type='number'],
+[type='search'],
+[type='tel'],
+[type='time'],
+[type='url'],
+[type='color'],
+textarea,
+select {
+  @extend %form-component;
+  &.invalid {
+    border: 3px solid $alert-color;
+    color: $alert-color;
+  }
+}
+
+.form-check.radio > label.form-check-label {
+  padding-left: 36px;
+  height: 36px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+input.bootbox-input-radio[type='radio'] {
+  height: 30px;
+  width: 30px;
+  margin-left: -36px;
+}
+
+textarea {
+  min-height: 360px;
+}
+
+select {
+  appearance: none;
+  // Original one renders the select arrow off the element
+  // background-position: right -27px center;
+  background-position: right 27px center;
+  background-repeat: no-repeat;
+  background-image: url('#{$image-path}/icons/select-arrows--black.svg');
+  background-size: 16px;
+  width: 100%;
+  transition: none;
+  &:focus {
+    // NOTE: overwriting the extend because position relative messes
+    // with how the options menu gets rendered
+    position: static;
+  }
+  // padding: 0 40px 0 10px;
+}
+
+option {
+  transition: none;
+  background-color: #fafafa;
+}
+
+label {
+  margin-bottom: 1rem;
+}
+
+// referenced w3 schools custom css for checks and radios
+// https://www.w3schools.com/howto/howto_css_custom_checkbox.asp
+.check-group {
+  position: relative;
+  padding-top: 18px;
+  padding-left: 68px;
+  line-height: 1.25;
+  min-height: 50px;
+  margin-bottom: 2rem;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  input {
+      &:focus,
+      &.-focus {
+          ~ .checkmark {
+              outline: map-get($colors-utility, blue) solid 2px;
+          }
+          ~ .radiobtn:before {
+              content: "";
+              display: block;
+              position: absolute;
+              top: -5px;
+              left: -5px;
+              height: 56px;
+              width: 56px;
+              background-color: transparent;
+              border: 3px solid map-get($colors-utility, blue);
+              border-radius: 50%;
+          }
+      }
+  }
+  input {
+      position: absolute;
+      opacity: 0;
+      cursor: pointer;
+      height: 0;
+      width: 0;
+      &:checked {
+          ~ .checkmark {
+              background-color: $primary-color;
+              &:after {
+                  display: block;
+              }
+          }
+          ~ .radiobtn {
+              background-color: $white;
+              &:after {
+                  display: block;
+              }
+          }
+      }
+      &:disabled {
+          cursor: not-allowed;
+          ~ .checkmark,
+          ~ .radiobtn {
+              cursor: not-allowed;
+              background: rgba(250, 250, 250, 0.2);
+              border: 2px solid rgba(70, 70, 70, 0.3);
+          }
+      }
+  }
+  .checkmark {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 50px;
+      width: 50px;
+      background-color: $white;
+      border: 2px solid $dark-gray;
+      &:after {
+          content: "";
+          position: absolute;
+          display: none;
+
+          left: 13px;
+          top: 5px;
+          width: 18px;
+          height: 28px;
+          border: solid $white;
+          border-width: 0 6px 6px 0;
+          -webkit-transform: rotate(45deg);
+          -ms-transform: rotate(45deg);
+          transform: rotate(45deg);
+      }
+  }
+  .radiobtn {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 50px;
+      width: 50px;
+      background-color: $white;
+      border: 2px solid $primary-color;
+      border-radius: 50%;
+      &:after {
+          content: "";
+          position: absolute;
+          display: none;
+
+          top: 3px;
+          left: 3px;
+          width: 40px;
+          height: 40px;
+          border-radius: 50%;
+          background: $primary-color;
+      }
+  }
+}
+
+[type="file"] {
+  z-index: 0;
+  display: none;;
+}
+
+fieldset {
+  position: relative;
+}
+
+// Input groups are based on Bootstrap's input groups:
+// https://getbootstrap.com/docs/5.0/forms/input-group/
+.input-group {
+  display: flex;
+  align-items: flex-start;
+  height: 60px;
+  justify-content: center;
+
+  & > input {
+    width:calc(100% * 2 / 3);
+  }
+  & > .btn.btn-primary {
+    padding: 20px 16px;
+    border: 1px solid #002469;
+  }
+}
+
+//Validation
+%form-message {
+  font-size: $rem-base;
+  line-height: $form-label-line-height;
+  letter-spacing: 0.06em;
+  font-weight: $global-weight-bold;
+}
+.form-message {
+  @extend %form-message;
+}
+
+//Legends
+%form-legend {
+  margin-bottom: 1rem;
+  font-weight: $global-weight-bold;
+  line-height: $form-label-line-height;
+}
+
+.form-group {
+  legend {
+      @extend %form-legend;
+  }
+  &.-error {
+      %form-component {
+          border: 3px solid $alert-color;
+      }
+      %form-message {
+          color: $alert-color;
+      }
+  }
+  &.-success {
+      %form-component {
+          border: 3px solid $success-color;
+      }
+      %form-message {
+          color: $success-color;
+      }
+  }
+}

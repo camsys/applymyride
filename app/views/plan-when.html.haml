@@ -32,12 +32,14 @@
         .text-muted{style:'padding:7px 0px;', ng:{hide:'fromMoment.isAfter()'}}
           If you want to see Shared Rides, choose from the next 10 business days
         %div{style:'padding:7px 0px;', ng:{show:'fromMoment.isAfter()'}}
-          {{fromMoment | momentFormat: 'dddd, MMM D'}}
+          %p
+            = "Selected Date: {{fromMoment | momentFormat: 'dddd, MMM D'}}"
     .row
       .col-lg-6.col-lg-offset-3.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1.col-xs-12
         %h3 What time do you want to arrive?
     .row
       .col-lg-6.col-lg-offset-3.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1.col-xs-12
+        -# TODO: Refactor this so this uses the native %input{type: 'time'} element
         %cs-time-input{ng:{model:'fromMoment', focused:'backToConfirm'}}
     .row{ng:{show:'serviceOpen'}}
       .col-lg-6.col-lg-offset-3.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1.col-xs-12
@@ -53,17 +55,17 @@
           %h3 How long do you want to stay?
       .row
         .col-lg-6.col-lg-offset-3.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1.col-xs-12
-          %select.form-control{required:'true', ng:{model:'$parent.howLong', options:'option.name for option in howLongOptions', change:'updateReturnTime(howLong)', class:'{disabled:!fromMoment.isAfter(moment()) }'}}
+          %select{required:'true', ng:{model:'$parent.howLong', options:'option.name for option in howLongOptions', change:'updateReturnTime(howLong)', class:'{disabled:!fromMoment.isAfter(moment()) }'}}
       .row{'ng-show'=>'returnMoment'}
         .col-lg-6.col-lg-offset-3.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1.col-xs-12
           Return at {{returnMoment | momentHMA}}
     .row.unstuck-foot.btn-spacing
       .col-lg-6.col-lg-offset-3.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1.col-xs-12
         .pull-left
-          %a.btn{href: "", back: '', ng: {click: "back()", hide:'backToConfirm'}}
+          %a.btn.btn-secondary{href: "", back: '', ng: {click: "back()", hide:'backToConfirm'}}
             Back
         .pull-right
-          %a.btn.btn-primary.btn-next{href: "", ng: {class:'{disabled:(!fromMoment.isAfter(moment()) || !fromTimeUpdated) }', click: 'next()'}}
+          %a.btn.btn-primary{href: "", ng: {class:'{disabled:(!fromMoment.isAfter(moment()) || !fromTimeUpdated) }', disabled:'(!fromMoment.isAfter(moment()) || !fromTimeUpdated)', click: 'next()'}}
             %span{ng:{hide:'backToConfirm'}}
               Next
             %span{ng:{show:'backToConfirm'}}

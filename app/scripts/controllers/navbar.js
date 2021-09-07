@@ -32,6 +32,7 @@ angular.module('applyMyRideApp')
         that.$scope.authentication_token = ipCookie('authentication_token');
         that.$scope.first_name = ipCookie('first_name');
         that.$scope.last_name = ipCookie('last_name');
+        that.$scope.full_name = `${ipCookie('first_name')} ${ipCookie('last_name')}`
         that.$scope.sharedRideId = ipCookie('sharedRideId');
         if(that.$scope.email){
           planService.email = $scope.email;

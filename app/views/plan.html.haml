@@ -9,71 +9,74 @@
         .form-group
           .row
             .col-lg-6.col-lg-offset-3.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1.col-xs-12
-              %h3
-                %strong
-                  %i{class:'cs-map-marker A'}
-                  Where are you starting?
+              .input-row--address
+                .col-lg-10.col-md-10.col-sm-10
+                  %label.h3.h3--address-label{for: 'fromInput'}
+                    %i{class:'cs-map-marker A'}
+                    Where are you starting?
 
-              %autocomplete{ 'attr-placeholder'=> '{{fromDefault}}',
-                                          'attr-input-id' => 'whereFromInput',
-                                          'attr-autofocus' => 'true',
-                                          'attr-clicktofocus' => 'true',
-                                          class: 'autocompleteWrapper',
-                                          id: 'fromInput',
-                                          tabindex: 'null',
-                                          required: 'true',
-                                          'inputclass' => 'clearable tripplanner__location form__input',
-                                          'disable-filter' => 'true',
-                                          'data' => 'locations',
-                                          'attr-input-class' => 'whereToFrom',
-                                          'on-type'=> 'getFromLocations',
-                                          'on-focus'=> 'focusFrom',
-                                          'on-blur'=> 'mapFrom',
-                                          'on-select' => 'selectFrom',
-                                          'autocomplete-required' => 'true',
-                                          ng: { model: 'from'} }
-              .alert.alert-danger{role:'alert', ng:{show:'errors.noResultsfrom'}}
-                Address is not recognized.  Try entering it another way.
-              .alert.alert-danger{role:'alert', ng:{show:'errors.rangeErrorfrom'}}
-                The location you selected is outside the service area.
+                  %autocomplete{ 'attr-placeholder'=> '{{fromDefault}}',
+                                              'attr-input-id' => 'whereFromInput',
+                                              'attr-autofocus' => 'true',
+                                              'attr-clicktofocus' => 'true',
+                                              class: 'autocompleteWrapper',
+                                              id: 'fromInput',
+                                              tabindex: 'null',
+                                              required: 'true',
+                                              'inputclass' => 'clearable tripplanner__location form__input',
+                                              'disable-filter' => 'true',
+                                              'data' => 'fromLocations',
+                                              'attr-input-class' => 'whereToFrom',
+                                              'on-type'=> 'getFromLocations',
+                                              'on-focus'=> 'focusFrom',
+                                              'on-blur'=> 'mapFrom',
+                                              'on-select' => 'selectFrom',
+                                              'autocomplete-required' => 'true',
+                                              ng: { model: 'from'} }
+                  .alert.alert-danger{role:'alert', ng:{show:'errors.noResultsfrom'}}
+                    Address is not recognized.  Try entering it another way.
+                  .alert.alert-danger{role:'alert', ng:{show:'errors.rangeErrorfrom'}}
+                    The location you selected is outside the service area.
 
-              %h3
-                %strong
-                  %i{class:'cs-map-marker B'}
-                  Where are you going?
+                  %label.h3.h3--address-label{for: 'toInput'}
+                    %i{class:'cs-map-marker B'}
+                    Where are you going?
+                  %autocomplete{ 'attr-placeholder'=> '{{toDefault}}',
+                                              'attr-input-id' => 'whereToInput',
+                                              'attr-clicktofocus' => 'true',
+                                              class: 'autocompleteWrapper',
+                                              id: 'toInput',
+                                              tabindex: 'null',
+                                              required: 'true',
+                                              'inputclass' => 'clearable tripplanner__location form__input',
+                                              'disable-filter' => 'true',
+                                              'data' => 'toLocations',
+                                              'on-type'=> 'getToLocations',
+                                              'on-focus'=> 'focusTo',
+                                              'on-blur'=> 'mapTo',
+                                              'on-select' => 'selectTo',
+                                              'autocomplete-required' => 'true',
+                                              ng: { model: 'to'} }
 
-              %autocomplete{ 'attr-placeholder'=> '{{toDefault}}',
-                                          'attr-input-id' => 'whereToInput',
-                                          'attr-clicktofocus' => 'true',
-                                          class: 'autocompleteWrapper',
-                                          id: 'toInput',
-                                          tabindex: 'null',
-                                          required: 'true',
-                                          'inputclass' => 'clearable tripplanner__location form__input',
-                                          'disable-filter' => 'true',
-                                          'data' => 'locations',
-                                          'on-type'=> 'getToLocations',
-                                          'on-focus'=> 'focusTo',
-                                          'on-blur'=> 'mapTo',
-                                          'on-select' => 'selectTo',
-                                          'autocomplete-required' => 'true',
-                                          ng: { model: 'to'} }
+                  .alert.alert-danger{role:'alert', ng:{show:'errors.noResultsto'}}
+                    Address is not recognized.  Try entering it another way.
 
-              .alert.alert-danger{role:'alert', ng:{show:'errors.noResultsto'}}
-                Address is not recognized.  Try entering it another way.
-
-              .alert.alert-danger{role:'alert', ng:{show:'errors.rangeErrorto'}}
-                The location you selected is outside the service area.
+                  .alert.alert-danger{role:'alert', ng:{show:'errors.rangeErrorto'}}
+                    The location you selected is outside the service area.
+                .col-lg-2.col-md-2.col-sm-2.container__swap-btn
+                  -# %button.btn.btn--no-outline{type:'button', aria: {label: 'Swap Address Inputs'},ng: {click: 'debouncedSwapAddressInputs()', disabled: 'disableSwapAddressButton == true'}}
+                  %button.btn.btn-icon.btn--lg-text{type:'button', aria: {label: 'Swap Address Inputs'},ng: {click: 'debouncedSwapAddressInputs()', disabled: 'disableSwapAddressButton == true'}}
+                    %i.glyphicon.glyphicon-sort
 
               %div.map-canvas{'ui-map' => 'whereToMap', 'ui-options' => 'mapOptions', ng: {show: 'showMap'}}
 
           .row.unstuck-foot.btn-spacing
             .col-lg-6.col-lg-offset-3.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1.col-xs-12
               .pull-left
-                %a.btn{href: "", back: '', ng: {click: "back()", hide:'backToConfirm || loggedIn'} }
+                %a.btn.btn-secondary{href: "", back: '', ng: {click: "back()", hide:'backToConfirm || loggedIn'} }
                   Start over
               .pull-right
-                %a.btn.btn-primary.btn-next{href: "", ng: {class:'{disabled: false==whereShowNext()}', click: 'next()'}}
+                %a.btn.btn-primary{href: "", ng: {class:'{disabled: false==whereShowNext()}', click: 'next()'}}
                   %span{ng:{show:'backToConfirm'}}
                     Back to confirm
                   %span{ng:{hide:'backToConfirm'}}
@@ -151,21 +154,21 @@
       .row
         .col-md-8.col-md-offset-2.col-sm-8.col-sm-offset-2
           .col-xs-6{style:'margin:7px 0px; padding-left:0px;', ng: {repeat: 'purpose in top_purposes'}}
-            %a.btn.btn-primary.btn-block{href: "", style: 'margin-bottom:4px; width:100%; padding-left:0px; padding-right:0px;', ng: {click: 'specifyTripPurpose(purpose.name)'}}
+            %a.btn.btn-primary.btn-block{href: "", style: 'margin-bottom:4px; width:100%; padding-left:0px; padding-right:0px;', ng: {click: 'specifyTripPurpose(purpose.name, backToConfirm)'}}
               {{ purpose.name }}
           .col-xs-6{style:'margin:7px 0px; padding-left:0px;', ng: {repeat: 'purpose in purposes', show:'showAllPurposes'}}
-            %a.btn.btn-primary.btn-block{href: "", style: 'margin-bottom:4px; width:100%; padding-left:0px; padding-right:0px;', ng: {click: 'specifyTripPurpose(purpose.name)'}}
+            %a.btn.btn-primary.btn-block{href: "", style: 'margin-bottom:4px; width:100%; padding-left:0px; padding-right:0px;', ng: {click: 'specifyTripPurpose(purpose.name, backToConfirm)'}}
               {{ purpose.name }}
           .col-xs-12
             .row{style:'margin-right:0px;'}
-              %a.btn.btn-link.btn-block{href: "", style: 'margin-bottom:4px; width:100%; padding-left:0px; padding-right:0px;', ng: {show:'!showAllPurposes', click: 'showAllPurposes = true;'}}
+              %a.btn.btn-secondary.btn-block{href: "", style: 'margin-bottom:4px; width:100%; padding-left:0px; padding-right:0px;', ng: {show:'!showAllPurposes', click: 'showAllPurposes = true;'}}
                 More trip purposes
-              %a.btn.btn-link.btn-block{href: "", style: 'margin-bottom:4px; width:100%; padding-left:0px; padding-right:0px;', ng: {show:'showAllPurposes', click: 'showAllPurposes = false;'}}
+              %a.btn.btn-secondary.btn-block{href: "", style: 'margin-bottom:4px; width:100%; padding-left:0px; padding-right:0px;', ng: {show:'showAllPurposes', click: 'showAllPurposes = false;'}}
                 Show fewer trip purposes
       .row.unstuck-foot{style: 'margin-top: 30px'}
         .col-md-8.col-md-offset-2.col-sm-8.col-sm-offset-2
           .pull-left
-            %a.btn{href: "", back: '', ng: {click: "back()"}}
+            %a.btn.btn-secondary{href: "", back: '', ng: {click: "back()"}}
               Back
 
 
@@ -195,7 +198,7 @@
             .col-xs-4.col-height-master
               .row.row-eq-height.table-compact
                 .col-xs-12{style: "font-size: large"}
-                  Bus & Rail
+                  Transit & Walk
             .col-xs-2.col-height-master
               .row.row-eq-height.table-compact
                 .col-xs-12{style: "font-size: large"}
@@ -213,7 +216,7 @@
             .col-xs-6.col-height-master
               .row.row-eq-height.table-compact
                 .col-xs-12
-                  Bus & Rail
+                  Transit & Walk
               .row.row-eq-height.table-compact
                 .col-xs-12
                   %p.text-left.text-muted
@@ -341,11 +344,11 @@
               No, I'm riding alone
         .row
           .col-md-4.col-md-offset-4.col-xs-12.text-center
-            %a.btn.btn-link{href: '', ng: {click: 'specifySharedRideCompanion("true")'}, style: 'white-space: normal; margin-bottom:4px; cursor:pointer;'}
+            %a.btn.btn-secondary{href: '', ng: {click: 'specifySharedRideCompanion("true")'}, style: 'white-space: normal; margin-bottom:4px; cursor:pointer;'}
               Yes, I have a companion or escort with me.
         .row.unstuck-foot.btn-spacing{style:'padding-top:60px;'}
           .col-md-8.col-md-offset-2.col-xs-12
-            %a.btn{href: "", back: '', ng: {click: "back()"}}
+            %a.btn.btn-secondary{href: "", back: '', ng: {click: "back()"}}
               Back
 
 
@@ -357,23 +360,25 @@
               Who will be riding with you?
       .col-md-8.col-md-offset-2.col-xs-12{style:'margin-top:20px;'}
         .row{ng: {show: 'questions.assistant'}}
-          .col-xs-12
-            %h4.pull-left
-              %input{id:'hasescort', type: 'checkbox', ng: {model: 'hasEscort'}}
-            %label{for:'hasescort', style:'width:90%'}
-              %h4
-                {{questions.assistant}}
+          %fieldset.form-group.col-xs-12
+            %label.check-group.h4{for:'hasescort', style:'width:90%', ng: {model: 'hasEscort'}}
+              %input{type:"checkbox", id:"hasescort"}
+              %span{style:'margin-left: 8px;'} {{questions.assistant}}
+              %span.checkmark
         .row{ng: {show: 'questions.children'}}
-          .col-xs-12
-            %h4.pull-left
-              %input{id:'hascompanions', type: 'checkbox', ng: {model: 'hasCompanions'}}
-            %label{for:'hascompanions', style:'width:90%'}
-              %h4
-                {{questions.children}}
-          .col-xs-12{'ng-show'=>'hasCompanions'}
-            %label{for:'numberofcompanions'}
-              %h4{style:'display:inline;'}
-                {{'How Many' + (hasEscort ? ' (not including escort)?' : '?')}}
+          %fieldset.form-group.col-xs-12{style:'width:90%;'}
+            -# %h4.pull-left
+            -#   %input{id:'hascompanions', type: 'checkbox', ng: {model: 'hasCompanions'}}
+            -# %label{for:'hascompanions', style:'width:90%'}
+            -#   %h4
+            -#     {{questions.children}}
+            %label.check-group.h4{for:'hascompanions', style:'width:90%'}
+              %input{type:"checkbox", id:"hascompanions", ng: {model: 'hasCompanions'}}
+              %span{style:'margin-left: 8px;'} {{questions.children}}
+              %span.checkmark
+          %fieldset.form-group.col-xs-12{'ng-show'=>'hasCompanions'}
+            %label.h4{for:'numberofcompanions'}
+              {{'How Many' + (hasEscort ? ' (not including escort)?' : '?')}}
               %select{id:'numberofcompanions', ng: {model: 'numberOfCompanions', options: 'number for number in questions.limit'}}
         .row.unstuck-foot.btn-spacing
           .col-xs-12
@@ -393,10 +398,10 @@
             If you are visiting a doctor, please enter your doctor's name, suite number, and phone number.
         .row
           .form-group
-            %textarea.form-control{placeholder: 'Dear Driver, please...', rows: '5', ng: {model: 'driverInstructions'}}
+            %textarea{style:'width: 100%;',placeholder: 'Dear Driver, please...', rows: '5', ng: {model: 'driverInstructions'}}
         .row.unstuck-foot{style: 'margin-top: 30px'}
           .col-md-8.col-md-offset-2.col-xs-12{ style: 'padding:0px;' }
-            %a.btn{href: "", back: '', ng: {click: "back()"}}
+            %a.btn.btn-secondary{href: "", back: '', ng: {click: "back()"}}
               %span
                 Back
             %a.btn.btn-primary.pull-right{href: "", ng: {click: 'next()'}}
@@ -530,7 +535,7 @@
               Rebook Trip
         .row{style: 'margin-top: 10px'}
           .col-md-4.col-md-offset-4.col-xs-12.text-center
-            %a.btn{href: "", back: '', ng: {click: "back()"}}
+            %a.btn.btn-secondary{href: "", back: '', ng: {click: "back()"}}
               %span{ng: {include: "'views/button-chevron-left.html'"}}
               Back
   .row.text-center{style:'margin: 30px 0px 10px 0px;'}

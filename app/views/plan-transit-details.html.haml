@@ -3,14 +3,14 @@
     .col-xs-12.col-md-6.col-md-offset-3.col-sm-8.col-sm-offset-2
       %h3
         %strong
-          Bus & Rail options
+          Transit & Walk options
 
   .row.bus-itinerary-details
     .col-xs-12.col-md-6.col-md-offset-3.col-sm-8.col-sm-offset-2
       .row
         %ul.nav.nav-tabs.bus-nav-tabs{ng:{show:'viewMoreBusOptions'}}
           %li{ng: {repeat:'busOption in transitInfos[0] | limitTo:3', class:'{active: selectedBusOption[0] == $index }'}}
-            .btn{ng: {click: 'selectedBusOption[0] = $index' }}
+            .tab{ng: {click: 'selectedBusOption[0] = $index' }}
               {{busOption.label}}
         %div{ng:{click:'goViewTransit()'}, style:"overflow:auto; border: 1px solid #d3d3d3; border-top: unset;"}
           .col-xs-10{style:'background-color: #f5f5f5;'}
@@ -76,12 +76,12 @@
                 Walking time is {{transitItineraries[1][ selectedBusOption[1] ].walkTimeDesc}}
   .row
     .col-xs-12.col-md-6.col-md-offset-3.col-sm-8.col-sm-offset-2
-      %h4.btn-link{ng: {hide: 'viewMoreBusOptions', click:'viewMoreBusOptions=true'} }
-        View more bus & rail options
+      %h4.btn-secondary{ng: {hide: 'viewMoreBusOptions', click:'viewMoreBusOptions=true'} }
+        View more transit & walking options
   .row.btn-spacing
     .col-xs-12.col-md-6.col-md-offset-3.col-sm-8.col-sm-offset-2.text-center
       .pull-left
-        %a.btn{href:'', back:'', ng:{click: 'back()'}}
+        %a.btn.btn-secondary{href:'', back:'', ng:{click: 'back()'}}
           Back
       .pull-right
         %a.btn.btn-primary{href: "", ng: {show:'loggedIn && false', click: "saveBusTrip()"}}

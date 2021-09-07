@@ -393,7 +393,10 @@ angular.module('applyMyRideApp')
           if( isNaN( parseInt( paratransitTrip.cost )) ){
             paratransitTrip.cost = 0;
           }
-          if(paratransitTrip.duration && paratransitTrip.start_time && paratransitTrip.cost >= 0) {
+          if (isNaN(parseInt(paratransitTrip.duration))) {
+            paratransitTrip.duration = 0;
+          }
+          if ((paratransitTrip.duration >= 0) && paratransitTrip.start_time && paratransitTrip.cost >= 0) {
             paratransitTrip.travelTime = humanizeDuration(paratransitTrip.duration * 1000, {
               units: ["hours", "minutes"],
               round: true
@@ -566,7 +569,7 @@ angular.module('applyMyRideApp')
       }
 
       this.getAddressDescriptionFromLocation = function(location){
-        console.log(location);
+        // console.log(location);
         var description = {};
         if(location.poi){
           description.line1 = location.poi.name
@@ -577,7 +580,7 @@ angular.module('applyMyRideApp')
         }else if(location.name){
           description.line1 = location.name;
           description.line2 = location.formatted_address;
-          if(description.line2.indexOf(description.line1) > -1){
+          if(description.line2 && description.line2.indexOf(description.line1) > -1){
             description.line2 = description.line2.substr(description.line1.length + 2);
           }
         }else{
@@ -614,41 +617,41 @@ angular.module('applyMyRideApp')
       }
 
       this.getCurrentBalance = function($scope, $http, ipCookie) {
-        return $http.get(urlPrefix + 'api/v1/users/current_balance', this.getHeaders()).
-          success(function(data) {
-            if (data.current_balance != undefined){
-              if($scope) $scope.currentBalance = data.current_balance;
-              if(ipCookie) {ipCookie('currentBalance', data.current_balance);}
-            }
-          }).
-          error(function(data) {
-            console.log(data);
-          });
+        return $http.get(urlPrefix + 'api/v1/users/current_balance', this.getHeaders())
+          .then(function({data}) {
+              if (data.current_balance != undefined){
+                if($scope) $scope.currentBalance = data.current_balance;
+                if(ipCookie) {ipCookie('currentBalance', data.current_balance);}
+              }
+            }, function(data) {
+              console.log(data);
+            });
       }
 
       this.getTripPurposes = function($scope, $http) {
         this.fixLatLon(this.fromDetails);
-        return $http.post(urlPrefix + 'api/v1/trip_purposes/list', this.fromDetails, this.getHeaders()).
-          success(function(data) {
-            $scope.top_purposes = data.top_trip_purposes;
-            data.trip_purposes = data.trip_purposes || [];
-            $scope.purposes = data.trip_purposes.filter(function(el){
-              var i;
-              for(i=0; i<$scope.top_purposes.length; i+=1){
-                if(el.code && $scope.top_purposes[i].code === el.code){
-                  return false;
+        const that = this
+        // TODO: Look at this and see if it needs to be a post request
+        return $http.post(urlPrefix + 'api/v1/trip_purposes/list', this.fromDetails, this.getHeaders())
+          .then(function({data}) {
+              that.top_purposes = data.top_trip_purposes;
+              data.trip_purposes = data.trip_purposes || [];
+              that.purposes = data.trip_purposes.filter(function(el){
+                for(let i = 0; i < that.top_purposes.length; i += 1){
+                  if(el.code && that.top_purposes[i].code === el.code){
+                    return false;
+                  }
                 }
+                return true;
+              });
+              // NOTE(wilsonj806) Is this dead code?
+              if (data.default_trip_purpose != undefined && $scope.email == undefined){
+                $scope.default_trip_purpose = data.default_trip_purpose;
+                $scope.showNext = true;
               }
-              return true;
+            }, function(data) {
+              alert(data);
             });
-            if (data.default_trip_purpose != undefined && $scope.email == undefined){
-              $scope.default_trip_purpose = data.default_trip_purpose;
-              $scope.showNext = true;
-            }
-          }).
-          error(function(data) {
-            alert(data);
-          });
       }
 
       this.selectItineraries = function($http, itineraryObject) {
@@ -811,6 +814,12 @@ angular.module('applyMyRideApp')
         outboundTrip.end_location = this.toDetails;
         this.addStreetAddressToLocation(outboundTrip.start_location);
         this.addStreetAddressToLocation(outboundTrip.end_location);
+        /*
+          NOTE this is necessary because some locations returned by Google Places
+          ... include city in a format that OCC does not expect
+        */
+        this.addCityToLocation(outboundTrip.start_location);
+        this.addCityToLocation(outboundTrip.end_location);
         this.fixLatLon(outboundTrip.start_location);
         this.fixLatLon(outboundTrip.end_location);
         var fromTime = this.fromTime;
@@ -883,6 +892,33 @@ angular.module('applyMyRideApp')
           }
         )
         */
+      }
+
+      /**
+       * Add city to the location object if a 'locality' type address component doesn't exist
+       * @param {*} location : A location returned by the Google Place API
+       */
+      this.addCityToLocation = function(location) {
+        const ADMIN_AREA_3 = 'administrative_area_level_3'
+        let city_address_component;
+        const localityAvailable = location.address_components.find(function(component) {
+          return component.types.includes('locality') && (component.long_name !== null && component.long_name !== "")
+        })
+
+        if (!localityAvailable) {
+          // pull administrative locality level 3 instead if locality isn't present
+          city_address_component = location.address_components.find(function(component) {
+            const includesAdmin3 = component.types.includes(ADMIN_AREA_3)
+            return includesAdmin3 && component.long_name !== 'Pennsylvania' && (component.long_name !== null && component.long_name !== "")
+          })
+
+          if (!city_address_component || city_address_component.long_name === null || city_address_component.long_name === "") {
+            throw new Error(`The "${location.name}" address does not have a city. Please search again for an address with the city included.`)
+          }
+
+          // Waypoint locality is interpreted as the city in OCC
+          location.address_components.push({...city_address_component, types: ['locality', 'political']})
+        }
       }
 
       this.fixLatLon = function(location) {
@@ -1145,8 +1181,8 @@ angular.module('applyMyRideApp')
       this.savedPlaceResults = [];
       this.poiData = [];
       var that = this;
-      $http.get(urlPrefix + 'api/v1/places/search?include_user_pois=true&search_string=%25' + text + '%25', config).
-        success(function(data) {
+      $http.get(urlPrefix + 'api/v1/places/search?include_user_pois=true&search_string=%25' + text + '%25', config)
+      .then(function({data}) {
           var locations = data.places_search_results.locations;
           var filter = /[^a-zA-Z0-9]/g;
           angular.forEach(locations, function(value, index) {

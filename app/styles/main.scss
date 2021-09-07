@@ -1,18 +1,18 @@
 $icon-font-path: "../bower_components/bootstrap-sass-official/assets/fonts/bootstrap/";
 
 // KIOSK COLORS
-$white: #fff;
-$black: #000;
-$gray1: #f2f2f2;
-$gray2: #e6e6e6;
-$gray3: #d1cfcd;
-$gray4: #a49f9b;
-$gray5: #7d7874;
-$gray6: #45413d;
+// $white: #fff;
+// $black: #000;
+// $gray1: #f2f2f2;
+// $gray2: #e6e6e6;
+// $gray3: #d1cfcd;
+// $gray4: #a49f9b;
+// $gray5: #7d7874;
+// $gray6: #45413d;
 $red: #f34c51;
-$blue: #00b8d0;
+// $blue: #00b8d0;
 $green: #03763a;
-$yellow: #fdd73e;
+// $yellow: #fdd73e;
 $live-yellow: #fffc66;
 
 $kioskfonts: "Avenir Next", "Helvetica Neue", Helvetica, sans-serif;
@@ -21,15 +21,37 @@ $kioskfonts: "Avenir Next", "Helvetica Neue", Helvetica, sans-serif;
 @import "bootstrap-sass-official/assets/stylesheets/_bootstrap.scss";
 // endbower
 
+// NOTE: BELOW ASSETS ARE FROM PDS v1.1.2
+// SEE: https://www.pa.gov/design-standards/index
+
+// general imports
+@import "helpers/mixins";
+@import "helpers/tokens";
+@import "helpers/variables";
+
+// custom overrides
+@import "settings";
+
+// base style imports
+@import "base/typography";
+
+// component style imports
+@import "components/accordions";
+@import "components/alerts";
+@import "components/buttons";
+@import "components/cards";
+@import "components/forms";
+@import "components/footer";
+@import "components/logo";
+@import "components/modals";
+@import "components/navigation";
+
+// App Specific Styling
 .browsehappy {
   margin: 0.2em 0;
   background: #ccc;
   color: #000;
   padding: 0.2em 0;
-}
-
-* {
-  font-family: 'Avenir Next', Helvetica, sans-serif;
 }
 
 /*
@@ -145,10 +167,10 @@ $kioskfonts: "Avenir Next", "Helvetica Neue", Helvetica, sans-serif;
   text-align: center;
   border-bottom: 1px solid #e5e5e5;
 
-  .btn {
+  // .btn {
     // font-size: 21px;
     // padding: 14px 24px;
-  }
+  // }
 }
 
 .marketing {
@@ -202,10 +224,6 @@ $kioskfonts: "Avenir Next", "Helvetica Neue", Helvetica, sans-serif;
   //   // font-size: $font-size-tablet;
   //   // font-family: $font-family-tablet;
   // }
-}
-
-.btn {
-  box-shadow: 0px 2px 8px rgba(0,0,0,0.4);
 }
 
 .debug {
@@ -390,15 +408,6 @@ a.login-btns .btn-branded {
   color: white;
 }
 
-.btn.btn-blue, .btn-blue:active:hover, .btn-blue:active:focus, .btn-blue:active.focus, .btn-blue.active:hover, .btn-blue.active:focus, .btn-blue.active.focus, .open > .btn-blue.dropdown-toggle:hover, .open > .btn-blue.dropdown-toggle:focus, .open > .btn-blue.dropdown-toggle.focus {
-  color:#EEE;
-  background-color: #19487D;
-}
-
-
-.btn-green { background-color: #00884B; color: #fff;}
-.btn-grey { background-color: #828282; color: #fff;}
-
 img.official-logo {
   height: 3em;
   margin-top: 1em;
@@ -424,21 +433,9 @@ img.official-logo {
   img.official-logo { height: 5em; }
 }
 
-.btn{
-  font-size: 18px;
-  padding: 12px 16px;
-}
-.btn.btn-primary, .btn-primary:active:hover, .btn-primary:active:focus, .btn-primary:active.focus, .btn-primary.active:hover, .btn-primary.active:focus, .btn-primary.active.focus, .open > .btn-primary.dropdown-toggle:hover, .open > .btn-primary.dropdown-toggle:focus, .open > .btn-primary.dropdown-toggle.focus {
-  color:#EEE;
-  background-color: #14834D;
-}
+
 .btn.btn-primary,
 .btn.btn-next{
-  text-decoration: none;
-}
-.btn.disabled{
-  background-color: #BBB;
-  color: #FFF;
   text-decoration: none;
 }
 
@@ -500,7 +497,7 @@ img.official-logo {
   .day{
     display:inline-block;
     width:14.25%;
-    background-color: #1a27f6;
+    background-color: $primary-color;
     color: #FFF;
     border: 1px solid #EEE;
     padding: 15px 0px;
@@ -510,7 +507,11 @@ img.official-logo {
   .week.names .day{
     font-weight:initial;
   }
-  .day.selected{
+  .day:hover, .day:focus {
+    background-color: $dark-gray;
+  }
+
+  .day.selected {
     color: #FFF;
     background-color:#000;
   }
@@ -539,34 +540,45 @@ button{
 .cs-time-input{
   display:flex;
   flex-flow:row;
+  align-items: baseline;
 }
 .cs-time-input .cs-hour{
   border-right:none;
   padding-right:3px;
-  width:2em;
+  width:2.7em;
   text-align:right;
 }
 .cs-time-input .seperator-hour-minute{
   z-index:20;
-  padding-top: 7px;
+  padding: 20px 0;
   display:inline-block;
 }
 .cs-time-input .cs-minute{
   border-left:none;
   padding-left:10px;
-  width:3em;
+  width:3.3em;
   margin-left:-5px;
 }
 .cs-time-input input.cs-ampm{
   opacity: 0;
   width: 0px;
 }
+// NOTE: Pulling .btn.btn-secondary styling for the AM/ PM button
 .cs-time-input input.cs-ampm + .cs-ampmspan::after{
   display: inline-block;
   content:'PM';
-  border:1px solid #CCC;
-  padding: 4px;
-  border-radius: 4px;
+  border: 3px solid $primary-color;
+  padding: 15px;
+  color: $primary-color;
+    background: $off-white;
+    border-color: $primary-color;
+    @include focus {
+        position: relative;
+    }
+    @include hover {
+        color: $off-white;
+        background: $primary-color;
+    }
 }
 .cs-time-input input.cs-ampm:checked + .cs-ampmspan::after{
   content:'AM';
@@ -614,10 +626,6 @@ i.cs-map-marker.A{
   padding:0px;
 }
 
-.btn.btn-primary:focus{
-  border-color: rgb(31, 202,35);
-  background-color: rgb(31, 202,35);
-}
 
 .rounded-border{
   border-color: lightgray !important;
@@ -644,6 +652,13 @@ i.cs-map-marker.A{
   }
 }
 
+ul.nav-tabs > li.uib-tab {
+  & a.nav-link {
+      text-decoration: none;
+      border-radius: 0;
+  }
+}
+
 ul.bus-nav-tabs.nav-tabs {
 
   display:flex;
@@ -653,7 +668,7 @@ ul.bus-nav-tabs.nav-tabs {
     flex-grow:1;
     min-width:20%;
   }
-  li .btn{
+  li .tab{
     padding: 12px 14px;
     box-shadow:unset;
     color:#337ab7;
@@ -665,7 +680,7 @@ ul.bus-nav-tabs.nav-tabs {
     border-bottom: unset;
     outline-width: 0;
 
-    .btn{
+    .tab{
       color:black;
       background-color: #f5f5f5;
       border:1px solid #d3d3d3;
@@ -726,4 +741,53 @@ ul.bus-nav-tabs.nav-tabs {
   button.btn.btn-primary {
     margin: 1em 0;
   }
+}
+
+button.btn--no-outline {
+  border: none;
+  box-shadow: none;
+  background: transparent;
+  font-size: 24px;
+  &:hover:not(:disabled) {
+    color: #00884b;
+  }
+}
+
+.input-row--address{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 -15px;
+}
+
+.h3--address-label {
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+  margin: 10px 0;
+}
+
+.container__swap-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 50px;
+}
+  .btn-no-bg {
+    background-color: transparent;
+    box-shadow: none;
+    color: black;
+    text-decoration: none;
+    &:hover, &:focus {
+      color:#00884B;
+      outline: #00884b solid 2px;
+      ;
+    }
+  }
+
+
+.container--center-single-item {
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
 }

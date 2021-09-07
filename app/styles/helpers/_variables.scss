@@ -1,0 +1,36 @@
+// Theme Variables
+
+// Color Palette
+$colors-brand: (
+    blue:        #002469,
+    gold:        #BF940D,
+    green:       #007336,
+    red:         #AD2624,
+    lightblue:  #6699C2,
+);
+
+$colors-neutral: (
+    white:      #FFFFFF,
+    offwhite:  #FAFAFA,
+    lightgray: #EBEBEB,
+    darkgray:  #464646,
+    black:      #000000,
+);
+
+$colors-utility: (
+    gold:       #E0AB06,
+    green:      #029949,
+    red:        #D71A17,
+    blue:       #23A0F6,
+);
+
+$colors-enterprise: (
+    blue:   #003146,
+    gray:   #2E2E2E,
+    lightgray: #b8b7b4,
+);
+
+$font-montserrat:'Montserrat', 'Gotham', 'Open Sans', 'Helvetica Neue', Helvetica, sans-serif ;
+.montserrat {font-family: $font-montserrat;}
+
+$image-path: '../../images'

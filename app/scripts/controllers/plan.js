@@ -2,10 +2,11 @@
 
 var app = angular.module('applyMyRideApp');
 
-app.controller('PlanController', ['$scope', '$http','$routeParams', '$location', 'planService', 'util', 'flash', 'usSpinnerService', '$q', 'LocationSearch', 'localStorageService', 'ipCookie', '$timeout', '$window', '$filter',
+app.controller('PlanController', ['$scope', '$http','$routeParams', '$location', 'planService', 'util', 'flash', 'usSpinnerService', 'debounce', '$q', 'LocationSearch', 'localStorageService', 'ipCookie', '$timeout', '$window', '$filter',
 
-function($scope, $http, $routeParams, $location, planService, util, flash, usSpinnerService, $q, LocationSearch, localStorageService, ipCookie, $timeout, $window, $filter) {
-
+function($scope, $http, $routeParams, $location, planService, util, flash, usSpinnerService, debounce, $q, LocationSearch, localStorageService, ipCookie, $timeout, $window, $filter) {
+  // This variable exists to track whether or not we're still on initial focus with a default input
+  let isOnInitFocus = true
   var currentLocationLabel = "Current Location";
   var urlPrefix = '//' + APIHOST + '/';
 
@@ -26,7 +27,17 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
   $scope.toFromMarkers = {};
   $scope.toFromIcons={'to' : '//maps.google.com/mapfiles/markerB.png',
                       'from' : '//maps.google.com/mapfiles/marker_greenA.png' };
-  $scope.locations = [];
+  // Disable Swap Address determines when to disable the swap address inputs button
+  $scope.disableSwapAddressButton = false
+  /**
+   * NOTE: THE FMR CODEBASE HANDLES ASYNCHRONOUS CODE VERY BADLY
+   * - you'll see setTimeout in the codebase to handle asynchronous actions a lot
+   * ...and that's generally not the correct way to handle async actions
+   * - Ideally we'd return Promises and use then chaining to handle async code and callbacks
+  */
+  // have 2 separate locations suggestions arrays for each field rather than having a single locations array
+  $scope.fromLocations = [];
+  $scope.toLocations = [];
   $scope.placeIds = [];
   $scope.showConfirmLocationMap = false;
   $scope.mapOptions = {
@@ -162,7 +173,6 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
     $scope.step = 'rebook';
     $location.path('/plan/rebook');
   };
-
   $scope.updateTransitTripReminders = function($event) {
     $event.preventDefault()
     // build new trip details object
@@ -194,11 +204,12 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
       cancelRequest.bookingcancellation_request.push( leg2 );
     }
     var cancelPromise = planService.cancelTrip($http, cancelRequest)
-    cancelPromise.error(function(data) {
+    cancelPromise.then(successCallback, errorCallback)
+    function errorCallback(data) {
       bootbox.alert("An error occurred, your trip was not cancelled.  Please call 1-844-PA4-RIDE for more information.");
       usSpinnerService.stop('spinner-1');
-    });
-    cancelPromise.success(function(data) {
+    };
+    function successCallback(data) {
       bootbox.alert('Your trip has been cancelled');
       ipCookie('rideCount', ipCookie('rideCount') - 1);
       $scope.transitSaved = false;
@@ -206,7 +217,7 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
       planService.transitSaved = false;
       planService.transitCancelled = true;
       usSpinnerService.stop('spinner-1');
-    })
+    }
   }
 
   $scope.cancelThisWalkTrip = function() {
@@ -219,20 +230,19 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
       leg2 = {itinerary_id: planService.walkItineraries[1].id};
       cancelRequest.bookingcancellation_request.push( leg2 );
     }
-    var cancelPromise = planService.cancelTrip($http, cancelRequest)
-    cancelPromise.error(function(data) {
-      bootbox.alert("An error occurred, your trip was not cancelled.  Please call 1-844-PA4-RIDE for more information.");
-      usSpinnerService.stop('spinner-1');
-    });
-    cancelPromise.success(function(data) {
-      bootbox.alert('Your trip has been cancelled');
-      ipCookie('rideCount', ipCookie('rideCount') - 1);
-      $scope.walkSaved = false;
-      $scope.walkCancelled = true;
-      planService.walkSaved = false;
-      planService.walkCancelled = true;
-      usSpinnerService.stop('spinner-1');
-    })
+    planService.cancelTrip($http, cancelRequest)
+      .then(function(data) {
+        bootbox.alert('Your trip has been cancelled');
+        ipCookie('rideCount', ipCookie('rideCount') - 1);
+        $scope.walkSaved = false;
+        $scope.walkCancelled = true;
+        planService.walkSaved = false;
+        planService.walkCancelled = true;
+        usSpinnerService.stop('spinner-1');
+      }, function (data) {
+        bootbox.alert("An error occurred, your trip was not cancelled.  Please call 1-844-PA4-RIDE for more information.");
+        usSpinnerService.stop('spinner-1');
+      })
   }
 
    $scope.cancelTrip = function(){
@@ -241,7 +251,8 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
         var message = "Are you sure you want to cancel this ride?";
 
         if(planService.fare_info.roundtrip ||  $scope.outboundCancelled ||  $scope.returnCancelled){
-          
+          // NOTE: NOT RESTYLING THIS TO MATCH THE PDS AS THE PDS'S RADIO BUTTONS ARE MUCH MORE INVOLVED
+          //... AND MAKING BOOTBOX MATCH THAT DOES NOT SEEM EASILY DOABLE
           // DEAL WITH Round Trips
           bootbox.prompt({
               title: message,
@@ -321,22 +332,22 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
           }
           cancel.bookingcancellation_request.push(bookingCancellation);
         });
-        var cancelPromise = planService.cancelTrip($http, cancel)
-        cancelPromise.error(function(data) {
-          bootbox.alert("An error occurred, your trip was not cancelled.  Please call 1-844-PA4-RIDE for more information.");
-        });
-        cancelPromise.success(function(data) {
-          bootbox.alert(successMessage);
-          if(result == 'BOTH'){
-            $scope.tripCancelled = true;
-            ipCookie('rideCount', ipCookie('rideCount') - 1);
-          }
-          else if(result == 'OUTBOUND'){
-            $scope.outboundCancelled = true;
-          }else if(result == 'RETURN'){
-            $scope.returnCancelled = true;
-          }
-        })
+        planService.cancelTrip($http, cancel)
+          .then(function (data) {
+            bootbox.alert(successMessage);
+            if(result == 'BOTH'){
+              $scope.tripCancelled = true;
+              ipCookie('rideCount', ipCookie('rideCount') - 1);
+            }
+            else if(result == 'OUTBOUND'){
+              $scope.outboundCancelled = true;
+            }else if(result == 'RETURN'){
+              $scope.returnCancelled = true;
+            }
+          }, function (data) {
+            bootbox.alert("An error occurred, your trip was not cancelled.  Please call 1-844-PA4-RIDE for more information.");
+          })
+        ;
       }
 
 
@@ -478,6 +489,7 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
       case 'confirm':
         $location.path('/plan/companions');
         break;
+        // FIXME: UNREACHABLE CODE. FIGURE OUT WHAT THIS DOES
         usSpinnerService.spin('spinner-1');
         var promise = planService.postItineraryRequest($http);
         promise.
@@ -600,14 +612,32 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
     });
   }
 
+  // Rebuild and recenter the map
+  function rebuildRecenterMap() {
+    const map = $scope.whereToMap
+    const bounds = new google.maps.LatLngBounds();
+    Object.values($scope.toFromMarkers).forEach(function(marker) {
+      bounds.extend(marker.position);
+    })
+    map.setCenter(bounds.getCenter());
+    map.fitBounds(bounds);
+    if(Object.keys($scope.toFromMarkers).length === 1 ){
+      map.setZoom(15);
+    }
+  }
+
   function _bookTrip(){
-    planService.prepareConfirmationPage($scope);
+    try {
+      planService.prepareConfirmationPage($scope);
+    } catch (e) {
+      bootbox.alert('The origin/ destination address does not have a city included. Please go back and use a different address with a city included.')
+      return
+    }
     planService.transitResult = [];
     planService.paratransitResult = null;
     usSpinnerService.spin('spinner-1');
-    var promise = planService.postItineraryRequest($http);
-    promise.
-      success(function(result) {
+    planService.postItineraryRequest($http)
+      .then(function({data: result}) {
         var i;
         for(i=0; i<result.itineraries.length; i+=1){
           result.itineraries[i].origin = planService.getAddressDescriptionFromLocation(result.itineraries[i].start_location);
@@ -615,7 +645,7 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
           if(result.itineraries[i].returned_mode_code == "mode_paratransit"){
             // If the trip purpose is eligible based on the valid date range, allow booking a shared ride. 
             // Otherwise, display no shared ride message.
-            var allPurposes = [...$scope.top_purposes || [], ...$scope.purposes || []];
+            var allPurposes = [...planService.top_purposes || [], ...planService.purposes || []];
             var tripPurposesFiltered = allPurposes.filter(e => e.code == planService.itineraryRequestObject.trip_purpose);
             if (tripPurposesFiltered.length > 0) {
               var tripPurposeObj = tripPurposesFiltered[0]
@@ -638,15 +668,30 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
         }
         planService.searchResults = result;
         $location.path("/plan/confirm");
-      }).
-      error(function(result) {
+      },function(result) {
         bootbox.alert("An error occured on the server, please retry your search or try again later.");
         usSpinnerService.stop('spinner-1');
       });
   }
-  $scope.specifyTripPurpose = function(purpose){
-    planService.purpose = purpose;
-    _bookTrip();
+  /**
+   * @param {string} purpose - A string representing the trip purpose
+   * @param {boolean} [isEditTrip] - An optional arg that a dev can include
+   * ...to specify that the function call is the result of a user editing the trip purpose
+   * - In the context of fixing PAMF-709, we're passing in $scope.backToConfirm to check
+   * ...to make sure that we're not editing the trip
+   *
+   * Regardless of whether or not the trip is being edited, the trip purpose is updated
+   * - if we are editing a trip, we should call next() and let that function call handle rebooking the trip
+   * ...in order to prevent the app from trying to double book an updated trip(and subsequently hanging)
+   * - if we are not editing a trip, then book the trip as normal
+   */
+  $scope.specifyTripPurpose = function(purpose, isEditTrip){
+    planService.purpose = purpose
+    if (isEditTrip === true) {
+      $scope.next()
+    } else {
+      _bookTrip();
+    }
   }
 
   $scope.specifyFromTimeType = function(type){
@@ -676,14 +721,14 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
   }
 
   $scope.getFromLocations = function(typed){
-    $scope.getLocations(typed, true);
+    $scope.getLocations(typed, true, 'from');
   }
 
   $scope.getToLocations = function(typed){
-    $scope.getLocations(typed, false);
+    $scope.getLocations(typed, false, 'to');
   }
 
-  $scope.getLocations = function(typed, addCurrentLocation){
+  $scope.getLocations = function(typed, addCurrentLocation, toFrom){
     if(typed){
       // The user has typed something, don't let the Next button activate until they have selected a location.
       $scope.locationClicked = false;
@@ -692,7 +737,6 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
       //if this is run before the last promise is resolved, abort the promise, start over.
       var getLocationsPromise = LocationSearch.getLocations(typed, config, planService.email != null);
       getLocationsPromise.then(function(data){
-
         $scope.placeLabels = [];
         $scope.placeIds = [];
         $scope.placeAddresses = [];
@@ -743,7 +787,12 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
           $scope.placeAddresses = $scope.placeAddresses.concat(googlePlaceData);
         }
 
-        $scope.locations = choices;
+        if (toFrom === 'from') {
+          $scope.fromLocations = choices
+        } else if (toFrom === 'to') {
+          $scope.toLocations = choices
+        }
+      }, function() {
       });
       return getLocationsPromise;
     }
@@ -779,7 +828,14 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
     lastMappedPlaces[toFrom] = place; 
     setTimeout(function selectPlace(){
       //if $scope.to or $scope.from is different from place, the autocomplete input's select events are handling
-      if(!defaulted && $scope[toFrom] !== place){ return; }
+      if(!defaulted && $scope[toFrom] !== place){
+        return;
+      // Else if we are on initial focus(i.e the from input is focused, inputs are still on defaults, and we clicked out of it)
+      // ... toggle isOnInitFocus to false  and then return
+      } if (isOnInitFocus === true && (place === $scope.fromDefault || place === $scope.toDefault)) {
+        isOnInitFocus = false
+        return
+      }
       //otherwise, run selectPlace
       $scope.selectPlace(place, toFrom);
     }, 500);
@@ -823,20 +879,128 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
   $scope.selectFrom = function(place){
     ignoreBlur = true;
     $scope.selectPlace(place, 'from');
+    // If the user selected a place, then re-enable swap button
+    $scope.disableSwapAddressButton = false
   }
 
   $scope.selectTo = function(place){
     ignoreBlur = true;
     $scope.selectPlace(place, 'to');
+    // If the user selected a place, then re-enable swap button
+    $scope.disableSwapAddressButton = false
   }
 
-  
-  // This is run when you click a place in the list, 
-  // when you tap out of the to/from field, 
-  // and when the to/from page is loaded
-  $scope.selectPlace = function(place, toFrom, loadLocationsIfNeeded){
+  /**
+   * NOTE: implementation is similar to how $scope.checkServiceArea is implemented
+   * ... only it's fully synchronous whereas checkServiceArea performs at least one asynchronous action
+   */
+  function swapMapMarkers() {
+    const tempToDetails = {...planService.toDetails}
+    const tempToName = planService.to
+    const tempToDisplay = $scope.to !== '' ? $scope.to : $scope.toDefault
+    const tempFromDetails = {...planService.fromDetails}
+    const tempFromName = planService.from
+    const tempFromDisplay = $scope.from !== '' ? $scope.from : $scope.fromDefault
+    console.log(tempToDisplay, tempFromDisplay)
+    // rebuild map markers
+    const map = $scope.whereToMap;
+    Object.values($scope.toFromMarkers).forEach(function(marker) {
+      marker.setMap(null)
+    })
 
-    // Check to see if we have reset to the original place. If so, we can turn the button back on.     
+    // Check to ensure that at least the default inputs are present and if not, alert the user
+    if (Object.keys(tempToDetails).length === 0 || Object.keys(tempFromDetails).length === 0 ) {
+      bootbox.alert('One or more address inputs is empty. Please ensure both inputs have a valid address selected.')
+      return
+    }
+    const fromLocation = tempFromDetails.geometry.location
+    const toLocation = tempToDetails.geometry.location
+    google.maps.event.trigger(map, 'resize');
+
+    // Check if POI's have been selected, or if the location is in a format that isn't recognized by google maps
+    const toLatType = typeof toLocation.lat === 'number' || typeof toLocation.lat === 'string' 
+    const fromLatType = typeof fromLocation.lat === 'number' || typeof fromLocation.lat === 'string' 
+
+    const newFromLocation = toLatType ? new google.maps.LatLng(Number(toLocation.lat), Number(toLocation.lng)) : toLocation
+    const newToLocation = fromLatType ? new google.maps.LatLng(Number(fromLocation.lat), Number(fromLocation.lng)) : fromLocation
+
+    // Rebuild map markers
+    $scope.toFromMarkers.to = new google.maps.Marker({
+      map: map,
+      position: newToLocation,
+      animation: google.maps.Animation.DROP,
+      icon: $scope.toFromIcons.to
+    });
+
+    $scope.toFromMarkers.from = new google.maps.Marker({
+      map: map,
+      position: newFromLocation,
+      animation: google.maps.Animation.DROP,
+      icon: $scope.toFromIcons.from
+    });
+
+    // Rebuild map
+    rebuildRecenterMap()
+
+    // Swap to/ from
+    planService.fromDetails = tempToDetails
+    planService.from = tempToName;
+    $scope.from = tempToDisplay;
+    $scope.fromLocations = []
+
+    planService.toDetails = tempFromDetails;
+    planService.to = tempFromName;
+    $scope.to = tempFromDisplay;
+    $scope.toLocations = []
+  }
+
+  /**
+   * Debounce swap address inputs
+   * - it's asynchronous as the function holds off on executing the swap
+   * ...operation for a bit to prevent from repeated calls within a short amount of time
+   */
+  $scope.debouncedSwapAddressInputs = async function() {
+    // NOTE: DISABLE "Yes Looks Good" BUTTON
+    $scope.locationClicked = false
+    if ($scope.disableSwapAddressButton) {
+      bootbox.alert("At least one address in the origin/ destination fields is invalid. Please search for another address and be sure to select one from the suggestions list.")
+      return
+    }
+    $scope.disableSwapAddressButton = true
+    await debounce(swapMapMarkers, 450)().then(function() {
+      $scope.disableSwapAddressButton = false
+      $scope.locationClicked = true
+    })
+  }
+
+  const validateCityPresence = function(place) {
+    const addressComponents = place.address_components
+    const ADMIN_AREA_3 = 'administrative_area_level_3'
+    const PENN = 'Pennsylvania'
+    const locality = addressComponents.find(function(component) {
+      const includesLocality = component.types.includes('locality') && component.long_name != null
+      const includesAdminArea = component.types.includes(ADMIN_AREA_3) && component.long_name !== PENN && component.long_name !== 'US'  && component.long_name != null
+      if (includesLocality || includesAdminArea) {
+        return true
+      } else {
+        return false
+      }
+    });
+   return locality != null
+  }
+  /**
+   * Select Place
+   * - This is run when you click a place in the list,
+   * ...when you tap out of the to/from field,
+   * ...and when the to/from page is loaded
+   * - if the place is selected successfully
+   * ...$scope.checkServiceArea is called
+   * @param {string} place - an address
+   * @param {string} toFrom - limited to a value of 'to' or 'from
+   * @param {unknown} loadLocationsIfneeded - unsure
+   */
+  $scope.selectPlace = function(place, toFrom, loadLocationsIfNeeded){
+    // Check to see if we have reset to the original place. If so, we can turn the button back on.
     if(toFrom == 'from'){
       if(place === $scope.fromDefault && place.length > 0){
         $scope.locationClicked = true
@@ -877,9 +1041,15 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
     }
     // The person selected a POI
     else if(-1 < selectedIndex && selectedIndex < $scope.poiData.length){
-      $scope.locationClicked = true;
-      $scope.poi = $scope.poiData[selectedIndex];
-      $scope.checkServiceArea($scope.poi, $scope.poi.formatted_address, toFrom);
+      const hasCity = validateCityPresence($scope.poiData[selectedIndex])
+      if (hasCity) {
+        $scope.locationClicked = true;
+        $scope.poi = $scope.poiData[selectedIndex];
+        $scope.checkServiceArea($scope.poi, $scope.poi.formatted_address, toFrom);
+      } else {
+        bootbox.alert("Selected Point of Interest has no city, please search for another address.")
+        return
+      }
     }
     // The person selected either a recent place or a Google Place.
     else{
@@ -928,6 +1098,7 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
                 }
               }
               $scope.errors['noResults'+toFrom] = true;
+              $scope.disableSwapAddressButton = true
               checkShowMap();
             }else{
               var placeId = list[0].place_id;
@@ -936,23 +1107,28 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
           });
       }
 
-      
       // After a location has been picked or entered into the to/from field, we then Geocode that location
       // TODO: Why are we re-geocoding? If the autocomplete/Poi already has a lat/lng, this isn't necessary
       // This is only necessary for manual entry, which we no longer do.
       placeIdPromise.promise.then(function(placeId) {
         var placesService = new google.maps.places.PlacesService($scope.whereToMap);
-        placesService.getDetails( { 'placeId': placeId}, function(result, status) {
-          if (status == google.maps.GeocoderStatus.OK) {
+        placesService.getDetails(
+          {
+            'placeId': placeId, fields: ['address_component', 'geometry', 'vicinity', 'place_id', 'type', 'name'],
+          }, function (result, status) {
+            if (status == google.maps.GeocoderStatus.OK) {
 
-            //verify the location has a street address
-            var datatypes = [];
-            var route;
+            /* Verify that a street number and a locality/ city exists in the returned place */
+            const datatypes = [];
+            let route;
             angular.forEach(result.address_components, function(component, index) {
               angular.forEach(component.types, function(type, index) {
-                datatypes.push(type);
-                if(type == 'route'){
-                  route = component.long_name;
+                // if the component isn't empty, then push it into datatypes and parse the route
+                if (component.long_name != null) {
+                  datatypes.push(type);
+                  if(type == 'route'){
+                    route = component.long_name;
+                  }
                 }
               });
             });
@@ -961,7 +1137,9 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
               if(datatypes.indexOf('route') < 0){
                 $scope.toFromMarkers[toFrom].setMap(null);
                 checkShowMap();
-                bootbox.alert("The location you selected does not have have a street associated with it, please select another location.");
+                bootbox.alert("The location you selected does not have have a street associated with it, please select another location.", function() {
+                  $scope.disableSwapAddressButton = true
+                });
                 return;
               }else if(datatypes.indexOf('street_number') < 0){
                 var streetNameIndex = place.indexOf(route);
@@ -979,10 +1157,16 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
                     $scope.toFromMarkers[toFrom].setMap(null);
                   }
                   checkShowMap();
-                  bootbox.alert("The location you selected does not have a street number associated, please select another location.");
+                  bootbox.alert("The location you selected does not have a street number associated, please select another location.", function() {
+                    $scope.disableSwapAddressButton = true
+                  });
                   return;
                 }
               }
+            } else if (datatypes.indexOf('locality') < 0 && datatypes.indexOf('administrative_area_level_3') < 0) {
+              checkShowMap();
+              bootbox.alert("The location you selected does not have a city associated to it, please select another location.");
+              return;
             }
 
             // When we start typing we hide the Yes, looks good! button. 
@@ -990,8 +1174,13 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
             // When the page is first loaded, then this is used to populate the lat/lng for the previous locations, since the showButton is true by default, the button will be green assuming all other tests pass.
             if($scope.locationClicked){
               $scope.checkServiceArea(result, place, toFrom);
+              $scope.disableSwapAddressButton = false
+              return
             } else{
-              bootbox.alert("Please select a location from the dropdown to continue.");
+              bootbox.alert("Please select a location from the dropdown to continue.", function() {
+                $scope.disableSwapAddressButton = true
+              });
+              return
             }
 
           } else {
@@ -1053,7 +1242,9 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
         if(datatypes.indexOf('street_number') < 0 || datatypes.indexOf('route') < 0){
           if(datatypes.indexOf('route') < 0){
             $scope.toFromMarkers[toFrom].setMap(null);
-            bootbox.alert("The location you selected does not have have a street associated with it, please select another location.");
+            bootbox.alert("The location you selected does not have have a street associated with it, please select another location.", function() {
+              $scope.disableSwapAddressButton = true
+            });
             $scope.stopSpin();
             return;
           }
@@ -1072,7 +1263,9 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
             else{
               $scope.toFromMarkers[toFrom].setMap(null);
               checkShowMap();
-              bootbox.alert("The location you selected does not have a street number associated, please select another location.");
+              bootbox.alert("The location you selected does not have a street number associated, please select another location.", function() {
+                $scope.disableSwapAddressButton = true
+              });
               $scope.stopSpin();
               return;
             }
@@ -1105,10 +1298,13 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
       return name + ', ' + vicinity;
     }
 
-    // Find the City name from the address_components. In the Google framework, the city name is 'locality'
+    // Find the City name from the address_components.
+    // In the Google framework, the city name can be 'locality' or 'administrative_area_level_3' if 'locality' isn't present
     angular.forEach(gPlace['address_components'], function(value, key) {
       var types = value['types'];
       if($.inArray('locality',types) >= 0){
+        city = value['long_name']
+      } else if($.inArray('administrative_area_level_3',types) >= 0){
         city = value['long_name']
       }
     })
@@ -1126,9 +1322,9 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
     updateInput = util.assignDefaultValueIfEmpty(updateInput, false);
     var serviceAreaPromise = planService.checkServiceArea($http, result);
     $scope.showNext = false;
-    serviceAreaPromise.
-      success(function(serviceAreaResult) {
-        if(serviceAreaResult.result == true){
+    serviceAreaPromise
+      .then(function(serviceAreaResult) {
+        if(serviceAreaResult.data.result == true){
           $scope.errors['rangeError'+toFrom] = false;
           var recentSearches = localStorageService.get('recentSearches');
           if(!recentSearches){
@@ -1168,26 +1364,21 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
               icon: $scope.toFromIcons[toFrom]
             });
 
-            var bounds = new google.maps.LatLngBounds();
-            angular.forEach($scope.toFromMarkers, function(marker, k){
-              bounds.extend(marker.position);
-            });
-            map.setCenter(bounds.getCenter());
-            map.fitBounds(bounds);
-            var markerCount = $scope.toFromMarkers
-            if( Object.keys($scope.toFromMarkers).length === 1 ){
-              map.setZoom(15);
-            }
+            rebuildRecenterMap()
             if(toFrom == 'from'){
               planService.fromDetails = result;
               planService.from = place;
               // Update the typed text to reflect the geocoded place
               $("#whereFromInput").val($scope.getDisplayAddress(result));
+              // Reset locations array
+              $scope.fromLocations = []
             }else if(toFrom == 'to'){
               planService.toDetails = result;
               planService.to = place;
               // Update the typed text to reflect the geocoded place
               $("#whereToInput").val($scope.getDisplayAddress(result));
+              // Reset locations array
+              $scope.toLocations = []
             }
           }, 1);
         }else{
@@ -1202,8 +1393,7 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
           $scope.stopSpin();
         }
         $scope.stopSpin();
-      }).
-      error(function(serviceAreaResult) {
+      }, function(serviceAreaResult) {
         bootbox.alert("An error occured on the server, please retry your search or try again later.");
         $scope.stopSpin();
       });
@@ -1590,7 +1780,7 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
     case 'when':
       //re-populate service hours
       planService.getServiceHours($http)
-        .success(function(data) {
+        .then(function({data}) {
           $scope.serviceHours = data;
           _setupTwoWeekSelector();
           $scope.whenShowNext = function(){
@@ -1675,6 +1865,9 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
       $scope.hasTransit = $scope.transitInfos.length > 0;
       $scope.hasWalk = $scope.walkItineraries.length > 0;
 
+      const firstItinerary = $scope.transitItineraries && $scope.transitItineraries[0] && $scope.transitItineraries[0][0];
+      const firstTransit = firstItinerary && firstItinerary.json_legs.find(leg => leg.mode === 'BUS');
+      $scope.transitRoute = firstTransit ? firstTransit.route : undefined;
       // If itinerary results is 0, return no results
       if($scope.paratransitItineraries.length < 1 && $scope.transitItineraries.length < 1 && $scope.walkItineraries.length < 1 && !$scope.hasUber && !$scope.hasTaxi){
         $scope.noresults = true;
@@ -1748,6 +1941,9 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
     case 'purpose':
       usSpinnerService.spin('spinner-1');
       planService.getTripPurposes($scope, $http).then(function(){
+        // pull trip purposes from planService after fetching them and then expose them for the front end to use
+        $scope.purposes = planService.purposes
+        $scope.top_purposes = planService.top_purposes
         usSpinnerService.stop('spinner-1');
       });
       $scope.showNext = false;
@@ -1831,8 +2027,8 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
       break;
     case 'list_itineraries':
       if($routeParams.test){
-        $http.get('//' + APIHOST + '/data/bookingresult.json').
-          success(function(data) {
+        $http.get('//' + APIHOST + '/data/bookingresult.json')
+          .then(function(data) {
             planService.itineraryRequestObject = data.itinerary_request;
             planService.searchResults = data.itinerary_response;
             planService.booking_request = data.booking_request;

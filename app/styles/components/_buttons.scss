@@ -1,0 +1,208 @@
+%button-default {
+//   z-index: 1;
+  border-radius: 0;
+  @include focus {
+      outline: map-get($colors-utility, blue) solid 5px;
+    //   z-index: 999;
+  }
+}
+
+%button-secondary-disabled {
+  border: 3px solid rgba(70, 70, 70, 0.2);
+  background: rgba(70, 70, 70, 0.2);
+  color: $white;
+}
+
+.btn {
+  @extend %button-default;
+  position: relative;
+  padding: 12px 16px;
+  border: 3px solid $primary-color;
+  box-sizing: border-box;
+  font-family: $font-montserrat;
+  font-weight: $global-weight-bold;
+  font-size: 18px;
+  line-height: 22px;
+  letter-spacing: 0.06em;
+  text-decoration: none;
+
+  // TODO componentize buttons more, less tied to declaritive names like "back to top" and extend generic classes
+
+  &.btn-primary {
+      color: $off-white;
+      background: $primary-color;
+      border-color: $primary-color;
+      @include focus {
+          background: $secondary-color;
+          border-color: $secondary-color;
+          position: relative;
+      }
+      @include hover {
+          color: $off-white;
+          background: $secondary-color;
+          border-color: $secondary-color;
+      }
+      &.btn-error {
+        color: $secondary-color;
+        border-color: $alert-color;
+        @include hover {
+            color: $off-white;
+        }
+      }
+      @include disabled {
+          @extend %button-secondary-disabled;
+          @include hover {
+              @extend %button-secondary-disabled;
+          }
+      }
+  }
+
+  &.btn-danger {
+      color: $off-white;
+      background: #cc2121;
+      border-color: #cc2121;
+      @include focus {
+          background: map-get($colors-brand, red);
+          border-color: map-get($colors-brand, red);
+          position: relative;
+      }
+      @include hover {
+          color: $off-white;
+          background: map-get($colors-brand, red);
+          border-color: map-get($colors-brand, red);
+      }
+      @include disabled {
+          @extend %button-secondary-disabled;
+          @include hover {
+              @extend %button-secondary-disabled;
+          }
+      }
+  }
+
+  &.btn-secondary {
+    color: $primary-color;
+    background: $off-white; 
+    border-color: $primary-color;
+    @include focus {
+        position: relative;
+    }
+    @include hover {
+        color: $off-white;
+        background: $primary-color;
+    }
+    &.btn-error {
+      border-color: $alert-color;
+  }
+    @include disabled {
+        @include hover {
+            border: 3px solid rgba(70, 70, 70, 0.2);
+            background: transparent;
+            color: rgba(70, 70, 70, 0.2);
+            cursor: not-allowed;
+        }
+    }
+}
+
+  &.btn-top-nav {
+      max-width: none;
+      margin: 0;
+      padding: 1.094rem 1.111rem 1.094rem .5rem;
+      background: transparent; 
+      border: none;
+      color: $black;
+      font-style: normal;
+      font-weight: $global-weight-normal;
+      font-size: 24px;
+      line-height: 29px;
+      text-transform: capitalize;
+      text-decoration: none;
+      text-align: left;
+      @include focus {
+          text-decoration: underline;
+          position: relative;
+      }
+      @include hover {
+          color: map-get($colors-utility, blue);
+          text-decoration: underline;
+      }
+  }
+
+
+  &.btn-back-to-top {
+      color: $white;
+      background: $success-color;
+      border: none;
+      padding: 2.375rem .5rem .5rem;
+      max-width: 80px;
+      font-weight: $global-weight-bold;
+      font-size: 16px;
+      line-height: 20px;
+      letter-spacing: 0.06em;
+      text-align: center;
+      text-decoration: none;
+      @include focus {
+          color: $white;
+          background: $secondary-color;
+          position: relative;
+      }
+      @include hover {
+          color: $white;
+          background: $secondary-color;
+      }
+      i {
+          display: inline-block;
+          position: absolute;
+          top: 0;
+          left: 0;
+          height: 33px;
+          width: 33px;
+          &:before {
+              content: "";
+              position: absolute;
+  
+              left: 27px;
+              top: 15px;
+              width: 23px;
+              height: 23px;
+              border: solid $white;
+              border-width: 0 5px 5px 0;
+              -webkit-transform: rotate(225deg);
+              -ms-transform: rotate(225deg);
+              transform: rotate(225deg);
+          }
+      }
+  }
+
+  &.btn-pagination {
+      @extend .btn.btn-primary;
+
+      font-size: 18px;
+      line-height: 22px;
+      
+      color: $dark-gray;
+      background-color: transparent;
+      border: 3px solid $dark-gray;
+
+      @include hover {
+          background: $dark-gray;
+          color: $white;
+      }
+  }
+
+  &.btn-icon {
+    border: none;
+    background: transparent;
+    @include hover {
+      color: $off-white;
+      background: $primary-color;
+}
+    &.btn--lg-text {
+      font-size: 24px;
+    }
+  }
+
+}
+
+button {
+  @extend %button-default;
+}

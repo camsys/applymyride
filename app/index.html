@@ -5,7 +5,9 @@
     <title>FindMyRidePA</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/> <!--320-->
-
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet"> 
     <!-- Deployed version: deployed_version -->
 
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
@@ -18,7 +20,7 @@
     <link rel="stylesheet" href="styles/calendar.css">
     <!-- endbuild -->
     <link rel="stylesheet" href="styles/autocomplete.css">
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <base href="/">
     <script>
       //initialize APIHOST by mapping from hostname
@@ -26,12 +28,15 @@
       {
 	// Assume localhost rails server is running on port 3000
         var apiHostMapping = {
-	  'www.findmyridepa.org': 'occ-pa-prod.herokuapp.com',
-	  'findmyridepa.org': 'occ-pa-prod.herokuapp.com',
-	  'www.findmyridepa.com': 'occ-pa-prod.herokuapp.com',
-	  'findmyridepa.com': 'occ-pa-prod.herokuapp.com',
+	  'www.findmyridepa.org': 'occ-pa-prod.camsys-apps.com',
+	  'findmyridepa.org': 'occ-pa-prod.camsys-apps.com',
+	  'www.findmyridepa.com': 'occ-pa-prod.camsys-apps.com',
+	  'findmyridepa.com': 'occ-pa-prod.camsys-apps.com',
+    'www.findmyridepa.net': 'occ-pa-prod.camsys-apps.com',
+    'findmyridepa.net': 'occ-pa-prod.camsys-apps.com',
 	  'ui-pa-qa2.s3-website-us-east-1.amazonaws.com': 'occ-pa-qa2.herokuapp.com',
 	  'findmyridepa-qa2.camsys-apps.com': 'occ-pa-qa2.herokuapp.com',
+      'oneclick-pa-qa.camsys-apps.com': 'occ-pa-qa.camsys-apps.com',
 	  'findmyridepa-dev2.camsys-apps.com': 'occ-pa-dev.herokuapp.com',
 	  '0.0.0.0': '0.0.0.0:3000',
 	  '127.0.0.1': '127.0.0.1:3000',
@@ -45,72 +50,15 @@
     </script>
   </head>
   <body ng-app="applyMyRideApp" ng-controller="NavbarController">
-    <div style="position:absolute; bottom:1px;" ng-hide="true">v2.6.7</div>
+    <div style="position:absolute; bottom:1px;" ng-hide="true">v2.6.9</div>
 
     <!--[if lt IE 7]>
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
-
-    <div ng-show="showNavbar()" class="navbar navbar-default navbar-static-top" style="box-shadow: 0px 2px 8px rgba(0,0,0,0.4); margin-bottom: 1em;">
-      <div class="container-fluid">
-        <nav class="navbar navbar-static-top" role="navigation">
-          <div class="container">
-            <div class="navbar-header">
-              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-              </button>
-              <a class="navbar-brand" href="#/">
-                <img ng-src="images/FMR.png"/>
-              </a>
-            </div>
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-              <ul class="nav navbar-nav navbar-right">
-                <li ng-show="showCurrentBalance">
-                  <a class="navbar-icon" style="margin-top: .5em;"
-                     title="This balance represents the current prepaid balance for Shared Ride/Paratransit. Please contact your local transit agency regarding questions about this information.">
-                    Current Balance
-                    <div class="badge" ng-class="{'alert-danger': (currentBalance < 0), 'alert-success': (currentBalance >= 0)}">{{currentBalance | currency}}</div>
-                  </a>
-                </li>
-                <li ng-show="email">
-                  <a class="navbar-icon" href="#/plan/my_rides?navbar=true" style="margin-top: .5em;">
-                    My Rides
-                    <div class="badge alert-success" ng-class="{'live-trip': liveTrip}">{{rideCount}}</div>
-                  </a>
-                </li>
-                <li ng-show="email">
-                  <a class="navbar-icon" href="#/profile" style="margin-top: .5em;">
-                    {{first_name}} {{last_name}}
-                  </a>
-                </li>
-                <li ng-show="email">
-                  <a class="navbar-icon" ng-click="logout()" href="" style="margin-top: .5em;">
-                    Sign out
-                  </a>
-                </li>
-                <li ng-show="!email">
-                  <a class="navbar-icon" href="#/login" style="margin-top: .5em;">
-                    Sign in
-                  </a>
-                </li>
-                <li>
-                  <a class="navbar-icon" ng-click="reset()" style="cursor: pointer; margin-top: .5em;" href="">
-                    New trip
-                  </a>
-                </li>
-                <li>
-                  <a class="navbar-icon" href="#/about" style="margin-top: .5em;">
-                    About
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </nav>
-      </div>
+    <div
+      ng-show="showNavbar()"
+      class="navbar navbar-default navbar-static-top"
+      ng-include="'views/navbar.html'">
     </div>
 
     <!-- Add your site or application content here -->
@@ -119,7 +67,7 @@
         <h2>Internet Explorer is no longer supported. Please reopen FindMyRide using another browser such as Chrome, Edge, or Safari.</h2>
       </div>
     </div>
-    <div class="container-fluid">
+    <main class="container-fluid" id="main-content">
       <div class="alert alert-success alert-dismissible" role="alert" ng-show="flash.getMessage()" ng-cloak>
         <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         {{ flash.getMessage() }}
@@ -128,8 +76,9 @@
       <div style="position: relative;">
         <div ng-view="" class="at-view-fade-in at-view-fade-out"></div>
       </div>
-    </div>
-
+    </main>
+    <!-- NOTE: this is only commented out rather than outright removed just in case Penn DOT changes their mind and wants a footer -->
+    <!-- <div ng-include="'views/footer.html'"></div> -->
     <div class="debug footer">
     <div class="container">
     <div class="visible-xs-block">visible-xs-block</div>
@@ -207,6 +156,7 @@
         <script src="scripts/services/filters.js"></script>
         <script src="scripts/services/plan.js"></script>
         <script src="scripts/services/util.js"></script>
+        <script src="scripts/factories/debounce.js"></script>
         <script src="scripts/directives/calendar.js"></script>
         <script src="scripts/directives/time.js"></script>
         <script src="scripts/directives/clickFocus.js"></script>

@@ -1,4 +1,4 @@
-.container
+.container#paratransit-detail
   .row{style: 'margin-bottom: 1em;', ng: {show: 'booking_failed'}}
     .col-xs-12.col-md-8.col-md-offset-2{style: 'padding: 0;'}
       .row
@@ -19,10 +19,10 @@
           %h2 Your trip has been saved
       
     .headerwrap{ng:{show: '$index == 0'}}
-      .row
+      %header.row
         .col-xs-12.col-md-8.col-md-offset-2.no-padding
           .row
-            .col-xs-12{style:'background-color: rgb(205,254,206); padding:10px;'}
+            .col-xs-12{style:'background-color: rgb(250,250,250); padding:10px;'}
               %h1
                 %span
                   Shared Ride
@@ -30,7 +30,7 @@
                   (booked)
                 %span{style: 'color: red; font-size: 22px;', ng: {show: 'tripCancelled'}}
                   (cancelled)
-              %h5.text-muted
+              %h5
                 %span
                   CONFIRMATION
                 %span.tab1
@@ -80,7 +80,8 @@
           .col-xs-2.text-right
             %h4{style: 'float:right; vertical-align: bottom;'} {{itinerary.cost | currency | free}}
     .row
-      .col-xs-12.col-md-8.col-md-offset-2.paratransit-body
+      -# Inline style is so that the timeline widget appears and to not mess with all the z-index: -1 styling
+      .col-xs-12.col-md-8.col-md-offset-2.card{style: "background: inherit; max-width: 100%;"}
         .border-between.timeline.mode_wait
           .row.even-height-row
             .col-xs-2.right-side.no-padding
@@ -125,10 +126,9 @@
       .col-xs-12.col-sm-8.col-sm-offset-2.text-left.text-muted
         Use a comma to separate multiple addresses
     .row
-      .col-xs-8.col-sm-6.col-sm-offset-2{'style' => 'line-height: 2em; padding-right: 0px;'}
-        %input.form-control{style: 'font-size: .9em; border-top-right-radius:0px; border-bottom-right-radius:0px;', ng: {model: 'emailString'}}
-      .col-xs-4.col-sm-2{'style' => 'line-height: 2em; padding-left: 0px;'}
-        %a.btn.btn-success.btn-block{style: 'padding-left: 0px; padding-right: 0px;min-width: 20px; border-top-left-radius:0px; border-bottom-left-radius:0px;', ng: {click: 'sendEmail($event)'}}
+      %form.input-group
+        %input{type:'text', ng: {model: 'emailString'}}
+        %a.btn.btn-primary{ng: {click: 'sendEmail($event)'}}>
           %i.fa.fa-envelope-o{style:'color: white;'}
             %span
               Send
@@ -140,15 +140,15 @@
     .col-xs-12.col-md-8.col-md-offset-2
       %a.btn.btn-primary.btn-block{href: "", ng: {click: 'toggleEmail($event);', show:'!tripCancelled'}}
         Email this ride
-      %a.btn.btn-primary.btn-block{style:'background-color:red;', href: '', ng: {click: 'cancelTrip()', hide:'tripCancelled'}}
+      %a.btn.btn-danger.btn-block{href: '', ng: {click: 'cancelTrip()', hide:'tripCancelled'}}
         Cancel this ride
       %a.btn.btn-primary.btn-block{href: '/#/plan/my_rides', ng: {show:'tripCancelled'}}
         View my saved rides
     .col-xs-12.col-md-8.col-md-offset-2
       .pull-left
-        %a.btn{href: "", ng: {click: "logout()", controller:'PlanController'}}
+        %a.btn.btn-secondary{href: "", ng: {click: "logout()", controller:'PlanController'}}
           Logout
       .pull-right
-        %a.btn.btn-link{ng: {click: "reset()", controller:'PlanController'}}
+        %a.btn.btn-secondary{ng: {click: "reset()", controller:'PlanController'}}
           Book another ride
 

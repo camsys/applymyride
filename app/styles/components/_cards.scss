@@ -1,0 +1,13 @@
+.card {
+  background: $card-background;
+  color: $card-font-color;
+  padding: $card-padding;
+  border: 1px solid #E4E4E4;
+  max-width: 700px;
+
+  &.card-thin {
+    padding: 0.5em;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+}

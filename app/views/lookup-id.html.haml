@@ -11,24 +11,31 @@
         .row{style: 'margin-top: 2em'}
           %h3 Enter your last name
         .row
-          %input.form-control{style: 'font-size: .9em; width: 50%;',
+          %input{type:'text',style: 'font-size: .9em; width: 50%;',
                               placeholder: 'enter your last name',
                               ng: { model: 'lastName',
                                     required: 'true'}}
         .row{style: 'margin-top: 1em'}
           %h3 Your county
         .row
-          %select.btn-lg{style: 'width: 100%', ng: {model: 'county', options: 'county for county in counties', enter: 'next()'}}
+          %select{ng: {model: 'county', options: 'county for county in counties', enter: 'next()'}}
             %option{value: '', disabled: '', selected: ''}
               Select your county
-        .row{style: 'margin-top: 1em'}
+        .row.alert.alert-success{style: 'margin-top: 2em', ng:{if: 'isTransitionCounty(county)'}}
+          .col-md-2
+            .fa.fa-warning.fa-3x
+          .col-md-10.text-left
+            %h3 {{countyInTransitionMessage}}
+            %br
+            %h3 {{transitionHelpMessage}}
+        .row{style: 'margin-top: 1em', ng:{hide: 'isTransitionCounty(county)'}}
           %h3 Your birthdate
-        .row
-          %input.form-control.dob.month{type:'tel', placeholder: 'mm', name:'month', ng: {model: 'dob.month', required: 'true', pattern:'/(^0?[1-9]|^1[012])$/', class:'{invalid: lookupidform.month.$dirty && lookupidform.month.$invalid  }'  }}
-          &#47;
-          %input.form-control.dob.day{type:'tel', placeholder: 'dd', name:'day', ng: {model: 'dob.day', required: 'true', pattern:'/(^0?[1-9]|^[12][0-9]|^3[01])$/', class:'{invalid: lookupidform.day.$dirty && lookupidform.day.$invalid  }'  }}
-          &#47;
-          %input.form-control.dob.year{type:'tel', placeholder: 'yyyy', name:'year', ng: {model: 'dob.year', required: 'true', pattern:'/(^19|^20)\d\d$/', class:'{invalid: lookupidform.year.$dirty && lookupidform.year.$invalid  }' }}
+        .row{ng:{hide: 'isTransitionCounty(county)'}}
+          %input.dob.month{type:'tel', placeholder: 'mm', name:'month', ng: {model: 'dob.month', required: 'true', pattern:'/(^0?[1-9]|^1[012])$/', class:'{invalid: lookupidform.month.$dirty && lookupidform.month.$invalid  }'  }, style: 'width: 3.5em'}
+          %span{style:'margin: 0 8px;'} &#47;
+          %input.dob.day{type:'tel', placeholder: 'dd', name:'day', ng: {model: 'dob.day', required: 'true', pattern:'/(^0?[1-9]|^[12][0-9]|^3[01])$/', class:'{invalid: lookupidform.day.$dirty && lookupidform.day.$invalid  }'  }, style: 'width: 3.5em'}
+          %span{style:'margin: 0 8px;'} &#47;
+          %input.dob.year{type:'tel', placeholder: 'yyyy', name:'year', ng: {model: 'dob.year', required: 'true', pattern:'/(^19|^20)\d\d$/', class:'{invalid: lookupidform.year.$dirty && lookupidform.year.$invalid  }' }}
         .row{ng:{show: 'errors.dob' }}
           .alert.alert-danger{role:'alert'}
             Check the birthdate for errors
@@ -43,8 +50,8 @@
           %a.btn-block{href: '#/'}
             Cancel
         .row{style: 'margin-top: 1em'}
-          .pull-right
-            %a.btn.btn-primary.btn-next{href: "", ng: {click: 'lookupId()'}}
+          .pull-right{ng:{hide: 'isTransitionCounty(county)'}}
+            %a.btn.btn-primary{href: "", ng: {click: 'lookupId()'}}
               Find my ID
         .row.text-center{style:'margin: 30px 0px 10px 0px;'}
           Need Help? Call 1-844-PA-4RIDE

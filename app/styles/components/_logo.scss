@@ -1,0 +1,50 @@
+.navbar > .container .navbar-brand, .navbar > .container-fluid a.navbar-brand {
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  margin-left:0px;
+}
+
+.logo-container--title {
+  display: flex;
+  flex-direction: column;
+  padding-right: 8px;
+  border-right: 1.25px solid $black;
+  height: 48px;
+  width: 70px;
+}
+
+.logo-container--title > h1 {
+  font-family: $font-montserrat;
+  font-weight: bold;
+  font-size: 24px;
+  line-height: 29px;
+  letter-spacing: 0.05em;
+  text-transform: capitalize;
+  color: $black;
+  margin: 0;
+}
+
+.logo-container--title > p {
+  margin: 0;
+  font-family: $font-montserrat;
+  // font-weight: normal;
+  font-size: 9px;
+  line-height: 11px;
+  letter-spacing: 0.1em;
+  text-transform: capitalize;
+  color: $black;
+}
+
+.logo-subtitle {
+  color: $black;
+  margin-left: 8px;
+  font-size: 18px;
+  font-weight: 500;
+}
+
+@media screen and (max-width:768px) {
+  .logo-subtitle {
+    font-size:12px;
+  }
+}
