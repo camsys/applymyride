@@ -812,24 +812,30 @@ angular.module('applyMyRideApp')
        */
       this.addCityToLocation = function(location) {
         const ADMIN_AREA_3 = 'administrative_area_level_3'
-        let city_address_component;
+        let cityAddressComponent;
         const localityAvailable = location.address_components.find(function(component) {
           return component.types.includes('locality') && (component.long_name !== null && component.long_name !== "")
         })
 
         if (!localityAvailable) {
           // pull administrative locality level 3 instead if locality isn't present
-          city_address_component = location.address_components.find(function(component) {
+          cityAddressComponent = location.address_components.find(function(component) {
             const includesAdmin3 = component.types.includes(ADMIN_AREA_3)
             return includesAdmin3 && component.long_name !== 'Pennsylvania' && (component.long_name !== null && component.long_name !== "")
           })
 
-          if (!city_address_component || city_address_component.long_name === null || city_address_component.long_name === "") {
+          if (!cityAddressComponent || cityAddressComponent.long_name === null || cityAddressComponent.long_name === "") {
             throw new Error(`The "${location.name}" address does not have a city. Please search again for an address with the city included.`)
           }
-
           // Waypoint locality is interpreted as the city in OCC
-          location.address_components.push({...city_address_component, types: ['locality', 'political']})
+          // Build new locality object with proper types
+          // Correct the city if it's incorrect according to the utility service(see PAMF-751 for the reasoning)
+          const localityObject = {
+            long_name: util.silentlyCorrectIncorrectTownship(cityAddressComponent.long_name),
+            short_name: util.silentlyCorrectIncorrectTownship(cityAddressComponent.long_name),
+            types: ['locality', 'political']
+          }
+          location.address_components.push(localityObject)
         }
       }
 

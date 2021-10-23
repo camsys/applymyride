@@ -33,6 +33,18 @@ angular.module('applyMyRideApp')
     return comp;
   };
 
+  /** See [PAMF-751]
+   * method returns a corrected city based on the input city and whether or not it exists in the below object
+   * - Should match with the CORRECTED_CITY_HASHES constant in the Trip model of the OCC repo
+   */
+  this.silentlyCorrectIncorrectTownship = function(city='') {
+    const BadCities = {
+      'West Manchester Township': 'York',
+      'Hampden Township': 'Mechanicsburg'
+    }
+    return BadCities[city] == null ? city : BadCities[city]
+  }
+
     // see [PAMF-698]
     this.getCountiesInTransition = function (successCallback, errorCallback) {
       //simulate back-end response
