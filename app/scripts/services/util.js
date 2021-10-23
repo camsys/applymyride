@@ -40,7 +40,9 @@ angular.module('applyMyRideApp')
   this.silentlyCorrectIncorrectTownship = function(city='') {
     const BadCities = {
       'West Manchester Township': 'York',
-      'Hampden Township': 'Mechanicsburg'
+      'West Manchester Twp': 'York',
+      'Hampden Township': 'Mechanicsburg',
+      'Hampden Twp': 'Mechanicsburg',
     }
     return BadCities[city] == null ? city : BadCities[city]
   }
