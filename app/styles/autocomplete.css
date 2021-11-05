@@ -736,7 +736,11 @@ only screen and (min-device-pixel-ratio : 1.5) {
 }
 
 .discounts div.ng-isolate-scope { text-align: center; }
-.discounts div.tab-content { text-align: left; }
+.discounts div.tab-content {
+  text-align: left;
+  display: flex;
+  justify-content: center;
+}
 
 .nav-tabs > li.active {
   border-bottom: 5px #002469 solid;
