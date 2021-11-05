@@ -50,7 +50,7 @@
       .row
         %ul.nav.nav-tabs.bus-nav-tabs{ng:{show:'viewMoreBusOptions'}}
           %li{ng: {repeat:'busOption in transitInfos[1] | limitTo: 3', class:'{active: selectedBusOption[1] == $index }'}}
-            .btn{ng: {click: 'selectedBusOption[1] = $index' }}
+            .tab{ng: {click: 'selectedBusOption[1] = $index' }}
               {{busOption.label}}
         %div{ng: {click: 'goViewTransit()' }}
           .col-xs-10{style:'background-color: #f5f5f5;'}
