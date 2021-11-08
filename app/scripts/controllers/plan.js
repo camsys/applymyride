@@ -41,18 +41,18 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
   $scope.toLocations = [];
   $scope.placeIds = [];
   $scope.showConfirmLocationMap = false;
+  // Desktop/ global map config
+  // All other map options get their default values
   $scope.mapOptions = {
     zoom: 11,
     mapTypeId: google.maps.MapTypeId.ROADMAP
   };
   //disable some map options if mobile user
   if(util.isMobile()){
-    $scope.mapOptions.scrollwheel = false;
-    $scope.mapOptions.zoomControl = false;
-    $scope.mapOptions.navigationControl = false;
-    $scope.mapOptions.mapTypeControl = false;
-    $scope.mapOptions.scaleControl = false;
-    $scope.mapOptions.draggable = false;
+    $scope.mapOptions.scrollwheel = false; // Disable Scroll wheel
+    $scope.mapOptions.navigationControl = false; // Config option doesn't exist anymore?
+    $scope.mapOptions.mapTypeControl = false; // Disable Map Type controls
+    $scope.mapOptions.scaleControl = false; // Disable the Scale Control
   }
   $scope.step = $routeParams.step;
   $scope.disableNext = false;
