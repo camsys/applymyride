@@ -121,8 +121,6 @@ angular.module('applyMyRideApp')
 
           // Check for first itinerary to set Trip values
           if(i == 0){
-            trip_with_itineraries.id = trip[i].trip_id;
-            trip_with_itineraries.details = trip[i].details;
             trip_with_itineraries.mode = trip[i].mode;
             trip_with_itineraries.startDesc = that.getDateDescription(trip[i].wait_start || trip[i].departure);
             trip_with_itineraries.startDesc += " at " + moment(trip[i].wait_start || trip[i].departure).format('h:mm a');
@@ -164,6 +162,7 @@ angular.module('applyMyRideApp')
         }
 
         trip_with_itineraries.roundTrip = typeof trip[1] !== 'undefined' ? true : false;
+
         return trip_with_itineraries;
       }
 
@@ -679,89 +678,7 @@ angular.module('applyMyRideApp')
         return $http.get(urlPrefix + '/api/v1/services/hours', this.getHeaders());
       }
 
-      /**
-       *** fixedRouteReminderPref format
-      * @typedef {Object} NotificationPref
-      *  @property {{reminders: Object[], disabled: boolean[]}} fixed_route
-      */
-      this.getUserNotificationDefaults = function($http) {
-        const self = this
-        var profilePromise = this.getProfile($http);
-        return profilePromise.then(function(results){
-          const avalable_reminders = results.data.details.notification_preferences.fixed_route
-          const enabled = false
-          const reminders = avalable_reminders.reduce(function(acc, curr) {
-            acc[acc.length] = {'day': curr, enabled }
-            return acc
-          }, [])
 
-          self.fixedRouteReminderPrefs = {
-            reminders,
-            disabled: self.buildDisableArray(reminders.length)
-          }
-        });
-      }
-
-      this.buildDisableArray = function(num) {
-        const ar = []
-        for (let i = 0; i < num; i++) {
-          ar[i] = false
-        }
-        return ar
-      }
-
-      /**
-      *** Function params
-      * @param {NotificationPref} notificationPrefs
-      * @param {Date} tripDate is the trip date represented as a Date instance
-      *  - NOTE: this is a method param as planService.selectedTrip isn't necssarily
-      *  ...defined on the plan details page
-      * @returns {NotificationPref} returns a NotificationPref object that's synced
-      * ...between the front end User preferences and the backend Trip preference
-      */
-      this.syncFixedRouteNotifications = function(notificationPrefs = null, tripDate = null) {
-        const today = new Date()
-        const fixedRoute = notificationPrefs !== null ? notificationPrefs.fixed_route : []
-        const final = {
-          reminders: [],
-          disabled: {}
-        }
-        if (fixedRoute.length === 0) {
-          final.reminders = this.fixedRouteReminderPrefs.reminders
-          // Disable reminder preferences for reminder days that are in the past
-          this.fixedRouteReminderPrefs.reminders.forEach(({day}) => {
-            // if there's a tripDate fed in, then use that, otherwise, null
-            const reminderDate = tripDate && new Date(tripDate - day * 24 * 60 * 60 * 1000)
-
-            // If the reminder date already passed then disable the checkbox
-            const isNotInPast = reminderDate && (reminderDate.getMonth() >= today.getMonth() && reminderDate.getDate() > today.getDate())
-            if (!isNotInPast) {
-              final.disabled[day] = true
-            } else {
-              final.disabled[day] = false
-            }
-          })
-        } else {
-          this.fixedRouteReminderPrefs.reminders.forEach(({day, enabled}) => {
-            // Finding Trip notification that matches the current user notification day
-            const notif = fixedRoute.find(entry => entry.day === day)
-            // if there's a tripDate fed in, then use that, otherwise, null
-            const reminderDate = tripDate && new Date(tripDate - day * 24 * 60 * 60 * 1000)
-
-            // If the reminder date is in the past then disable the checkbox
-            const isNotInPast = reminderDate && (reminderDate.getMonth() >= today.getMonth() && reminderDate.getDate() > today.getDate())
-            if (!isNotInPast) {
-              final.disabled[day] = true
-              final.reminders.push({day, enabled: notif.enabled})
-            } else {
-              final.reminders.push({day, enabled: notif.enabled})
-              final.disabled[day] = false
-            }
-          })
-        }
-
-        return final
-      }
       // Book a shared ride
       this.bookSharedRide = function($http) {
         var requestHolder = {};
@@ -805,10 +722,9 @@ angular.module('applyMyRideApp')
           this.toDetails.name = this.toDetails.poi.name
         }
         var request = {};
-        const trip_details = { notification_preferences: null}
         request.trip_purpose = this.purpose;
         request.itinerary_request = [];
-        var outboundTrip = { details: trip_details};
+        var outboundTrip = {};
         outboundTrip.segment_index = 0;
         outboundTrip.start_location = this.fromDetails;
         outboundTrip.end_location = this.toDetails;
@@ -861,10 +777,6 @@ angular.module('applyMyRideApp')
         }
         return request;
       };
-
-      this.updateTripDetails = function($http, updateTripRequest) {
-        return $http.put(urlPrefix + 'api/v1/itineraries/update_trip_details', updateTripRequest , this.getHeaders());
-      }
 
       this.addStreetAddressToLocation = function(location) {
         return;

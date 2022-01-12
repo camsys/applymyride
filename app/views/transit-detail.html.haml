@@ -41,8 +41,6 @@
       .col-md-8.col-md-offset-2.col-xs-12
         -# Transit Trip Details partial
         %span{ segmentid:'1', ng:{ include: "'views/transit-embedded.html'", controller:'TransitController'}}
-    .row.unstuck-foot.btn-spacing{style: 'margin-top: 1.5em', ng: {show: 'transitSaved'}}
-      .col-md-8.col-md-offset-2.col-xs-12.card{style: 'max-width:100%',ng:{include:"'views/itinerary-notification.html'"}}
 
     %div{style: 'margin-top: 1em', ng: {show: 'showEmail'}}
       .row

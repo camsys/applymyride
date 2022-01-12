@@ -7,21 +7,6 @@ angular.module('applyMyRideApp')
       $scope.location = $location.path();
       $scope.savedItineraryView = true;
       $scope.trip = planService.selectedTrip;
-      // If a trip exists, then fetch user notification preference defaults
-      if ($scope.trip && $scope.trip.mode === 'mode_transit') {
-        const notificationPrefs = $scope.trip.details ? $scope.trip.details.notification_preferences : {fixed_route: []}
-        planService.getUserNotificationDefaults($http).then(() => {
-        /**
-         *** $scope.fixedRouteReminderPref format
-         * @typedef {Object} NotificationPref
-         *  @property {{reminders: Object[], disabled: boolean[]}} fixed_route
-         *
-         * @type {NotificationPref}
-         */
-          $scope.fixedRouteReminderPrefs = planService.syncFixedRouteNotifications(notificationPrefs, new Date($scope.trip.itineraries[0].departure))
-        })
-      }
-
       angular.forEach($scope.trip.itineraries, function(itinerary, index) {
         planService.prepareItinerary(itinerary);
       });
@@ -89,29 +74,9 @@ angular.module('applyMyRideApp')
 
       }
       $scope.mode = $scope.trip.mode;
+
       if($scope.trip.itineraries.length > 0){
         $scope.tripCancelled = $scope.trip.itineraries[0].status == "canceled" ? true : false;
-      }
-
-      $scope.updateTransitTripReminders = function($event) {
-        $event.preventDefault()
-        // merge old notification preferences with updated ones
-        const tripDetails = {
-          notification_preferences: {
-            ...planService.selectedTrip.details.notification_preferences,
-            fixed_route: $scope.fixedRouteReminderPrefs.reminders
-          }
-        }
-        // grab trip id(s) and build update trip request object
-        const trip = $scope.trip.id
-        const updateTripRequest = {trip, details: tripDetails}
-
-        const planPromise = planService.updateTripDetails($http, updateTripRequest)
-          planPromise.then(function(results) {
-            const notificationPrefs = results.data.trip[0].details.notification_preferences
-            $scope.fixedRouteReminderPrefs = planService.syncFixedRouteNotifications(notificationPrefs, new Date($scope.trip.itineraries[0].departure))
-            bootbox.alert("Trip notification preferences updated!")
-          })
       }
 
       $scope.cancelTrip = function(){
