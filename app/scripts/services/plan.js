@@ -720,7 +720,10 @@ angular.module('applyMyRideApp')
       * ...between the front end User preferences and the backend Trip preference
       */
       this.syncFixedRouteNotifications = function(notificationPrefs = null, tripDate = null) {
-        const today = new Date()
+        // Using MomentJS for date parsing/ manipulation/ comparison
+        const tripMoment = moment(tripDate).set({hour:0,minute:0,second:0})
+        const today = moment().set({hour:0,minute:0,second:0})
+
         const fixedRoute = notificationPrefs !== null ? notificationPrefs.fixed_route : []
         const final = {
           reminders: [],
@@ -731,10 +734,10 @@ angular.module('applyMyRideApp')
           // Disable reminder preferences for reminder days that are in the past
           this.fixedRouteReminderPrefs.reminders.forEach(({day}) => {
             // if there's a tripDate fed in, then use that, otherwise, null
-            const reminderDate = tripDate && new Date(tripDate - day * 24 * 60 * 60 * 1000)
+            const reminderDate = tripDate && tripMoment.clone().subtract(day,'day')
 
             // If the reminder date already passed then disable the checkbox
-            const isNotInPast = reminderDate && (reminderDate.getMonth() >= today.getMonth() && reminderDate.getDate() > today.getDate())
+            const isNotInPast = reminderDate && reminderDate.isAfter(today)
             if (!isNotInPast) {
               final.disabled[day] = true
             } else {
@@ -746,10 +749,10 @@ angular.module('applyMyRideApp')
             // Finding Trip notification that matches the current user notification day
             const notif = fixedRoute.find(entry => entry.day === day)
             // if there's a tripDate fed in, then use that, otherwise, null
-            const reminderDate = tripDate && new Date(tripDate - day * 24 * 60 * 60 * 1000)
+            const reminderDate = tripDate && tripMoment.clone().subtract(day,'day')
 
-            // If the reminder date is in the past then disable the checkbox
-            const isNotInPast = reminderDate && (reminderDate.getMonth() >= today.getMonth() && reminderDate.getDate() > today.getDate())
+            // If the reminder date already passed then disable the checkbox
+            const isNotInPast = reminderDate && reminderDate.isAfter(today)
             if (!isNotInPast) {
               final.disabled[day] = true
               final.reminders.push({day, enabled: notif.enabled})
