@@ -38,7 +38,7 @@ module.exports = function (grunt) {
       haml: {
         files: [
           '<%= yeoman.app %>/views/{,*/}*.haml',
-          '<%= yeoman.app %>/scripts/components/{,*/}*.haml'
+          '<%= yeoman.app %>/scripts/pages{,*/}*.haml'
         ],
         tasks: ['haml:watched']
       },
@@ -76,11 +76,11 @@ module.exports = function (grunt) {
         },
         files: [
           '<%= yeoman.app %>/{,*/}*.html',
-          '{.tmp,<%= yeoman.app %>}/scripts/components/{,*/}*.html',
+          '{.tmp,<%= yeoman.app %>}/scripts/{,*/}*.html',
           '{.tmp,<%= yeoman.app %>}/views/{,*/}*.html',
           '{.tmp,<%= yeoman.app %>}/templates/{,*/}*.html',
           '{.tmp,<%= yeoman.app %>}/styles/{,*/}*.css',
-          '{.tmp,<%= yeoman.app %>}/scripts/{,*/}*.js',
+          '{.tmp,<%= yeoman.app %>}/scripts/**/*.js',
           '<%= yeoman.app %>/data/{,*/}*.*',
           '<%= yeoman.app %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
         ]
@@ -246,9 +246,9 @@ module.exports = function (grunt) {
           },
           {
             expand: true,
-            cwd: '<%= yeoman.app %>/scripts/components',
-            src: '{,*/}*.haml',
-            dest: '.tmp/components',
+            cwd: '<%= yeoman.app %>/scripts',
+            src: '**/*.haml',
+            dest: '.tmp/views',
             ext: '.html'
           }
         ]
@@ -264,9 +264,9 @@ module.exports = function (grunt) {
           },
           {
             expand: true,
-            cwd: '<%= yeoman.app %>/scripts/components/{,*/}',
-            src: '{,*/}*.haml',
-            dest: 'dist/components',
+            cwd: '<%= yeoman.app %>/scripts',
+            src: '**/*.haml',
+            dest: 'dist/views',
             ext: '.html'
           }
         ]
@@ -410,7 +410,7 @@ module.exports = function (grunt) {
         files: [{
           expand: true,
           cwd: '<%= yeoman.dist %>',
-          src: ['*.html', 'views/{,*/}*.html', 'scripts/components/{,*/}*.html'],
+          src: ['*.html', 'views/{,*/}*.html', 'scripts/{,*/}*.html'],
           dest: '<%= yeoman.dist %>'
         }]
       }
@@ -448,7 +448,7 @@ module.exports = function (grunt) {
             '*.{ico,png,txt}',
             '.htaccess',
             '*.html',
-            'scripts/controllers/{,*/}*.html',
+            'scripts/{,*/}*.html',
             'views/{,*/}*.html',
             'styles/{,*/}*.css',
             'images/{,*/}*.*',

@@ -8,6 +8,8 @@
  *
  * Main module of the application.
  */
+
+// NOTE: COMPONENT BASED ARCHITECTURE FOR ANGULARJS USES IT'S OWN ROUTE PROVIDER SPECIFIC TO COMPONENTS
 angular.module('applyMyRideApp', [
     'ngAnimate',
     'ngAria',
@@ -116,9 +118,12 @@ angular.module('applyMyRideApp', [
         controller: 'ItineraryController'
       })
       .when('/about', {
-        templateUrl: 'views/about.html',
-        controller: 'AboutController'
+        templateUrl: 'views/pages/AboutIndex/about-index.html',
       })
+      // .when('/about', {
+      //   templateUrl: 'views/about.html',
+      //   controller: 'AboutController'
+      // })
       .when('/about/sharedride', {
         templateUrl: 'views/about.html',
         controller: 'AboutController'
