@@ -404,7 +404,7 @@
             %a.btn.btn-secondary{href: "", back: '', ng: {click: "back()"}}
               %span
                 Back
-            %a.btn.btn-primary.pull-right{href: "", ng: {click: 'next()'}}
+            %a.btn.btn-primary.pull-right{href: "", ng: {disabled: 'disableNext', click: 'next()'}}
               %span{'ng-show'=>'driverInstructions'}
                 Book this Trip
               %span{'ng-hide'=>'driverInstructions'}
