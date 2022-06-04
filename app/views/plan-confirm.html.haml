@@ -103,7 +103,7 @@
     .row
       .col-xs-12.col-md-6.col-md-offset-3.col-sm-8.col-sm-offset-2.text-center{style:'padding:0px; margin-bottom:10px;'}
         %a.btn.btn-primary.btn-block{href: "", ng: {click: 'next()'}}
-          Book This Shared Ride
+          Continue with Shared Ride
     .row.unstuck-foot.btn-spacing
       .col-xs-12.col-md-6.col-md-offset-3.col-sm-8.col-sm-offset-2.text-center{style:'padding:0px; '}
         .pull-left
@@ -193,7 +193,7 @@
       .col-xs-12.col-md-6.col-md-offset-3.col-sm-8.col-sm-offset-2
         .row.card.card-thin{style:'display:flex;'}
           .col-xs-3.col-md-2{style:'margin:auto;'}
-            %strong {{transitItineraries[0][ selectedBusOption[0] ].cost | currency | free}}
+            %strong {{fare_info.mode_transit}}
             .text-muted{ng:{show:'transitItineraries[1]'}}
               (round trip)
           .col-xs-5.col-md-8.row{style:'margin:auto;'}

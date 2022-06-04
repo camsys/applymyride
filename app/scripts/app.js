@@ -26,6 +26,7 @@ angular.module('applyMyRideApp', [
     'LocalStorageModule',
     'ng.deviceDetector',
     'ngBootbox',
+    'ngIdle',
   ]).config(function ($routeProvider) {
     $routeProvider
       .when('/', {

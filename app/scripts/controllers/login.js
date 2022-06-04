@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('applyMyRideApp')
-  .controller('LoginController', ['$scope', '$location', 'flash', 'planService', '$http', 'ipCookie', '$window', 'localStorageService', 'util',
-    function ($scope, $location, flash, planService, $http, ipCookie, $window, localStorageService, util) {
+  .controller('LoginController', ['$scope', '$rootScope', '$location', 'flash', 'planService', '$http', 'ipCookie', '$window', 'localStorageService', 'util', 'Idle',
+    function ($scope, $rootScope, $location, flash, planService, $http, ipCookie, $window, localStorageService, util, Idle) {
       //skip initializing this controller if we're not on the page
       if( ['/','/loginError','/plan/login-guest'].indexOf( $location.path() ) == -1){ return; }
 
@@ -139,6 +139,12 @@ angular.module('applyMyRideApp')
         return;
       });
 
+      $rootScope.$on('IdleTimeout', function() {
+        // The user has timed out (meaning idleDuration + timeout has passed without any activity)
+        // Log the user out.
+        $rootScope.$emit("CallLogout", {});
+      });
+
       $scope.authenticate = function(){
         planService.dateofbirth = $scope.dateofbirth;
         var login = {};
@@ -207,8 +213,17 @@ angular.module('applyMyRideApp')
                 $location.path('/plan/where');
             }
           });
+          Idle.watch();
         });
       }
-
     }
-  ]);
+  ])
+  .config(function(IdleProvider, KeepaliveProvider) {
+    // configure Idle settings
+    IdleProvider.idle(1); // in seconds
+    IdleProvider.timeout(60 * 60); // in seconds
+  })
+  .run(function(Idle){
+    // start watching when the app runs. also starts the Keepalive service by default.
+    Idle.watch();
+  });

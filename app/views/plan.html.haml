@@ -404,11 +404,11 @@
             %a.btn.btn-secondary{href: "", back: '', ng: {click: "back()"}}
               %span
                 Back
-            %a.btn.btn-primary.pull-right{href: "", ng: {click: 'next()'}}
+            %a.btn.btn-primary.pull-right{href: "", ng: {disabled: 'disableNext', click: 'next()'}}
               %span{'ng-show'=>'driverInstructions'}
-                Next
+                Book this Trip
               %span{'ng-hide'=>'driverInstructions'}
-                Skip
+                Skip and Book this Trip
 
     .depart-time{ng: {show: 'step==="book_shared_ride"'}}
       .row
