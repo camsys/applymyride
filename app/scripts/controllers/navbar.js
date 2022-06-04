@@ -3,8 +3,8 @@
 var app = angular.module('applyMyRideApp');
 
 angular.module('applyMyRideApp')
-  .controller('NavbarController', ['$scope', '$location', 'flash', 'planService', 'deviceDetector', 'ipCookie', '$window',
-    function ($scope, $location, flash, planService, deviceDetector, ipCookie, $window) {
+  .controller('NavbarController', ['$scope', '$rootScope', '$location', 'flash', 'planService', 'deviceDetector', 'ipCookie', '$window',
+    function ($scope, $rootScope, $location, flash, planService, deviceDetector, ipCookie, $window) {
 
       var input = document.createElement('input');
       input.setAttribute('type','date');
@@ -21,6 +21,10 @@ angular.module('applyMyRideApp')
 
       var that = this;
       that.$scope = $scope;
+
+      $rootScope.$on("CallLogout", function() {
+        $scope.logout();
+      });
 
       $scope.reset = function() {
         planService.reset();
