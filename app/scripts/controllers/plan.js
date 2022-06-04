@@ -513,6 +513,7 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
         $location.path('/plan/instructions_for_driver');
         break;
       case 'instructions_for_driver':
+        $scope.disableNext = true; 
         planService.driverInstructions = $scope.driverInstructions;
         usSpinnerService.spin('spinner-1');
         var promise = planService.bookSharedRide($http);

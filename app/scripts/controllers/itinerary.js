@@ -63,8 +63,8 @@ angular.module('applyMyRideApp')
         var firstItinerary = $scope.trip.itineraries[0];
 
         angular.forEach($scope.paratransitItineraries, function(result, index) {
-          result.wait_startDesc = moment(result.wait_start).format('h:mm a');
-          result.wait_endDesc = moment(result.wait_end).format('h:mm a');
+          result.wait_startDesc = moment.parseZone(result.wait_start).format('h:mm a');
+          result.wait_endDesc = moment.parseZone(result.wait_end).format('h:mm a');
           result.arrivalDesc = moment(result.arrival).format('h:mm a');
         });
 

@@ -125,7 +125,7 @@ angular.module('applyMyRideApp')
             trip_with_itineraries.details = trip[i].details;
             trip_with_itineraries.mode = trip[i].mode;
             trip_with_itineraries.startDesc = that.getDateDescription(trip[i].wait_start || trip[i].departure);
-            trip_with_itineraries.startDesc += " at " + moment(trip[i].wait_start || trip[i].departure).format('h:mm a');
+            trip_with_itineraries.startDesc += " at " + moment.parseZone(trip[i].wait_start || trip[i].departure).format('h:mm a');
 
             var origin_addresses = trip[0].origin.address_components;
             for(var n = 0; n < origin_addresses.length; n++){
@@ -521,13 +521,13 @@ angular.module('applyMyRideApp')
       this.setItineraryDescriptions = function(itinerary){
         var startTime = itinerary.wait_start || itinerary.departure || itinerary.start_time;
         itinerary.startDesc = this.getDateDescription(startTime);
-        itinerary.startDesc += " at " + moment(startTime).format('h:mm a')
+        itinerary.startDesc += " at " + moment.parseZone(startTime).format('h:mm a')
         itinerary.endDesc = this.getDateDescription(itinerary.arrival);
         itinerary.endDesc += " at " + moment(itinerary.arrival).format('h:mm a');
         itinerary.travelTime = humanizeDuration(itinerary.duration * 1000,  { units: ["hours", "minutes"], round: true });
         itinerary.walkTimeDesc = humanizeDuration(itinerary.walk_time * 1000,  { units: ["hours", "minutes"], round: true });
         itinerary.dayAndDateDesc = moment(startTime).format('dddd, MMMM Do');
-        itinerary.startTimeDesc = moment(itinerary.wait_start || itinerary.departure).format('h:mm a');
+        itinerary.startTimeDesc = moment.parseZone(itinerary.wait_start || itinerary.departure).format('h:mm a');
         itinerary.endTimeDesc = itinerary.arrival ? moment(itinerary.arrival).format('h:mm a') : "Arrive";
         itinerary.arrivalDesc = itinerary.arrival ? itinerary.endTimeDesc : moment(itinerary.end_time).format('h:mm a');
         itinerary.distanceDesc = this.getDistanceDescription(itinerary.distance);
@@ -536,7 +536,7 @@ angular.module('applyMyRideApp')
 
       this.setItineraryLegDescriptions = function(itinerary){
         itinerary.startDateDesc = this.getDateDescription(itinerary.startTime);
-        itinerary.startTimeDesc = moment(itinerary.startTime).format('h:mm a')
+        itinerary.startTimeDesc = moment.parseZone(itinerary.startTime).format('h:mm a')
         itinerary.startDesc = itinerary.startDateDesc + " at " + itinerary.startTimeDesc;
         itinerary.endDateDesc = this.getDateDescription(itinerary.endTime);
         itinerary.endTimeDesc = moment(itinerary.endTime).format('h:mm a');

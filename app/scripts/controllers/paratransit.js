@@ -22,13 +22,13 @@ angular.module('applyMyRideApp')
         });
         
         angular.forEach(planService.booking_results, function(result, index) {
-          result.wait_startDesc = moment(result.wait_start).format('h:mm a');
-          result.wait_endDesc = moment(result.wait_end).format('h:mm a');
+          result.wait_startDesc = moment.parseZone(result.wait_start).format('h:mm a');
+          result.wait_endDesc = moment.parseZone(result.wait_end).format('h:mm a');
           // don't assume wait window is 30 minutes, get diff
           var d1 = new Date(result.wait_end);
           var d2 = new Date(result.wait_start);
 
-          result.arrivalDesc = moment(result.arrival).format('h:mm a');
+          result.arrivalDesc = moment.parseZone(result.arrival).format('h:mm a');
           if (result.negotiated_duration)
             result.travelTime = humanizeDuration(result.negotiated_duration * 1000,  { units: ["hours", "minutes"], round: true });
           else {
@@ -40,7 +40,7 @@ angular.module('applyMyRideApp')
             });
             result.travelTime = humanizeDuration(itinDuration * 1000, { units: ["hours", "minutes"], round: true });
             var arrival = new Date(d1.getTime() + ((d2 - d1) / 2) + (itinDuration * 1000));
-            result.arrivalDesc = moment(arrival).format('h:mm a');
+            result.arrivalDesc = moment(arrival.toLocaleString("en-US", {timeZone: "US/Eastern"})).format('h:mm a');
           }
           if(!result.booked  == true){
             $scope.booking_failed = true;
