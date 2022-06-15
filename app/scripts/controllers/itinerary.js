@@ -63,8 +63,8 @@ angular.module('applyMyRideApp')
         var firstItinerary = $scope.trip.itineraries[0];
 
         angular.forEach($scope.paratransitItineraries, function(result, index) {
-          result.wait_startDesc = moment(result.wait_start).format('h:mm a');
-          result.wait_endDesc = moment(result.wait_end).format('h:mm a');
+          result.wait_startDesc = moment.parseZone(result.wait_start).format('h:mm a');
+          result.wait_endDesc = moment.parseZone(result.wait_end).format('h:mm a');
           result.arrivalDesc = moment(result.arrival).format('h:mm a');
         });
 
@@ -213,11 +213,10 @@ angular.module('applyMyRideApp')
           cancel.bookingcancellation_request.push(bookingCancellation);
         });
         var cancelPromise = planService.cancelTrip($http, cancel)
-        cancelPromise.then(successCallback, errorCallback)
-        function errorCallback(data) {
+        cancelPromise.error(function(data) {
           bootbox.alert("An error occurred, your trip was not cancelled.  Please call 1-844-PA4-RIDE for more information.");
-        };
-        function successCallback(data) {
+        });
+        cancelPromise.success(function(data) {
           bootbox.alert(successMessage);
           if(result == 'BOTH'){
             $scope.tripCancelled = true;
@@ -234,7 +233,7 @@ angular.module('applyMyRideApp')
               ipCookie('rideCount', ipCookie('rideCount') - 1);
             }
           }
-        }
+        })
       }
 
       $scope.show = function(event){

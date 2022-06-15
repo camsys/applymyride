@@ -125,7 +125,7 @@ angular.module('applyMyRideApp')
             trip_with_itineraries.details = trip[i].details;
             trip_with_itineraries.mode = trip[i].mode;
             trip_with_itineraries.startDesc = that.getDateDescription(trip[i].wait_start || trip[i].departure);
-            trip_with_itineraries.startDesc += " at " + moment(trip[i].wait_start || trip[i].departure).format('h:mm a');
+            trip_with_itineraries.startDesc += " at " + moment.parseZone(trip[i].wait_start || trip[i].departure).format('h:mm a');
 
             var origin_addresses = trip[0].origin.address_components;
             for(var n = 0; n < origin_addresses.length; n++){
@@ -521,13 +521,13 @@ angular.module('applyMyRideApp')
       this.setItineraryDescriptions = function(itinerary){
         var startTime = itinerary.wait_start || itinerary.departure || itinerary.start_time;
         itinerary.startDesc = this.getDateDescription(startTime);
-        itinerary.startDesc += " at " + moment(startTime).format('h:mm a')
+        itinerary.startDesc += " at " + moment.parseZone(startTime).format('h:mm a')
         itinerary.endDesc = this.getDateDescription(itinerary.arrival);
         itinerary.endDesc += " at " + moment(itinerary.arrival).format('h:mm a');
         itinerary.travelTime = humanizeDuration(itinerary.duration * 1000,  { units: ["hours", "minutes"], round: true });
         itinerary.walkTimeDesc = humanizeDuration(itinerary.walk_time * 1000,  { units: ["hours", "minutes"], round: true });
         itinerary.dayAndDateDesc = moment(startTime).format('dddd, MMMM Do');
-        itinerary.startTimeDesc = moment(itinerary.wait_start || itinerary.departure).format('h:mm a');
+        itinerary.startTimeDesc = moment.parseZone(itinerary.wait_start || itinerary.departure).format('h:mm a');
         itinerary.endTimeDesc = itinerary.arrival ? moment(itinerary.arrival).format('h:mm a') : "Arrive";
         itinerary.arrivalDesc = itinerary.arrival ? itinerary.endTimeDesc : moment(itinerary.end_time).format('h:mm a');
         itinerary.distanceDesc = this.getDistanceDescription(itinerary.distance);
@@ -536,7 +536,7 @@ angular.module('applyMyRideApp')
 
       this.setItineraryLegDescriptions = function(itinerary){
         itinerary.startDateDesc = this.getDateDescription(itinerary.startTime);
-        itinerary.startTimeDesc = moment(itinerary.startTime).format('h:mm a')
+        itinerary.startTimeDesc = moment.parseZone(itinerary.startTime).format('h:mm a')
         itinerary.startDesc = itinerary.startDateDesc + " at " + itinerary.startTimeDesc;
         itinerary.endDateDesc = this.getDateDescription(itinerary.endTime);
         itinerary.endTimeDesc = moment(itinerary.endTime).format('h:mm a');
@@ -569,7 +569,7 @@ angular.module('applyMyRideApp')
       }
 
       this.getAddressDescriptionFromLocation = function(location){
-        // console.log(location);
+        console.log(location);
         var description = {};
         if(location.poi){
           description.line1 = location.poi.name
@@ -617,41 +617,43 @@ angular.module('applyMyRideApp')
       }
 
       this.getCurrentBalance = function($scope, $http, ipCookie) {
-        return $http.get(urlPrefix + 'api/v1/users/current_balance', this.getHeaders())
-          .then(function({data}) {
-              if (data.current_balance != undefined){
-                if($scope) $scope.currentBalance = data.current_balance;
-                if(ipCookie) {ipCookie('currentBalance', data.current_balance);}
-              }
-            }, function(data) {
-              console.log(data);
-            });
+        return $http.get(urlPrefix + 'api/v1/users/current_balance', this.getHeaders()).
+          success(function(data) {
+            if (data.current_balance != undefined){
+              if($scope) $scope.currentBalance = data.current_balance;
+              if(ipCookie) {ipCookie('currentBalance', data.current_balance);}
+            }
+          }).
+          error(function(data) {
+            console.log(data);
+          });
       }
 
       this.getTripPurposes = function($scope, $http) {
         this.fixLatLon(this.fromDetails);
         const that = this
         // TODO: Look at this and see if it needs to be a post request
-        return $http.post(urlPrefix + 'api/v1/trip_purposes/list', this.fromDetails, this.getHeaders())
-          .then(function({data}) {
-              that.top_purposes = data.top_trip_purposes;
-              data.trip_purposes = data.trip_purposes || [];
-              that.purposes = data.trip_purposes.filter(function(el){
-                for(let i = 0; i < that.top_purposes.length; i += 1){
-                  if(el.code && that.top_purposes[i].code === el.code){
-                    return false;
-                  }
+        return $http.post(urlPrefix + 'api/v1/trip_purposes/list', this.fromDetails, this.getHeaders()).
+          success(function(data) {
+            that.top_purposes = data.top_trip_purposes;
+            data.trip_purposes = data.trip_purposes || [];
+            that.purposes = data.trip_purposes.filter(function(el){
+              for(let i = 0; i < that.top_purposes.length; i += 1){
+                if(el.code && that.top_purposes[i].code === el.code){
+                  return false;
                 }
-                return true;
-              });
-              // NOTE(wilsonj806) Is this dead code?
-              if (data.default_trip_purpose != undefined && $scope.email == undefined){
-                $scope.default_trip_purpose = data.default_trip_purpose;
-                $scope.showNext = true;
               }
-            }, function(data) {
-              alert(data);
+              return true;
             });
+            // NOTE(wilsonj806) Is this dead code?
+            if (data.default_trip_purpose != undefined && $scope.email == undefined){
+              $scope.default_trip_purpose = data.default_trip_purpose;
+              $scope.showNext = true;
+            }
+          }).
+          error(function(data) {
+            alert(data);
+          });
       }
 
       this.selectItineraries = function($http, itineraryObject) {
@@ -1190,8 +1192,8 @@ angular.module('applyMyRideApp')
       this.savedPlaceResults = [];
       this.poiData = [];
       var that = this;
-      $http.get(urlPrefix + 'api/v1/places/search?include_user_pois=true&search_string=%25' + text + '%25', config)
-      .then(function({data}) {
+      $http.get(urlPrefix + 'api/v1/places/search?include_user_pois=true&search_string=%25' + text + '%25', config).
+        success(function(data) {
           var locations = data.places_search_results.locations;
           var filter = /[^a-zA-Z0-9]/g;
           angular.forEach(locations, function(value, index) {
