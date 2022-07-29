@@ -65,7 +65,8 @@ input.bootbox-input-radio[type='radio'] {
 }
 
 textarea {
-  min-height: 360px;
+  min-height: 120px;
+  height: fit-content
 }
 
 select {
@@ -221,7 +222,8 @@ fieldset {
 .input-group {
   display: flex;
   align-items: flex-start;
-  height: 60px;
+  min-height: 60px;
+  height: fit-content;
   justify-content: center;
 
   & > input {

@@ -677,8 +677,9 @@ angular.module('applyMyRideApp')
         return $http.get(urlPrefix + 'api/v1/users/profile', this.getHeaders());
       }
 
-      this.getServiceHours = function($http){
-        return $http.get(urlPrefix + '/api/v1/services/hours', this.getHeaders());
+      this.getTravelPatterns = function($http, params={}){
+        let config = this.getHeaders()
+        return $http.get(urlPrefix + '/api/v2/travel_patterns?' + $.param(params), config);
       }
 
       /**

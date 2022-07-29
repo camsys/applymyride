@@ -72,15 +72,40 @@
 
           .row.unstuck-foot.btn-spacing
             .col-lg-6.col-lg-offset-3.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1.col-xs-12
-              .pull-left
-                %a.btn.btn-secondary{href: "", back: '', ng: {click: "back()", hide:'backToConfirm || loggedIn'} }
-                  Start over
               .pull-right
                 %a.btn.btn-primary{href: "", ng: {class:'{disabled: false==whereShowNext()}', click: 'next()'}}
                   %span{ng:{show:'backToConfirm'}}
                     Back to confirm
                   %span{ng:{hide:'backToConfirm'}}
                     Yes, looks good!
+
+    .purpose{ng: {show: 'step==="purpose"'}}
+      .text-center
+        %h3
+          %strong
+            What is the purpose of your trip?
+      .row
+        .col-md-8.col-md-offset-2.col-sm-8.col-sm-offset-2
+          .col-xs-6{style:'margin:7px 0px; padding-left:0px;', ng: {repeat: 'purpose in top_purposes'}}
+            .btn.btn-primary.btn-block{style: 'margin-bottom:4px; width:100%; padding-left:0px; padding-right:0px;', ng: { class: '{ selected: purpose.name == planService.purpose }', click: 'specifyTripPurpose(purpose.name, backToConfirm)' }}
+              {{ purpose.name }}
+          .col-xs-6{style:'margin:7px 0px; padding-left:0px;', ng: {repeat: 'purpose in purposes', show:'showAllPurposes'}}
+            .btn.btn-primary.btn-block{style: 'margin-bottom:4px; width:100%; padding-left:0px; padding-right:0px;', ng: {class: '{selected: purpose.name == planService.purpose }', click: 'specifyTripPurpose(purpose.name, backToConfirm)'}}
+              {{ purpose.name }}
+          .col-xs-12
+            .row{style:'margin-right:0px;'}
+              %a.btn.btn-secondary.btn-block{href: "", style: 'margin-bottom:4px; width:100%; padding-left:0px; padding-right:0px;', ng: {show:'!showAllPurposes', click: 'showAllPurposes = true;'}}
+                More trip purposes
+              %a.btn.btn-secondary.btn-block{href: "", style: 'margin-bottom:4px; width:100%; padding-left:0px; padding-right:0px;', ng: {show:'showAllPurposes', click: 'showAllPurposes = false;'}}
+                Show fewer trip purposes
+      .row.unstuck-foot{style: 'margin-top: 30px'}
+        .col-md-8.col-md-offset-2.col-sm-8.col-sm-offset-2
+          .pull-left
+            %a.btn.btn-secondary{href: "", back: '', ng: {click: "back()"}}
+              Back
+          .pull-right
+            %a.btn.btn-primary{href: "", ng: {class:'{disabled: !purposeShowNext}', click: 'next()'}}
+              Next
 
     .time-when{ng: {show: 'step==="when"', include: "'views/plan-when.html'"}}
 
@@ -144,33 +169,8 @@
           %timepicker.timepicker{'minute-step' => '5', ng: {model: 'returnTime', show: '!mobile'}}
           %input#fromTime.form-control{type: 'time', step: '300', ng: {model: 'returnTime', required: 'true', show: 'mobile && html5'}}
           %span{style: 'color: red;'} {{message}}
-
-
-    .purpose{ng: {show: 'step==="purpose"'}}
-      .text-center
-        %h3
-          %strong
-            What is the purpose of your trip?
-      .row
-        .col-md-8.col-md-offset-2.col-sm-8.col-sm-offset-2
-          .col-xs-6{style:'margin:7px 0px; padding-left:0px;', ng: {repeat: 'purpose in top_purposes'}}
-            %a.btn.btn-primary.btn-block{href: "", style: 'margin-bottom:4px; width:100%; padding-left:0px; padding-right:0px;', ng: {click: 'specifyTripPurpose(purpose.name, backToConfirm)'}}
-              {{ purpose.name }}
-          .col-xs-6{style:'margin:7px 0px; padding-left:0px;', ng: {repeat: 'purpose in purposes', show:'showAllPurposes'}}
-            %a.btn.btn-primary.btn-block{href: "", style: 'margin-bottom:4px; width:100%; padding-left:0px; padding-right:0px;', ng: {click: 'specifyTripPurpose(purpose.name, backToConfirm)'}}
-              {{ purpose.name }}
-          .col-xs-12
-            .row{style:'margin-right:0px;'}
-              %a.btn.btn-secondary.btn-block{href: "", style: 'margin-bottom:4px; width:100%; padding-left:0px; padding-right:0px;', ng: {show:'!showAllPurposes', click: 'showAllPurposes = true;'}}
-                More trip purposes
-              %a.btn.btn-secondary.btn-block{href: "", style: 'margin-bottom:4px; width:100%; padding-left:0px; padding-right:0px;', ng: {show:'showAllPurposes', click: 'showAllPurposes = false;'}}
-                Show fewer trip purposes
-      .row.unstuck-foot{style: 'margin-top: 30px'}
-        .col-md-8.col-md-offset-2.col-sm-8.col-sm-offset-2
-          .pull-left
-            %a.btn.btn-secondary{href: "", back: '', ng: {click: "back()"}}
-              Back
-
+    
+    .summary{ng: {show: 'step === "summary"', include: "'views/plan-summary.html'"}}
 
     .login-guest{ng: {show: 'step === "login-guest"', include:"'views/login.html'"}}
 
@@ -367,11 +367,6 @@
               %span.checkmark
         .row{ng: {show: 'questions.children'}}
           %fieldset.form-group.col-xs-12{style:'width:90%;'}
-            -# %h4.pull-left
-            -#   %input{id:'hascompanions', type: 'checkbox', ng: {model: 'hasCompanions'}}
-            -# %label{for:'hascompanions', style:'width:90%'}
-            -#   %h4
-            -#     {{questions.children}}
             %label.check-group.h4{for:'hascompanions', style:'width:90%'}
               %input{type:"checkbox", id:"hascompanions", ng: {model: 'hasCompanions'}}
               %span{style:'margin-left: 8px;'} {{questions.children}}
@@ -539,4 +534,5 @@
               %span{ng: {include: "'views/button-chevron-left.html'"}}
               Back
   .row.text-center{style:'margin: 30px 0px 10px 0px;'}
-    Need Help? Call 1-844-PA-4RIDE
+    Need Help? Please contact your Local Transit Agency 
+    %span.glyphicon.glyphicon-new-window
