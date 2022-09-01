@@ -64,7 +64,7 @@ angular.module('applyMyRideApp', [
         controller: 'PlanController'
       })
       .when('/plan/:step/error', {
-        templateUrl: 'views/planing-error.html',
+        templateUrl: 'views/planning-error.html',
         controller: 'PlanController'
       })
       .when('/plan/:step/:departid/:returnid', {

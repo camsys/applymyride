@@ -172,6 +172,7 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
       $scope.step = 'rebook';
       $location.path('/plan/rebook');
     };
+
     $scope.updateTransitTripReminders = function($event) {
       $event.preventDefault()
       // build new trip details object
@@ -482,12 +483,7 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
 
       switch($scope.step) {
         case 'where':
-          delete planService.purpose;
-          delete params.purpose;
-          $scope.fromMoment = null;
-          $scope.fromTimeUpdated = null;
-          $scope.serviceOpen = null;
-          $scope.serviceClose = null;
+          // delete params.purpose;
           delete params.date;
           delete params.start_time;
 
@@ -500,10 +496,6 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
                       });
           break;
         case 'purpose':
-          $scope.fromMoment = null;
-          $scope.fromTimeUpdated = null;
-          $scope.serviceOpen = null;
-          $scope.serviceClose = null;
           delete params.date;
           delete params.start_time;
           
@@ -576,9 +568,9 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
         case 'when':
           $location.path('/plan/companions');
           break;
-        case 'confirm':
-          $location.path('/plan/companions');
-          break;
+        // case 'confirm':
+        //   $location.path('/plan/companions');
+        //   break;
         case 'assistant':
           planService.hasEscort = $scope.hasEscort;
           if($scope.hasCompanions){
@@ -590,16 +582,22 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
           $location.path('/plan/instructions_for_driver');
           break;
         case 'instructions_for_driver':
-          $scope.disableNext = true; 
           planService.driverInstructions = $scope.driverInstructions;
           usSpinnerService.spin('spinner-1');
-          // $location.path('/paratransit/confirm_shared_ride');
-          // var promise = planService.bookSharedRide($http);
-          // promise.then(function(result) {
-          //   planService.booking_results = result.data.booking_results;
-          //   $location.path('/paratransit/confirm_shared_ride');
-          // });
-          $location.path('/plan/summary');;
+
+          _bookTrip().then((sec, err) => {
+            if (err) { return err; }
+
+            $scope.paratransitResult = planService.paratransitResult;
+            // planService.prepareTripSearchResultsPage();
+            console.log($scope.paratransitResult)
+            console.log(planService.fare_info)
+            $location.path('/plan/summary');
+          });
+
+          // planService.prepareTripSearchResultsPage // has cost information
+          // getLowestPricedParatransitTrip
+          // prepareItinerary 
           break;
         case '':
 
@@ -653,6 +651,47 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
           break;
       }
       */
+    };
+
+    $scope.back = function (step) {
+      $scope.showNext = true;
+      if (step === undefined) {
+        step = 'where';
+        switch($scope.step) {
+          case 'when':
+            step = 'purpose';
+            break;
+          case 'companions':
+            step = 'when';
+            break;
+          case 'instructions_for_driver':
+            step = 'companions';
+            break;
+          case 'summary':
+            step = 'instructions_for_driver';
+            break;
+        }
+      }
+
+      switch (step) {
+        case 'where':
+          delete planService.purpose;
+          planService.resetPurpose();
+        case 'purpose':
+          $scope.fromMoment = null;
+          $scope.fromTimeUpdated = null;
+          planService.serviceOpen = null;
+          planService.serviceClose = null;
+          planService.resetWhen();
+        case 'when':
+          planService.resetOther();
+        case 'companions':
+        case 'instructions_for_driver':
+        case 'summary':
+          break;
+      }
+
+      $location.path('/plan/'+step);
     };
 
     $scope.saveBusOrRailTrip = function(){
@@ -711,52 +750,57 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
 
     function _bookTrip(){
       try {
-        planService.prepareConfirmationPage($scope);
+        planService.prepareSummaryPage($scope);
       } catch (e) {
         bootbox.alert('The origin/ destination address does not have a city included. Please go back and use a different address with a city included.')
-        return
+        return Promise.reject('Could not find a city in the location components.');
       }
       planService.transitResult = [];
       planService.paratransitResult = null;
       usSpinnerService.spin('spinner-1');
-      var promise = planService.postItineraryRequest($http);
-      promise.
-        success(function(result) {
-          var i;
-          for(i=0; i<result.itineraries.length; i+=1){
-            result.itineraries[i].origin = planService.getAddressDescriptionFromLocation(result.itineraries[i].start_location);
-            result.itineraries[i].destination = planService.getAddressDescriptionFromLocation(result.itineraries[i].end_location);
-            if(result.itineraries[i].returned_mode_code == "mode_paratransit"){
-              // If the trip purpose is eligible based on the valid date range, allow booking a shared ride. 
-              // Otherwise, display no shared ride message.
-              var allPurposes = [...planService.top_purposes || [], ...planService.purposes || []];
-              var tripPurposesFiltered = allPurposes.filter(e => e.code == planService.itineraryRequestObject.trip_purpose);
-              if (tripPurposesFiltered.length > 0) {
-                var tripPurposeObj = tripPurposesFiltered[0]
-                if (tripPurposeObj.valid_from && tripPurposeObj.valid_until &&
-                  result.itineraries[i].start_time >= tripPurposeObj.valid_from &&
-                  result.itineraries[i].start_time <= tripPurposeObj.valid_until) {
-                    // Check both dates if available.
-                    planService.paratransitResult = result.itineraries[i];
-                } else if (tripPurposeObj.valid_from && result.itineraries[i].start_time >= tripPurposeObj.valid_from) {
-                    // Otherwise check from date if available.
-                    planService.paratransitResult = result.itineraries[i];
-                } else if (!tripPurposeObj.valid_from && !tripPurposeObj.valid_until) {
-                    // If date range is not available, assume it's eligible.
-                    planService.paratransitResult = result.itineraries[i];
-                }
-              }
-            }else{
-              planService.transitResult.push(result.itineraries[i]);
-            }
-          }
-          planService.searchResults = result;
-          $location.path("/plan/confirm");
-        }).
-        error(function(result) {
-          bootbox.alert("An error occured on the server, please retry your search or try again later.");
-          usSpinnerService.stop('spinner-1');
-        });
+      return new Promise((res, rej) => {
+        setTimeout(res, 2000);
+      });
+      // undo drew
+      // var promise = planService.postItineraryRequest($http);
+      // return promise.
+      //   success(function(result) {
+      //     console.log('success', result);
+      //     var i;
+      //     for(i=0; i<result.itineraries.length; i+=1){
+      //       result.itineraries[i].origin = planService.getAddressDescriptionFromLocation(result.itineraries[i].start_location);
+      //       result.itineraries[i].destination = planService.getAddressDescriptionFromLocation(result.itineraries[i].end_location);
+      //       if(result.itineraries[i].returned_mode_code == "mode_paratransit"){
+      //         // If the trip purpose is eligible based on the valid date range, allow booking a shared ride. 
+      //         // Otherwise, display no shared ride message.
+      //         var allPurposes = [...planService.top_purposes || [], ...planService.purposes || []];
+      //         var tripPurposesFiltered = allPurposes.filter(e => e.code == planService.itineraryRequestObject.trip_purpose);
+      //         if (tripPurposesFiltered.length > 0) {
+      //           var tripPurposeObj = tripPurposesFiltered[0]
+      //           if (tripPurposeObj.valid_from && tripPurposeObj.valid_until &&
+      //             result.itineraries[i].start_time >= tripPurposeObj.valid_from &&
+      //             result.itineraries[i].start_time <= tripPurposeObj.valid_until) {
+      //               // Check both dates if available.
+      //               planService.paratransitResult = result.itineraries[i];
+      //           } else if (tripPurposeObj.valid_from && result.itineraries[i].start_time >= tripPurposeObj.valid_from) {
+      //               // Otherwise check from date if available.
+      //               planService.paratransitResult = result.itineraries[i];
+      //           } else if (!tripPurposeObj.valid_from && !tripPurposeObj.valid_until) {
+      //               // If date range is not available, assume it's eligible.
+      //               planService.paratransitResult = result.itineraries[i];
+      //           }
+      //         }
+      //       }else{
+      //         planService.transitResult.push(result.itineraries[i]);
+      //       }
+      //     }
+      //     planService.searchResults = result;
+      //   }).
+      //   error(function(result, err) {
+      //     console.log('error', result, err);
+      //     bootbox.alert("An error occured on the server, please retry your search or try again later.");
+      //     usSpinnerService.stop('spinner-1');
+      //   });
     }
 
     // CONFIRM
@@ -775,7 +819,6 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
      */
     $scope.specifyTripPurpose = function(purpose, isEditTrip){
       planService.purpose = purpose;
-      $scope.purposeShowNext = true;
       // CONFIRM
       // if (isEditTrip === true) {
       // $scope.next()
@@ -991,7 +1034,6 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
       const tempFromDetails = {...planService.fromDetails}
       const tempFromName = planService.from
       const tempFromDisplay = $scope.from !== '' ? $scope.from : $scope.fromDefault
-      console.log(tempToDisplay, tempFromDisplay)
       // rebuild map markers
       const map = $scope.whereToMap;
       Object.values($scope.toFromMarkers).forEach(function(marker) {
@@ -1409,6 +1451,8 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
     }
 
     $scope.checkServiceArea = function(result, place, toFrom, updateInput){
+      // planService.fixLatLon(result);
+      result.geometry.location.lat = result.geometry.location.lat.prototype;
       updateInput = util.assignDefaultValueIfEmpty(updateInput, false);
       var serviceAreaPromise = planService.checkServiceArea($http, result);
       $scope.showNext = false;
@@ -1455,14 +1499,14 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
               });
 
               rebuildRecenterMap()
-              if(toFrom == 'from'){
+              if (toFrom == 'from') {
                 planService.fromDetails = result;
                 planService.from = place;
                 // Update the typed text to reflect the geocoded place
                 $("#whereFromInput").val($scope.getDisplayAddress(result));
                 // Reset locations array
                 $scope.fromLocations = []
-              }else if(toFrom == 'to'){
+              } else if (toFrom == 'to') {
                 planService.toDetails = result;
                 planService.to = place;
                 // Update the typed text to reflect the geocoded place
@@ -1556,108 +1600,109 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
       $scope.step = 'from';
     };
 
-    $scope.submitRebookedTrip = function(){
-      $scope.message = null;
+    // $scope.submitRebookedTrip = function(){
+    //   $scope.message = null;
 
-      var fromDate = $scope.fromDate;
-      if(!fromDate){
-        $scope.message = 'Please enter a departure date.';
-        return;
-      }
+    //   var fromDate = $scope.fromDate;
+    //   if(!fromDate){
+    //     $scope.message = 'Please enter a departure date.';
+    //     return;
+    //   }
 
-      var fromTime = $scope.fromTime;
-      if(!fromTime){
-        $scope.message = 'Please enter a departure time.';
-        return;
-      }
+    //   var fromTime = $scope.fromTime;
+    //   if(!fromTime){
+    //     $scope.message = 'Please enter a departure time.';
+    //     return;
+    //   }
 
-      fromTime.setYear(fromDate.getFullYear());
-      fromTime.setMonth(fromDate.getMonth());
-      fromTime.setDate(fromDate.getDate());
+    //   fromTime.setYear(fromDate.getFullYear());
+    //   fromTime.setMonth(fromDate.getMonth());
+    //   fromTime.setDate(fromDate.getDate());
 
-      if(planService.rebookTrip.itineraries.length > 1){
-        var returnTime = $scope.returnTime;
-        var returnDate = $scope.returnDate;
+    //   if(planService.rebookTrip.itineraries.length > 1){
+    //     var returnTime = $scope.returnTime;
+    //     var returnDate = $scope.returnDate;
 
-        returnTime.setYear(returnDate.getFullYear());
-        returnTime.setMonth(returnDate.getMonth());
-        returnTime.setDate(returnDate.getDate());
+    //     returnTime.setYear(returnDate.getFullYear());
+    //     returnTime.setMonth(returnDate.getMonth());
+    //     returnTime.setDate(returnDate.getDate());
 
-        if(!returnDate){
-          $scope.message = 'Please enter a return date.';
-          return;
-        }
+    //     if(!returnDate){
+    //       $scope.message = 'Please enter a return date.';
+    //       return;
+    //     }
 
-        if(!returnTime){
-          $scope.message = 'Please enter a return time.';
-          return;
-        }
+    //     if(!returnTime){
+    //       $scope.message = 'Please enter a return time.';
+    //       return;
+    //     }
 
-        if(returnTime.getTime() < fromTime.getTime()){
-          $scope.message = 'You requested a return trip that starts before your departure.  Please enter a valid return date and time.';
-          return;
-        }
-      }
+    //     if(returnTime.getTime() < fromTime.getTime()){
+    //       $scope.message = 'You requested a return trip that starts before your departure.  Please enter a valid return date and time.';
+    //       return;
+    //     }
+    //   }
 
-      var request = {};
-      var trip = planService.rebookTrip;
-      request.trip_purpose = trip.trip_purpose_raw;
-      request.itinerary_request = [];
-      var outboundTrip = {};
-      outboundTrip.segment_index = 0;
-      outboundTrip.start_location = trip.itineraries[0].origin;
-      outboundTrip.end_location = trip.itineraries[0].destination;
-      outboundTrip.assistant = trip.itineraries[0].assistant;
-      outboundTrip.companions = trip.itineraries[0].companions;
-      outboundTrip.note = trip.itineraries[0].note;
+    //   var request = {};
+    //   var trip = planService.rebookTrip;
+    //   request.trip_purpose = trip.trip_purpose_raw;
+    //   request.itinerary_request = [];
+    //   var outboundTrip = {};
+    //   outboundTrip.segment_index = 0;
+    //   outboundTrip.start_location = trip.itineraries[0].origin;
+    //   outboundTrip.end_location = trip.itineraries[0].destination;
+    //   outboundTrip.assistant = trip.itineraries[0].assistant;
+    //   outboundTrip.companions = trip.itineraries[0].companions;
+    //   outboundTrip.note = trip.itineraries[0].note;
 
-      var fromTimeString = moment.utc(fromTime).format();
-      outboundTrip.trip_time = fromTimeString;
-      outboundTrip.departure_type = trip.itineraries[0].requested_time_type;
-      request.itinerary_request.push(outboundTrip);
+    //   var fromTimeString = moment.utc(fromTime).format();
+    //   outboundTrip.trip_time = fromTimeString;
+    //   outboundTrip.departure_type = trip.itineraries[0].requested_time_type;
+    //   request.itinerary_request.push(outboundTrip);
 
-      if(trip.itineraries.length > 1){
-        var returnTrip = {};
-        returnTrip.segment_index = 1;
-        returnTrip.start_location = trip.itineraries[1].origin;
-        returnTrip.end_location = trip.itineraries[1].destination;
-        returnTrip.departure_type = trip.itineraries[1].requested_time_type;
-        returnTrip.assistant = trip.itineraries[0].assistant;
-        returnTrip.companions = trip.itineraries[0].companions;
-        returnTrip.note = trip.itineraries[0].note;
-        var returnTimeString = moment.utc(returnTime).format();
-        returnTrip.trip_time = returnTimeString;
-        request.itinerary_request.push(returnTrip);
-      }
-      planService.itineraryRequestObject = request;
-      usSpinnerService.spin('spinner-1');
-      var promise = planService.postItineraryRequest($http);
-      promise.
-        success(function(result) {
-          planService.searchResults = result;
-          var paratransitItineraries = [];
+    //   if(trip.itineraries.length > 1){
+    //     var returnTrip = {};
+    //     returnTrip.segment_index = 1;
+    //     returnTrip.start_location = trip.itineraries[1].origin;
+    //     returnTrip.end_location = trip.itineraries[1].destination;
+    //     returnTrip.departure_type = trip.itineraries[1].requested_time_type;
+    //     returnTrip.assistant = trip.itineraries[0].assistant;
+    //     returnTrip.companions = trip.itineraries[0].companions;
+    //     returnTrip.note = trip.itineraries[0].note;
+    //     var returnTimeString = moment.utc(returnTime).format();
+    //     returnTrip.trip_time = returnTimeString;
+    //     request.itinerary_request.push(returnTrip);
+    //   }
+    //   planService.itineraryRequestObject = request;
+    //   usSpinnerService.spin('spinner-1');
+    //   var promise = planService.postItineraryRequest($http);
+    //   promise.
+    //     success(function(result) {
+    //       planService.searchResults = result;
+    //       var paratransitItineraries = [];
 
-          angular.forEach(result.itineraries, function(itinerary, index) {
-            if(itinerary.returned_mode_code == "mode_paratransit"){
-              paratransitItineraries.push(itinerary);
-            }
-          }, paratransitItineraries);
-          if(paratransitItineraries.length != trip.itineraries.length){
-            bootbox.alert("No shared ride is available for your request. Please call 1-844-PA4-RIDE for more information.");
-            usSpinnerService.stop('spinner-1');
-          }else{
-            planService.paratransitItineraries = paratransitItineraries;
-            var promise = planService.bookSharedRide($http);
-            promise.then(function(result) {
-              planService.booking_results = result.data.booking_results;
-              planService.hasEscort = trip.itineraries[0].assistant;
-              planService.numberOfCompanions = trip.itineraries[0].companions;
-              planService.driverInstructions = trip.itineraries[0].note;
-              $location.path('/paratransit/confirm_shared_ride');
-            });
-          }
-        })
-    }
+    //       angular.forEach(result.itineraries, function(itinerary, index) {
+    //         if(itinerary.returned_mode_code == "mode_paratransit"){
+    //           paratransitItineraries.push(itinerary);
+    //         }
+    //       }, paratransitItineraries);
+    //       if(paratransitItineraries.length != trip.itineraries.length){
+    //         bootbox.alert("No shared ride is available for your request. Please call 1-844-PA4-RIDE for more information.");
+    //         usSpinnerService.stop('spinner-1');
+    //       }else{
+    //         planService.paratransitItineraries = paratransitItineraries;
+    //         var promise = planService.bookSharedRide($http);
+    //         promise.then(function(result) {
+    //           planService.booking_results = result.data.booking_results;
+    //           planService.hasEscort = trip.itineraries[0].assistant;
+    //           planService.numberOfCompanions = trip.itineraries[0].companions;
+    //           planService.driverInstructions = trip.itineraries[0].note;
+    //           $location.path('/paratransit/confirm_shared_ride');
+    //         });
+    //       }
+    //     })
+    // }
+
     $scope.selectDepartDate = function(day){
       if(!(day.startTime || day.startTime == 0)) { return; } // Return if the start time doesn't exist
       if(!(day.endTime > 0)) { return; } // Return if the end time doesn't exist
@@ -1675,8 +1720,8 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
         minute = serviceOpen.close;
       }
 
-      $scope.serviceOpen = day.moment.clone().set(serviceOpen)
-      $scope.serviceClose = day.moment.clone().set(serviceClose)
+      planService.serviceOpen = day.moment.clone().set(serviceOpen)
+      planService.serviceClose = day.moment.clone().set(serviceClose)
       $scope.fromMoment = day.moment.clone();
       $scope.fromMoment.hour( hour ).minute( minute ).seconds(0);
 
@@ -1684,12 +1729,11 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
         $('input.cs-hour').select();
       }, 100);
     }
-    $scope.whenShowNext = function(){ return false; };
 
     function _setupHowLongOptions(){
       var time, startingTime, endOfDay, beginOfDay, minDiff, hrsDiff, name, selectedIndex;
       //can only setup howlong if fromMoment is within service hours
-      if(!$scope.fromMoment || !$scope.serviceOpen || !$scope.serviceClose) { return; }
+      if(!$scope.fromMoment || !planService.serviceOpen || !planService.serviceClose) { return; }
 
       $scope.howLongOptions = [{
           minutes: 0,
@@ -1697,8 +1741,8 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
         }];
 
       time = $scope.fromMoment.clone();
-      endOfDay = $scope.serviceClose.clone()
-      beginOfDay = $scope.serviceOpen.clone()
+      endOfDay = planService.serviceClose.clone()
+      beginOfDay = planService.serviceOpen.clone()
 
       if(time.isBefore(beginOfDay)) {
         startingTime = beginOfDay;
@@ -1779,11 +1823,6 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
         }());
       break;
       case 'where':
-        // planService.purpose = '';
-        // $scope.fromMoment = null;
-        // $scope.fromTimeUpdated = null;
-        // $scope.serviceOpen = null;
-        // $scope.serviceClose = null;
         //load the map origin/destination
         if($scope.to){
           $scope.selectPlace($scope.to, 'to', true);
@@ -1797,11 +1836,6 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
         }
         break;
       case 'purpose':
-        // $scope.fromMoment = null;
-        // $scope.fromTimeUpdated = null;
-        // $scope.serviceOpen = null;
-        // $scope.serviceClose = null;
-        // usSpinnerService.spin('spinner-1');
         planService.getTripPurposes($scope, $http).then(function(){
           // pull trip purposes from planService after fetching them and then expose them for the front end to use
           $scope.purposes = planService.purposes
@@ -1823,7 +1857,7 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
               if( okNull === true ){ return true; }
               return false; // if the day is null return false (unless null is ok)
             }
-            if( !(open && close) ){return false;} //return false if selected day does not have service hours
+            if( !(open && close) ){ return false; } //return false if selected day does not have service hours
 
             //return false if time not within the service hours
             startMoment = open.clone().subtract(1, 'seconds');
@@ -1836,10 +1870,8 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
             //passed all checks, ok to show next
             return true;
           };// end _checkServiceHours
-
-          fromOK = _checkServiceHours( $scope.fromMoment, $scope.serviceOpen, $scope.serviceClose );
-          returnOK = _checkServiceHours( $scope.returnMoment, $scope.serviceOpen, $scope.serviceClose, true);
-
+          fromOK = _checkServiceHours( $scope.fromMoment, planService.serviceOpen, planService.serviceClose );
+          returnOK = _checkServiceHours( $scope.returnMoment, planService.serviceOpen, planService.serviceClose, true);
           return fromOK && returnOK && $scope.fromTimeUpdated;
         }
 
@@ -1916,81 +1948,81 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
           }
         })
         break;
-      case 'start_current':
-        $scope.showNext = false;
-        break;
-      case 'from':
-        if(planService.from != null){
-          $scope.fromDetails = planService.fromDetails;
-          $scope.from = planService.from;
-        }
-        $scope.showNext = false;
-        break;
-      case 'fromDate':
-        $scope.minDate = new Date();
-        if(planService.fromDate != null){
-          $scope.fromDate = planService.fromDate;
-        }
-        $scope.disableNext = false;
-        break;
-      case 'to':
-        if(planService.to != null){
-          $scope.to = planService.to;
-          $scope.toDetails = planService.toDetails;
-        }
-        $scope.showNext = false;
-        break;
-      case 'returnDate':
+      // case 'start_current':
+      //   $scope.showNext = false;
+      //   break;
+      // case 'from':
+      //   if(planService.from != null){
+      //     $scope.fromDetails = planService.fromDetails;
+      //     $scope.from = planService.from;
+      //   }
+      //   $scope.showNext = false;
+      //   break;
+      // case 'fromDate':
+      //   $scope.minDate = new Date();
+      //   if(planService.fromDate != null){
+      //     $scope.fromDate = planService.fromDate;
+      //   }
+      //   $scope.disableNext = false;
+      //   break;
+      // case 'to':
+      //   if(planService.to != null){
+      //     $scope.to = planService.to;
+      //     $scope.toDetails = planService.toDetails;
+      //   }
+      //   $scope.showNext = false;
+      //   break;
+      // case 'returnDate':
 
-        if(planService.returnDate != null){
-          $scope.returnDate = planService.returnDate;
-        }else{
-          $scope.returnDate = planService.fromDate;
-        }
-        $scope.minReturnDate = planService.fromDate;
-        $scope.disableNext = false;
-        break;
-      case 'returnTime':
-        if(planService.returnTime != null){
-          $scope.returnTime = planService.returnTime;
-        }else{
-          $scope.returnTime = new Date();
-        }
-        $scope.disableNext = false;
-        break;
-      case 'needReturnTrip':
-        $scope.showNext = false;
-        break;
-      case 'fromTimeType':
-        var fromDate = planService.fromDate;
-        var now = moment().startOf('day'); ;
-        var dayDiff = now.diff(fromDate, 'days');
+      //   if(planService.returnDate != null){
+      //     $scope.returnDate = planService.returnDate;
+      //   }else{
+      //     $scope.returnDate = planService.fromDate;
+      //   }
+      //   $scope.minReturnDate = planService.fromDate;
+      //   $scope.disableNext = false;
+      //   break;
+      // case 'returnTime':
+      //   if(planService.returnTime != null){
+      //     $scope.returnTime = planService.returnTime;
+      //   }else{
+      //     $scope.returnTime = new Date();
+      //   }
+      //   $scope.disableNext = false;
+      //   break;
+      // case 'needReturnTrip':
+      //   $scope.showNext = false;
+      //   break;
+      // case 'fromTimeType':
+      //   var fromDate = planService.fromDate;
+      //   var now = moment().startOf('day'); ;
+      //   var dayDiff = now.diff(fromDate, 'days');
 
-        if(planService.fromTime && planService.fromTimeType){
-          $scope.fromTime = planService.fromTime;
-          $scope.fromTimeType = planService.fromTimeType;
-          if(Math.abs(dayDiff) < 1){
-            $scope.showAsap = true;
-          }
-        }else{
-          if(Math.abs(dayDiff) < 1){
-            $scope.fromTime = new Date();
-            $scope.fromTime.setHours($scope.fromTime.getHours() + 2);
-            $scope.showAsap = true;
-            //now round to 15 min interval
-            var start = moment($scope.fromTime);
-            var remainder = (start.minute()) % 15;
-            remainder = Math.abs(remainder - 15);
-            $scope.fromTime.setMinutes($scope.fromTime.getMinutes() + remainder);
-          }else{
-            now.add(10, 'hours');
-            $scope.fromTime = now.toDate();
-          }
-          $scope.fromTimeType = 'arrive';
-          planService.fromTimeType = 'arrive';
-        }
-        $scope.showNext = true;
-        break;
+      //   if(planService.fromTime && planService.fromTimeType){
+      //     $scope.fromTime = planService.fromTime;
+      //     $scope.fromTimeType = planService.fromTimeType;
+      //     if(Math.abs(dayDiff) < 1){
+      //       $scope.showAsap = true;
+      //     }
+      //   }else{
+      //     if(Math.abs(dayDiff) < 1){
+      //       $scope.fromTime = new Date();
+      //       $scope.fromTime.setHours($scope.fromTime.getHours() + 2);
+      //       $scope.showAsap = true;
+      //       //now round to 15 min interval
+      //       var start = moment($scope.fromTime);
+      //       var remainder = (start.minute()) % 15;
+      //       remainder = Math.abs(remainder - 15);
+      //       $scope.fromTime.setMinutes($scope.fromTime.getMinutes() + remainder);
+      //     }else{
+      //       now.add(10, 'hours');
+      //       $scope.fromTime = now.toDate();
+      //     }
+      //     $scope.fromTimeType = 'arrive';
+      //     planService.fromTimeType = 'arrive';
+      //   }
+      //   $scope.showNext = true;
+      //   break;
       case 'returnTimeType':
         var fromDate = planService.fromDate;
         var returnDate = planService.returnDate;
@@ -2076,29 +2108,29 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
         }
         $scope.showNext = false;
         break;
-      case 'discounts':
-        var basefareIndex = null;
-        angular.forEach(planService.paratransitItineraries[0].discounts, function(discount, index) {
-          if(discount.base_fare && discount.base_fare == true){
-            basefareIndex = index;
-          }
-          discount.fare = new Number(discount.fare).toFixed(2);
-        });
-        if(basefareIndex){
-          var basefare = planService.paratransitItineraries[0].discounts[basefareIndex];
-          planService.paratransitItineraries[0].discounts.splice(basefareIndex, 1);
-          planService.paratransitItineraries[0].discounts.unshift(basefare);
-        }
-        $scope.paratransitItinerary = planService.paratransitItineraries[0];
-        $scope.showNext = false;
-        break;
+      // case 'discounts':
+      //   var basefareIndex = null;
+      //   angular.forEach(planService.paratransitItineraries[0].discounts, function(discount, index) {
+      //     if(discount.base_fare && discount.base_fare == true){
+      //       basefareIndex = index;
+      //     }
+      //     discount.fare = new Number(discount.fare).toFixed(2);
+      //   });
+      //   if(basefareIndex){
+      //     var basefare = planService.paratransitItineraries[0].discounts[basefareIndex];
+      //     planService.paratransitItineraries[0].discounts.splice(basefareIndex, 1);
+      //     planService.paratransitItineraries[0].discounts.unshift(basefare);
+      //   }
+      //   $scope.paratransitItinerary = planService.paratransitItineraries[0];
+      //   $scope.showNext = false;
+      //   break;
       case 'book_shared_ride':
         $scope.showNext = false;
         break;
-      case 'alternative_options':
-        $scope.walkItineraries = planService.walkItineraries;
-        $scope.showNext = false;
-        break;
+      // case 'alternative_options':
+      //   $scope.walkItineraries = planService.walkItineraries;
+      //   $scope.showNext = false;
+      //   break;
       case 'my_rides':
         planService.reset();
         planService.getPastRides($http).then(function(data) {
@@ -2125,49 +2157,49 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
       case 'companions':
         $scope.showNext = false;
         break;
-      case 'assistant':
-        $scope.questions = planService.getPrebookingQuestions();
-        $scope.hasEscort = planService.hasEscort;
-        $scope.numberOfCompanions = planService.numberOfCompanions;
-        if($scope.numberOfCompanions == null){
-          $scope.numberOfCompanions = 0;
-        }
-        if($scope.numberOfCompanions > 0){
-          $scope.hasCompanions = true;
-        }else{
-          $scope.hasCompanions = false;
-        }
-        $scope.showNext = true;
-        $scope.disableNext = false;
-        break;
+      // case 'assistant':
+      //   $scope.questions = planService.getPrebookingQuestions();
+      //   $scope.hasEscort = planService.hasEscort;
+      //   $scope.numberOfCompanions = planService.numberOfCompanions;
+      //   if($scope.numberOfCompanions == null){
+      //     $scope.numberOfCompanions = 0;
+      //   }
+      //   if($scope.numberOfCompanions > 0){
+      //     $scope.hasCompanions = true;
+      //   }else{
+      //     $scope.hasCompanions = false;
+      //   }
+      //   $scope.showNext = true;
+      //   $scope.disableNext = false;
+      //   break;
       case 'instructions_for_driver':
         $scope.driverInstructions = planService.driverInstructions;
         break;
-      case 'rebook':
-        $scope.minDate = new Date();
-        $scope.trip = planService.rebookTrip;
-        if(planService.rebookTrip.itineraries.length > 1){
-          $scope.roundTrip = true;
-        }
+      // case 'rebook':
+      //   $scope.minDate = new Date();
+      //   $scope.trip = planService.rebookTrip;
+      //   if(planService.rebookTrip.itineraries.length > 1){
+      //     $scope.roundTrip = true;
+      //   }
 
-        $scope.fromTime = moment($scope.trip.itineraries[0].requested_time).toDate();
-        $scope.fromTimeType = $scope.trip.itineraries[0].requested_time_type;
+      //   $scope.fromTime = moment($scope.trip.itineraries[0].requested_time).toDate();
+      //   $scope.fromTimeType = $scope.trip.itineraries[0].requested_time_type;
 
-        if($scope.fromTime.getTime() > new Date().getTime()){
-          $scope.fromDate = moment($scope.fromTime).add(1, 'week').toDate();
-        }else{
-          $scope.fromDate = moment().add(1, 'week').toDate();
-        }
+      //   if($scope.fromTime.getTime() > new Date().getTime()){
+      //     $scope.fromDate = moment($scope.fromTime).add(1, 'week').toDate();
+      //   }else{
+      //     $scope.fromDate = moment().add(1, 'week').toDate();
+      //   }
 
-        if($scope.trip.itineraries.length > 1){
-          $scope.minReturnDate = $scope.fromDate;
-          $scope.returnTime = moment($scope.trip.itineraries[1].requested_time).toDate();
-          $scope.returnTimeType = $scope.trip.itineraries[1].requested_time_type;
-          var datediff = Math.abs(moment($scope.trip.itineraries[0].end_time).diff(moment($scope.trip.itineraries[1].start_time), 'days'));
-          $scope.returnDate = moment($scope.fromDate).add(datediff, 'day').toDate();
-        }
-        $scope.hideButtonBar = true;
-        break;
+      //   if($scope.trip.itineraries.length > 1){
+      //     $scope.minReturnDate = $scope.fromDate;
+      //     $scope.returnTime = moment($scope.trip.itineraries[1].requested_time).toDate();
+      //     $scope.returnTimeType = $scope.trip.itineraries[1].requested_time_type;
+      //     var datediff = Math.abs(moment($scope.trip.itineraries[0].end_time).diff(moment($scope.trip.itineraries[1].start_time), 'days'));
+      //     $scope.returnDate = moment($scope.fromDate).add(datediff, 'day').toDate();
+      //   }
+      //   $scope.hideButtonBar = true;
+      //   break;
       default:
 
         break;
@@ -2214,38 +2246,38 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
       }
     );
   */
-    $scope.$watch('returnDate', function(n) {
-        if($scope.step == 'returnDate'){
-          if (n) {
-            var now = moment().startOf('day');
-            var datediff = now.diff(n, 'days');
-            if(datediff < 1){
-              var then = moment(planService.fromDate).startOf('day');
-              var to = moment(n).startOf('day');
-              datediff = then.diff(to, 'days');
-              if(datediff < 1){
-                $scope.returnDate = n;
-                $scope.showNext = true;
-                $scope.message = null;
-              }else{
-                planService.returnDate = null;
-                $scope.showNext = false;
-                var fromDateString = moment(planService.fromDate).format('M/D/YYYY');
-                $scope.message = 'You must return on a date no earlier than ' + fromDateString;
-              }
-            }else{
-              planService.returnDate = null;
-              $scope.showNext = false;
-              var fromDateString = moment(planService.fromDate).format('M/D/YYYY');
-              $scope.message = 'You must return on a date no earlier than ' + fromDateString;
-            }
-          }else{
-            planService.returnDate = null;
-            $scope.showNext = false;
-          }
-        }
-      }
-    );
+    // $scope.$watch('returnDate', function(n) {
+    //     if($scope.step == 'returnDate'){
+    //       if (n) {
+    //         var now = moment().startOf('day');
+    //         var datediff = now.diff(n, 'days');
+    //         if(datediff < 1){
+    //           var then = moment(planService.fromDate).startOf('day');
+    //           var to = moment(n).startOf('day');
+    //           datediff = then.diff(to, 'days');
+    //           if(datediff < 1){
+    //             $scope.returnDate = n;
+    //             $scope.showNext = true;
+    //             $scope.message = null;
+    //           }else{
+    //             planService.returnDate = null;
+    //             $scope.showNext = false;
+    //             var fromDateString = moment(planService.fromDate).format('M/D/YYYY');
+    //             $scope.message = 'You must return on a date no earlier than ' + fromDateString;
+    //           }
+    //         }else{
+    //           planService.returnDate = null;
+    //           $scope.showNext = false;
+    //           var fromDateString = moment(planService.fromDate).format('M/D/YYYY');
+    //           $scope.message = 'You must return on a date no earlier than ' + fromDateString;
+    //         }
+    //       }else{
+    //         planService.returnDate = null;
+    //         $scope.showNext = false;
+    //       }
+    //     }
+    //   }
+    // );
 
     $scope.$watch('fromTime', function(n) {
         if($scope.step == 'fromTimeType'){
@@ -2303,7 +2335,6 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
         }
       }
     );
-
 
     $scope.$watch('confirmFromLocationMap', function(n) {
         if (n) {

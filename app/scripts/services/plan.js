@@ -5,16 +5,35 @@ angular.module('applyMyRideApp')
     .service('planService', ['$rootScope', '$filter', '$interval', 'util', function($rootScope, $filter, $interval, util) {
 
       this.reset = function(){
-        delete this.fromDate;
-        delete this.fromTime;
-        delete this.fromTimeType;
+        this.resetOther();
+        this.resetWhen();
+        this.resetPurpose();
+        this.resetWhere();
+      }
+
+      this.resetWhere = function () {
         delete this.from;
         delete this.fromDetails;
         delete this.to;
         delete this.toDetails;
+      };
+
+      this.resetPurpose = function () {
+        delete this.purpose;
+      };
+
+      this.resetWhen = function () {
+        delete this.fromDate;
+        delete this.fromTime;
+        delete this.fromTimeType;
         delete this.returnDate;
         delete this.returnTime;
         delete this.returnTimeType;
+        delete this.serviceOpen;
+        delete this.serviceClose;
+      };
+
+      this.resetOther = function () {
         delete this.numberOfCompanions;
         delete this.hasEscort;
         delete this.driverInstructions;
@@ -30,7 +49,8 @@ angular.module('applyMyRideApp')
         delete this.selectedTaxiOption;
         delete this.selectedUberOption;
         delete this.showBusRides;
-      }
+      };
+
 
       var urlPrefix = '//' + APIHOST + '/';
       this.getPrebookingQuestions = function(){
@@ -179,36 +199,37 @@ angular.module('applyMyRideApp')
         }
       }
 
-      this.prepareConfirmationPage = function($scope) {
+      this.prepareSummaryPage = function($scope) {
         var itineraryRequestObject = this.createItineraryRequest();
         this.itineraryRequestObject = itineraryRequestObject;
-        var request = {};
 
-        var fromLocationDescription = this.getAddressDescriptionFromLocation(itineraryRequestObject.itinerary_request[0].start_location);
-        request.fromLine1 = fromLocationDescription.line1;
-        request.fromLine2 = fromLocationDescription.line2;
+        console.log('itineraryRequestObject', itineraryRequestObject);
 
-        var toLocationDescription = this.getAddressDescriptionFromLocation(itineraryRequestObject.itinerary_request[0].end_location);
-        request.toLine1 = toLocationDescription.line1;
-        request.toLine2 = toLocationDescription.line2;
+        // var toLocationDescription = this.getAddressDescriptionFromLocation(itineraryRequestObject.trip.destination);
+        // request.toLine1 = toLocationDescription.line1;
+        // request.toLine2 = toLocationDescription.line2;
 
-        var outboundTime = itineraryRequestObject.itinerary_request[0].trip_time;
-        request.when1 = this.getDateDescription(outboundTime);
-        request.when2 = (itineraryRequestObject.itinerary_request[0].departure_type == 'depart' ? "Start out at " : "Arrive by ") + moment(outboundTime).format('h:mm a');
+        // var outboundTime = itineraryRequestObject.trip.trip_time;
+        // request.when1 = this.getDateDescription(outboundTime);
+        // request.when2 = (itineraryRequestObject.trip.departure_type == 'depart' ? "Start out at " : "Arrive by ") + moment(outboundTime).format('h:mm a');
+        
+        // TODO Drew
+        // if(itineraryRequestObject.itinerary_request.length > 1){
+        //   request.roundtrip = true;
+        //   //round trip
+        //   var returnTime = itineraryRequestObject.itinerary_request[1].trip_time;
+        //   request.when3 = this.getDateDescription(returnTime);
+        //   if(request.when1 == request.when3){
+        //     request.sameday = true;
+        //   }
+        //   request.when4 = (itineraryRequestObject.itinerary_request[1].departure_type == 'depart' ? "Leave at " : "Get back by ") + moment(returnTime).format('h:mm a');
+        // }
+        // request.purpose = this.purpose;
 
-        if(itineraryRequestObject.itinerary_request.length > 1){
-          request.roundtrip = true;
-          //round trip
-          var returnTime = itineraryRequestObject.itinerary_request[1].trip_time;
-          request.when3 = this.getDateDescription(returnTime);
-          if(request.when1 == request.when3){
-            request.sameday = true;
-          }
-          request.when4 = (itineraryRequestObject.itinerary_request[1].departure_type == 'depart' ? "Leave at " : "Get back by ") + moment(returnTime).format('h:mm a');
-        }
-        request.purpose = this.purpose;
-        $scope.request = request;
-        this.confirmRequest = request;
+        // console.log('request', request);
+
+        // $scope.request = request;
+        // this.confirmRequest = request;
       }
 
       this.prepareTripSearchResultsPage = function(){
@@ -569,7 +590,6 @@ angular.module('applyMyRideApp')
       }
 
       this.getAddressDescriptionFromLocation = function(location){
-        console.log(location);
         var description = {};
         if(location.poi){
           description.line1 = location.poi.name
@@ -630,8 +650,8 @@ angular.module('applyMyRideApp')
       }
 
       this.getTripPurposes = function($scope, $http) {
-        this.fixLatLon(this.fromDetails);
-        const that = this
+        // this.fixLatLon(this.fromDetails);
+        const that = this;
         // TODO: Look at this and see if it needs to be a post request
         return $http.post(urlPrefix + 'api/v1/trip_purposes/list', this.fromDetails, this.getHeaders()).
           success(function(data) {
@@ -661,12 +681,12 @@ angular.module('applyMyRideApp')
       }
 
       this.checkServiceArea = function($http, place) {
-        this.fixLatLon(place);
+        // this.fixLatLon(place);
         return $http.post(urlPrefix + 'api/v1/places/within_area', place, this.getHeaders());
       }
 
       this.postItineraryRequest = function($http) {
-        return $http.post(urlPrefix + 'api/v1/itineraries/plan', this.itineraryRequestObject, this.getHeaders());
+        return $http.post(urlPrefix + 'api/v2/trips/plan', this.itineraryRequestObject, this.getHeaders());
       }
 
       this.postProfileUpdate = function($http) {
@@ -678,7 +698,8 @@ angular.module('applyMyRideApp')
       }
 
       this.getTravelPatterns = function($http, params={}){
-        let config = this.getHeaders()
+        let config = this.getHeaders();
+        console.log('params', params)
         return $http.get(urlPrefix + '/api/v2/travel_patterns?' + $.param(params), config);
       }
 
@@ -804,68 +825,106 @@ angular.module('applyMyRideApp')
 
       // Build an itinerary request object
       this.createItineraryRequest = function() {
-        if(this.fromDetails && this.fromDetails.poi){
-          this.fromDetails.name = this.fromDetails.poi.name
-        }
-        if(this.toDetails && this.toDetails.poi){
-          this.toDetails.name = this.toDetails.poi.name
-        }
-        var request = {};
-        const trip_details = { notification_preferences: null}
-        request.trip_purpose = this.purpose;
-        request.itinerary_request = [];
-        var outboundTrip = { details: trip_details};
-        outboundTrip.segment_index = 0;
-        outboundTrip.start_location = this.fromDetails;
-        outboundTrip.end_location = this.toDetails;
-        this.addStreetAddressToLocation(outboundTrip.start_location);
-        this.addStreetAddressToLocation(outboundTrip.end_location);
+        const ADMIN_AREA_3 = 'administrative_area_level_3';
+        const PENN = 'Pennsylvania';
+        let trip = {};
+        let trip_types = ['paratransit', 'transit'];
+        let origin = this.fromDetails;
+        let destination = this.toDetails;
+
+        trip.purpose = this.purpose;
+        trip.origin_attributes = {
+          lat: origin.geometry.location.lat,
+          lng: origin.geometry.location.lng
+          // name: '',
+          // street_number: '',
+          // route: '',
+          // city: '',
+          // state: '',
+          // zip: '',
+          // lat: '',
+          // lng: '',
+          // google_place_attributes: ''
+        };
+        trip.destination_attributes = {
+          lat: destination.geometry.location.lat,
+          lng: destination.geometry.location.lng
+        };
+        trip.trip_time = this.fromTime.toISOString();
+        trip.arrive_by = false;
+
+        if (origin.poi) { trip.origin_attributes.name = origin.poi.name; }
+        if (destination.poi) { trip.destination_attributes.name = destination.poi.name; }
+
+        origin.address_components.forEach((component) => {
+          component.types.forEach((type) => {
+            if (type === 'postal_code') { type = 'zip'; }
+            trip.origin_attributes[type] = component.long_name;
+          });
+        });
+        destination.address_components.forEach((component) => {
+          component.types.forEach((type) => {
+            if (type === 'postal_code') { type = 'zip'; }
+            trip.destination_attributes[type] = component.long_name;
+          });
+        });
+
+        trip.origin_attributes['city'] = trip.origin_attributes['city'] || trip.origin_attributes['locality'] || trip.origin_attributes[ADMIN_AREA_3];
+        if (trip.origin_attributes['city'] === PENN) { delete trip.origin_attributes['city']; }
+
+        trip.destination_attributes['city'] = trip.destination_attributes['city'] || trip.destination_attributes['locality'] || trip.destination_attributes[ADMIN_AREA_3];
+        if (trip.destination_attributes['city'] === PENN) { delete trip.destination_attributes['city']; }
+
+        console.log('origin', origin)
+        console.log('destination', destination)
+
+        return {trip, trip_types};
         /*
           NOTE this is necessary because some locations returned by Google Places
           ... include city in a format that OCC does not expect
         */
-        this.addCityToLocation(outboundTrip.start_location);
-        this.addCityToLocation(outboundTrip.end_location);
-        this.fixLatLon(outboundTrip.start_location);
-        this.fixLatLon(outboundTrip.end_location);
-        var fromTime = this.fromTime;
-        if(fromTime == null){
-          fromTime = new Date();
-        }else{
-          fromTime = moment(this.fromTime).toDate();
-        }
-        var fromDate = moment(this.fromDate).startOf('day').toDate();
-        fromDate.setHours(fromTime.getHours());
-        fromDate.setMinutes(fromTime.getMinutes());
-        outboundTrip.trip_time = moment.utc(fromDate).format();
-        if(this.asap){
-          outboundTrip.trip_time = moment.utc(new Date()).format();
-          outboundTrip.departure_type = 'depart';
-        }else{
-          outboundTrip.departure_type = this.fromTimeType;
-        }
+        // this.addCityToLocation(outboundTrip.start_location);
+        // this.addCityToLocation(outboundTrip.end_location);
+        // this.fixLatLon(outboundTrip.start_location);
+        // this.fixLatLon(outboundTrip.end_location);
+        // var fromTime = this.fromTime;
+        // if(fromTime == null){
+        //   fromTime = new Date();
+        // }else{
+        //   fromTime = moment(this.fromTime).toDate();
+        // }
+        // var fromDate = moment(this.fromDate).startOf('day').toDate();
+        // fromDate.setHours(fromTime.getHours());
+        // fromDate.setMinutes(fromTime.getMinutes());
+        // outboundTrip.trip_time = moment.utc(fromDate).format();
+        // if(this.asap){
+        //   outboundTrip.trip_time = moment.utc(new Date()).format();
+        //   outboundTrip.departure_type = 'depart';
+        // }else{
+        //   outboundTrip.departure_type = this.fromTimeType;
+        // }
 
-        request.itinerary_request.push(outboundTrip);
-        if(this.returnDate){
-          var returnTrip = {};
-          returnTrip.segment_index = 1;
-          returnTrip.start_location = this.toDetails;
-          returnTrip.end_location = this.fromDetails;
-          returnTrip.departure_type = this.returnTimeType;
-          var returnTime = this.returnTime;
-          if(returnTime == null){
-            returnTime = new Date();
-          }else{
-            returnTime = moment(this.returnTime).toDate()
-          }
-          var returnDate = moment(this.returnDate).startOf('day').toDate();
-          returnDate.setHours(returnTime.getHours());
-          returnDate.setMinutes(returnTime.getMinutes());
-          var returnTimeString = moment.utc(returnDate).format();
-          returnTrip.trip_time = returnTimeString;
-          request.itinerary_request.push(returnTrip);
-        }
-        return request;
+        // request.itinerary_request.push(outboundTrip);
+        // if(this.returnDate){
+        //   var returnTrip = {};
+        //   returnTrip.segment_index = 1;
+        //   returnTrip.start_location = this.toDetails;
+        //   returnTrip.end_location = this.fromDetails;
+        //   returnTrip.departure_type = this.returnTimeType;
+        //   var returnTime = this.returnTime;
+        //   if(returnTime == null){
+        //     returnTime = new Date();
+        //   }else{
+        //     returnTime = moment(this.returnTime).toDate()
+        //   }
+        //   var returnDate = moment(this.returnDate).startOf('day').toDate();
+        //   returnDate.setHours(returnTime.getHours());
+        //   returnDate.setMinutes(returnTime.getMinutes());
+        //   var returnTimeString = moment.utc(returnDate).format();
+        //   returnTrip.trip_time = returnTimeString;
+        //   request.itinerary_request.push(returnTrip);
+        // }
+        // return request;
       };
 
       this.updateTripDetails = function($http, updateTripRequest) {
@@ -914,7 +973,7 @@ angular.module('applyMyRideApp')
         if (!localityAvailable) {
           // pull administrative locality level 3 instead if locality isn't present
           cityAddressComponent = location.address_components.find(function(component) {
-            const includesAdmin3 = component.types.includes(ADMIN_AREA_3)
+            const includesAdmin3 = component.types.includes(ADMIN_AREA_3);
             return includesAdmin3 && component.long_name !== 'Pennsylvania' && (component.long_name !== null && component.long_name !== "")
           })
 
@@ -934,16 +993,16 @@ angular.module('applyMyRideApp')
       }
 
       this.fixLatLon = function(location) {
-        /*
+        if (location && location.geometry && location.geometry.location) {
+          let location = location.geometry.location
 
-        do nothing, previously we had to mess around with the lat/lons
-
-        if(typeof location.geometry.location.lat != 'number'){
-          location.geometry.location.lat = location.geometry.location.lat();
-          location.geometry.location.lng = location.geometry.location.lng();
+          if (location.lat && typeof location.lat !== 'number') {
+            location.lat = location.lat();
+          }
+          if (location.lng && typeof location.lng !== 'number') {
+            location.lng = location.lng();
+          }
         }
-
-        */
       }
 
       this.getHeaders = function(){
