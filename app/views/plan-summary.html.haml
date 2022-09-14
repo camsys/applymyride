@@ -6,9 +6,7 @@
           %strong My Ride Request 
       .pull-right
         %h3
-          -# TODO (Drew)
-          -# Needs work on the backend
-          %strong Cost: {{ 0.0 | currency | free }}
+          %strong Cost: {{ planService.fare_info.mode_paratransit }}
   .row
     %br
     %br
@@ -17,7 +15,7 @@
       %label{for: 'fromInput'}
         From:
       .input-group
-        %input#from.form-control{disabled: true, style: 'width: 100%;', ng: {value: 'from'}}
+        %input#from.form-control{disabled: true, style: 'width: 100%;', ng: {value: 'planService.confirmRequest.fromLine2'}}
         %a.input-group-addon{ng: {click: 'back("where")'}, style: 'width: fit-content; height: 34px; background-color: white;'}
           %i.glyphicon.glyphicon-edit{style: 'margin-top: 2px;'}
 
@@ -26,7 +24,7 @@
       %label{for: 'toInput'}
         To:
       .input-group
-        %input#to.form-control{disabled: true, style: 'width: 100%;', ng: {value: 'to'}}
+        %input#to.form-control{disabled: true, style: 'width: 100%;', ng: {value: 'planService.confirmRequest.toLine2'}}
         %a.input-group-addon{ng: {click: 'back("where")'}, style: 'width: fit-content; height: 34px; background-color: white;'}
           %i.glyphicon.glyphicon-edit{style: 'margin-top: 2px;'}
 
@@ -35,7 +33,7 @@
       %label{for: 'purposeInput'}
         Purpose:
       .input-group
-        %input#purpose.form-control{disabled: true, style: 'width: 100%;', ng: {value: 'planService.purpose'}}
+        %input#purpose.form-control{disabled: true, style: 'width: 100%;', ng: {value: 'planService.confirmRequest.purpose'}}
         %a.input-group-addon{ng: {click: 'back("purpose")'}, style: 'width: fit-content; height: 34px; background-color: white;'}
           %i.glyphicon.glyphicon-edit{style: 'margin-top: 2px;'}
   
@@ -44,7 +42,7 @@
       %label{for: 'fromMomentInput'}
         When:
       .input-group
-        %input#fromMomentInput.form-control{disabled: true, style: 'width: 100%;', ng: {value: 'fromMoment.format("dddd MMM Do, YYYY") + " | Arrive by " + fromMoment.format("h:mm a")'}}
+        %input#fromMomentInput.form-control{disabled: true, style: 'width: 100%;', ng: {value: 'planService.confirmRequest.when'}}
         %a.input-group-addon{ng: {click: 'back("when")'}, style: 'width: fit-content; height: 34px; background-color: white;'}
           %i.glyphicon.glyphicon-edit{style: 'margin-top: 2px;'}
   

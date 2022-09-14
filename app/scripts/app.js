@@ -150,25 +150,6 @@ angular.module('applyMyRideApp', [
       }
     });
 
-    // CONFIRM
-    // var login = {};
-    // login.session = {};
-    // login.session.ecolane_id = "00000";
-    // login.session.county = "Philadelphia";
-    // login.session.dob = moment("19000101", "YYYYMMDD").format('M/D/YYYY');
-    // login.session.email = "demo_traveler@camsys.com";
-    // login.session.authentication_token = "HsN_dyPsKDooukSS62RS";
-
-    // ipCookie('sharedRideId', login.session.ecolane_id, {expires: 7, expirationUnit: 'days'});
-    // ipCookie('county', login.session.county, {expires: 7, expirationUnit: 'days'});
-    // ipCookie('authentication_token', login.session.authentication_token, {expires: 7, expirationUnit: 'days'});
-    // ipCookie('email', login.session.email, {expires: 7, expirationUnit: 'days'});
-    // ipCookie('first_name', "Demo", {expires: 7, expirationUnit: 'days'});
-    // ipCookie('last_name', "Traveler", {expires: 7, expirationUnit: 'days'});
-    // sessionStorage.setItem('dateofbirth', login.session.dob);
-    // localStorage.setItem('last_destination', '');
-    // localStorage.setItem('last_origin', '');
-
     $window.$rootScope = $rootScope;
     var exceptions = ["/plan/my_rides", "/about", "/about/sharedride", "/about/projecthistory"];
     $rootScope.$on('$routeChangeStart', function (event) {
