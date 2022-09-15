@@ -6,9 +6,7 @@
           %strong My Ride Request 
       .pull-right
         %h3
-          -# TODO (Drew)
-          -# Needs work on the backend
-          %strong Cost: Free
+          %strong Cost: {{ planService.fare_info.mode_paratransit }}
   .row
     %br
     %br
@@ -17,36 +15,36 @@
       %label{for: 'fromInput'}
         From:
       .input-group
-        %input#from.form-control{disabled: true, style: 'width: 100%;', ng: {value: 'from'}}
-        %a.input-group-addon{href: '/#/plan/where', style: 'width: fit-content; height: 34px;'}
-          %i.glyphicon.glyphicon-edit{style: 'margin-top: 2px'}
+        %input#from.form-control{disabled: true, style: 'width: 100%;', ng: {value: 'planService.confirmRequest.fromLine2'}}
+        %a.input-group-addon{ng: {click: 'back("where")'}, style: 'width: fit-content; height: 34px; background-color: white;'}
+          %i.glyphicon.glyphicon-edit{style: 'margin-top: 2px;'}
 
   .row
     .col-lg-6.col-lg-offset-3.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1.col-xs-12
       %label{for: 'toInput'}
         To:
       .input-group
-        %input#to.form-control{disabled: true, style: 'width: 100%;', ng: {value: 'to'}}
-        %a.input-group-addon{href: '/#/plan/where', style: 'width: fit-content; height: 34px;'}
-          %i.glyphicon.glyphicon-edit{style: 'margin-top: 2px'}
+        %input#to.form-control{disabled: true, style: 'width: 100%;', ng: {value: 'planService.confirmRequest.toLine2'}}
+        %a.input-group-addon{ng: {click: 'back("where")'}, style: 'width: fit-content; height: 34px; background-color: white;'}
+          %i.glyphicon.glyphicon-edit{style: 'margin-top: 2px;'}
 
   .row
     .col-lg-6.col-lg-offset-3.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1.col-xs-12
       %label{for: 'purposeInput'}
         Purpose:
       .input-group
-        %input#purpose.form-control{disabled: true, style: 'width: 100%;', ng: {value: 'planService.purpose'}}
-        %a.input-group-addon{href: '/#/plan/purpose', style: 'width: fit-content; height: 34px;'}
-          %i.glyphicon.glyphicon-edit{style: 'margin-top: 2px'}
+        %input#purpose.form-control{disabled: true, style: 'width: 100%;', ng: {value: 'planService.confirmRequest.purpose'}}
+        %a.input-group-addon{ng: {click: 'back("purpose")'}, style: 'width: fit-content; height: 34px; background-color: white;'}
+          %i.glyphicon.glyphicon-edit{style: 'margin-top: 2px;'}
   
   .row
     .col-lg-6.col-lg-offset-3.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1.col-xs-12
       %label{for: 'fromMomentInput'}
         When:
       .input-group
-        %input#fromMomentInput.form-control{disabled: true, style: 'width: 100%;', ng: {value: 'fromMoment.format("dddd MMM Do, YYYY") + " | Arrive by " + fromMoment.format("h:mm a")'}}
-        %a.input-group-addon{href: '/#/plan/when', style: 'width: fit-content; height: 34px;'}
-          %i.glyphicon.glyphicon-edit{style: 'margin-top: 2px'}
+        %input#fromMomentInput.form-control{disabled: true, style: 'width: 100%;', ng: {value: 'planService.confirmRequest.when'}}
+        %a.input-group-addon{ng: {click: 'back("when")'}, style: 'width: fit-content; height: 34px; background-color: white;'}
+          %i.glyphicon.glyphicon-edit{style: 'margin-top: 2px;'}
   
   .row
     .col-lg-6.col-lg-offset-3.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1.col-xs-12
@@ -54,12 +52,12 @@
         Companions:
       .input-group{ng: {show: 'planService.hasEscort || true'}}
         %input#companionsInput.form-control{disabled: true, style: 'width: 100%;', value: "No companions"}
-        %a.input-group-addon{href: '/#/plan/companions', style: 'width: fit-content; height: 34px;'}
-          %i.glyphicon.glyphicon-edit{style: 'margin-top: 2px'}
+        %a.input-group-addon{ng: {click: 'back("companions")'}, style: 'width: fit-content; height: 34px; background-color: white;'}
+          %i.glyphicon.glyphicon-edit{style: 'margin-top: 2px;'}
       .input-group{ng: {hide: 'planService.hasEscort || true'}}
         %input#companionsInput.form-control{disabled: true, style: 'width: 100%;', ng: {value: 'planService.numberOfCompanions'}}
-        %a.input-group-addon{href: '/#/plan/companions', style: 'width: fit-content; height: 34px;'}
-          %i.glyphicon.glyphicon-edit{style: 'margin-top: 2px'}
+        %a.input-group-addon{ng: {click: 'back("companions")'}, style: 'width: fit-content; height: 34px; background-color: white;'}
+          %i.glyphicon.glyphicon-edit{style: 'margin-top: 2px;'}
   
   .row
     .col-lg-6.col-lg-offset-3.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1.col-xs-12
@@ -71,7 +69,7 @@
   .row.unstuck-foot.btn-spacing
     .col-lg-6.col-lg-offset-3.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1.col-xs-12
       .pull-left
-        %a.btn.btn-secondary{href: "", back: '', ng: {click: "back()", hide:'backToConfirm'}}
+        %a.btn.btn-secondary{href: "", ng: {click: "back()", hide:'backToConfirm'}}
           Back
       .pull-right
         %a.btn.btn-primary{href: "", ng: {click: 'next()'}}
