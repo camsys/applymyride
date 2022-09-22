@@ -6,6 +6,7 @@ angular.module('applyMyRideApp')
 
       this.reset = function(){
         this.resetOther();
+        this.resetCompanions();
         this.resetWhen();
         this.resetPurpose();
         this.resetWhere();
@@ -33,9 +34,13 @@ angular.module('applyMyRideApp')
         delete this.serviceClose;
       };
 
-      this.resetOther = function () {
+      this.resetCompanions = function () {
         delete this.numberOfCompanions;
+        delete this.hasCompanions;
         delete this.hasEscort;
+      }
+
+      this.resetOther = function () {
         delete this.driverInstructions;
         delete this.transitSaved;
         delete this.transitCancelled;
@@ -51,15 +56,14 @@ angular.module('applyMyRideApp')
         delete this.showBusRides;
       };
 
-
       var urlPrefix = '//' + APIHOST + '/';
-      this.getPrebookingQuestions = function(){
+      this.getPrebookingQuestions = function () {
         var questions = this.paratransitItineraries[0].prebooking_questions;
         var questionObj = {};
         angular.forEach(questions, function(question, index) {
-          if(question.code == 'assistant'){
+          if (question.code == 'assistant') {
             questionObj.assistant = question.question;
-          }else if(question.code == 'children' || question.code == 'companions'){
+          } else if (question.code == 'children' || question.code == 'companions') {
             questionObj.children = question.question;
             questionObj.limit = question.choices;
           }
@@ -232,7 +236,13 @@ angular.module('applyMyRideApp')
       this.prepareTripSearchResultsPage = function(){
         this.transitItineraries = [];
         this.paratransitItineraries = [];
-        this.guestParatransitItinerary = null;
+
+        // TODO (Drew Teter, 09/22/2022) Fully Remove ability for guest login.
+        // We plan on doing this in the future, but as no tickets have been created
+        // for this task yet, I'm just commenting out this line for now.
+
+        // this.guestParatransitItinerary = null;
+
         this.taxiItineraries = [];
         this.uberItineraries = [];
         this.walkItineraries = [];
@@ -259,7 +269,13 @@ angular.module('applyMyRideApp')
               } else if (itinerary.discounts){
                 itinerary.travelTime = humanizeDuration(itinerary.duration * 1000,  { units: ["hours", "minutes"], round: true });
                 itinerary.startTime = moment(itinerary.start_time).format('h:mm a')
-                that.guestParatransitItinerary = itinerary;
+
+                // TODO (Drew Teter, 09/22/2022) Fully Remove ability for guest login.
+                // We plan on doing this in the future, but as no tickets have been created
+                // for this task yet, I'm just commenting out this line for now.
+
+                // that.guestParatransitItinerary = itinerary;
+
                 angular.forEach(itinerary.discounts, function(discount, index) {
                   var fare = parseFloat(Math.round(discount.fare * 100) / 100).toFixed(2);
                   fares.push(fare);
@@ -287,10 +303,18 @@ angular.module('applyMyRideApp')
         if(itinerariesByModeOutbound){
           if(itinerariesByModeOutbound.mode_paratransit){
               var lowestPricedParatransitTrip = this.getLowestPricedParatransitTrip(itinerariesByModeOutbound.mode_paratransit);
+              
               if(!this.email){
-                //guest user, just use the first paratransit itinerary since the prices are unknown
-                lowestPricedParatransitTrip = this.guestParatransitItinerary;
+                // TODO (Drew Teter, 09/22/2022) Fully Remove ability for guest login.
+                // We plan on doing this in the future, but as no tickets have been created
+                // for this task yet, I'm commenting out this line and raising an error.
+
+                // guest user, just use the first paratransit itinerary since the prices are unknown
+                // lowestPricedParatransitTrip = this.guestParatransitItinerary;
+                throw 'PlanService object does not have an email. Guest accounts are not allowed. 1 of 3';
+                return;
               }
+
               if(lowestPricedParatransitTrip){
                 this.paratransitItineraries.push(lowestPricedParatransitTrip);
                 fare_info.paratransitTravelTime = lowestPricedParatransitTrip.travelTime;
@@ -326,7 +350,16 @@ angular.module('applyMyRideApp')
             this.transitItineraries = [];
           }
 
-          if(itinerariesByModeReturn.mode_paratransit && this.email){ //this doesn't matter for guest users since they can't book anyway
+          if (!this.email) {
+            // TODO (Drew Teter, 09/22/2022) Fully Remove ability for guest login.
+            // We plan on doing this in the future, but as no tickets have been created
+            // for this task yet, I'm raising an error.
+
+            throw 'PlanService object does not have an email. Guest accounts are not allowed. 2 of 3';
+            return;
+          }
+
+          if (itinerariesByModeReturn.mode_paratransit) {
             var lowestPricedParatransitTrip = this.getLowestPricedParatransitTrip(itinerariesByModeReturn.mode_paratransit);
             if(lowestPricedParatransitTrip){
               this.paratransitItineraries.push(lowestPricedParatransitTrip);
@@ -392,7 +425,7 @@ angular.module('applyMyRideApp')
           }
         }
 
-        if(this.email){
+        if (this.email) {
           if(this.paratransitItineraries.length > 1){
             //for round trips, show the fare as the sum of the two PARATRANSIT fares
             var fare1 = this.paratransitItineraries[0].cost || 0;
@@ -401,6 +434,13 @@ angular.module('applyMyRideApp')
           }else if(this.paratransitItineraries.length == 1){
             fare_info.mode_paratransit = freeFilter(currencyFilter( new Number(this.paratransitItineraries[0].cost).toFixed(2).toString() ));
           }
+        } else {
+          // TODO (Drew Teter, 09/22/2022) Fully Remove ability for guest login.
+          // We plan on doing this in the future, but as no tickets have been created
+          // for this task yet, I'm raising an error.
+
+          throw 'PlanService object does not have an email. Guest accounts are not allowed. 3 of 3';
+          return;
         }
         this.fare_info = fare_info;
       }

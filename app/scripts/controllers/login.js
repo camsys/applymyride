@@ -4,7 +4,7 @@ angular.module('applyMyRideApp')
   .controller('LoginController', ['$scope', '$rootScope', '$location', 'flash', 'planService', '$http', 'ipCookie', '$window', 'localStorageService', 'util', 'Idle',
     function ($scope, $rootScope, $location, flash, planService, $http, ipCookie, $window, localStorageService, util, Idle) {
       //skip initializing this controller if we're not on the page
-      if( ['/','/loginError','/plan/login-guest'].indexOf( $location.path() ) == -1){ return; }
+      if( ['/','/loginError'].indexOf( $location.path() ) == -1){ return; }
 
       util.getCounties(
         function(response) {
