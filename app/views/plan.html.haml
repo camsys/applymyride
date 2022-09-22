@@ -172,7 +172,11 @@
     
     .summary{ng: {show: 'step === "summary"', include: "'views/plan-summary.html'"}}
 
-    .login-guest{ng: {show: 'step === "login-guest"', include:"'views/login.html'"}}
+    -# TODO (Drew Teter, 09/22/2022) Fully Remove ability for guest login.
+    -# We plan on doing this in the future, but as no tickets have been created
+    -# for this task yet, I'm commenting out these lines instead if deleting them.
+    
+    -# .login-guest{ng: {show: 'step === "login-guest"', include:"'views/login.html'"}}
 
     .confirm{ng: {show: 'step==="confirm"', include:"'views/plan-confirm.html'"}}
     .confirm{ng: {show: 'step==="transit_details"', include:"'views/plan-transit-details.html'"}}

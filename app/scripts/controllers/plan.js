@@ -1838,15 +1838,27 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
         planService.prepareTripSearchResultsPage();
         $scope.fare_info = planService.fare_info;
         $scope.paratransitItineraries = planService.paratransitItineraries;
-        if(planService.guestParatransitItinerary){
-          //don't let there be paratransit itineraries if the guest itinerary is populated
-          $scope.paratransitItineraries = [];
-        }
+
+        // TODO (Drew Teter, 09/22/2022) Fully Remove ability for guest login.
+        // We plan on doing this in the future, but as no tickets have been created yet
+        // I'm just commenting out these lines for now.
+
+        // if(planService.guestParatransitItinerary){
+        //   //don't let there be paratransit itineraries if the guest itinerary is populated
+        //   $scope.paratransitItineraries = [];
+        // }
+
         if (!planService.paratransitResult) {
           // Don't let there be paratransit itineraries if the purpose is not eligible.
           $scope.paratransitItineraries = [];
         }
-        $scope.guestParatransitItinerary = planService.guestParatransitItinerary;
+
+        // TODO (Drew Teter, 09/22/2022) Fully Remove ability for guest login.
+        // We plan on doing this in the future, but as no tickets have been created
+        // for this task yet, I'm just commenting out this line for now.
+
+        // $scope.guestParatransitItinerary = planService.guestParatransitItinerary;
+
         $scope.walkItineraries = planService.walkItineraries;
         $scope.transitItineraries = planService.transitItineraries;
         $scope.transitInfos = planService.transitInfos;
