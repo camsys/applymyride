@@ -365,8 +365,8 @@
       .col-md-8.col-md-offset-2.col-xs-12{style:'margin-top:20px;'}
         .row{ng: {show: 'questions.assistant'}}
           %fieldset.form-group.col-xs-12
-            %label.check-group.h4{for:'hasescort', style:'width:90%', ng: {model: 'hasEscort'}}
-              %input{type:"checkbox", id:"hasescort"}
+            %label.check-group.h4{for:'hasescort', style:'width:90%'}
+              %input{type:"checkbox", id:"hasescort", ng: {model: 'hasEscort'}}
               %span{style:'margin-left: 8px;'} {{questions.assistant}}
               %span.checkmark
         .row{ng: {show: 'questions.children'}}
@@ -383,7 +383,7 @@
           .col-xs-12
             %a.btn.pull-left{href: "", ng: {click: "back()"}}
               Back
-            %a.btn.btn-primary.pull-right{href: "", ng: {click: 'next()'}}
+            %a.btn.btn-primary.pull-right{href: "", ng: {class:'{disabled: !(hasEscort || hasCompanions)}', click: 'next()'}}
               Next
 
     .depart-time{ng: {show: 'step==="instructions_for_driver"'}}

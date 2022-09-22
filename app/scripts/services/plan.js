@@ -6,6 +6,7 @@ angular.module('applyMyRideApp')
 
       this.reset = function(){
         this.resetOther();
+        this.resetCompanions();
         this.resetWhen();
         this.resetPurpose();
         this.resetWhere();
@@ -33,9 +34,13 @@ angular.module('applyMyRideApp')
         delete this.serviceClose;
       };
 
-      this.resetOther = function () {
+      this.resetCompanions = function () {
         delete this.numberOfCompanions;
+        delete this.hasCompanions;
         delete this.hasEscort;
+      }
+
+      this.resetOther = function () {
         delete this.driverInstructions;
         delete this.transitSaved;
         delete this.transitCancelled;
@@ -51,15 +56,14 @@ angular.module('applyMyRideApp')
         delete this.showBusRides;
       };
 
-
       var urlPrefix = '//' + APIHOST + '/';
-      this.getPrebookingQuestions = function(){
+      this.getPrebookingQuestions = function () {
         var questions = this.paratransitItineraries[0].prebooking_questions;
         var questionObj = {};
         angular.forEach(questions, function(question, index) {
-          if(question.code == 'assistant'){
+          if (question.code == 'assistant') {
             questionObj.assistant = question.question;
-          }else if(question.code == 'children' || question.code == 'companions'){
+          } else if (question.code == 'children' || question.code == 'companions') {
             questionObj.children = question.question;
             questionObj.limit = question.choices;
           }

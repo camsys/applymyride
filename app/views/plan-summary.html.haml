@@ -50,12 +50,8 @@
     .col-lg-6.col-lg-offset-3.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1.col-xs-12
       %label{for: 'CompanionsInput'}
         Companions:
-      .input-group{ng: {show: 'planService.hasEscort || true'}}
-        %input#companionsInput.form-control{disabled: true, style: 'width: 100%;', value: "No companions"}
-        %a.input-group-addon{ng: {click: 'back("companions")'}, style: 'width: fit-content; height: 34px; background-color: white;'}
-          %i.glyphicon.glyphicon-edit{style: 'margin-top: 2px;'}
-      .input-group{ng: {hide: 'planService.hasEscort || true'}}
-        %input#companionsInput.form-control{disabled: true, style: 'width: 100%;', ng: {value: 'planService.numberOfCompanions'}}
+      .input-group
+        %input#companionsInput.form-control{disabled: true, style: 'width: 100%;', ng: {value: "getOtherRidersString()"}}
         %a.input-group-addon{ng: {click: 'back("companions")'}, style: 'width: fit-content; height: 34px; background-color: white;'}
           %i.glyphicon.glyphicon-edit{style: 'margin-top: 2px;'}
   

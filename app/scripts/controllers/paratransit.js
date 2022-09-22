@@ -47,8 +47,6 @@ angular.module('applyMyRideApp')
           }
         });
 
-
-
         $scope.purpose = planService.itineraryRequestObject.trip_purpose;
 
         $scope.tripCancelled = !planService.booking_results[0].booked;

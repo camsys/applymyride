@@ -426,20 +426,21 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
     }
 
     $scope.getOtherRidersString = function(){
-      var otherRidersString = '';
-      if(planService.hasEscort){
-        otherRidersString += '1 escort';
+      var otherRiders = [];
+
+      if (planService.hasEscort) {
+        otherRiders.push('Approved escort');
       }
-      if(planService.numberOfCompanions){
-        if(otherRidersString.length > 0){
-          otherRidersString += ', ';
-        }
-        otherRidersString += planService.numberOfCompanions + ' companion';
-        if(planService.numberOfCompanions > 1){
-          otherRidersString += 's';
+
+      if (planService.hasCompanions) {
+        if (planService.numberOfCompanions === 1) { 
+          otherRiders.push(planService.numberOfCompanions + ' companion');
+        } else {
+          otherRiders.push(planService.numberOfCompanions + ' companions');
         }
       }
-      return otherRidersString;
+
+      return otherRiders.length > 0 ? otherRiders.join(', ') : 'No companions';
     }
 
     $scope.getReturnDateString = function(){
@@ -566,10 +567,27 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
                       });
           break;
         case 'when':
-          $location.path('/plan/companions');
+          _bookTrip().success((sec) => {
+            $scope.stopSpin();
+            $scope.paratransitResult = planService.paratransitResult;
+            $scope.hasEscort = false;
+            $scope.hasCompanions = false;
+            planService.prepareTripSearchResultsPage();
+            $location.path('/plan/companions');
+          }).error((err) => {
+            $scope.stopSpin();
+            console.log(err);
+            $location.path('/plan/summary/error');
+          });
+          break;
+        case 'companions':
+          // The Companions page doesn't use a "next" button
+          // See "specifySharedRideCompanions"
           break;
         case 'assistant':
           planService.hasEscort = $scope.hasEscort;
+          planService.hasCompanions = $scope.hasCompanions;
+
           if($scope.hasCompanions){
             planService.numberOfCompanions = $scope.numberOfCompanions || 0;
           }else{
@@ -619,8 +637,11 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
           case 'companions':
             step = 'when';
             break;
-          case 'instructions_for_driver':
+          case 'assistant':
             step = 'companions';
+            break;
+          case 'instructions_for_driver':
+            step = (planService.hasEscort || planService.numberOfCompanions > 0) ? 'assistant' : 'companions';
             break;
           case 'summary':
             step = 'instructions_for_driver';
@@ -641,6 +662,11 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
         case 'when':
           planService.resetOther();
         case 'companions':
+          $scope.hasEscort = false;
+          $scope.hasCompanions = false;
+          delete $scope.numberOfCompanions;
+          planService.resetCompanions();
+        case 'assistant':
         case 'instructions_for_driver':
         case 'summary':
           break;
@@ -2028,24 +2054,20 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
         $window.visited = true;
 
         break;
-      case 'companions':
-        $scope.showNext = false;
-        break;
-      // case 'assistant':
-      //   $scope.questions = planService.getPrebookingQuestions();
-      //   $scope.hasEscort = planService.hasEscort;
-      //   $scope.numberOfCompanions = planService.numberOfCompanions;
-      //   if($scope.numberOfCompanions == null){
-      //     $scope.numberOfCompanions = 0;
-      //   }
-      //   if($scope.numberOfCompanions > 0){
-      //     $scope.hasCompanions = true;
-      //   }else{
-      //     $scope.hasCompanions = false;
-      //   }
-      //   $scope.showNext = true;
-      //   $scope.disableNext = false;
+      // case 'companions':
+      //   $scope.showNext = false;
       //   break;
+      case 'assistant':
+        $scope.questions = planService.getPrebookingQuestions();
+        $scope.hasEscort = planService.hasEscort;
+        $scope.numberOfCompanions = planService.numberOfCompanions;
+
+        if ($scope.numberOfCompanions === null || $scope.numberOfCompanions === undefined) {
+          $scope.numberOfCompanions = 0;
+        }
+
+        $scope.hasCompanions = $scope.numberOfCompanions > 0
+        break;
       case 'instructions_for_driver':
         $scope.driverInstructions = planService.driverInstructions;
         break;
