@@ -532,7 +532,7 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
                             for(let i=0; i<weekday; i++) {
                               let tempDate = date.clone().subtract(weekday-i, "Days");
                               month.weeks[weekIndex][i] = {
-                                key: tempDate.format("YYYY-MMDD"),
+                                key: tempDate.format("YYYY-MM-DD"),
                                 day: tempDate.date()
                               };
                             } 
@@ -543,8 +543,8 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
                             key: date.format("YYYY-MM-DD"),
                             day: day,
                             moment: date,
-                            startTime: Math.min(travelPatterns.map(pattern => pattern.to_calendar[dateString].start_time)),
-                            endTime: Math.max(travelPatterns.map(pattern => pattern.to_calendar[dateString].end_time))
+                            startTime: Math.min(...travelPatterns.map(pattern => pattern.to_calendar[dateString].start_time)),
+                            endTime: Math.max(...travelPatterns.map(pattern => pattern.to_calendar[dateString].end_time))
                           }
 
                           if (day == date.daysInMonth() || date.isSame(lastDay)) {
