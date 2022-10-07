@@ -547,6 +547,11 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
                             endTime: Math.max(...travelPatterns.map(pattern => pattern.to_calendar[dateString].end_time))
                           }
 
+                          travelPatterns.forEach(pattern => {
+                            console.log(dateString); 
+                            console.log(pattern.to_calendar[dateString].start_time);
+                          });
+
                           if (day == date.daysInMonth() || date.isSame(lastDay)) {
                             for(let i=weekday+1; i<7; i++) {
                               let tempDate = date.clone().add(i-weekday, "Days");
