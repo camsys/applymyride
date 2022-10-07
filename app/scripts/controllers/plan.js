@@ -547,11 +547,6 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
                             endTime: Math.max(...travelPatterns.map(pattern => pattern.to_calendar[dateString].end_time))
                           }
 
-                          travelPatterns.forEach(pattern => {
-                            console.log(dateString); 
-                            console.log(pattern.to_calendar[dateString].start_time);
-                          });
-
                           if (day == date.daysInMonth() || date.isSame(lastDay)) {
                             for(let i=weekday+1; i<7; i++) {
                               let tempDate = date.clone().add(i-weekday, "Days");
@@ -582,7 +577,7 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
           }).error((err) => {
             $scope.stopSpin();
             console.log(err);
-            $location.path('/plan/summary/error');
+            $location.path('/plan/when/error');
           });
           break;
         case 'companions':
@@ -611,7 +606,7 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
           }).error((err) => {
             $scope.stopSpin();
             console.log(err);
-            $location.path('/plan/summary/error');
+            $location.path('/plan/instructions_for_driver/error');
           });
           break;
         case 'summary':
@@ -624,7 +619,7 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
           }).error((err) => {
             $scope.stopSpin();
             console.log(err);
-            $location.path('/plan/booking/error');
+            $location.path('/plan/summary/error');
           });
           break;
       }
@@ -1816,6 +1811,10 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
           $scope.purposes = planService.purposes
           $scope.top_purposes = planService.top_purposes
           usSpinnerService.stop('spinner-1');
+
+          if ($scope.purposes.length + $scope.top_purposes.length >= 0) {
+            $location.path('/plan/no_purposes/error');
+          }
         });
         $scope.showNext = false;
         break;
