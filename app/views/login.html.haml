@@ -74,8 +74,10 @@
             .pull-right{ng:{hide: 'isTransitionCounty(county)'}}
               %a.btn.btn-primary{href: "", ng: {disabled: 'disableNext', click: 'next()'}, role: 'button'}
                 Next
-        .row.text-center{style:'margin: 30px 0px 10px 0px;'}
-          Need Help? Call 1-844-PA-4RIDE
+        .row.text-center{style:'margin: 30px -50px 10px -50px;'}
+          Need Help? Please contact your Local Transit Agency 
+          %a{href: "https://www.findmyride.penndot.pa.gov/fmr-edu/home/contact", target: "_blank", rel: "noopener noreferrer"} 
+            %span.glyphicon.glyphicon-new-window
 
     %div{ng: {show: "location == '/authenticateSharedRideId'"}}
       .row

@@ -577,7 +577,7 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
           }).error((err) => {
             $scope.stopSpin();
             console.log(err);
-            $location.path('/plan/summary/error');
+            $location.path('/plan/when/error');
           });
           break;
         case 'companions':
@@ -606,7 +606,7 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
           }).error((err) => {
             $scope.stopSpin();
             console.log(err);
-            $location.path('/plan/summary/error');
+            $location.path('/plan/instructions_for_driver/error');
           });
           break;
         case 'summary':
@@ -619,7 +619,7 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
           }).error((err) => {
             $scope.stopSpin();
             console.log(err);
-            $location.path('/plan/booking/error');
+            $location.path('/plan/summary/error');
           });
           break;
       }
@@ -1811,6 +1811,10 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
           $scope.purposes = planService.purposes
           $scope.top_purposes = planService.top_purposes
           usSpinnerService.stop('spinner-1');
+
+          if ($scope.purposes.length + $scope.top_purposes.length >= 0) {
+            $location.path('/plan/no_purposes/error');
+          }
         });
         $scope.showNext = false;
         break;
