@@ -1811,8 +1811,7 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
           $scope.purposes = planService.purposes
           $scope.top_purposes = planService.top_purposes
           usSpinnerService.stop('spinner-1');
-
-          if ($scope.purposes.length + $scope.top_purposes.length >= 0) {
+          if ($scope.purposes.length + $scope.top_purposes.length <= 0) {
             $location.path('/plan/no_purposes/error');
           }
         });
