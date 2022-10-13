@@ -1678,14 +1678,14 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
       if(!(day.endTime > 0)) { return; } // Return if the end time doesn't exist
 
       let hour, minute;
-      let serviceOpen = {hour: day.startTime / 3600, minute: day.startTime % 3600}
-      let serviceClose = {hour: day.endTime / 3600, minute: day.endTime % 3600}
+      let serviceOpen = {hour: day.startTime / 3600, minute: (day.startTime % 3600) / 60};
+      let serviceClose = {hour: day.endTime / 3600, minute: (day.startTime % 3600) / 60};
 
       //try to re-use the selected time if there is one, otherwise use the start time as a default
-      if($scope.fromMoment && !$scope.fromMoment.isSame( moment(), 'day' )){
+      if($scope.fromMoment && !$scope.fromMoment.isSame( moment(), 'day' )) {
         minute = $scope.fromMoment.minute();
         hour = $scope.fromMoment.hour();
-      }else{
+      } else {
         hour = serviceOpen.hour;
         minute = serviceOpen.close;
       }
