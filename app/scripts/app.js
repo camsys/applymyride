@@ -163,7 +163,7 @@ angular.module('applyMyRideApp', [
       // We plan on doing this in the future. But, as no tickets have been created
       // for this task yet, I'm just putting a redirect here as a temporary fix.
 
-      var publicPages = ['/', '/loginError', "/about", "/about/sharedride", "/about/projecthistory"];
+      var publicPages = ['/', '/loginError', "/about", "/about/sharedride", "/about/projecthistory", "/lookupIdForm", "/lookupError"];
       var notLoggedIn = !ipCookie('authentication_token');
 
       if (notLoggedIn && publicPages.indexOf($location.$$path) === -1) {
