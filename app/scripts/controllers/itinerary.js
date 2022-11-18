@@ -70,22 +70,23 @@ angular.module('applyMyRideApp')
 
         $scope.escort = "";
 
-        if(firstItinerary.assistant == "true"){
+        if (firstItinerary.assistant == true) {
           $scope.escort += "1 Escort";
         }
 
         if(firstItinerary.companions != null && firstItinerary.companions > 0){
-          if($scope.escort){
+          if ($scope.escort) {
             $scope.escort += ', ';
           }
           $scope.escort += firstItinerary.companions  + ' Companion';
-          if(firstItinerary.companions > 1){
+          if (firstItinerary.companions > 1) {
             $scope.escort += 's';
           }
         }
 
-        if($scope.escort.length == 0)
+        if ($scope.escort.length == 0) {
           $scope.escort = 'N/A';
+        }
 
       }
       $scope.mode = $scope.trip.mode;
