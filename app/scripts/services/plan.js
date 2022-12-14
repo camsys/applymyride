@@ -835,7 +835,7 @@ angular.module('applyMyRideApp')
           bookingRequest.itinerary_id = paratransitItinerary.id;
 
           if(that.hasEscort){
-            bookingRequest.escort = that.hasEscort;
+            bookingRequest.assistant = that.hasEscort;
           }
 
           if(that.numberOfFamily){
@@ -866,7 +866,9 @@ angular.module('applyMyRideApp')
         let request = {
           trips: [],
           // modes: ['paratransit', 'transit']
-          modes: ['paratransit']
+          modes: ['paratransit'],
+          companions: this.numberOfCompanions,
+          assistant: this.hasEscort
         };
 
         let outboundTrip = {
