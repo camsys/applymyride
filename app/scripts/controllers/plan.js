@@ -568,16 +568,19 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
           break;
         case 'when':
           _bookTrip().success((sec) => {
-            $scope.stopSpin();
             $scope.paratransitResult = planService.paratransitResult;
             $scope.hasEscort = false;
             $scope.hasCompanions = false;
             planService.prepareTripSearchResultsPage();
             $location.path('/plan/companions');
-          }).error((err) => {
-            $scope.stopSpin();
-            console.log(err);
-            $location.path('/plan/when/error');
+          }).error((err, statusCode) => {
+            // When the backend throws a 409: Conflict error, it's because there's a conflict with
+            // an already booked trip.
+            if(statusCode === 409) {
+              $location.path('/plan/overlapping_trip/error');
+            } else {
+              $location.path('/plan/when/error');
+            }
           });
           break;
         case 'companions':
@@ -628,6 +631,8 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
 
     $scope.back = function (step) {
       $scope.showNext = true;
+      if (step === 'overlapping_trip') { step = 'when'; }
+
       if (step === undefined) {
         step = 'where';
         switch($scope.step) {
@@ -773,10 +778,12 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
             }
           }
           planService.searchResults = result;
+          usSpinnerService.stop('spinner-1');
         }).
-        error(function(result, err) {
-          console.log('error', result, err);
-          bootbox.alert("An error occured on the server, please retry your search or try again later.");
+        error(function(err, statusCode) {
+          if(statusCode == 500) {
+            bootbox.alert("An error occured on the server, please retry your search or try again later.");
+          }
           usSpinnerService.stop('spinner-1');
         });
     }

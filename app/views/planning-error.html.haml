@@ -34,6 +34,12 @@
             %p
               Your account is not configured for online trips.  Please contact your Local Transit Agency for additional trip scheduling options.
 
+          .panel-body{ng: {show: 'step === "overlapping_trip"'}}
+            %p
+              Not all trips can be scheduled online using FMR Schedule. The date and requested drop-off time your entered matches a currently scheduled trip.
+            %p
+              Please contact you Local Transit Agency for additional trip scheduling options.
+
           .panel-body{ng: {show: 'step === "instructions_for_driver"'}}
             %p
               FMR Schedule cannot book your trip with the current details. Please contact your Local Transit Agency directly for trip booking assistance.
