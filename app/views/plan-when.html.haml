@@ -8,7 +8,7 @@
     .row
       .col-lg-6.col-lg-offset-3.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1.col-xs-12
         .cs-two-week-date-picker
-          %div{ng: {repeat: 'month in twoWeeksSelector.months' }, class: 'month'}
+          %div{ng: {repeat: 'month in planService.months track by month.key' }, class: 'month'}
             %h3
               {{month.name}}
             %div{class: 'week'}
@@ -22,34 +22,33 @@
             %div{ng: {repeat: 'week in month.weeks' }, class: 'week'}
               %div{ class: 'day', 
                     tabindex:'{{day.tabindex}}',
-                    ng: { repeat: 'day in week', 
-                          click:'selectDepartDate(day)', 
-                          disabled:'!day.businessDay', 
-                          class:'{ disabled: !day.businessDay, selected: fromMoment.isSame(day.moment, "day")}' } }
+                    ng: { repeat: 'day in week track by day.key', 
+                          click:'selectDepartDate(day)',
+                          disabled:'!(day.startTime || day.endTime)', 
+                          class:'{ disabled: !(day.startTime || day.endTime), selected: fromMoment.isSame(day.moment, "day")}' } }
                 {{day.day}}
     .row{style:'padding:11px 0px;'}
       .col-lg-6.col-lg-offset-3.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1.col-xs-12
         .text-muted{style:'padding:7px 0px;', ng:{hide:'fromMoment.isAfter()'}}
-          If you want to see Shared Rides, choose from the next 10 business days
+          Click on an available travel day shown in dark blue
         %div{style:'padding:7px 0px;', ng:{show:'fromMoment.isAfter()'}}
           %p
             = "Selected Date: {{fromMoment | momentFormat: 'dddd, MMM D'}}"
-    .row
+    .row{ng: {show: 'fromMoment.isAfter()'}}
       .col-lg-6.col-lg-offset-3.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1.col-xs-12
-        %h3 What time do you want to arrive?
-    .row
+        %div{'ng-class' =>'{"bg-danger": fromTimeUpdated && !whenShowNext()}'}
+          %h3 What time do you want to arrive?
+          -# TODO: Refactor this so this uses the native %input{type: 'time'} element
+          %cs-time-input{ng:{model:'fromMoment', focused:'backToConfirm'}}
+    .row{ng:{show:'planService.serviceOpen'}}
       .col-lg-6.col-lg-offset-3.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1.col-xs-12
-        -# TODO: Refactor this so this uses the native %input{type: 'time'} element
-        %cs-time-input{ng:{model:'fromMoment', focused:'backToConfirm'}}
-    .row{ng:{show:'serviceOpen'}}
-      .col-lg-6.col-lg-offset-3.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1.col-xs-12
-        .text-muted
-          If you want to see Shared Ride services, choose a time between service hours of {{serviceOpen}} to {{serviceClose}}
-    .row{ng:{show:'fromTimeUpdated && !whenShowNext() && email', hide:'whenShowNext() || !email'}}
-      .col-lg-6.col-lg-offset-3.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1.col-xs-12
-        .alert.alert-danger{role:'alert'}
-          No shared ride is available for your request. Please call 1-844-PA4-RIDE for more information.
-    .return-trip-option{ng:{show:'fromTimeUpdated'}}
+        .text-muted{'ng-class' =>'{"text-danger": fromTimeUpdated && !whenShowNext()}'}
+          %p
+            Please select from available service hours on this day:
+          %p
+            %strong {{planService.serviceOpen | momentFormat: 'h:mm a'}} to {{planService.serviceClose | momentFormat: 'h:mm a'}}
+
+    .return-trip-option{ng:{show:'fromTimeUpdated && whenShowNext()'}}
       .row
         .col-lg-6.col-lg-offset-3.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1.col-xs-12
           %h3 How long do you want to stay?
@@ -62,10 +61,12 @@
     .row.unstuck-foot.btn-spacing
       .col-lg-6.col-lg-offset-3.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1.col-xs-12
         .pull-left
-          %a.btn.btn-secondary{href: "", back: '', ng: {click: "back()", hide:'backToConfirm'}}
+          %a.btn.btn-secondary{href: "", ng: {click: "back()", hide:'backToConfirm'}}
             Back
         .pull-right
-          %a.btn.btn-primary{href: "", ng: {class:'{disabled:(!fromMoment.isAfter(moment()) || !fromTimeUpdated) }', disabled:'(!fromMoment.isAfter(moment()) || !fromTimeUpdated)', click: 'next()'}}
+          %a.btn.btn-danger{href: "/#/plan/when/error", 'ng-show' => 'fromTimeUpdated && !whenShowNext()'}
+            Preferred Time is Unavailable
+          %a.btn.btn-primary{href: "", ng: {show: 'fromMoment.isAfter(moment()) && fromTimeUpdated && whenShowNext()', disabled:'!(fromMoment.isAfter(moment()) && fromTimeUpdated && whenShowNext())', click: 'next()'}}
             %span{ng:{hide:'backToConfirm'}}
               Next
             %span{ng:{show:'backToConfirm'}}

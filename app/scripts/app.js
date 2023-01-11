@@ -63,6 +63,10 @@ angular.module('applyMyRideApp', [
         templateUrl: 'views/plan.html',
         controller: 'PlanController'
       })
+      .when('/plan/:step/error', {
+        templateUrl: 'views/planning-error.html',
+        controller: 'PlanController'
+      })
       .when('/plan/:step/:departid/:returnid', {
         templateUrl: 'views/transit-detail.html',
         controller: 'PlanController'
@@ -136,7 +140,7 @@ angular.module('applyMyRideApp', [
       });
 
   })  //global event handler
-  .run(function($rootScope, $window, $location) {
+  .run(function($rootScope, $window, $location, ipCookie) {
     //Hamburger menu toggle
     $(".navbar-nav li a").click(function (event) {
       // check if window is small enough so dropdown is created
@@ -149,10 +153,23 @@ angular.module('applyMyRideApp', [
     $window.$rootScope = $rootScope;
     var exceptions = ["/plan/my_rides", "/about", "/about/sharedride", "/about/projecthistory"];
     $rootScope.$on('$routeChangeStart', function (event) {
-      if(!$window.visited){
-        if(exceptions.indexOf($location.$$path) < 0){
+      if (!$window.visited) {
+        if (exceptions.indexOf($location.$$path) < 0) {
           $location.path('/');
         }
+      }
+
+      // TODO (Drew Teter, 09/22/2022) Fully Remove ability for guest login.
+      // We plan on doing this in the future. But, as no tickets have been created
+      // for this task yet, I'm just putting a redirect here as a temporary fix.
+
+      var publicPages = ['/', '/loginError', "/about", "/about/sharedride", "/about/projecthistory", "/lookupIdForm", "/lookupError"];
+      var notLoggedIn = !ipCookie('authentication_token');
+
+      if (notLoggedIn && publicPages.indexOf($location.$$path) === -1) {
+        event.preventDefault();
+        $location.path('/');
+        return false;
       }
     });
   });

@@ -556,7 +556,7 @@ button{
 .cs-time-input .cs-minute{
   border-left:none;
   padding-left:10px;
-  width:3.3em;
+  width:3.5em;
   margin-left:-5px;
 }
 .cs-time-input input.cs-ampm{
@@ -785,9 +785,15 @@ button.btn--no-outline {
     }
   }
 
-
 .container--center-single-item {
   display: flex;
   justify-content: center;
   align-items: baseline;
+}
+
+.purpose {
+  .selected {
+    color: #FFF;
+    background-color:#000;
+  }
 }

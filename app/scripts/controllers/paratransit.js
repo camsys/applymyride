@@ -47,8 +47,6 @@ angular.module('applyMyRideApp')
           }
         });
 
-
-
         $scope.purpose = planService.itineraryRequestObject.trip_purpose;
 
         $scope.tripCancelled = !planService.booking_results[0].booked;
@@ -61,26 +59,29 @@ angular.module('applyMyRideApp')
         $scope.booking_results = planService.booking_results;
         $scope.paratransitItineraries = planService.paratransitItineraries;
         $scope.driverInstructions = planService.driverInstructions;
-        if($scope.driverInstructions == null)
+        if ($scope.driverInstructions == null) {
           $scope.driverInstructions = 'N/A';
+        }
 
         $scope.escort = "";
-        if(planService.hasEscort == true){
+        
+        if (planService.hasEscort == true) {
           $scope.escort += "1 Escort";
         }
 
-        if(planService.numberOfCompanions != null && planService.numberOfCompanions > 0){
-          if($scope.escort){
+        if (planService.numberOfCompanions != null && planService.numberOfCompanions > 0) {
+          if ($scope.escort) {
             $scope.escort += ', ';
           }
           $scope.escort += planService.numberOfCompanions + ' Companion';
-          if(planService.numberOfCompanions > 1){
+          if (planService.numberOfCompanions > 1) {
             $scope.escort += 's';
           }
         }
 
-        if($scope.escort.length == 0)
+        if ($scope.escort.length == 0) {
           $scope.escort = 'N/A';
+        }
 
       }
 

@@ -6,8 +6,14 @@
           %h1{style: 'font-weight:600;'} Look Up Your Shared Ride ID
         .row{ng: {show: "location == '/lookupError'"}, style:'background-color:#FFFFEB;'}
           %h1{style: 'font-weight:600;'} Sorry! We could not find a match.
-          %span Please try again or call 1-844-PA-4RIDE for help. In the meantime,
-          %a{href: "#/plan/where"}you can use this site as a guest.
+          %span Please try again or call 1-844-PA-4RIDE for help.
+
+          -# TODO (Drew Teter, 09/22/2022) Fully Remove ability for guest login.
+          -# We plan on doing this in the future, but as no tickets have been created
+          -# for this task yet, I'm commenting out these lines instead if deleting them.
+          
+          -# %span Please try again or call 1-844-PA-4RIDE for help. In the meantime,
+          -# %a{href: "#/plan/where"}you can use this site as a guest.
         .row{style: 'margin-top: 2em'}
           %h3 Enter your last name
         .row
@@ -54,4 +60,6 @@
             %a.btn.btn-primary{href: "", ng: {click: 'lookupId()'}}
               Find my ID
         .row.text-center{style:'margin: 30px 0px 10px 0px;'}
-          Need Help? Call 1-844-PA-4RIDE
+          Need Help? Please contact your Local Transit Agency 
+          %a{href: "https://www.findmyride.penndot.pa.gov/fmr-edu/home/contact", target: "_blank", rel: "noopener noreferrer"} 
+            %span.glyphicon.glyphicon-new-window

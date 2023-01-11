@@ -1,0 +1,62 @@
+#PlanTemplate.container
+  %span{'us-spinner' => '', 'spinner-key' => "spinner-1"}
+  .alert.alert-danger.text-center{"ng-show" => "apiError", :role => "alert"}
+    %b API Error :
+    %span {{ apiStatus }}
+  .travel-pattern-error
+    .row
+      .col-lg-6.col-lg-offset-3.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1.col-xs-12
+        .panel.panel-danger
+          .panel-heading
+            %h3
+              %span.glyphicon.glyphicon-warning-sign
+              Unable to Schedule Ride
+
+          .panel-body{ng: {show: 'step === "where"'}}
+            %p
+              Not all trips can be scheduled online using FMR Schedule. Based on the trip origin and destination you have entered, this trip cannot be scheduled online.
+            %p
+              Please contact your Local Transit Agency for additional trip scheduling options.
+
+          .panel-body{ng: {show: 'step === "purpose"'}}
+            %p
+              Not all trips can be scheduled online using FMR Schedule. Based on the combination of trip origin, trip destination, and trip purpose you have entered, this trip cannot be scheduled online.
+            %p
+              Please contact your Local Transit Agency for additional trip scheduling options.
+
+          .panel-body{ng: {show: 'step === "when"'}}
+            %p
+              Not all trips can be scheduled online using FMR Schedule. Based on the combination of trip origin, trip destination, trip purpose, and date/time you have entered, this trip cannot be scheduled online.
+            %p
+              Please contact your Local Transit Agency for additional trip scheduling options.
+
+          .panel-body{ng: {show: 'step === "no_purposes"'}}
+            %p
+              Your account is not configured for online trips.  Please contact your Local Transit Agency for additional trip scheduling options.
+
+          .panel-body{ng: {show: 'step === "overlapping_trip"'}}
+            %p
+              Not all trips can be scheduled online using FMR Schedule. The date and requested drop-off time your entered matches a currently scheduled trip.
+            %p
+              Please contact you Local Transit Agency for additional trip scheduling options.
+
+          .panel-body{ng: {show: 'step === "instructions_for_driver"'}}
+            %p
+              FMR Schedule cannot book your trip with the current details. Please contact your Local Transit Agency directly for trip booking assistance.
+
+          .panel-body{ng: {show: 'step === "summary"'}}
+            %p
+              FMR Schedule cannot book your trip with the current details. Please contact your Local Transit Agency directly for trip booking assistance.
+
+    .row.unstuck-foot.btn-spacing
+      .col-lg-6.col-lg-offset-3.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1.col-xs-12
+        .pull-left
+          %a.btn.btn-secondary{href: "", ng: {click: "back('where')"}}
+            Start Over
+        .pull-right
+          %a.btn.btn-secondary{href: "", ng: {click: "step === 'no_purposes' ? back('where') : back(step)"}}
+            Close and Edit
+    .row.text-center{style:'margin: 30px 0px 10px 0px;'}
+      Need Help? Please contact your Local Transit Agency 
+      %a{href: "https://www.findmyride.penndot.pa.gov/fmr-edu/home/contact", target: "_blank", rel: "noopener noreferrer"} 
+        %span.glyphicon.glyphicon-new-window
