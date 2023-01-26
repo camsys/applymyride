@@ -12,30 +12,26 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
   $scope.location = $location.path();
   $scope.errors = {};
   if ($scope.location === '/about') {
+    $scope.counties = localStorageService.get('counties') || [];
+    $scope.counties_string = $scope.counties.join(', ');
+    $scope.county_count = $scope.counties.length + ' counties';
+
     util.getCounties(
-      function(response) {
-        var counties = response.data.service_ids;
-        $scope.counties = counties;
+      function (countyServices) {
+        let counties = Array.from(new Set(countyServices.map(option => option.countyName)));
         localStorageService.set('counties', counties);
+
+        $scope.counties = counties;
+        $scope.counties_string = $scope.counties.join(', ');
+        if (counties.length === 0) {
+            $scope.county_count = '0 counties'
+        } else if (counties.length === 1) {
+            $scope.county_count = '1 county'
+        } else {
+            $scope.county_count = counties.length + ' counties'
+        }
       }
     );
-    $scope.counties = localStorageService.get('counties') || [];
-    $scope.county_count = ''
-    if ($scope.counties.length === 0) {
-        $scope.county_count = '0 counties'
-    } else if ($scope.counties.length === 1) {
-        $scope.county_count = '1 counties'
-    } else {
-        $scope.county_count = $scope.counties.length + ' counties'
-    }
-    $scope.counties_string = $scope.counties.length > 0 ?
-        $scope.counties.reduce(function(acc, val, ind) {
-            if (ind === $scope.counties.length - 1) {
-                return acc + val
-            } else {
-              return acc + val + ', '
-            }
-        },'') : ''
   }
 
 }

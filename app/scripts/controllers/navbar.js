@@ -22,6 +22,7 @@ angular.module('applyMyRideApp')
       var that = this;
       that.$scope = $scope;
 
+      // TODO (Drew) update for esec, move event handle
       $rootScope.$on("CallLogout", function() {
         $scope.logout();
       });
@@ -60,19 +61,15 @@ angular.module('applyMyRideApp')
         return true;
       };
 
+      // TODO (Drew) remove
       $scope.logout = function() {
-        delete ipCookie.remove('email');
-        delete ipCookie.remove('authentication_token');
-        delete ipCookie.remove('currentBalance');
-        sessionStorage.clear();
-        localStorage.clear();
         delete $scope.email;
         delete planService.email;
         planService.killEtaChecker();
-        $window.location.href = "#/";
-        $window.location.reload();
         planService.to = '';
         planService.from = '';
+
+        $rootScope.$emit('Logout');
       };
 
     }]);

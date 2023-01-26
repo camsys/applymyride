@@ -225,6 +225,7 @@ module.exports = function (grunt) {
         ]
       }
     },
+
     haml: {
       options: {
         language: 'ruby'

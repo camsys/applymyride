@@ -1543,16 +1543,12 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
     }
 
     $scope.logout = function() {
-      delete ipCookie.remove('email');
-      delete ipCookie.remove('authentication_token');
-      sessionStorage.clear();
-      localStorage.clear();
       delete $scope.email;
       delete planService.email;
-      $window.location.href = "#/";
-      $window.location.reload();
       planService.to = '';
       planService.from = '';
+
+      $rootScope.$emit('Logout');
     };
 
     $scope.specifySharedRideCompanion = function(hasCompanion) {

@@ -1,11 +1,14 @@
 'use strict';
 
+// TODO (Drew) Remove file?
+
 angular.module('applyMyRideApp')
   .controller('LookupIdController', ['$scope', '$location', '$http', 'localStorageService', 'ipCookie', 'util',
     function ($scope, $location, $http, localStorageService, ipCookie, util) {
       //skip initializing this controller if we're not on the page
       if( ['/lookupIdForm', '/lookupError'].indexOf( $location.path() ) == -1){ return; }
 
+      // TODO (Drew) broken
       util.getCountiesInTransition(
         function (response) {
           $scope.transitionCounties = response.counties;
@@ -24,8 +27,14 @@ angular.module('applyMyRideApp')
       }
 
       $scope.location = $location.path();
-      $scope.counties = localStorageService.get("counties") || util.getCounties(function(r) {
-        $scope.counties = r.data.service_ids;
+      // TODO (Drew) unil.getCounties doesn't have a return value
+      $scope.serviceOptions = localStorageService.get("serviceOptions") || util.getCounties(function(r) {
+        let county_services = r.data.county_services;
+        let options = county_services.sort(function (a,b) { 
+          return a.label > b.label ? 1 : -1;
+        });
+
+        $scope.serviceOptions = options;
       });
       $scope.county = localStorageService.get("county") || ipCookie('county');
       $scope.lastName = localStorageService.get("lastName") || null;

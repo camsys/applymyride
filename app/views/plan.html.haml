@@ -434,7 +434,7 @@
           .col-xs-12.pull-left.no-padding
             %h4 Already signed up?
             %h4
-              %a.btn-next{ng: {href: '#/login'}}
+              %a.btn-next{ng: {click: '$rootscope.emit("Login")'}}
                 Sign in
 
     .discounts{ng: {show: 'step==="my_rides"', include: "'views/plan-myrides.html'"}}

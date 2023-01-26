@@ -40,31 +40,31 @@
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <base href="/">
     <script>
-      //initialize APIHOST by mapping from hostname
-      var APIHOST = (function( docHost )
-      {
-	// Assume localhost rails server is running on port 3000
-        var apiHostMapping = {
-	  'www.findmyridepa.org': 'occ-pa-prod.camsys-apps.com',
-	  'findmyridepa.org': 'occ-pa-prod.camsys-apps.com',
-	  'www.findmyridepa.com': 'occ-pa-prod.camsys-apps.com',
-	  'findmyridepa.com': 'occ-pa-prod.camsys-apps.com',
-    'www.findmyridepa.net': 'occ-pa-prod.camsys-apps.com',
-    'findmyridepa.net': 'occ-pa-prod.camsys-apps.com',
-	  'ui-pa-qa2.s3-website-us-east-1.amazonaws.com': 'occ-pa-qa2.herokuapp.com',
-	  'findmyridepa-qa2.camsys-apps.com': 'occ-pa-qa2.herokuapp.com',
-	  'oneclick-pa-qa.camsys-apps.com': 'occ-pa-qa.camsys-apps.com',
-	  'oneclick-pa-dev2.camsys-apps.com': 'occ-pa-dev.camsys-apps.com',
-	  'findmyridepa-dev2.camsys-apps.com': 'occ-pa-dev.herokuapp.com',
-	  '0.0.0.0': '0.0.0.0:3000',
-	  '127.0.0.1': '127.0.0.1:3000',
-	  'localhost': 'localhost:3000'
+      // Initialize APIHOST by mapping from hostname
+      // Assume localhost rails server is running on port 3000
+      const APIHOST = (function( docHost ) {
+        const apiHostMapping = {
+          'www.findmyridepa.org': 'occ-pa-prod.camsys-apps.com',
+          'findmyridepa.org': 'occ-pa-prod.camsys-apps.com',
+          'www.findmyridepa.com': 'occ-pa-prod.camsys-apps.com',
+          'findmyridepa.com': 'occ-pa-prod.camsys-apps.com',
+          'www.findmyridepa.net': 'occ-pa-prod.camsys-apps.com',
+          'findmyridepa.net': 'occ-pa-prod.camsys-apps.com',
+          'ui-pa-qa2.s3-website-us-east-1.amazonaws.com': 'occ-pa-qa2.herokuapp.com',
+          'findmyridepa-qa2.camsys-apps.com': 'occ-pa-qa2.herokuapp.com',
+          'oneclick-pa-qa.camsys-apps.com': 'occ-pa-qa.camsys-apps.com',
+          'oneclick-pa-dev2.camsys-apps.com': 'occ-pa-dev.camsys-apps.com',
+          'findmyridepa-dev2.camsys-apps.com': 'occ-pa-dev.herokuapp.com',
+          'localhost': 'localhost:3000',
+          '0.0.0.0': 'localhost:3000',
+          '127.0.0.1': 'localhost:3000'
         };
-	var apiHost = apiHostMapping[docHost];
-        //use docHost by default if nothing else matches, could also be a specific fallback host
-	if (!apiHost) apiHost = docHost;
-        return apiHost;
+
+        // Use docHost by default if nothing else matches, could also be a specific fallback host
+        return apiHostMapping[docHost] || docHost;
       }( document.location.hostname ));
+
+      const HOMEPAGE = '/plan/my_rides';
     </script>
   </head>
   <body ng-app="applyMyRideApp" ng-controller="NavbarController">
@@ -98,20 +98,20 @@
     <!-- NOTE: this is only commented out rather than outright removed just in case Penn DOT changes their mind and wants a footer -->
     <!-- <div ng-include="'views/footer.html'"></div> -->
     <div class="debug footer">
-    <div class="container">
-    <div class="visible-xs-block">visible-xs-block</div>
-    <div class="visible-xs-inline">visible-xs-inline</div>
-    <div class="visible-xs-inline-block">visible-xs-inline-block</div>
-    <div class="visible-sm-block">visible-sm-block</div>
-    <div class="visible-sm-inline">visible-sm-inline</div>
-    <div class="visible-sm-inline-block">visible-sm-inline-block</div>
-    <div class="visible-md-block">visible-md-block</div>
-    <div class="visible-md-inline">visible-md-inline</div>
-    <div class="visible-md-inline-block">visible-md-inline-block</div>
-    <div class="visible-lg-block">visible-lg-block</div>
-    <div class="visible-lg-inline">visible-lg-inline</div>
-    <div class="visible-lg-inline-block">visible-lg-inline-block</div>
-    </div>
+      <div class="container">
+        <div class="visible-xs-block">visible-xs-block</div>
+        <div class="visible-xs-inline">visible-xs-inline</div>
+        <div class="visible-xs-inline-block">visible-xs-inline-block</div>
+        <div class="visible-sm-block">visible-sm-block</div>
+        <div class="visible-sm-inline">visible-sm-inline</div>
+        <div class="visible-sm-inline-block">visible-sm-inline-block</div>
+        <div class="visible-md-block">visible-md-block</div>
+        <div class="visible-md-inline">visible-md-inline</div>
+        <div class="visible-md-inline-block">visible-md-inline-block</div>
+        <div class="visible-lg-block">visible-lg-block</div>
+        <div class="visible-lg-inline">visible-lg-inline</div>
+        <div class="visible-lg-inline-block">visible-lg-inline-block</div>
+      </div>
     </div>
 
 
@@ -155,52 +155,50 @@
     <!-- endbower -->
     <!-- endbuild -->
 
-        <!-- build:js({.tmp,app}) scripts/scripts.js -->
-        <script src="scripts/app.js"></script>
-        <script src="scripts/controllers/main.js"></script>
-        <script src="scripts/controllers/navbar.js"></script>
-        <script src="scripts/controllers/about.js"></script>
-        <script src="scripts/controllers/plan.js"></script>
-        <script src="scripts/controllers/login.js"></script>
-        <script src="scripts/controllers/lookupId.js"></script>
-        <script src="scripts/controllers/transit.js"></script>
-        <script src="scripts/controllers/paratransit.js"></script>
-        <script src="scripts/controllers/walk.js"></script>
-        <script src="scripts/controllers/taxi.js"></script>
-        <script src="scripts/controllers/uber.js"></script>
-        <script src="scripts/controllers/itinerary.js"></script>
-        <script src="scripts/controllers/profile.js"></script>
-        <script src="scripts/directives/clearinput.js"></script>
-        <script src="scripts/directives/birthdaypicker.js"></script>
-        <script src="scripts/services/filters.js"></script>
-        <script src="scripts/services/plan.js"></script>
-        <script src="scripts/services/util.js"></script>
-        <script src="scripts/factories/debounce.js"></script>
-        <script src="scripts/directives/calendar.js"></script>
-        <script src="scripts/directives/time.js"></script>
-        <script src="scripts/directives/clickFocus.js"></script>
-        <script src="scripts/directives/csTimeInput.js"></script>
-        <script src="scripts/directives/autocomplete.js"></script>
-        <script src="scripts/directives/enter.js"></script>
-        <script src="scripts/directives/autofocus.js"></script>
-        <!-- endbuild -->
+    <!-- build:js({.tmp,app}) scripts/scripts.js -->
+    <script src="scripts/app.js"></script>
+    <script src="scripts/controllers/main.js"></script>
+    <script src="scripts/controllers/navbar.js"></script>
+    <script src="scripts/controllers/about.js"></script>
+    <script src="scripts/controllers/plan.js"></script>
+    <script src="scripts/controllers/login.js"></script>
+    <script src="scripts/controllers/lookupId.js"></script>
+    <script src="scripts/controllers/transit.js"></script>
+    <script src="scripts/controllers/paratransit.js"></script>
+    <script src="scripts/controllers/walk.js"></script>
+    <script src="scripts/controllers/taxi.js"></script>
+    <script src="scripts/controllers/uber.js"></script>
+    <script src="scripts/controllers/itinerary.js"></script>
+    <script src="scripts/controllers/profile.js"></script>
+    <script src="scripts/directives/clearinput.js"></script>
+    <script src="scripts/directives/birthdaypicker.js"></script>
+    <script src="scripts/services/filters.js"></script>
+    <script src="scripts/services/plan.js"></script>
+    <script src="scripts/services/util.js"></script>
+    <script src="scripts/factories/debounce.js"></script>
+    <script src="scripts/directives/calendar.js"></script>
+    <script src="scripts/directives/time.js"></script>
+    <script src="scripts/directives/clickFocus.js"></script>
+    <script src="scripts/directives/csTimeInput.js"></script>
+    <script src="scripts/directives/autocomplete.js"></script>
+    <script src="scripts/directives/enter.js"></script>
+    <script src="scripts/directives/autofocus.js"></script>
+    <!-- endbuild -->
 
-        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDdpyfym0ylu7GMq6_dTWpEA2u8lmuvnfY&libraries=places"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDdpyfym0ylu7GMq6_dTWpEA2u8lmuvnfY&libraries=places"></script>
 
-<script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 
-  ga('create', 'UA-77824843-3', 'auto');
-  ga('send', 'pageview');
+      ga('create', 'UA-77824843-3', 'auto');
+      ga('send', 'pageview');
+    </script>
 
-</script>
-<script> if (window.navigator.userAgent.match(/MSIE|Trident/)) {
-  $("#iewarn").removeAttr("ng-cloak");}
-</script>
-
-
-</body>
+    <script> if (window.navigator.userAgent.match(/MSIE|Trident/)) {
+      $("#iewarn").removeAttr("ng-cloak");}
+    </script>
+  </body>
 </html>

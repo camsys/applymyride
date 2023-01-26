@@ -1,0 +1,14 @@
+%h1 Hello World
+
+:javascript
+
+  const currentUrl = window.location.origin + window.location.pathname;
+  const urlParams = $location.search();
+  
+  if (urlParams.has('code')) {
+    const code = urlParams.get('code');
+
+    // let promise = $scope.authenticate(code);
+  } else {
+
+  }

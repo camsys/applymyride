@@ -4,12 +4,14 @@
       .center-block.logo-image
       .center-block.logo-text
       %h2 Let's get started.
-      %a.center-block.btn.btn-success{"ng-href" => "#/login"}
+      %a.center-block.btn.btn-success{ng: {click: '$rootscope.emit("Login")'}}
         I'm a rider already
 
       -# TODO (Drew Teter, 09/22/2022) Fully Remove ability for guest login.
       -# We plan on doing this in the future, but as no tickets have been created
       -# for this task yet, I'm commenting out these lines instead if deleting them.
+
+      -# Is this page deprecated?
 
       -# %a.center-block.btn.btn-success{"ng-href" => "#/plan/when"}
       -#   Continue as a guest

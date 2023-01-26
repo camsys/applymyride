@@ -1,0 +1,30 @@
+#PlanTemplate.container
+  -# %span{'us-spinner' => '', 'spinner-key' => "spinner-1"}
+  .esec-login-error
+    .row
+      .col-lg-6.col-lg-offset-3.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1.col-xs-12
+        .panel.panel-danger
+          .panel-heading
+            %h3
+              %span.glyphicon.glyphicon-warning-sign
+              Unable to Confirm Shared Ride Registration
+
+          .panel-body
+            %p
+              Based on the information that you have provided, we are unable to confirm your shared
+              ride registration with the agency that you selected. If needed, you may contact the 
+              agency to confirm that the shared ride ID that you provided is correct, or that the 
+              agency has your correct phone number on file.
+
+    .row.unstuck-foot.btn-spacing
+      .col-lg-6.col-lg-offset-3.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1.col-xs-12
+        .pull-left
+          %a.btn.btn-secondary{href: "", ng: {click: "logout()"}}
+            Sign Out
+        .pull-right
+          %a.btn.btn-secondary{href: "", ng: {click: "back()"}}
+            Let Me Try Again
+    .row.text-center{style:'margin: 30px 0px 10px 0px;'}
+      Need Help? Please contact your Local Transit Agency 
+      %a{href: "https://www.findmyride.penndot.pa.gov/fmr-edu/home/contact", target: "_blank", rel: "noopener noreferrer"} 
+        %span.glyphicon.glyphicon-new-window

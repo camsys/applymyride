@@ -1,0 +1,31 @@
+.col-md-6.col-md-offset-3.col-sm-8.col-sm-offset-2.col-xs-12
+  %h2.text-center
+    New FMR Schedule Account Created
+  .row 
+    .panel.panel-default
+      .panel-body
+        %p
+          Congratulations!
+        %p
+          We have confirmed your shared ride registration, and we have created a new FMR Schedule user account for you that is linked to your shared ride registration and Keystone Login.
+        %p
+          You may now proceed to the main FMR Schedule app where you can plan and book new rides or review and cancel existing rides. 
+
+  -# .row
+  -#   %form#LoginTemplate{name:'loginform'}
+  -#     .login-form-container.col-sm-10.col-sm-offset-1
+
+  .row
+    .py-4 
+      .col-xs-12.col-lg-3.py-1
+        .btn.btn-default.btn-block{ng: {click: "logout()"}}
+          Sign Out
+      .col-xs-12.col-lg-8.py-1
+        .btn.btn-primary.btn-block{ng: {click: "next()"}}
+          Proceed to My Rides Home Page
+
+  .row
+    .text-center.py-0
+      Need Help? Please contact your Local Transit Agency 
+      %a.p-1(href="") 
+        %span.glyphicon.glyphicon-new-window(style="font-size: 1.8em; top: 0.3em;")

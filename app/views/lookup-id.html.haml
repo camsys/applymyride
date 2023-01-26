@@ -24,7 +24,7 @@
         .row{style: 'margin-top: 1em'}
           %h3 Your county
         .row
-          %select{ng: {model: 'county', options: 'county for county in counties', enter: 'next()'}}
+          %select{ng: {model: 'county', options: 'option as option.label for option in serviceOptions track by option.label', enter: 'next()'}}
             %option{value: '', disabled: '', selected: ''}
               Select your county
         .row.alert.alert-success{style: 'margin-top: 2em', ng:{if: 'isTransitionCounty(county)'}}

@@ -1,0 +1,93 @@
+-# Welcome Page
+.col-md-6.col-md-offset-3.col-sm-8.col-sm-offset-2.col-xs-12{ng: {hide: 'registration.hasSharedRideId'}}
+  %h2.text-center
+    Welcome to FMR Schedule
+  .row 
+    .panel.panel-default
+      .panel-body
+        %p
+          Welcome TEST ONECLICK!
+        %p
+          This is the first time your Keystone Login has been used to access FMR Schedule, and we need to ask you some questions to continue with your account setup.
+        %p
+          Have you already registered with your local transportation agency for shared rides? If not, you will need to register for shared rides before you can use FMR Schedule.
+  .row
+    .col-sm-10.col-sm-offset-1.py-2
+      .btn.btn-primary.btn-block{ng: {click: 'clickHasSharedRideId()'}}
+        Yes, I have registered for shared rides
+  .row
+    .col-sm-10.col-sm-offset-1.py-2
+      .btn.btn-default.btn-block{ng: {click: 'clickNoSharedRideId()'}}
+        No, I am not registered for shared rides
+
+  .row
+    .text-center.py-2
+      Need Help? Please contact your Local Transit Agency 
+      %a.p-1(href="") 
+        %span.glyphicon.glyphicon-new-window(style="font-size: 1.8em; top: 0.3em;")
+
+-# Registration Page
+.col-md-6.col-md-offset-3.col-sm-8.col-sm-offset-2.col-xs-12{ng: {show: 'registration.hasSharedRideId'}}
+  %h2.text-center
+    Confirm Your Shared Ride Registration
+  .row 
+    .panel.panel-default
+      .panel-body
+        %p
+          To help us find your shared ride registration, please provide us with the following information:
+        %ul
+          %li The county and service where you registered for shared rides
+          %li Your shared ride ID (provided by transportation agency)
+          %li Your date of birth
+
+  .row
+    %form#LoginTemplate{name:'loginform'}
+      .login-form-container.col-sm-10.col-sm-offset-1
+        .row{style: 'margin-top: 1em;'}
+          %label{for: 'countySelect', style: 'font-size: 1.4em;'}
+            Your County and Service
+        .row
+          %select#countySelect{ng: {model: 'registration.serviceOption', change: 'checkFormReady()', options: 'option as option.label for option in registration.serviceOptions track by option.label'}}
+            %option{value: '', disabled: 'true'}
+              Select your County and Service
+
+        .row{style: 'margin-top: 2em; margin-bottom: 0.25em;'}
+          %input{type: 'hidden', name: 'confirmationMethod', value: 'sharedRideId', ng: {model: 'registration.confirmationMethod', change: 'checkFormReady()'}}
+          %label{for: 'sharedRideIdInput', style: 'font-size: 1.4em;'}
+            Your Shared Ride ID
+
+        .row{style: 'font-size: 1.4em;'}
+          %input#sharedRideIdInput.form-control.shared-ride-id{type:'text', style: 'font-size: .9em;', placeholder: '00000', ng: {model: 'registration.sharedRideId', disabled: 'registration.confirmationMethod !== "sharedRideId"', change: 'checkFormReady()'}}
+
+        .row{style: 'margin-top: 2em; margin-bottom: 0.25em;'}
+          %label{for: 'sharedRideIdInput', style: 'font-size: 1.4em;'}
+            Your Shared Ride ID
+        .row{style: 'font-size: 1.4em; margin-bottom: 0.25em;'}
+          %input.dob.month{type:'tel', placeholder: 'mm', name:'month', ng: {model: 'registration.dob.month', required: 'true', pattern:'/(^0?[1-9]|^1[012])$/', class:'{invalid: registration.dob.month.$dirty && registration.dob.month.$invalid  }', change: 'checkFormReady()'}, style: 'width: 3.5em'}
+          %span{style:'margin: 0 8px;'} &#47;
+          %input.dob.day{type:'tel', placeholder: 'dd', name:'day', ng: {model: 'registration.dob.day', required: 'true', pattern:'/(^0?[1-9]|^[12][0-9]|^3[01])$/', class:'{invalid: registration.dob.day.$dirty && registration.dob.day.$invalid  }', change: 'checkFormReady()'}, style: 'width: 3.5em'}
+          %span{style:'margin: 0 8px;'} &#47;
+          %input.dob.year{type:'tel', placeholder: 'yyyy', name:'year', ng: {model: 'registration.dob.year', required: 'true', pattern:'/(^19|^20)\d\d$/', class:'{invalid: registration.dob.year.$dirty && registration.dob.year.$invalid  }', change: 'checkFormReady()'}}
+        
+        -# .row{style: 'margin-top: 2em; margin-bottom: 0.25em;'}
+        -#   %input{type: 'radio', name: 'confirmationMethod', value: 'phoneNumber', ng: {model: 'registration.confirmationMethod', change: 'checkFormReady()'}}
+        -#   %label{for: 'phoneNumberInput', style: 'font-size: 1.4em;'}
+        -#     Your Phone Number (home or cell)
+
+        -# .row{style: 'font-size: 1.4em;'}
+        -#   %input#phoneNumberInput.form-control{type:'text', style: 'font-size: .9em;', ng: {model: 'registration.phoneNumber', disabled: 'registration.confirmationMethod !== "phoneNumber"', change: 'checkFormReady()'}}
+
+        .row
+          .py-4{style: ""}
+            .col-xs-12.col-lg-3.py-1
+              .btn.btn-default.btn-block{ng: {click: 'logout()'}}
+                Sign Out
+            .col-xs-12.col-lg-8.py-1
+              .btn.btn-primary.btn-block{ng: {click: "submitRegistration()", disabled: '!(registration.formReady)'}}
+                Confirm Shared Ride Registration
+
+  .row
+    .text-center.py-0
+      Need Help? Please contact your Local Transit Agency 
+      %a.p-1(href="") 
+        %span.glyphicon.glyphicon-new-window(style="font-size: 1.8em; top: 0.3em;")

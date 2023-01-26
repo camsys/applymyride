@@ -3,11 +3,23 @@
   "version": "2.0.1",
   "dependencies": {
     "bootbox": "^5.3.4",
-    "ng-device-detector": "^5.1.4"
+    "generator-angular": "^0.16.0",
+    "generator-karma": "^2.0.1",
+    "gifsicle": "^7.0.1",
+    "grunt-cli": "^1.4.3",
+    "imagemin-gifsicle": "^7.0.0",
+    "imagemin-jpegtran": "^7.0.0",
+    "imagemin-optipng": "^8.0.0",
+    "imagemin-pngquant": "^9.0.2",
+    "jpegtran-bin": "^7.0.0",
+    "ng-device-detector": "^5.1.4",
+    "optipng-bin": "^9.0.0",
+    "pngquant-bin": "^8.0.1",
+    "yo": "^4.3.1"
   },
   "devDependencies": {
-    "bower": "^1.8.8",
-    "graceful-fs": "^4.2.6",
+    "bower": "^1.8.14",
+    "graceful-fs": "^4.2.10",
     "grunt": "^0.4.5",
     "grunt-autoprefixer": "^0.7.3",
     "grunt-cache-bust": "^0.4.13",
@@ -25,7 +37,7 @@
     "grunt-contrib-uglify": "^0.4.0",
     "grunt-contrib-watch": "^0.6.1",
     "grunt-filerev": "^0.2.1",
-    "grunt-google-cdn": "^0.4.0",
+    "grunt-google-cdn": "^0.4.3",
     "grunt-haml": "^0.9.0",
     "grunt-karma": "^0.10.1",
     "grunt-newer": "^0.7.0",
@@ -41,10 +53,15 @@
     "load-grunt-tasks": "^0.4.0",
     "time-grunt": "^0.3.1"
   },
+  "overrides": {
+    "graceful-fs": "^4.2.10"
+  },
   "engines": {
-    "node": ">=0.10.0"
+    "node": "^16.20.0"
   },
   "scripts": {
-    "test": "grunt test"
+    "test": "grunt test",
+    "start": "grunt serve",
+    "build": "grunt --force"
   }
 }

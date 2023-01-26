@@ -26,31 +26,49 @@ angular.module('applyMyRideApp', [
     'LocalStorageModule',
     'ng.deviceDetector',
     'ngBootbox',
-    'ngIdle',
+    'ngIdle'
   ]).config(function ($routeProvider) {
+    /** NOTE: sandbox.html is for checking how app components look
+      UNCOMMENT THE BELOW IF YOU WANT TO SEE HOW UI ELEMENTS LOOK IN FMR
+      NOTE: NOT FOR USE LIVE
+      */
+    // $routeProvider
+    //   .when('/', {
+    //     templateUrl: 'views/sandbox.html',
+    //   })
+    //   .when('/sandbox', {
+    //     templateUrl: 'views/sandbox.html',
+    //   })
     $routeProvider
-      .when('/', {
-        templateUrl: 'views/login.html',
-        controller: 'MainController'
-      })
-      /** NOTE: sandbox.html is for checking how app components look
-        UNCOMMENT THE BELOW IF YOU WANT TO SEE HOW UI ELEMENTS LOOK IN FMR
-        NOTE: NOT FOR USE LIVE
-       */
       // .when('/', {
-      //   templateUrl: 'views/sandbox.html',
+      //   templateUrl: 'views/esec.html',
+      //   controller: 'MainController'
       // })
-      // .when('/sandbox', {
-      //   templateUrl: 'views/sandbox.html',
-      // })
-      .when('/loginError', {
-        templateUrl: 'views/login.html',
-        controller: 'MainController'
-      })
-      .when('/authenticateSharedRideId', {
-        templateUrl: 'views/login.html',
+      .when('/login', {
+        // templateUrl: 'views/esec.html',
+        // controller: 'MainController'
+        templateUrl: 'views/esec-login.html',
         controller: 'LoginController'
       })
+      .when('/login/error', {
+        templateUrl: 'views/esec-login-error.html',
+        controller: 'LoginController'
+        // templateUrl: 'views/esec.html',
+        // templateUrl: 'views/esec-login.html',
+      })
+      .when('/registration', {
+        templateUrl: 'views/esec-registration.html',
+        controller: 'LoginController'
+      })
+      .when('/registration/success', {
+        templateUrl: 'views/esec-success.html',
+        controller: 'MainController'
+      })
+      .when('/registration/error', {
+        templateUrl: 'views/esec-login-error.html',
+        controller: 'LoginController'
+      })
+      // TODO (Drew) remove route?
       .when('/lookupIdForm', {
         templateUrl: 'views/lookup-id.html',
         controller: 'LookupIdController'
@@ -136,9 +154,8 @@ angular.module('applyMyRideApp', [
         controller: 'ProfileController'
       })
       .otherwise({
-        redirectTo: '/'
+        redirectTo: HOMEPAGE
       });
-
   })  //global event handler
   .run(function($rootScope, $window, $location, ipCookie) {
     //Hamburger menu toggle
@@ -151,11 +168,24 @@ angular.module('applyMyRideApp', [
     });
 
     $window.$rootScope = $rootScope;
-    var exceptions = ["/plan/my_rides", "/about", "/about/sharedride", "/about/projecthistory"];
+
+
+    // var exceptions = ["/login/error", "/registration", "/registration/error", "/registration/success"];
+    // These are the paths that can be navigated to from external sources.
+    // All other paths must be navigated to interally.
     $rootScope.$on('$routeChangeStart', function (event) {
+      window.ipCookie = ipCookie;
+      const notLoggedIn = !ipCookie('authentication_token');
+      const exceptions = [HOMEPAGE, "/login", "/login/error", "/registration", "/registration/error", "/about", "/about/sharedride", "/about/projecthistory"];
+
       if (!$window.visited) {
         if (exceptions.indexOf($location.$$path) < 0) {
-          $location.path('/');
+          if (notLoggedIn) {
+            event.preventDefault();
+            $rootScope.$emit('Login');
+          } else {
+            $location.path(HOMEPAGE);
+          }
         }
       }
 
@@ -163,13 +193,57 @@ angular.module('applyMyRideApp', [
       // We plan on doing this in the future. But, as no tickets have been created
       // for this task yet, I'm just putting a redirect here as a temporary fix.
 
-      var publicPages = ['/', '/loginError', "/about", "/about/sharedride", "/about/projecthistory", "/lookupIdForm", "/lookupError"];
-      var notLoggedIn = !ipCookie('authentication_token');
+      // If not logged in, and visiting a private page, redirect to login.
+      // var publicPages = ["/registration", "/registration/error"];
+      const publicPages = ['/login', '/login/error', '/registration', '/registration/error', '/about', '/about/sharedride', '/about/projecthistory', '/lookupIdForm', '/lookupError'];
 
       if (notLoggedIn && publicPages.indexOf($location.$$path) === -1) {
         event.preventDefault();
-        $location.path('/');
-        return false;
+        $rootScope.$emit('Login');
       }
+
+      return false;
     });
+
+    $rootScope.$on('Login', navigate_to_login_form);
+    $rootScope.$on('Logout', logout_and_clear_cache);
+
+    // Sends the browser to the backend,
+    // Which then redirects the browser to AWS Cognito
+    // Which then redirects you to ESEC's login form.
+    // After login, the browser redirects it's way back now the stack again
+    function navigate_to_login_form (e) {
+      e.preventDefault();
+      const clientOrigin = window.location.origin;
+
+      let callbackUrl = new URL(clientOrigin);
+      callbackUrl.pathname = "/";
+      callbackUrl.hash = "/login";
+
+      let loginUrl = new URL(clientOrigin);
+      loginUrl.host = APIHOST;
+      loginUrl.pathname = "/api/v3/sso/authorize";
+      loginUrl.searchParams.set("clientCallback", callbackUrl.toString());
+
+      document.location.href = loginUrl.href;
+    }
+
+    function logout_and_clear_cache (e) {
+      e.preventDefault();
+
+      let cache = ipCookie();
+      for (const key in cache) {
+        ipCookie.remove(key);
+      }
+      sessionStorage.clear();
+      localStorage.clear();
+
+      console.log("logout");
+      const clientOrigin = window.location.origin;
+      let logoutUrl = new URL(clientOrigin);
+      logoutUrl.host = APIHOST;
+      logoutUrl.pathname = "/api/v3/sso/logout";
+
+      document.location.href = logoutUrl.href;
+    }
   });
