@@ -73,7 +73,9 @@ angular.module('applyMyRideApp', [
       })
       .when('/plan/:step', {
         templateUrl: 'views/plan.html',
-        controller: 'PlanController'
+        controller: 'PlanController',
+        // Placeholder title for the page
+        title: 'Plan Your Trip'
       })
       .when('/transit/:departid', {
         templateUrl: 'views/transit.html',
@@ -117,11 +119,13 @@ angular.module('applyMyRideApp', [
       })
       .when('/itinerary', {
         templateUrl: 'views/itinerary.html',
-        controller: 'ItineraryController'
+        controller: 'ItineraryController',
+        title: 'Itinerary'
       })
       .when('/about', {
         templateUrl: 'views/about.html',
-        controller: 'AboutController'
+        controller: 'AboutController',
+        title: 'About'
       })
       .when('/about/sharedride', {
         templateUrl: 'views/about.html',
@@ -133,43 +137,65 @@ angular.module('applyMyRideApp', [
       })
       .when('/profile', {
         templateUrl: 'views/profile.html',
-        controller: 'ProfileController'
+        controller: 'ProfileController',
+        title: 'Profile' // title of the page
       })
+      // Add other routes here
       .otherwise({
-        redirectTo: '/'
+        redirectTo: '/' // redirect to the root path if no other routes match
       });
 
   })  //global event handler
-  .run(function($rootScope, $window, $location, ipCookie) {
-    //Hamburger menu toggle
-    $(".navbar-nav li a").click(function (event) {
+  .run(function($rootScope, $window, $location, ipCookie, $route) {
+    // Hamburger menu toggle
+    $(".navbar-nav li a").click(function(event) {
       // check if window is small enough so dropdown is created
       var toggle = $(".navbar-toggle").is(":visible");
       if (toggle) {
-        $(".navbar-collapse").collapse('hide');
+        $(".navbar-collapse").collapse("hide");
       }
     });
-
+  
     $window.$rootScope = $rootScope;
-    var exceptions = ["/plan/my_rides", "/about", "/about/sharedride", "/about/projecthistory"];
-    $rootScope.$on('$routeChangeStart', function (event) {
+    var exceptions = [
+      "/plan/my_rides",
+      "/about",
+      "/about/sharedride",
+      "/about/projecthistory"
+    ];
+    $rootScope.$on("$routeChangeStart", function(event) {
       if (!$window.visited) {
         if (exceptions.indexOf($location.$$path) < 0) {
-          $location.path('/');
+          $location.path("/");
         }
       }
-
+  
       // TODO (Drew Teter, 09/22/2022) Fully Remove ability for guest login.
       // We plan on doing this in the future. But, as no tickets have been created
       // for this task yet, I'm just putting a redirect here as a temporary fix.
-
-      var publicPages = ['/', '/loginError', "/about", "/about/sharedride", "/about/projecthistory", "/lookupIdForm", "/lookupError"];
-      var notLoggedIn = !ipCookie('authentication_token');
-
+  
+      var publicPages = [
+        "/",
+        "/loginError",
+        "/about",
+        "/about/sharedride",
+        "/about/projecthistory",
+        "/lookupIdForm",
+        "/lookupError"
+      ];
+      var notLoggedIn = !ipCookie("authentication_token");
+  
       if (notLoggedIn && publicPages.indexOf($location.$$path) === -1) {
         event.preventDefault();
-        $location.path('/');
+        $location.path("/");
         return false;
       }
     });
+  
+    // Listen for the route to change and update the page title
+    $rootScope.$on("$routeChangeSuccess", function() {
+      var title = $route.current.title || "FMR Schedule";
+      document.title = title;
+    });
   });
+  
