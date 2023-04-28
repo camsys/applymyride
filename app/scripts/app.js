@@ -74,7 +74,6 @@ angular.module('applyMyRideApp', [
       .when('/plan/:step', {
         templateUrl: 'views/plan.html',
         controller: 'PlanController',
-        // Placeholder title for the page
         title: 'Plan Your Trip'
       })
       .when('/transit/:departid', {
@@ -91,7 +90,8 @@ angular.module('applyMyRideApp', [
       })
       .when('/transitconfirm', {
         templateUrl: 'views/transitconfirm.html',
-        controller: 'TransitController'
+        controller: 'TransitController',
+        title: 'Confirm Transit'
       })
       .when('/transit/details/:tripid', {
         templateUrl: 'views/transitconfirm.html',
@@ -111,11 +111,13 @@ angular.module('applyMyRideApp', [
       })
       .when('/taxi', {
         templateUrl: 'views/taxi-detail.html',
-        controller: 'TaxiController'
+        controller: 'TaxiController',
+        title: 'Taxi Details'
       })
       .when('/uber', {
         templateUrl: 'views/uber-detail.html',
-        controller: 'UberController'
+        controller: 'UberController',
+        title: 'Uber Details'
       })
       .when('/itinerary', {
         templateUrl: 'views/itinerary.html',
