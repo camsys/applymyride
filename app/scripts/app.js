@@ -74,8 +74,8 @@ angular.module('applyMyRideApp', [
       .when('/plan/:step', {
         templateUrl: 'views/plan.html',
         controller: 'PlanController',
-        title: 'Plan Your Trip'
       })
+      
       .when('/transit/:departid', {
         templateUrl: 'views/transit.html',
         controller: 'TransitController'
@@ -90,8 +90,7 @@ angular.module('applyMyRideApp', [
       })
       .when('/transitconfirm', {
         templateUrl: 'views/transitconfirm.html',
-        controller: 'TransitController',
-        title: 'Confirm Transit'
+        controller: 'TransitController'      
       })
       .when('/transit/details/:tripid', {
         templateUrl: 'views/transitconfirm.html',
@@ -112,22 +111,18 @@ angular.module('applyMyRideApp', [
       .when('/taxi', {
         templateUrl: 'views/taxi-detail.html',
         controller: 'TaxiController',
-        title: 'Taxi Details'
       })
       .when('/uber', {
         templateUrl: 'views/uber-detail.html',
         controller: 'UberController',
-        title: 'Uber Details'
       })
       .when('/itinerary', {
         templateUrl: 'views/itinerary.html',
         controller: 'ItineraryController',
-        title: 'Itinerary'
       })
       .when('/about', {
         templateUrl: 'views/about.html',
         controller: 'AboutController',
-        title: 'About'
       })
       .when('/about/sharedride', {
         templateUrl: 'views/about.html',
@@ -140,7 +135,6 @@ angular.module('applyMyRideApp', [
       .when('/profile', {
         templateUrl: 'views/profile.html',
         controller: 'ProfileController',
-        title: 'Profile' // title of the page
       })
       // Add other routes here
       .otherwise({
@@ -194,10 +188,22 @@ angular.module('applyMyRideApp', [
       }
     });
   
-    // Listen for the route to change and update the page title
     $rootScope.$on("$routeChangeSuccess", function() {
-      var title = $route.current.title || "FMR Schedule";
+      var titleMap = {
+        'purpose': 'Trip Purpose',
+        'when': 'Trip Schedule',
+        'companions': 'Trip Companions',
+        'instructions_for_driver': 'Driver Instructions',
+        'summary': 'Trip Summary',
+        'my_rides': 'My Rides',
+        'itinerary': 'Itinerary',
+        'profile': 'Profile',
+        'about': 'About',
+        'transitconfirm': 'Transit Confirmation',
+      };
+      var currentPath = $location.path();
+      var currentStep = currentPath.split('/').pop();
+      var title = titleMap[currentStep] || "FMR Schedule";
       document.title = title;
     });
   });
-  
