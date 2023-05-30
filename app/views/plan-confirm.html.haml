@@ -73,7 +73,7 @@
         .col-xs-3.col-md-2.container--center-single-item
           %button.btn.btn-icon{title:'Edit Trip Purpose',ng:{click: 'goPlanPurpose()'}, type: 'button'}
             %i.glyphicon.glyphicon-pencil
-      .row.card.card-thin{'ng-hide'=>'showBusRides || paratransitItineraries.length == 0'}
+      .row.card.card-thin{'ng-hide'=>'showBusRides || paratransitItineraries.length === 0'}
         .col-xs-3.col-md-2
           %p.text-left.text-muted
             Cost

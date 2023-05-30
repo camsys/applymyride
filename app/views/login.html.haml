@@ -2,15 +2,15 @@
 -# turn it into registration file? Or add additional SharedRideId form
 .loginform{ng:{controller:'LoginController'}}
   %form#LoginTemplate.container{name:'loginform'}
-    .row{ng: {hide: "location == '/authenticateSharedRideId'"}}
+    .row{ng: {hide: "location === '/authenticateSharedRideId'"}}
       .col-md-4.col-md-offset-4.col-sm-6.col-sm-offset-3.col-sm-6.col-sm-offset-3.col-xs-12
         .login-form-container{ng: {hide: 'showLookupIdForm'}}
-          .row{ng: {show: "location == '/'"}}
+          .row{ng: {show: "location === '/'"}}
             %h1{style: 'font-weight:600;'} Book a ride
             with just 3 things:
 
-          -# .row{ng: {show: "location == '/login-error'"}, style:'background-color:#FFFFEB;'}
-          .row.alert.alert-danger{ng: {show: "location == '/login-error'"}}
+          -# .row{ng: {show: "location === '/login-error'"}, style:'background-color:#FFFFEB;'}
+          .row.alert.alert-danger{ng: {show: "location === '/login-error'"}}
             %h1{style: 'font-weight:600;'}Sorry! We do not see a match.
             Your Shared Ride ID may be entered incorrectly.
 
@@ -18,7 +18,7 @@
           -# We plan on doing this in the future, but as no tickets have been created
           -# for this task yet, I'm commenting out these lines instead if deleting them.
 
-          -# .row{ng: {show: "location == '/plan/login-guest'"}}
+          -# .row{ng: {show: "location === '/plan/login-guest'"}}
           -#   %h1{style: 'font-weight:600;'} Already a Shared Ride member?
           -#   In order to book a Shared Ride, you need to tell us a few things
 
@@ -61,7 +61,7 @@
           -# We plan on doing this in the future, but as no tickets have been created
           -# for this task yet, I'm commenting out these lines instead if deleting them.
 
-          -# .row{ng: {hide: "location == '/plan/login-guest'"}, style: 'margin-top: 1em'}
+          -# .row{ng: {hide: "location === '/plan/login-guest'"}, style: 'margin-top: 1em'}
           -#   %a.btn-block{"ng-href" => "#/plan/where"}
           -#     Or, continue as a guest
 
@@ -70,7 +70,7 @@
             -# We plan on doing this in the future, but as no tickets have been created
             -# for this task yet, I'm commenting out these lines instead if deleting them.
             
-            -# .pull-left{ng: {show: "location == '/plan/login-guest'"}}
+            -# .pull-left{ng: {show: "location === '/plan/login-guest'"}}
             -#   %a.btn.btn-secondary{href: "", back:''}
             -#     Back
             .pull-right{ng:{hide: 'isTransitionCounty(county)'}}
@@ -81,7 +81,7 @@
           %a{href: "https://www.findmyride.penndot.pa.gov/fmr-edu/home/contact", target: "_blank", rel: "noopener noreferrer"} 
             %span.glyphicon.glyphicon-new-window
 
-    %div{ng: {show: "location == '/authenticateSharedRideId'"}}
+    %div{ng: {show: "location === '/authenticateSharedRideId'"}}
       .row
         %form{name: 'sharedRideForm'}
           .col-md-4.col-md-offset-4.col-sm-6.col-sm-offset-3.col-xs-10.col-xs-offset-1

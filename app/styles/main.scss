@@ -218,7 +218,7 @@ $kioskfonts: "Avenir Next", "Helvetica Neue", Helvetica, sans-serif;
     // font-size: $font-size-tablet;
     // font-family: $font-family-tablet;
   }
-  // @media(min-width:$screen-sm-min) and (max-width:$screen-sm-max){
+  // @media(min-width:$screen-sm-min) and (max-width:$screen-sm-max) {
   //   // font-size: $font-size-tablet;
   //   // font-family: $font-family-tablet;
   // }
@@ -638,14 +638,14 @@ i.cs-map-marker.A{
 }
 .unstuck-foot{
   margin-bottom:30px;
-  @media only screen and (max-device-width: 480px){
+  @media only screen and (max-device-width: 480px) {
     position:relative;
   }
 }
 
 #PlanTemplate,
 #transit.container{
-  @media only screen and (max-device-width: 480px){
+  @media only screen and (max-device-width: 480px) {
     margin:0px -10px !important;
   }
 }

@@ -5,16 +5,16 @@ var app = angular.module('applyMyRideApp');
 angular.module('applyMyRideApp')
   .controller('NavbarController', ['$scope', '$rootScope', '$location', 'flash', 'planService', 'deviceDetector', 'ipCookie', '$window',
     function ($scope, $rootScope, $location, flash, planService, deviceDetector, ipCookie, $window) {
-
+      console.log("Test");
       var input = document.createElement('input');
       input.setAttribute('type','date');
       var notADateValue = 'not-a-date';
       input.setAttribute('value', notADateValue);
       $scope.debugoff = !!APIHOST.match(/demo/);
-      $scope.html5 = !(input.value === notADateValue);
+      $scope.html5 = (input.value !== notADateValue);
       planService.html5 = $scope.html5;
       $scope.mobile = deviceDetector.isMobile();
-      $scope.isUnsupportedBrowser = deviceDetector.browser.normalize() == "ie";
+      $scope.isUnsupportedBrowser = deviceDetector.browser.normalize() === 'ie';
       planService.mobile = $scope.mobile;
 
       $scope.flash = flash;
@@ -23,26 +23,26 @@ angular.module('applyMyRideApp')
       that.$scope = $scope;
 
       // TODO (Drew) update for esec, move event handle
-      $rootScope.$on("CallLogout", function() {
+      $rootScope.$on('CallLogout', function () {
         $scope.logout();
       });
 
-      $scope.reset = function() {
+      $scope.reset = function () {
         planService.reset();
-        $location.path("/plan/where");
+        $location.path('/plan/where');
       };
 
-      $scope.showNavbar = function() {
+      $scope.showNavbar = function () {
         that.$scope.email = ipCookie('email');
         that.$scope.authentication_token = ipCookie('authentication_token');
         that.$scope.first_name = ipCookie('first_name');
         that.$scope.last_name = ipCookie('last_name');
-        that.$scope.full_name = `${ipCookie('first_name')} ${ipCookie('last_name')}`
+        that.$scope.full_name = `${ipCookie('first_name')} ${ipCookie('last_name')}`;
         that.$scope.sharedRideId = ipCookie('sharedRideId');
-        if(that.$scope.email){
+        if (that.$scope.email) {
           planService.email = $scope.email;
           planService.authentication_token = $scope.authentication_token;
-        }else{
+        } else {
           that.$scope.email = planService.email;
           that.$scope.authentication_token = planService.authentication_token;
           that.$scope.first_name = planService.first_name;
@@ -54,15 +54,16 @@ angular.module('applyMyRideApp')
         }
         var currentBalancePathConditions = ['confirm_shared_ride', 'itinerary', 'plan', 'profile'];
         $scope.currentBalance = ipCookie('currentBalance');
-        $scope.showCurrentBalance = that.$scope.email && currentBalancePathConditions.some(el => $location.path().includes(el)) 
-          && ($scope.currentBalance != null);
+        $scope.showCurrentBalance = that.$scope.email && 
+                                    currentBalancePathConditions.some(el => $location.path().includes(el)) &&
+                                    ($scope.currentBalance !== null);
         $scope.rideCount = ipCookie('rideCount');
         $scope.liveTrip = ipCookie('liveTrip');
         return true;
       };
 
       // TODO (Drew) remove
-      $scope.logout = function() {
+      $scope.logout = function () {
         delete $scope.email;
         delete planService.email;
         planService.killEtaChecker();
@@ -74,25 +75,25 @@ angular.module('applyMyRideApp')
 
     }]);
 
-angular.module('applyMyRideApp').factory('flash', function($rootScope) {
+angular.module('applyMyRideApp').factory('flash', function ($rootScope) {
   var currentMessage = '';
 
-  $rootScope.$on('$routeChangeSuccess', function() {
+  $rootScope.$on('$routeChangeSuccess', function () {
     currentMessage = null;
   });
 
   return {
-    setMessage: function(message) {
+    setMessage: function (message) {
       //queue.push(message);
       currentMessage = message;
     },
-    getMessage: function() {
+    getMessage: function () {
       return currentMessage;
     }
   };
 });
 
-app.directive('back', ['$window', function($window) {
+app.directive('back', ['$window', function ($window) {
   return {
     restrict: 'A',
     link: function (scope, elem) {

@@ -7,3 +7,6 @@ platforms
 www
 .DS_Store
 .tool-versions
+
+localhost-key.pem
+localhost.pem

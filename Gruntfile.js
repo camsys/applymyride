@@ -15,6 +15,13 @@ module.exports = function (grunt) {
   // Time how long tasks take. Can help when optimizing build times
   require('time-grunt')(grunt);
 
+  var serveStatic = require('serve-static');
+
+  // To use HTTPS install and set up mkcert then generate a certificate
+  const key = grunt.file.exists('./localhost-key.pem') ? grunt.file.read('./localhost-key.pem').toString() : undefined;
+  const cert = grunt.file.exists('./localhost.pem') ? grunt.file.read('./localhost.pem').toString() : undefined;
+  const protocol = (key && cert) ? 'https' : 'http';
+
   // Configurable paths for the application
   var appConfig = {
     app: require('./bower.json').appPath || 'app',
@@ -38,10 +45,6 @@ module.exports = function (grunt) {
       haml: {
         files: ['<%= yeoman.app %>/views/{,*/}*.haml'],
         tasks: ['haml:watched']
-      },
-      coffee: {
-        files: ['<%= yeoman.app %>/scripts/{,*/}*.coffee'],
-        tasks: ['coffee:watched']
       },
       bower: {
         files: ['bower.json'],
@@ -67,7 +70,14 @@ module.exports = function (grunt) {
       },
       livereload: {
         options: {
+          // livereload: grunt.option('livereload') || 35729
           livereload: '<%= connect.options.livereload %>'
+          // livereload: {
+          //   port: grunt.option('livereload') || 35729,
+          //   protocol: protocol,
+          //   key: key,
+          //   cert: cert
+          // }
         },
         files: [
           '<%= yeoman.app %>/{,*/}*.html',
@@ -84,22 +94,35 @@ module.exports = function (grunt) {
     // The actual grunt server settings
     connect: {
       options: {
+        hostname: '127.0.0.1',
         port: grunt.option('port') || 9000,
-        // Change this to '0.0.0.0' to access the server from outside.
-        hostname: '0.0.0.0',
-        livereload: grunt.option('livereload') || 35729
+        // livereload: grunt.option('livereload') || 35729
+        livereload: {
+          port: grunt.option('livereload') || 35729,
+          protocol: protocol,
+          key: key,
+          cert: cert
+        }
       },
       livereload: {
         options: {
           open: true,
+          port: grunt.option('port') || 9000,
+          protocol: protocol,
+          key: key,
+          cert: cert,
           middleware: function (connect) {
             return [
-              connect.static('.tmp'),
+              // require('connect-livereload')(),
+              // connect.static('.tmp'),
+              serveStatic('.tmp'),
               connect().use(
                 '/bower_components',
-                connect.static('./bower_components')
+                // connect.static('./bower_components')
+                serveStatic('./bower_components')
               ),
-              connect.static(appConfig.app)
+              // connect.static(appConfig.app)
+              serveStatic(appConfig.app)
             ];
           }
         }
@@ -123,6 +146,7 @@ module.exports = function (grunt) {
       dist: {
         options: {
           open: true,
+          port: grunt.option('port') || 9000,
           base: '<%= yeoman.dist %>'
         }
       }
@@ -187,42 +211,6 @@ module.exports = function (grunt) {
       sass: {
         src: ['<%= yeoman.app %>/styles/{,*/}*.{scss,sass}'],
         ignorePath: /(\.\.\/){1,2}bower_components\//
-      }
-    },
-
-    coffee: {
-      watched: {
-        files: [
-          {
-            expand: true,
-            cwd: '<%= yeoman.app %>/scripts',
-            src: '{,*/}*.coffee',
-            dest: '.tmp/scripts',
-            ext: '.js'
-          }
-        ]
-      },
-      dist: {
-        files: [
-          {
-            expand: true,
-            cwd: '<%= yeoman.app %>/scripts',
-            src: '{,*/}*.coffee',
-            dest: 'dist/scripts',
-            ext: '.js'
-          }
-        ]
-      },
-      test: {
-        files: [
-          {
-            expand: true,
-            cwd: 'test/spec',
-            src: '{,*/}*.coffee',
-            dest: '.tmp/spec',
-            ext: '.js'
-          }
-        ]
       }
     },
 
@@ -493,8 +481,8 @@ module.exports = function (grunt) {
           src: [
             '<%= yeoman.dist %>/index.html',
             '<%= yeoman.dist %>/scripts/*.js',
-            /*'<%= yeoman.dist %>/styles*//*.css',
-            '<%= yeoman.dist %>/images*//*.*',*/
+            '<%= yeoman.dist %>/styles*//*.css',
+            '<%= yeoman.dist %>/images*//*.*',
             '<%= yeoman.dist %>/views/*.html',
           ]
         }]
@@ -512,7 +500,6 @@ module.exports = function (grunt) {
       'clean:server',
       'wiredep',
       'concurrent:server',
-      'coffee:watched',
       'haml:watched',
       'autoprefixer',
       'connect:livereload',
@@ -529,16 +516,14 @@ module.exports = function (grunt) {
     'clean:server',
     'concurrent:test',
     'autoprefixer',
-    'connect:test'
-    // ,
-    // 'karma'
+    'connect:test',
+    'karma'
   ]);
 
   grunt.registerTask(
     'build', [
     'clean:dist',
     'wiredep',
-    'coffee:dist',
     'haml:dist',
     'useminPrepare',
     'concurrent:dist',

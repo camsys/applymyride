@@ -64,8 +64,8 @@
                   .alert.alert-danger{role:'alert', ng:{show:'errors.rangeErrorto'}}
                     The location you selected is outside the service area.
                 .col-lg-2.col-md-2.col-sm-2.container__swap-btn
-                  -# %button.btn.btn--no-outline{type:'button', aria: {label: 'Swap Address Inputs'},ng: {click: 'debouncedSwapAddressInputs()', disabled: 'disableSwapAddressButton == true'}}
-                  %button.btn.btn-icon.btn--lg-text{type:'button', aria: {label: 'Swap Address Inputs'},ng: {click: 'debouncedSwapAddressInputs()', disabled: 'disableSwapAddressButton == true'}}
+                  -# %button.btn.btn--no-outline{type:'button', aria: {label: 'Swap Address Inputs'},ng: {click: 'debouncedSwapAddressInputs()', disabled: 'disableSwapAddressButton === true'}}
+                  %button.btn.btn-icon.btn--lg-text{type:'button', aria: {label: 'Swap Address Inputs'},ng: {click: 'debouncedSwapAddressInputs()', disabled: 'disableSwapAddressButton === true'}}
                     %i.glyphicon.glyphicon-sort
 
               %div.map-canvas{'ui-map' => 'whereToMap', 'ui-options' => 'mapOptions', ng: {show: 'showMap'}}
@@ -87,10 +87,10 @@
       .row
         .col-md-8.col-md-offset-2.col-sm-8.col-sm-offset-2
           .col-xs-6{style:'margin:7px 0px; padding-left:0px;', ng: {repeat: 'purpose in top_purposes'}}
-            .btn.btn-primary.btn-block{style: 'margin-bottom:4px; width:100%; padding-left:0px; padding-right:0px;', ng: { class: '{ selected: purpose.name == planService.purpose }', click: 'specifyTripPurpose(purpose.name, backToConfirm)' }}
+            .btn.btn-primary.btn-block{style: 'margin-bottom:4px; width:100%; padding-left:0px; padding-right:0px;', ng: { class: '{ selected: purpose.name === planService.purpose }', click: 'specifyTripPurpose(purpose.name, backToConfirm)' }}
               {{ purpose.name }}
           .col-xs-6{style:'margin:7px 0px; padding-left:0px;', ng: {repeat: 'purpose in purposes', show:'showAllPurposes'}}
-            .btn.btn-primary.btn-block{style: 'margin-bottom:4px; width:100%; padding-left:0px; padding-right:0px;', ng: {class: '{selected: purpose.name == planService.purpose }', click: 'specifyTripPurpose(purpose.name, backToConfirm)'}}
+            .btn.btn-primary.btn-block{style: 'margin-bottom:4px; width:100%; padding-left:0px; padding-right:0px;', ng: {class: '{selected: purpose.name === planService.purpose }', click: 'specifyTripPurpose(purpose.name, backToConfirm)'}}
               {{ purpose.name }}
           .col-xs-12
             .row{style:'margin-right:0px;'}
@@ -154,15 +154,15 @@
     -#     .row
     -#       .col-xs-12.pull-left.no-padding
     -#         %h4
-    -#           %span.timeTypeSelection{ng: {show: 'returnTimeType == "depart"'}} When do you want to leave?
-    -#           %span.timeTypeSelection{ng: {show: 'returnTimeType == "arrive"'}} When do you want to get back?
+    -#           %span.timeTypeSelection{ng: {show: 'returnTimeType === "depart"'}} When do you want to leave?
+    -#           %span.timeTypeSelection{ng: {show: 'returnTimeType === "arrive"'}} When do you want to get back?
     -#           %span.dropdown{dropdown: '', style: 'cursor: pointer;'}
     -#             %a.fa.fa-lg.fa-sort-desc{href: '', dropdown_toggle: '', style: 'vertical-align: 15%; color: #2781FF; text-decoration: none;'}
     -#             %ul.dropdown-menu.pull-right{dropdown_menu: ''}
-    -#               %li{ng: {show: 'returnTimeType != "depart"'}}
+    -#               %li{ng: {show: 'returnTimeType !== "depart"'}}
     -#                 %a{href: '', ng: {click: 'specifyReturnTimeType("depart")'}}
     -#                   When do you want to leave?
-    -#               %li{ng: {show: 'returnTimeType != "arrive"'}}
+    -#               %li{ng: {show: 'returnTimeType !== "arrive"'}}
     -#                 %a{href: '', ng: {click: 'specifyReturnTimeType("arrive")'}}
     -#                   When do you want to get back?
     -#     .row.text-center
@@ -181,7 +181,7 @@
     .confirm{ng: {show: 'step==="confirm"', include:"'views/plan-confirm.html'"}}
     .confirm{ng: {show: 'step==="transit_details"', include:"'views/plan-transit-details.html'"}}
 
-    .list_itineraries{ng: {show: 'step==="list_itineraries" && noresults == true'}}
+    .list_itineraries{ng: {show: 'step==="list_itineraries" && noresults === true'}}
       .col-xs-12.col-sm-8.col-sm-offset-2.no-padding
         %h3
           %strong
@@ -189,7 +189,7 @@
         %a.btn-block{"ng-href" => "#/plan/from"}
           Change my request
 
-    .list_itineraries{ng: {show: 'step==="list_itineraries" && noresults == false'}}
+    .list_itineraries{ng: {show: 'step==="list_itineraries" && noresults === false'}}
       .col-xs-12.col-sm-8.col-sm-offset-2.no-padding
         %h3
           %strong
@@ -213,7 +213,7 @@
                   %span.fa-lg.pull-right
                     %i.fa.fa-chevron-circle-right.fa-lg
 
-        %a.no_underline.row.row-eq-height.rounded-border{ng: {show: 'transitInfos[0].length == 1', href: '#/transit/0/{{transitInfo.id}}', repeat: 'transitInfo in transitInfos[0]'}}
+        %a.no_underline.row.row-eq-height.rounded-border{ng: {show: 'transitInfos[0].length === 1', href: '#/transit/0/{{transitInfo.id}}', repeat: 'transitInfo in transitInfos[0]'}}
           .row.even-height-row.table-compact
             .col-xs-2.col-height-slave
               %img.img-responsive{ng: {src: 'images/modes/transit.png'}}
@@ -434,7 +434,7 @@
           .col-xs-12.pull-left.no-padding
             %h4 Already signed up?
             %h4
-              %a.btn-next{ng: {click: '$rootscope.emit("Login")'}}
+              %a.btn-next{ng: {click: '$rootScope.emit("Login")'}}
                 Sign in
 
     .discounts{ng: {show: 'step==="my_rides"', include: "'views/plan-myrides.html'"}}
@@ -459,21 +459,21 @@
         .row
           .col-md-4.col-md-offset-4.col-sm-6.col-sm-offset-3.col-xs-12
             %h4
-              %span.timeTypeSelection{ng: {show: 'fromTimeType == "depart"'}} When do you want to start out?
-              %span.timeTypeSelection{ng: {show: 'fromTimeType == "arrive"'}} When do you want to arrive?
+              %span.timeTypeSelection{ng: {show: 'fromTimeType === "depart"'}} When do you want to start out?
+              %span.timeTypeSelection{ng: {show: 'fromTimeType === "arrive"'}} When do you want to arrive?
               %span.dropdown{dropdown: '', style: 'cursor: pointer;'}
                 %a.fa.fa-lg.fa-sort-desc{href: '', dropdown_toggle: '', style: 'vertical-align: 15%; color: #2781FF; text-decoration: none;'}
                 %ul.dropdown-menu.pull-right{dropdown_menu: ''}
-                  %li{ng: {show: 'fromTimeType != "depart"'}}
+                  %li{ng: {show: 'fromTimeType !== "depart"'}}
                     %a{href: '', ng: {click: 'specifyFromTimeType("depart")'}}
                       When do you want to start out?
-                  %li{ng: {show: 'fromTimeType != "arrive"'}}
+                  %li{ng: {show: 'fromTimeType !== "arrive"'}}
                     %a{href: '', ng: {click: 'specifyFromTimeType("arrive")'}}
                       When do you want to arrive?
         .row{ng: {show: 'showAsap'}}
           .col-xs-12.pull-left{style: 'color: #2781FF; padding: 0px;'}
             %h5{ng: {click: 'specifyFromTimeType("asap")'}} As soon as possible
-        .row.text-center{ng: {show: 'fromTimeType != "asap"'}}
+        .row.text-center{ng: {show: 'fromTimeType !== "asap"'}}
           %timepicker.timepicker{'minute-step' => '5', ng: {model: 'fromTime', show: '!mobile'}}
           .col-md-4.col-md-offset-4.col-sm-6.col-sm-offset-3.col-xs-12
             %input#fromTime.form-control{type: 'time', step: '300', ng: {model: 'fromTime', required: 'true', show: 'mobile && html5'}}
@@ -494,15 +494,15 @@
           .row
             .col-md-4.col-md-offset-4.col-sm-6.col-sm-offset-3.col-xs-12
               %h4
-                %span.timeTypeSelection{ng: {show: 'returnTimeType == "depart"'}} When do you want to leave?
-                %span.timeTypeSelection{ng: {show: 'returnTimeType == "arrive"'}} When do you want to get back?
+                %span.timeTypeSelection{ng: {show: 'returnTimeType === "depart"'}} When do you want to leave?
+                %span.timeTypeSelection{ng: {show: 'returnTimeType === "arrive"'}} When do you want to get back?
                 %span.dropdown{dropdown: '', style: 'cursor: pointer;'}
                   %a.fa.fa-lg.fa-sort-desc{href: '', dropdown_toggle: '', style: 'vertical-align: 15%; color: #2781FF; text-decoration: none;'}
                   %ul.dropdown-menu.pull-right{dropdown_menu: ''}
-                    %li{ng: {show: 'returnTimeType != "depart"'}}
+                    %li{ng: {show: 'returnTimeType !== "depart"'}}
                       %a{href: '', ng: {click: 'specifyReturnTimeType("depart")'}}
                         When do you want to leave?
-                    %li{ng: {show: 'returnTimeType != "arrive"'}}
+                    %li{ng: {show: 'returnTimeType !== "arrive"'}}
                       %a{href: '', ng: {click: 'specifyReturnTimeType("arrive")'}}
                         When do you want to get back?
           .row.text-center

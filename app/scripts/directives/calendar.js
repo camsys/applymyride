@@ -10,7 +10,7 @@ app.directive('datepickerPopup', ['uibDatepickerPopupConfig', 'uibDateParser', '
       var dateFormat;
 
       //*** Temp fix for Angular 1.3 support [#2659](https://github.com/angular-ui/bootstrap/issues/2659)
-      attrs.$observe('datepickerPopup', function(value) {
+      attrs.$observe('datepickerPopup', function (value) {
         dateFormat = value || datepickerPopupConfig.datepickerPopup;
         ngModel.$render();
       });
@@ -22,7 +22,7 @@ app.directive('datepickerPopup', ['uibDatepickerPopupConfig', 'uibDateParser', '
   };
 }]);
 
-app.directive('csCalendar', function() {
+app.directive('csCalendar', function () {
 
     function _removeTime(date) {
         return date.hour(0).minute(0).second(0).millisecond(0);
@@ -61,7 +61,7 @@ app.directive('csCalendar', function() {
         scope: {
             date: '=sdate'
         },
-        link: function(scope) {
+        link: function (scope) {
             scope.date = _removeTime(scope.date || moment());
             scope.month = scope.date.clone();
 
@@ -71,18 +71,18 @@ app.directive('csCalendar', function() {
 
             _buildMonth(scope, start, scope.month);
 
-            scope.select = function(day) {
+            scope.select = function (day) {
                 scope.date = day.date;
             };
 
-            scope.next = function() {
+            scope.next = function () {
                 var next = scope.month.clone();
                 _removeTime(next.month(next.month()+1).date(1));
                 scope.month.month(scope.month.month()+1);
                 _buildMonth(scope, next, scope.month);
             };
 
-            scope.previous = function() {
+            scope.previous = function () {
                 var previous = scope.month.clone();
                 _removeTime(previous.month(previous.month()-1).date(1));
                 scope.month.month(scope.month.month()-1);

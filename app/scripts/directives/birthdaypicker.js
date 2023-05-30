@@ -2,56 +2,56 @@
 
 var app = angular.module('applyMyRideApp');
 
-app.directive('birthdaypicker', function() {
+app.directive('birthdaypicker', function () {
 
     return {
         restrict: 'E',
         scope: {
             selected: '=stime'
         },
-      controller: ['$scope', function($scope){
+      controller: ['$scope', function ($scope) {
 
-        $scope.parseBirthdate = function(){
+        $scope.parseBirthdate = function () {
           var selectedYear = parseInt(this.birthyear, 10);
           var selectedMonth = parseInt(this.birthmonth, 10);
           var selectedDay = parseInt(this.birthday, 10);
           var maxDay = (new Date(selectedYear, selectedMonth, 0)).getDate();
-          if(selectedDay <= maxDay){
-            $scope.$parent.dateofbirth = (new Date(selectedYear, selectedMonth - 1, selectedDay))
-          }else{
+          if (selectedDay <= maxDay) {
+            $scope.$parent.dateofbirth = (new Date(selectedYear, selectedMonth - 1, selectedDay));
+          } else {
             $scope.$parent.dateofbirth = null;
           }
-        }
+        };
 
 
       }],
-        link: function(scope) {
+        link: function (scope) {
           scope.months = {
-              "short": ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-              "long": ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"] };
+              'short': ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+              'long': ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'] };
           scope.todayDate = new Date();
           scope.todayYear = scope.todayDate.getFullYear();
           scope.todayMonth = scope.todayDate.getMonth();
           scope.todayDay = scope.todayDate.getDate();
           scope.years = [];
-          for(var i = 0; i < 120; i++){
+          for(var i = 0; i < 120; i++) {
             scope.years.push(scope.todayYear - i);
           }
           scope.settings = {
-            "maxAge"        : 120,
-            "minAge"        : 0,
-            "futureDates"   : false,
-            "maxYear"       : scope.todayYear,
-            "dateFormat"    : "middleEndian",
-            "monthFormat"   : "short",
-            "placeholder"   : true,
-            "legend"        : "",
-            "defaultDate"   : false,
-            "fieldName"     : "birthdate",
-            "fieldId"       : "birthdate",
-            "hiddenDate"    : true,
-            "onChange"      : null,
-            "tabindex"      : null
+            'maxAge'        : 120,
+            'minAge'        : 0,
+            'futureDates'   : false,
+            'maxYear'       : scope.todayYear,
+            'dateFormat'    : 'middleEndian',
+            'monthFormat'   : 'short',
+            'placeholder'   : true,
+            'legend'        : '',
+            'defaultDate'   : false,
+            'fieldName'     : 'birthdate',
+            'fieldId'       : 'birthdate',
+            'hiddenDate'    : true,
+            'onChange'      : null,
+            'tabindex'      : null
           };
 
         },

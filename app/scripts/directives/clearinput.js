@@ -2,22 +2,24 @@
  Angular Clear Input directive
  (c) 2014 Nir Shilon. http://flz.co.il
  */
+'use strict';
+
 angular.module('dcbClearInput', [])
   .directive('clearInput', ['$parse',
-    function($parse) {
+    function ($parse) {
       return {
         restrict: 'A',
         require: 'ngModel',
-        link: function(scope, element, attr) {
+        link: function (scope, element, attr) {
           var htmlMarkup = attr.clearBtnMarkup ? attr.clearBtnMarkup : '<img src="images/close.png"/>';
           var btn = angular.element(htmlMarkup);
-          btn.addClass(attr.clearBtnClass ? attr.clearBtnClass : "clear-btn");
+          btn.addClass(attr.clearBtnClass ? attr.clearBtnClass : 'clear-btn');
           element.after(btn);
 
-          btn.on('click', function(event) {
+          btn.on('click', function (event) {
             if (attr.clearInput) {
               var fn = $parse(attr.clearInput);
-              scope.$apply(function() {
+              scope.$apply(function () {
                 fn(scope, {
                   $event: event
                 });
@@ -28,7 +30,7 @@ angular.module('dcbClearInput', [])
             }
           });
 
-          scope.$watch(attr.ngModel, function(val) {
+          scope.$watch(attr.ngModel, function (val) {
             var hasValue = val && val.length > 0;
             if (!attr.clearDisableVisibility) {
               btn.css('visibility', hasValue ? 'visible' : 'hidden');

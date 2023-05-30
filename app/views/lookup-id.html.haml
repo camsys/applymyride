@@ -2,9 +2,9 @@
   %form#LookupIdTemplate.container{name:'lookupidform'}
     .row
       .col-md-4.col-md-offset-4.col-sm-6.col-sm-offset-3.col-sm-6.col-sm-offset-3.col-xs-12
-        .row{ng: {show: "location == '/lookupIdForm'"}}
+        .row{ng: {show: "location === '/lookupIdForm'"}}
           %h1{style: 'font-weight:600;'} Look Up Your Shared Ride ID
-        .row{ng: {show: "location == '/lookupError'"}, style:'background-color:#FFFFEB;'}
+        .row{ng: {show: "location === '/lookupError'"}, style:'background-color:#FFFFEB;'}
           %h1{style: 'font-weight:600;'} Sorry! We could not find a match.
           %span Please try again or call 1-844-PA-4RIDE for help.
 

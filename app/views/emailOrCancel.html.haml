@@ -1,4 +1,4 @@
-.row.even-height-row{ng: {show: 'trip.mode != "mode_paratransit"'}}
+.row.even-height-row{ng: {show: 'trip.mode !== "mode_paratransit"'}}
   .col-xs-4{style: 'text-align: right;', ng: {click: 'cancelTrip($event, tab, $index)'}}
     %span.fa-stack
       %i.fa.fa-times-circle.fa-stack-2x{style: 'color: red;'}
@@ -16,7 +16,7 @@
         %i.fa.fa-search.fa-stack-2x
       %a.blue-text{ng: {show: '!mobile'}}
         View
-.row.even-height-row{ng: {show: 'trip.mode == "mode_paratransit"'}}
+.row.even-height-row{ng: {show: 'trip.mode === "mode_paratransit"'}}
   .col-xs-4{style: 'text-align: right;', ng: {click: 'cancelTrip($event, tab, $index)'}}
     %span.fa-stack
       %i.fa.fa-times-circle.fa-stack-2x{style: 'color: red;'}
@@ -49,6 +49,6 @@
         %i.fa.fa-envelope-o.fa-lg{style:'color: white;'}
           %span
             Send
-  .row{ng: {show: 'invalidEmail == true'}}
+  .row{ng: {show: 'invalidEmail === true'}}
     .col-xs-12.col-sm-8.col-sm-offset-2.text-left{style: 'color: red'}
       Please enter only valid email addresses

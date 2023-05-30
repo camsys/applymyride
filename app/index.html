@@ -22,6 +22,7 @@
     <!-- https://schema.org/Service for more info on structured data -->
     <meta name="description" content="FMR Schedule is a Pennsylvania-based service designed to help anyone identify and evaluate options to meet their transportation needs.">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/> <!--320-->
+    <!-- <meta name="referrer" content="unsafe-url"> -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet"> 
@@ -40,33 +41,50 @@
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <base href="/">
     <script>
+      const HOMEPAGE = '/plan/my_rides';
+
       // Initialize APIHOST by mapping from hostname
       // Assume localhost rails server is running on port 3000
-      const APIHOST = (function( docHost ) {
+      const APIHOST = (function (location) {
         const apiHostMapping = {
-          'www.findmyridepa.org': 'occ-pa-prod.camsys-apps.com',
-          'findmyridepa.org': 'occ-pa-prod.camsys-apps.com',
-          'www.findmyridepa.com': 'occ-pa-prod.camsys-apps.com',
-          'findmyridepa.com': 'occ-pa-prod.camsys-apps.com',
-          'www.findmyridepa.net': 'occ-pa-prod.camsys-apps.com',
-          'findmyridepa.net': 'occ-pa-prod.camsys-apps.com',
-          'ui-pa-qa2.s3-website-us-east-1.amazonaws.com': 'occ-pa-qa2.herokuapp.com',
-          'findmyridepa-qa2.camsys-apps.com': 'occ-pa-qa2.herokuapp.com',
-          'oneclick-pa-qa.camsys-apps.com': 'occ-pa-qa.camsys-apps.com',
-          'oneclick-pa-dev2.camsys-apps.com': 'occ-pa-dev.camsys-apps.com',
-          'findmyridepa-dev2.camsys-apps.com': 'occ-pa-dev.herokuapp.com',
-          'localhost': 'localhost:3000',
-          '0.0.0.0': 'localhost:3000',
-          '127.0.0.1': 'localhost:3000'
+          'www.findmyridepa.org': 'https://occ-pa-prod.camsys-apps.com',
+          'findmyridepa.org': 'https://occ-pa-prod.camsys-apps.com',
+          'www.findmyridepa.com': 'https://occ-pa-prod.camsys-apps.com',
+          'findmyridepa.com': 'https://occ-pa-prod.camsys-apps.com',
+          'www.findmyridepa.net': 'https://occ-pa-prod.camsys-apps.com',
+          'findmyridepa.net': 'https://occ-pa-prod.camsys-apps.com',
+
+          // 'ui-pa-qa2.s3-website-us-east-1.amazonaws.com': 'https://occ-pa-qa2.herokuapp.com',
+          // 'findmyridepa-qa2.camsys-apps.com': 'https://occ-pa-qa2.herokuapp.com',
+          // 'findmyridepa-dev2.camsys-apps.com': 'https://occ-pa-dev.herokuapp.com',
+
+          'oneclick-pa-qa.camsys-apps.com': 'https://occ-pa-qa.camsys-apps.com',
+          'ui-pa-qa-occ-ec2.s3.amazonaws.com': 'https://occ-pa-qa.camsys-apps.com',
+
+          'oneclick-pa-sandbox.camsys-apps.com' : 'https://occ-pa-qa.camsys-apps.com',
+          'ui-pa-sandbox.s3-website-us-east-1.amazonaws.com' : 'https://occ-pa-qa.camsys-apps.com',
+
+          'oneclick-pa-dev2.camsys-apps.com': 'https://occ-pa-dev.camsys-apps.com',
+          'ui-pa-dev-occ-ec2.s3.amazonaws.com' : 'https://occ-pa-dev.camsys-apps.com',
+          'ui-pa-dev-occ-ec2.s3.us-east-1.amazonaws.com': 'https://occ-pa-dev.camsys-apps.com',
+        
+          'localhost': location.protocol + '//localhost:3000',
+          '0.0.0.0': location.protocol + '//localhost:3000',
+          '127.0.0.1': location.protocol + '//localhost:3000'
         };
 
-        // Use docHost by default if nothing else matches, could also be a specific fallback host
-        return apiHostMapping[docHost] || docHost;
-      }( document.location.hostname ));
+        // Use the document origin by default if nothing else matches, could also be a specific fallback host
+        return apiHostMapping[location.hostname] || location.origin;
+      }( document.location ));
 
-      const HOMEPAGE = '/plan/my_rides';
+      const apiUrl = function (path) {
+        console.log("Origin: ", APIHOST);
+        console.log("Path: ", path);
+        return new URL(path, APIHOST);
+      }
     </script>
   </head>
+
   <body ng-app="applyMyRideApp" ng-controller="NavbarController">
     <div style="position:absolute; bottom:1px;" ng-hide="true">v2.7.4</div>
 
@@ -128,9 +146,11 @@
 
     <!-- build:js(.) scripts/vendor.js -->
     <!-- bower:js -->
-    <script src="bower_components/jquery/dist/jquery.js"></script>
     <script src="bower_components/angular/angular.js"></script>
     <script src="bower_components/bootbox/bootbox.js"></script>
+    <script src="bower_components/json3/lib/json3.js"></script>
+    <script src="bower_components/es5-shim/es5-shim.js"></script>
+    <script src="bower_components/jquery/dist/jquery.js"></script>
     <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap.js"></script>
     <script src="bower_components/angular-animate/angular-animate.js"></script>
     <script src="bower_components/angular-aria/angular-aria.js"></script>
@@ -188,7 +208,7 @@
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDdpyfym0ylu7GMq6_dTWpEA2u8lmuvnfY&libraries=places"></script>
 
     <script>
-      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (function (i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function () {
       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
       })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');

@@ -1,8 +1,9 @@
 /* --- Made by justgoscha and licensed under MIT license --- */
+'use strict';
 
 var app = angular.module('autocomplete', []);
 
-app.directive('autocomplete', function() {
+app.directive('autocomplete', function () {
   var index = -1;
   var wasTyped = false;
 
@@ -18,23 +19,23 @@ app.directive('autocomplete', function() {
       autocompleteRequired: '=',
       disableFilter: '=disableFilter'
     },
-    controller: ['$scope', function($scope){
+    controller: ['$scope', function ($scope) {
       // the index of the suggestions that's currently selected
       $scope.selectedIndex = -1;
 
       $scope.initLock = true;
 
       // set new index
-      $scope.setIndex = function(i){
+      $scope.setIndex = function (i) {
         $scope.selectedIndex = parseInt(i);
       };
 
-      this.setIndex = function(i){
+      this.setIndex = function (i) {
         $scope.setIndex(i);
         $scope.$apply();
       };
 
-      $scope.getIndex = function(i){
+      $scope.getIndex = function (i) {
         return $scope.selectedIndex;
       };
 
@@ -45,9 +46,9 @@ app.directive('autocomplete', function() {
       $scope.completing = false;
 
       // starts autocompleting on typing in something
-      $scope.$watch('searchParam', function(newValue, oldValue){
+      $scope.$watch('searchParam', function (newValue, oldValue) {
 
-        if(newValue == ''){
+        if (newValue === '') {
           $scope.select();
           $scope.setIndex(-1);
         }
@@ -56,21 +57,21 @@ app.directive('autocomplete', function() {
           return;
         }
 
-        if(watching && typeof $scope.searchParam !== 'undefined' && $scope.searchParam !== null) {
+        if (watching && typeof $scope.searchParam !== 'undefined' && $scope.searchParam !== null) {
           $scope.completing = true;
           $scope.searchFilter = $scope.disableFilter ? '' : $scope.searchParam;
           $scope.selectedIndex = -1;
         }
 
         // function thats passed to on-type attribute gets executed
-        if($scope.onType && wasTyped){
+        if ($scope.onType && wasTyped) {
           $scope.onType($scope.searchParam);
         }
         wasTyped = false;
       });
 
       // for hovering over suggestions
-      this.preSelect = function(suggestion){
+      this.preSelect = function (suggestion) {
 
         watching = false;
 
@@ -85,35 +86,35 @@ app.directive('autocomplete', function() {
 
       $scope.preSelect = this.preSelect;
 
-      this.preSelectOff = function(){
+      this.preSelectOff = function () {
         watching = true;
       };
 
       $scope.preSelectOff = this.preSelectOff;
 
       // selecting a suggestion with RIGHT ARROW or ENTER
-      $scope.select = function(suggestion){
-        if(suggestion){
+      $scope.select = function (suggestion) {
+        if (suggestion) {
           $scope.searchParam = suggestion;
           $scope.searchFilter = suggestion;
-          if($scope.onSelect)
+          if ($scope.onSelect) {
             $scope.onSelect(suggestion);
+          }
         }
         $scope.blurWait = false;
         watching = false;
         $scope.completing = false;
-        setTimeout(function(){watching = true;},1000);
+        setTimeout(function () {watching = true;},1000);
         $scope.setIndex(-1);
       };
-      $scope.ignoreBlur = function(){
+
+      $scope.ignoreBlur = function () {
         $scope.blurWait = true;
-      }
-
-
+      };
     }],
-    link: function(scope, element, attrs){
+    link: function (scope, element, attrs) {
 
-      setTimeout(function() {
+      setTimeout(function () {
         scope.initLock = false;
         scope.$apply();
       }, 250);
@@ -122,11 +123,11 @@ app.directive('autocomplete', function() {
 
       // Default atts
       scope.attrs = {
-        "placeholder": "start typing...",
-        "class": "",
-        "id": "",
-        "inputclass": "",
-        "inputid": ""
+        'placeholder': 'start typing...',
+        'class': '',
+        'id': '',
+        'inputclass': '',
+        'inputid': ''
       };
 
       for (var a in attrs) {
@@ -139,9 +140,9 @@ app.directive('autocomplete', function() {
       }
 
       if (attrs.clickActivation) {
-        element[0].onclick = function(e){
-          if(!scope.searchParam){
-            setTimeout(function() {
+        element[0].onclick = function (e) {
+          if (!scope.searchParam) {
+            setTimeout(function () {
               scope.completing = true;
               scope.$apply();
             }, 200);
@@ -151,58 +152,58 @@ app.directive('autocomplete', function() {
 
       var key = {left: 37, up: 38, right: 39, down: 40 , enter: 13, esc: 27, tab: 9};
 
-      element[0].addEventListener("keydown", function(e){
+      element[0].addEventListener('keydown', function (e) {
         var keycode = e.keyCode || e.which;
         var l = angular.element(this).find('li').length;
 
         // this allows submitting forms by pressing Enter in the autocompleted field
-        //if(!scope.completing || l == 0) return;
+        //if(!scope.completing || l === 0) return;
 
         // implementation of the up and down movement in the list of suggestions
-        switch (keycode){
+        switch (keycode) {
           case key.up:
 
             index = scope.getIndex()-1;
 
-            if(index<-1){
+            if (index<-1) {
               index = l-1;
-            } else if (index >= l ){
+            } else if (index >= l ) {
               index = -1;
               scope.setIndex(index);
               scope.preSelectOff();
               break;
             }
-            if(!scope.suggestions[index].option){
+            if (!scope.suggestions[index].option) {
                 index--;
             }
 
             scope.setIndex(index);
 
-            if(index!==-1)
+            if (index!==-1) {
               scope.preSelect(angular.element(angular.element(this).find('li')[index]).text());
+            }
 
             scope.$apply();
-
             break;
           case key.down:
             index = scope.getIndex()+1;
-            if(index<-1){
+            if (index<-1) {
               index = l-1;
-            } else if (index >= l ){
+            } else if (index >= l ) {
               index = -1;
               scope.setIndex(index);
               scope.preSelectOff();
               scope.$apply();
               break;
             }
-            if(!scope.suggestions[index].option){
+            if (!scope.suggestions[index].option) {
               index++;
             }
             scope.setIndex(index);
 
-            if(index!==-1)
+            if (index!==-1) {
               scope.preSelect(angular.element(angular.element(this).find('li')[index]).text());
-
+            }
             break;
           case key.left:
             break;
@@ -212,13 +213,13 @@ app.directive('autocomplete', function() {
 
             index = scope.getIndex();
             // scope.preSelectOff();
-            if(index !== -1) {
+            if (index !== -1) {
               scope.select(angular.element(angular.element(this).find('li')[index]).text());
-              if(keycode == key.enter) {
+              if (keycode === key.enter) {
                 e.preventDefault();
               }
             } else {
-              if(keycode == key.enter) {
+              if (keycode === key.enter) {
                 scope.select();
               }
             }
@@ -237,17 +238,17 @@ app.directive('autocomplete', function() {
             wasTyped = true;
             return;
         }
-      }, true)
+      }, true);
 
-      element[0].addEventListener("blur", function(e){
+      element[0].addEventListener('blur', function (e) {
         //run callback provided in view if the event target is this input's id
-        if(scope.onBlur && e.target.id === scope.attrs.inputid){
+        if (scope.onBlur && e.target.id === scope.attrs.inputid) {
           scope.onBlur( scope.searchParam );
         }
         // disable suggestions on blur
         // we do a timeout to prevent hiding it before a click event is registered
-        setTimeout(function() {
-          if(scope.blurWait == true){return;}
+        setTimeout(function () {
+          if (scope.blurWait === true) { return; }
           scope.select();
           scope.setIndex(-1);
           scope.$apply();
@@ -255,8 +256,8 @@ app.directive('autocomplete', function() {
 
       }, true);
 
-      element[0].addEventListener("focus", function (e){
-        if(scope.onFocus){
+      element[0].addEventListener('focus', function (e) {
+        if (scope.onFocus) {
           scope.onFocus(e, scope);
         }
       }, true);
@@ -293,24 +294,25 @@ app.directive('autocomplete', function() {
 app.directive('clickToFocus', 
   ['$window', function ($window) {
       return {
-        link: function(scope, element) {
+        link: function (scope, element) {
             element.on('click', function () {
                 if (!$window.getSelection().toString()) {
                     // Required for mobile Safari
-                    this.setSelectionRange(0, this.value.length)
+                    this.setSelectionRange(0, this.value.length);
                 }
             });
         }
       };
   }]
 );
-app.directive('focusMe', function($timeout) {
+
+app.directive('focusMe', function ($timeout) {
   return {
     scope: { trigger: '@focusMe' },
-    link: function(scope, element) {
-      scope.$watch('trigger', function(value) {
-        if(value === "true") { 
-          $timeout(function() {
+    link: function (scope, element) {
+      scope.$watch('trigger', function (value) {
+        if (value === 'true') { 
+          $timeout(function () {
             element[0].focus(); 
           });
         }
@@ -318,9 +320,10 @@ app.directive('focusMe', function($timeout) {
     }
   };
 });
+
 app.filter('highlight', ['$sce', function ($sce) {
   return function (input, searchParam) {
-    if (typeof input === 'function') return '';
+    if (typeof input === 'function') { return ''; }
     if (searchParam) {
       var words = '(' +
             searchParam.split(/\ /).join(' |') + '|' +
@@ -328,24 +331,24 @@ app.filter('highlight', ['$sce', function ($sce) {
           ')',
           exp = new RegExp(words, 'gi');
       if (words.length) {
-        input = input.replace(exp, "<span class=\"highlight\">$1</span>");
+        input = input.replace(exp, '<span class="highlight">$1</span>');
       }
     }
     return $sce.trustAsHtml(input);
   };
 }]);
 
-app.directive('suggestion', function(){
+app.directive('suggestion', function () {
   return {
     restrict: 'A',
     require: '^autocomplete', // ^look for controller on parents element
-    link: function(scope, element, attrs, autoCtrl){
-      element.bind('mouseenter', function() {
+    link: function (scope, element, attrs, autoCtrl) {
+      element.bind('mouseenter', function () {
         autoCtrl.preSelect(attrs.val);
         autoCtrl.setIndex(attrs.index);
       });
 
-      element.bind('mouseleave', function() {
+      element.bind('mouseleave', function () {
         autoCtrl.preSelectOff();
       });
     }

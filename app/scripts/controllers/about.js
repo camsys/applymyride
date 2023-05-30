@@ -4,7 +4,7 @@ var app = angular.module('applyMyRideApp');
 
 app.controller('AboutController', ['$scope', '$http','$routeParams', '$location', 'planService', 'util', 'flash', 'usSpinnerService', '$q', 'LocationSearch', 'localStorageService', 'ipCookie', '$timeout', '$window', '$filter',
 
-function($scope, $http, $routeParams, $location, planService, util, flash, usSpinnerService, $q, LocationSearch, localStorageService, ipCookie, $timeout, $window, $filter) {
+function ($scope, $http, $routeParams, $location, planService, util, flash, usSpinnerService, $q, LocationSearch, localStorageService, ipCookie, $timeout, $window, $filter) {
 
   $scope.step = $routeParams.step;
   $scope.planService = planService;
@@ -24,11 +24,11 @@ function($scope, $http, $routeParams, $location, planService, util, flash, usSpi
         $scope.counties = counties;
         $scope.counties_string = $scope.counties.join(', ');
         if (counties.length === 0) {
-            $scope.county_count = '0 counties'
+            $scope.county_count = '0 counties';
         } else if (counties.length === 1) {
-            $scope.county_count = '1 county'
+            $scope.county_count = '1 county';
         } else {
-            $scope.county_count = counties.length + ' counties'
+            $scope.county_count = counties.length + ' counties';
         }
       }
     );

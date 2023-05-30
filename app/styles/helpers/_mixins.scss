@@ -22,7 +22,7 @@
 // Focus States Mixin
 @mixin focus() {
   &:focus {@content;}
-  // @include breakpoint(medium down){
+  // @include breakpoint(medium down) {
   //     @include hover {
   //         @content;
   //     }

@@ -7,26 +7,23 @@
           .panel-heading
             %h3
               %span.glyphicon.glyphicon-warning-sign
-              Unable to Confirm Keystone Login
+              Unable to Confirm Shared Ride Registration
 
           .panel-body
             %p
-              We are currently unable to confirm your Keystone Login. It is possible this can be
-              resolved by loging out and signing in again. If needed, you may contact the
-              Keystone Login Help Desk. The help desk can be reached by phone at 877-328-0995 or
-              by email at 
-              %a{href: "mailto:KeystoneLoginSupport@randstadusa.com"}
-                KeystoneLoginSupport@randstadusa.com
-              \.
+              Based on the information that you have provided, we are unable to confirm your shared
+              ride registration with the agency that you selected. If needed, you may contact the 
+              agency to confirm that the shared ride ID that you provided is correct, or that the 
+              agency has your correct phone number on file.
 
     .row.unstuck-foot.btn-spacing
       .col-lg-6.col-lg-offset-3.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1.col-xs-12
-        .pull-right
-          %a.btn.btn-secondary{ng: {click: "logout()"}}
+        .pull-left
+          %a.btn.btn-secondary{href: "", ng: {click: "logout()"}}
             Sign Out
-        -# .pull-right
-        -#   %a.btn.btn-secondary{href: "", ng: {click: "back()"}}
-        -#     Let Me Try Again
+        .pull-right
+          %a.btn.btn-secondary{href: "", ng: {click: "back()"}}
+            Let Me Try Again
     .row.text-center{style:'margin: 30px 0px 10px 0px;'}
       Need Help? Please contact your Local Transit Agency 
       %a{href: "https://www.findmyride.penndot.pa.gov/fmr-edu/home/contact", target: "_blank", rel: "noopener noreferrer"} 

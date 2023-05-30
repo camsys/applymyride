@@ -19,7 +19,7 @@
                 %span{style: 'color: red; font-size: 22px;', ng: {show: 'tripCancelled'}}
                   (cancelled)
     .transititinerary{index: '{{$index}}', ng: {repeat: 'itinerary in itineraries'}}
-      .row{ng: {show: '$index == 0 && itineraries.length > 1'}}
+      .row{ng: {show: '$index === 0 && itineraries.length > 1'}}
         .col-xs-12.col-md-8.col-md-offset-2.no-padding
           .row
             .col-xs-12
@@ -28,7 +28,7 @@
                   Outbound Trip
                 %span{style: 'color: red; font-size: 22px;', ng: {show: 'outboundCancelled'}}
                   (cancelled)
-      .row{style: 'margin-top: 2em;', ng: {show: '$index == 1'}}
+      .row{style: 'margin-top: 2em;', ng: {show: '$index === 1'}}
         .col-xs-12.col-md-8.col-md-offset-2.no-padding
           .row
             .col-xs-12
@@ -54,15 +54,15 @@
         .col-xs-12.col-md-8.col-md-offset-2.transit-container
           .row.row-eq-height.transit-header
             .blah{ng: {repeat: 'leg in itinerary.json_legs track by $index'}}
-              %img{ng: {if: 'leg.mode == "WALK"', src: 'images/modes/walk.png'}}
-              %img{ng: {if: 'leg.mode == "BUS"', src: 'images/modes/transit.png'}}
-              %img{ng: {if: 'leg.mode == "RAIL"', src: 'images/modes/rail.png'}}
-              %img{ng: {if: 'leg.mode == "SUBWAY"', src: 'images/modes/subway.png'}}
-              %img{ng: {if: 'leg.mode == "TRAM"', src: 'images/modes/streetcar.png'}}
+              %img{ng: {if: 'leg.mode === "WALK"', src: 'images/modes/walk.png'}}
+              %img{ng: {if: 'leg.mode === "BUS"', src: 'images/modes/transit.png'}}
+              %img{ng: {if: 'leg.mode === "RAIL"', src: 'images/modes/rail.png'}}
+              %img{ng: {if: 'leg.mode === "SUBWAY"', src: 'images/modes/subway.png'}}
+              %img{ng: {if: 'leg.mode === "TRAM"', src: 'images/modes/streetcar.png'}}
               %i.fa.fa-lg.fa-chevron-right{ng: {if: '!$last'}}
         .col-xs-12.col-md-8.col-md-offset-2.transit-body
-          -# .border-between.timeline{'index' => '{{$index}}', ng: {click: 'show($event)', repeat: 'leg in itinerary.json_legs track by $index', class: '{"mode_bus": leg.mode == "BUS", "mode_rail": leg.mode == "RAIL","mode_subway": leg.mode == "SUBWAY", "mode_tram": leg.mode == "TRAM", "mode_walk": leg.mode == "WALK"}'}}
-          .border-between.timeline{ng: {repeat: 'leg in itinerary.json_legs track by $index', class: '{"mode_bus": leg.mode == "BUS", "mode_rail": leg.mode == "RAIL","mode_subway": leg.mode == "SUBWAY", "mode_tram": leg.mode == "TRAM", "mode_walk": leg.mode == "WALK"}'}}
+          -# .border-between.timeline{'index' => '{{$index}}', ng: {click: 'show($event)', repeat: 'leg in itinerary.json_legs track by $index', class: '{"mode_bus": leg.mode === "BUS", "mode_rail": leg.mode === "RAIL","mode_subway": leg.mode === "SUBWAY", "mode_tram": leg.mode === "TRAM", "mode_walk": leg.mode === "WALK"}'}}
+          .border-between.timeline{ng: {repeat: 'leg in itinerary.json_legs track by $index', class: '{"mode_bus": leg.mode === "BUS", "mode_rail": leg.mode === "RAIL","mode_subway": leg.mode === "SUBWAY", "mode_tram": leg.mode === "TRAM", "mode_walk": leg.mode === "WALK"}'}}
             .row.even-height-row
               .col-xs-2.right-side
                 .row
@@ -72,7 +72,7 @@
               .col-xs-1.right-side
                 %i.fa.fa-circle-o.fa-lg.waypoint
               .col-xs-9.leg-info.pull-left.left-side
-                .bus-info{ng: {show: 'leg.mode == "BUS"'}}
+                .bus-info{ng: {show: 'leg.mode === "BUS"'}}
                   .row
                     .leg-info.col-xs-12.leg-header
                       %h5.text-muted{ng: {show: '!$first'}} Get on {{leg.serviceName}}
@@ -85,7 +85,7 @@
                   .row
                     .leg-info.col-xs-12
                       %h5.text-muted {{leg.distanceDesc}} ({{leg.travelTime}})
-                .rail-info{ng: {show: 'leg.mode == "RAIL" || leg.mode == "SUBWAY" || leg.mode == "TRAM"'}}
+                .rail-info{ng: {show: 'leg.mode === "RAIL" || leg.mode === "SUBWAY" || leg.mode === "TRAM"'}}
                   .row
                     .leg-info.col-xs-12.leg-header
                       %h5.text-muted{ng: {show: '!$first'}} Get on {{leg.serviceName}}
@@ -98,7 +98,7 @@
                   .row
                     .leg-info.col-xs-12
                       %h5.text-muted {{leg.distanceDesc}} ({{leg.travelTime}})
-                .walk-info{ng: {show: 'leg.mode == "WALK"'}}
+                .walk-info{ng: {show: 'leg.mode === "WALK"'}}
                   .row
                     .leg-info.col-xs-12.leg-header
                       %h5.text-muted{ng: {show: '!$first'}} Get off
@@ -111,8 +111,8 @@
                         %h5.text-muted Walk
                         %h5.text-muted {{leg.distanceDesc}} ({{leg.travelTime}})
                       .col-height-slave{style: 'width: 20px'}
-                        %i.fa.fa-caret-down.fa-lg{style: 'margin-right:8px;', ng: {show: '!showDiv[$index] || showDiv[$index] == false'}}
-                        %i.fa.fa-caret-up.fa-lg{style: 'margin-right:8px;', ng: {show: 'showDiv[$index] == true'}}
+                        %i.fa.fa-caret-down.fa-lg{style: 'margin-right:8px;', ng: {show: '!showDiv[$index] || showDiv[$index] === false'}}
+                        %i.fa.fa-caret-up.fa-lg{style: 'margin-right:8px;', ng: {show: 'showDiv[$index] === true'}}
                   .animate-show.blah{ng: {show: 'showDiv[$index]'}, id: 'walk-leg-{{$index}}'}
                     .row{ng: {repeat: 'step in leg.steps'}}
                       .leg-info.col-xs-12{style: 'padding-left: 50px;'}
@@ -140,7 +140,7 @@
                       %h4 {{itinerary.destination.name}}
 
   #itinerary{style: 'padding: 0;', index: '{{$index}}', ng: {show: 'mode==="mode_paratransit"', repeat: 'itinerary in paratransitItineraries'}}
-    %header.row{style: 'margin-bottom: 1em;', ng: {show: '$index == 0'}}
+    %header.row{style: 'margin-bottom: 1em;', ng: {show: '$index === 0'}}
       .col-xs-12.col-md-8.col-md-offset-2.no-padding
         .row{ng: {show: 'liveTrip', class: '{"live-trip": liveTrip}'}}
           .col-xs-12{style:' padding:10px;'}
@@ -175,7 +175,7 @@
               %span.tab1
                 (Return)
 
-            .headerwrap{ng: {show: '$index == 0'}}
+            .headerwrap{ng: {show: '$index === 0'}}
               %h5
                 ="Escorts/Companions: {{escort}}"
       .row
@@ -188,7 +188,7 @@
                 %span{style: 'color: red; font-size: 22px;', ng: {show: 'outboundCancelled'}}
                   (cancelled)
       
-    .row{ng: {show: '$index == 1', style: "$index == 1 ? {'margin-top': '2em'} : {}"}}
+    .row{ng: {show: '$index === 1', style: "$index === 1 ? {'margin-top': '2em'} : {}"}}
       .col-xs-12.col-md-8.col-md-offset-2.no-padding
         .row
           .col-xs-12
@@ -255,7 +255,7 @@
                     %h4.text-muted {{itinerary.destination.formatted_address}}
 
   .walkitinerary#walk{style: 'padding: 0;', ng: {show: 'mode==="mode_walk"', repeat: 'itinerary in walkItineraries'}}
-    .row{style: 'margin-bottom: 1em;', ng: {show: '$index == 0'}}
+    .row{style: 'margin-bottom: 1em;', ng: {show: '$index === 0'}}
       .col-xs-12.col-md-8.col-md-offset-2.no-padding
         .row
           .col-xs-12{style:' background-color: rgb(205,254,206); padding:10px;'}
@@ -267,7 +267,7 @@
               %span{style: 'color: red; font-size: 22px;', ng: {show: 'tripCancelled'}}
                 (cancelled)
   .walkitinerary#walk{index: '{{$index}}', ng: {repeat: 'itinerary in walkItineraries'}}
-    .row{ng: {show: '$index == 0'}}
+    .row{ng: {show: '$index === 0'}}
       .col-xs-12.col-md-8.col-md-offset-2.no-padding
         .row
           .col-xs-12
@@ -276,7 +276,7 @@
                 Outbound Trip
               %span{style: 'color: red; font-size: 22px;', ng: {show: 'outboundCancelled'}}
                 (cancelled)
-    .row{style: 'margin-top: 2em;', ng: {show: '$index == 1'}}
+    .row{style: 'margin-top: 2em;', ng: {show: '$index === 1'}}
       .col-xs-12.col-md-8.col-md-offset-2.no-padding
         .row
           .col-xs-12
@@ -300,7 +300,7 @@
             %h4{style: 'float:right; vertical-align: bottom;'} Free
     .row
       .col-xs-12.col-md-8.col-md-offset-2.walk-body
-        .border-between.timeline{'index' => '{{$index}}', ng: {click: 'test()', repeat: 'leg in itinerary.json_legs track by $index', class: '{"mode_bus": leg.mode == "BUS", "mode_rail": leg.mode == "RAIL", "mode_subway": leg.mode == "SUBWAY", "mode_tram": leg.mode == "TRAM", "mode_walk": leg.mode == "WALK"}'}}
+        .border-between.timeline{'index' => '{{$index}}', ng: {click: 'test()', repeat: 'leg in itinerary.json_legs track by $index', class: '{"mode_bus": leg.mode === "BUS", "mode_rail": leg.mode === "RAIL", "mode_subway": leg.mode === "SUBWAY", "mode_tram": leg.mode === "TRAM", "mode_walk": leg.mode === "WALK"}'}}
           .row.even-height-row
             .col-xs-2.right-side
               .row
@@ -310,7 +310,7 @@
             .col-xs-1.right-side
               %i.fa.fa-circle-o.fa-lg.waypoint
             .col-xs-9.leg-info.pull-left.left-side
-              .walk-info{ng: {show: 'leg.mode == "WALK"'}}
+              .walk-info{ng: {show: 'leg.mode === "WALK"'}}
                 .row
                   .leg-info.col-xs-12.leg-header
                     %h4 {{leg.from.name}}
@@ -360,7 +360,7 @@
           %i.fa.fa-envelope-o{style:'color: white;'}
             %span
               Send
-    .row{ng: {show: 'invalidEmail == true'}}
+    .row{ng: {show: 'invalidEmail === true'}}
       .col-xs-12.col-sm-8.col-sm-offset-2.text-left{style: 'color: red'}
         Please enter only valid email addresses
 

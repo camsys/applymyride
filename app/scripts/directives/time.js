@@ -2,7 +2,7 @@
 
 var app = angular.module('applyMyRideApp');
 
-app.directive('csTime', function() {
+app.directive('csTime', function () {
 
     return {
         templateUrl: '/views/time-grid.html',
@@ -10,7 +10,7 @@ app.directive('csTime', function() {
         scope: {
             selected: '=stime'
         },
-        link: function(scope) {
+        link: function (scope) {
             scope.times = [
                 {display: '1:00', isSelected: false},
                 {display: '1:30', isSelected: true},
@@ -48,19 +48,19 @@ app.directive('csTime', function() {
 
             scope.selected = scope.timeSelected.display + ' ' + scope.merSelected.display;
 
-            scope.select = function(time) {
+            scope.select = function (time) {
                 scope.timeSelected = time;
                 scope.selected = scope.timeSelected.display + ' ' + scope.merSelected.display;
-                scope.times.forEach(function(entry) {
+                scope.times.forEach(function (entry) {
                     entry.isSelected = false;
                 });
                 time.isSelected = true;
             };
 
-            scope.selectMeridian = function(mer) {
+            scope.selectMeridian = function (mer) {
                 scope.merSelected = mer;
                 scope.selected = scope.timeSelected.display + ' ' + scope.merSelected.display;
-                scope.meridians.forEach(function(entry) {
+                scope.meridians.forEach(function (entry) {
                     entry.isSelected = false;
                 });
                 mer.isSelected = true;

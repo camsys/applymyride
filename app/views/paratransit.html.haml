@@ -13,12 +13,12 @@
               1-844-PA4-RIDE
               
   #paratransit{style: 'padding: 0;', index: '{{$index}}', ng: {show: '!booking_failed', repeat: 'itinerary in paratransitItineraries'}}
-    %div{ng:{show: '$index == 0 && !tripCancelled'}}
+    %div{ng:{show: '$index === 0 && !tripCancelled'}}
       .row{style: 'margin-bottom: 1em;', ng: {show: 'email'}}
         .col-xs-12.text-center{style: 'padding: 0;'}
           %h2 Your trip has been saved
       
-    .headerwrap{ng:{show: '$index == 0'}}
+    .headerwrap{ng:{show: '$index === 0'}}
       %header.row
         .col-xs-12.col-md-8.col-md-offset-2.no-padding
           .row
@@ -51,7 +51,7 @@
         .col-xs-6.text-left
           {{escort}}
 
-    .row{style: 'margin-top: 1em;', ng: {show: '$index == 0'}}
+    .row{style: 'margin-top: 1em;', ng: {show: '$index === 0'}}
       .col-xs-12.col-md-8.col-md-offset-2.no-padding
         .row
           .col-xs-12
@@ -60,7 +60,7 @@
                 Outbound Trip
               %span{style: 'color: red; font-size: 22px;', ng: {show: 'outboundCancelled'}}
                 (cancelled)
-    .row{ng: {show: '$index == 1', style: "$index == 1 ? {'margin-top': '2em'} : {}"}}
+    .row{ng: {show: '$index === 1', style: "$index === 1 ? {'margin-top': '2em'} : {}"}}
       .col-xs-12.col-md-8.col-md-offset-2.no-padding
         .row
           .col-xs-12
@@ -132,7 +132,7 @@
           %i.fa.fa-envelope-o{style:'color: white;'}
             %span
               Send
-    .row{ng: {show: 'invalidEmail == true'}}
+    .row{ng: {show: 'invalidEmail === true'}}
       .col-xs-12.col-sm-8.col-sm-offset-2.text-left{style: 'color: red'}
         Please enter only valid email addresses
   

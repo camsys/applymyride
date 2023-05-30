@@ -27,11 +27,11 @@ h1,
       font-size: 80px;
       font-size: 4.444444444rem;
       line-height: 100px;
-      // @include breakpoint(medium down){
+      // @include breakpoint(medium down) {
       //     font-size: 3.0555555556rem;
       //     line-height: 67.05px;
       // }
-      // @include breakpoint(small down){
+      // @include breakpoint(small down) {
       //     font-size: 2rem;
       //     line-height: 43.88px;
       // }
@@ -44,10 +44,10 @@ h2,
   font-weight: bold;
   line-height: 51px;
   margin-bottom: .5rem;
-  // @include breakpoint(medium down){
+  // @include breakpoint(medium down) {
   //     line-height: 36.57px;
   // }
-  // @include breakpoint(small down){
+  // @include breakpoint(small down) {
   //     line-height: 21.94px;
   // }
 }

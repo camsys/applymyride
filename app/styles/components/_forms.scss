@@ -20,7 +20,7 @@
       min-height: initial;
   }
   // .input-group & {
-  //     @include breakpoint(medium down){
+  //     @include breakpoint(medium down) {
   //         margin-bottom: 0;
   //     }
   // }
@@ -210,7 +210,7 @@ label {
 
 [type="file"] {
   z-index: 0;
-  display: none;;
+  display: none;
 }
 
 fieldset {

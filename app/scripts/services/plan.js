@@ -2,15 +2,15 @@
 
 
 angular.module('applyMyRideApp')
-    .service('planService', ['$rootScope', '$filter', '$interval', 'util', function($rootScope, $filter, $interval, util) {
+    .service('planService', ['$rootScope', '$filter', '$interval', 'util', function ($rootScope, $filter, $interval, util) {
 
-      this.reset = function(){
+      this.reset = function () {
         this.resetOther();
         this.resetCompanions();
         this.resetWhen();
         this.resetPurpose();
         this.resetWhere();
-      }
+      };
 
       this.resetWhere = function () {
         delete this.from;
@@ -38,7 +38,7 @@ angular.module('applyMyRideApp')
         delete this.numberOfCompanions;
         delete this.hasCompanions;
         delete this.hasEscort;
-      }
+      };
 
       this.resetOther = function () {
         delete this.driverInstructions;
@@ -56,128 +56,127 @@ angular.module('applyMyRideApp')
         delete this.showBusRides;
       };
 
-      var urlPrefix = '//' + APIHOST + '/';
       this.getPrebookingQuestions = function () {
-        var questions = this.paratransitItineraries[0].prebooking_questions;
+        var questions = (this.paratransitItineraries[0] || {}).prebooking_questions;
         var questionObj = {};
-        angular.forEach(questions, function(question, index) {
-          if (question.code == 'assistant') {
+        angular.forEach(questions, function (question, index) {
+          if (question.code === 'assistant') {
             questionObj.assistant = question.question;
-          } else if (question.code == 'children' || question.code == 'companions') {
+          } else if (question.code === 'children' || question.code === 'companions') {
             questionObj.children = question.question;
             questionObj.limit = question.choices;
           }
         });
         return questionObj;
-      }
+      };
 
-      this.emailItineraries = function($http, emailRequest){
-        return $http.post(urlPrefix + 'api/v1/trips/email', emailRequest, this.getHeaders())
-      }
+      this.emailItineraries = function ($http, emailRequest) {
+        return $http.post(apiUrl('api/v1/trips/email').toString(), emailRequest, this.getHeaders());
+      };
 
-      this.cancelTrip = function($http, cancelRequest){
-        return $http.post(urlPrefix + 'api/v1/itineraries/cancel', cancelRequest, this.getHeaders())
-      }
+      this.cancelTrip = function ($http, cancelRequest) {
+        return $http.post(apiUrl('api/v1/itineraries/cancel').toString(), cancelRequest, this.getHeaders());
+      };
 
-      this.validateEmail = function(emailString){
+      this.validateEmail = function (emailString) {
         var addresses = emailString.split(/[ ,;]+/);
         var valid = true;
         var that = this;
-        angular.forEach(addresses, function(address, index) {
+        angular.forEach(addresses, function (address, index) {
           var result = that.validateEmailAddress(address);
-          if(result == false){
+          if (result === false) {
             valid = false;
           }
         });
         return valid;
-      }
+      };
 
-      this.validateEmailAddress = function(email) {
+      this.validateEmailAddress = function (email) {
         var re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
         return re.test(email);
-      }
+      };
 
-      this.getPastRides = function($http) {
+      this.getPastRides = function ($http) {
         return this.getRidesByType($http, 'api/v1/trips/past_trips');
-      }
+      };
 
-      this.getFutureRides = function($http) {
+      this.getFutureRides = function ($http) {
         return this.getRidesByType($http, 'api/v1/trips/future_trips');
-      }
+      };
 
       // Make API call to get past or future trips
-      this.getRidesByType = function($http, urlPath) {
-        return $http.get(urlPrefix + urlPath, this.getHeaders());
-      }
+      this.getRidesByType = function ($http, urlPath) {
+        return $http.get(apiUrl(urlPath).toString(), this.getHeaders());
+      };
 
       // Takes trips data and unpacks/processes them into an array of trip objects
-      this.unpackTrips = function(tripsData, tripType) {
+      this.unpackTrips = function (tripsData, tripType) {
         var that = this;
         var sortable = [],
             trips = [];
-        angular.forEach(tripsData, function(trip, index) {
-          if(trip[0].departure && trip[0].status && (trip[0].status != "canceled" || tripType == 'past')){
+        angular.forEach(tripsData, function (trip, index) {
+          if (trip[0].departure && trip[0].status && (trip[0].status !== 'canceled' || tripType === 'past')) {
             var trip_with_itineraries = that.addItinerariesToTrip(trip);
-            sortable.push([trip_with_itineraries, trip[0].departure])
+            sortable.push([trip_with_itineraries, trip[0].departure]);
           }
         });
 
-        sortable.sort(function(a,b) {
-          return util.dateISOSortComparer(a,b, tripType == 'next');
+        sortable.sort(function (a,b) {
+          return util.dateISOSortComparer(a,b, tripType === 'next');
         });
 
-        angular.forEach(sortable, function(trip_and_departure_array, index) {
+        angular.forEach(sortable, function (trip_and_departure_array, index) {
           trips.push(trip_and_departure_array[0]);
         });
 
         return trips;
-      }
+      };
 
       // Adds itineraries to trip object
-      this.addItinerariesToTrip = function(trip) {
+      this.addItinerariesToTrip = function (trip) {
         var i = 0;
         var trip_with_itineraries = {};
         var that = this;
 
         trip_with_itineraries.itineraries = [];
 
-        while(typeof trip[i] !== 'undefined'){
+        while(typeof trip[i] !== 'undefined') {
 
           // Check for first itinerary to set Trip values
-          if(i == 0){
+          if (i === 0) {
             trip_with_itineraries.id = trip[i].trip_id;
             trip_with_itineraries.details = trip[i].details;
             trip_with_itineraries.mode = trip[i].mode;
             trip_with_itineraries.startDesc = that.getDateDescription(trip[i].wait_start || trip[i].departure);
-            trip_with_itineraries.startDesc += " at " + moment.parseZone(trip[i].wait_start || trip[i].departure).format('h:mm a');
+            trip_with_itineraries.startDesc += ' at ' + moment.parseZone(trip[i].wait_start || trip[i].departure).format('h:mm a');
 
             var origin_addresses = trip[0].origin.address_components;
-            for(var n = 0; n < origin_addresses.length; n++){
-              var address_types = origin_addresses[n].types ;
-              if(address_types.length > 0 && address_types.indexOf("street_address") != -1){
+            for(var n = 0; n < origin_addresses.length; n++) {
+              let address_types = origin_addresses[n].types ;
+              if (address_types.length > 0 && address_types.indexOf('street_address') !== -1) {
                 trip_with_itineraries.from_place = origin_addresses[n].short_name;
                 break;
               }
             }
 
-            if(!trip_with_itineraries.from_place && trip[0].origin.name){
+            if (!trip_with_itineraries.from_place && trip[0].origin.name) {
               trip_with_itineraries.from_place = trip[0].origin.name;
             } else if (!trip_with_itineraries.from_place && trip[0].origin.formatted_address) {
               trip_with_itineraries.from_place = trip[0].origin.formatted_address;
             }
 
             var destination_addresses = trip[0].destination.address_components;
-            for(var j = 0; j < destination_addresses.length; j++){
-              var address_types = destination_addresses[j].types ;
-              if(address_types.length > 0 && address_types.indexOf("street_address") != -1){
+            for(var j = 0; j < destination_addresses.length; j++) {
+              let address_types = destination_addresses[j].types ;
+              if (address_types.length > 0 && address_types.indexOf('street_address') !== -1) {
                 trip_with_itineraries.to_place = destination_addresses[j].short_name;
                 break;
               }
             }
 
-            if(!trip_with_itineraries.to_place && trip[0].destination.name){
+            if (!trip_with_itineraries.to_place && trip[0].destination.name) {
               trip_with_itineraries.to_place = trip[0].destination.name;
-            } else if(!trip_with_itineraries.to_place && trip[0].destination.formatted_address){
+            } else if (!trip_with_itineraries.to_place && trip[0].destination.formatted_address) {
               trip_with_itineraries.to_place = trip[0].destination.formatted_address;
             }
 
@@ -189,11 +188,11 @@ angular.module('applyMyRideApp')
 
         trip_with_itineraries.roundTrip = typeof trip[1] !== 'undefined' ? true : false;
         return trip_with_itineraries;
-      }
+      };
 
-      this.populateScopeWithTripsData = function($scope, trips, tripType) {
+      this.populateScopeWithTripsData = function ($scope, trips, tripType) {
         var planService = this;
-        if($scope.trip) {
+        if ($scope.trip) {
           // Itinerary View
           $scope.trip = planService.findLiveTrip(trips);
         } else {
@@ -201,9 +200,9 @@ angular.module('applyMyRideApp')
           $scope.trips = $scope.trips || {};
           $scope.trips[tripType] = trips;
         }
-      }
+      };
 
-      this.prepareSummaryPage = function($scope) {
+      this.prepareSummaryPage = function ($scope) {
         let request = {};
         let itineraryRequestObject = this.createItineraryRequest();
         this.itineraryRequestObject = itineraryRequestObject;
@@ -214,26 +213,26 @@ angular.module('applyMyRideApp')
         request.toLine1 = itineraryRequestObject.trips[0].trip.destination_attributes.name || itineraryRequestObject.trips[0].trip.destination_attributes.street_address;
         request.toLine2 = itineraryRequestObject.trips[0].trip.destination_attributes.formatted_address;
 
-        request.purpose = itineraryRequestObject.trips[0].trip.external_purpose
+        request.purpose = itineraryRequestObject.trips[0].trip.external_purpose;
         request.when1 = this.getDateDescription(outboundTime);
-        request.when2 = "Arrive by " + moment(outboundTime).format('h:mm a');
+        request.when2 = 'Arrive by ' + moment(outboundTime).format('h:mm a');
         
         if (itineraryRequestObject.trips.length > 1) {
           request.roundtrip = true;
           var returnTime = itineraryRequestObject.trips[1].trip.trip_time;
           request.when3 = this.getDateDescription(returnTime);
-          if (request.when1 == request.when3) {
+          if (request.when1 === request.when3) {
             request.sameday = true;
           }
-          request.when4 = "Leave at " + moment(returnTime).format('h:mm a');
+          request.when4 = 'Leave at ' + moment(returnTime).format('h:mm a');
         }
 
-        request.when = [request.when1, request.when2, request.when4].filter(x => x).join(" | ");
+        request.when = [request.when1, request.when2, request.when4].filter(x => x).join(' | ');
         $scope.request = request;
         this.confirmRequest = request;
-      }
+      };
 
-      this.prepareTripSearchResultsPage = function(){
+      this.prepareTripSearchResultsPage = function () {
         this.transitItineraries = [];
         this.paratransitItineraries = [];
 
@@ -253,22 +252,22 @@ angular.module('applyMyRideApp')
         var itinerariesBySegmentThenMode = this.getItinerariesBySegmentAndMode(itineraries);
         var fare_info = {};
         fare_info.roundtrip = false;
-        if(this.itineraryRequestObject.trips.length > 1){
+        if (this.itineraryRequestObject.trips.length > 1) {
           fare_info.roundtrip = true;
         }
         var that = this;
-        angular.forEach(Object.keys(itinerariesBySegmentThenMode), function(segmentIndex, index) {
+        angular.forEach(Object.keys(itinerariesBySegmentThenMode), function (segmentIndex, index) {
           var itinerariesByMode = itinerariesBySegmentThenMode[segmentIndex];
-          angular.forEach(Object.keys(itinerariesByMode), function(mode_code, index) {
+          angular.forEach(Object.keys(itinerariesByMode), function (mode_code, index) {
             var fares = [];
-            angular.forEach(itinerariesByMode[mode_code], function(itinerary, index) {
-              if(itinerary.cost){
+            angular.forEach(itinerariesByMode[mode_code], function (itinerary, index) {
+              if (itinerary.cost) {
                 var fare = parseFloat(Math.round(itinerary.cost * 100) / 100).toFixed(2);
                 itinerary.cost = fare;
                 fares.push(fare);
-              } else if (itinerary.discounts){
-                itinerary.travelTime = humanizeDuration(itinerary.duration * 1000,  { units: ["hours", "minutes"], round: true });
-                itinerary.startTime = moment(itinerary.start_time).format('h:mm a')
+              } else if (itinerary.discounts) {
+                itinerary.travelTime = humanizeDuration(itinerary.duration * 1000,  { units: ['hours', 'minutes'], round: true });
+                itinerary.startTime = moment(itinerary.start_time).format('h:mm a');
 
                 // TODO (Drew Teter, 09/22/2022) Fully Remove ability for guest login.
                 // We plan on doing this in the future, but as no tickets have been created
@@ -276,22 +275,22 @@ angular.module('applyMyRideApp')
 
                 // that.guestParatransitItinerary = itinerary;
 
-                angular.forEach(itinerary.discounts, function(discount, index) {
+                angular.forEach(itinerary.discounts, function (discount, index) {
                   var fare = parseFloat(Math.round(discount.fare * 100) / 100).toFixed(2);
                   fares.push(fare);
                 });
               }
             });
 
-            if(fares.length > 0){
+            if (fares.length > 0) {
               var lowestFare = Math.min.apply(null, fares).toFixed(2);
               var highestFare = Math.max.apply(null, fares).toFixed(2);
               lowestFare = currencyFilter(lowestFare);
               highestFare = currencyFilter(highestFare);
-              if(lowestFare == highestFare || (mode_code == 'mode_paratransit' && that.email)){
+              if (lowestFare === highestFare || (mode_code === 'mode_paratransit' && that.email)) {
                 fare_info[[mode_code]] = freeFilter(lowestFare);  //if the user is registered, show the lowest paratransit fare
-              }else{
-                fare_info[[mode_code]] = lowestFare + "-" + highestFare;
+              } else {
+                fare_info[[mode_code]] = lowestFare + '-' + highestFare;
               }
             }
           });
@@ -300,11 +299,11 @@ angular.module('applyMyRideApp')
         var itinerariesByModeOutbound = itinerariesBySegmentThenMode ? itinerariesBySegmentThenMode[0] : null;
         var itinerariesByModeReturn = itinerariesBySegmentThenMode ? itinerariesBySegmentThenMode[1] : null;
 
-        if(itinerariesByModeOutbound){
-          if(itinerariesByModeOutbound.mode_paratransit){
-              var lowestPricedParatransitTrip = this.getLowestPricedParatransitTrip(itinerariesByModeOutbound.mode_paratransit);
+        if (itinerariesByModeOutbound) {
+          if (itinerariesByModeOutbound.mode_paratransit) {
+              let lowestPricedParatransitTrip = this.getLowestPricedParatransitTrip(itinerariesByModeOutbound.mode_paratransit);
               
-              if(!this.email){
+              if (!this.email) {
                 // TODO (Drew Teter, 09/22/2022) Fully Remove ability for guest login.
                 // We plan on doing this in the future, but as no tickets have been created
                 // for this task yet, I'm commenting out this line and raising an error.
@@ -315,7 +314,7 @@ angular.module('applyMyRideApp')
                 return;
               }
 
-              if(lowestPricedParatransitTrip){
+              if (lowestPricedParatransitTrip) {
                 this.paratransitItineraries.push(lowestPricedParatransitTrip);
                 fare_info.paratransitTravelTime = lowestPricedParatransitTrip.travelTime;
                 fare_info.paratransitStartTime = lowestPricedParatransitTrip.startTime;
@@ -323,30 +322,30 @@ angular.module('applyMyRideApp')
           }
 
 
-          if(itinerariesByModeOutbound.mode_transit){
+          if (itinerariesByModeOutbound.mode_transit) {
               this.transitItineraries.push(itinerariesByModeOutbound.mode_transit);
           }
 
           //Taxi trips are grouped by taxi company, ordered low to high
-          if(itinerariesByModeOutbound.mode_taxi){
+          if (itinerariesByModeOutbound.mode_taxi) {
               this.taxiItineraries = itinerariesByModeOutbound.mode_taxi;
           }
 
-          if(itinerariesByModeOutbound.mode_ride_hailing ){
+          if (itinerariesByModeOutbound.mode_ride_hailing ) {
               this.uberItineraries = itinerariesByModeOutbound.mode_ride_hailing;
           }
 
-          if(itinerariesByModeOutbound.mode_walk){
+          if (itinerariesByModeOutbound.mode_walk) {
               this.walkItineraries.push(itinerariesByModeOutbound.mode_walk[0]);
           }
         }
 
         //if a mode doesn't appear in both outbound and return itinerary lists, remove it
 
-        if(itinerariesByModeReturn && fare_info.roundtrip == true){
-          if(itinerariesByModeReturn.mode_transit){
+        if (itinerariesByModeReturn && fare_info.roundtrip === true) {
+          if (itinerariesByModeReturn.mode_transit) {
             this.transitItineraries.push(itinerariesByModeReturn.mode_transit);
-          }else{
+          } else {
             this.transitItineraries = [];
           }
 
@@ -360,79 +359,80 @@ angular.module('applyMyRideApp')
           }
 
           if (itinerariesByModeReturn.mode_paratransit) {
-            var lowestPricedParatransitTrip = this.getLowestPricedParatransitTrip(itinerariesByModeReturn.mode_paratransit);
-            if(lowestPricedParatransitTrip){
+            let lowestPricedParatransitTrip = this.getLowestPricedParatransitTrip(itinerariesByModeReturn.mode_paratransit);
+            if (lowestPricedParatransitTrip) {
               this.paratransitItineraries.push(lowestPricedParatransitTrip);
-            }else{
+            } else {
               this.paratransitItineraries = [];
             }
           }
 
-          if(itinerariesByModeReturn.mode_taxi){
+          if (itinerariesByModeReturn.mode_taxi) {
             //merge the return itineraries into the other itineraries, matching the service_ids
-            itinerariesByModeReturn.mode_taxi.forEach(function(returnItinerary){
+            itinerariesByModeReturn.mode_taxi.forEach(function (returnItinerary) {
               //find the matching taxiItinerary, merge into that
-              that.taxiItineraries.forEach(function(departItinerary){
-                if(departItinerary.service_id == returnItinerary.service_id){
+              that.taxiItineraries.forEach(function (departItinerary) {
+                if (departItinerary.service_id === returnItinerary.service_id) {
                   departItinerary.returnItinerary = returnItinerary;
                 }
-              })
+              });
             });
-          }else{
+          } else {
             this.taxiItineraries = [];
           }
 
-          if(itinerariesByModeReturn.mode_ride_hailing){
+          if (itinerariesByModeReturn.mode_ride_hailing) {
             //merge the return itineraries into the other itineraries, matching the service_ids
-            itinerariesByModeReturn.mode_ride_hailing.forEach(function(returnItinerary){
+            itinerariesByModeReturn.mode_ride_hailing.forEach(function (returnItinerary) {
               //find the matching itinerary, merge into that
-              that.uberItineraries.forEach(function(departItinerary){
-                if(departItinerary.service_id == returnItinerary.service_id){
+              that.uberItineraries.forEach(function (departItinerary) {
+                if (departItinerary.service_id === returnItinerary.service_id) {
                   departItinerary.returnItinerary = returnItinerary;
                 }
-              })
+              });
             });
-          }else{
+          } else {
             this.uberItineraries = [];
           }
 
-          if(itinerariesByModeReturn.mode_walk){
+          if (itinerariesByModeReturn.mode_walk) {
             this.walkItineraries.push(itinerariesByModeReturn.mode_walk[0]);
-          }else{
+          } else {
             this.walkItineraries = [];
           }
         }
 
+        var fare1, fare2;
         this.transitInfos = [];
-        if(itinerariesByModeOutbound && itinerariesByModeOutbound.mode_transit){
+        if (itinerariesByModeOutbound && itinerariesByModeOutbound.mode_transit) {
           this.transitInfos.push(this.prepareTransitOptionsPage(itinerariesBySegmentThenMode[0].mode_transit));
 
           //check for return, reseet transitInfos if this is round trip and no return
-          if(itinerariesByModeReturn && itinerariesByModeReturn.mode_transit){
+          if (itinerariesByModeReturn && itinerariesByModeReturn.mode_transit) {
             //for round trips, show the fare as the sum of the two recommended fares
             this.transitInfos.push(this.prepareTransitOptionsPage(itinerariesBySegmentThenMode[1].mode_transit));
-            if(this.selectedBusOption){
-              var fare1 = this.transitInfos[0][ this.selectedBusOption[0] ].cost;
-              var fare2 = this.transitInfos[1][ this.selectedBusOption[1] ].cost;
+            if (this.selectedBusOption) {
+              fare1 = this.transitInfos[0][ this.selectedBusOption[0] ].cost;
+              fare2 = this.transitInfos[1][ this.selectedBusOption[1] ].cost;
             }
-            else{
-              var fare1 = this.transitInfos[0][0].cost;
-              var fare2 = this.transitInfos[1][0].cost;
+            else {
+              fare1 = this.transitInfos[0][0].cost;
+              fare2 = this.transitInfos[1][0].cost;
             }
-            fare_info.mode_transit = freeFilter(currencyFilter( (new Number(fare1) + new Number(fare2)).toFixed(2).toString() ));
-          }else if (fare_info.roundtrip == true){
+            fare_info.mode_transit = freeFilter(currencyFilter( (Number(fare1) + Number(fare2)).toFixed(2).toString() ));
+          } else if (fare_info.roundtrip === true) {
             this.transitInfos = [];
           }
         }
 
         if (this.email) {
-          if(this.paratransitItineraries.length > 1){
+          if (this.paratransitItineraries.length > 1) {
             //for round trips, show the fare as the sum of the two PARATRANSIT fares
-            var fare1 = this.paratransitItineraries[0].cost || 0;
-            var fare2 = this.paratransitItineraries[1].cost || 0;
-            fare_info.mode_paratransit = freeFilter(currencyFilter( (new Number(fare1) + new Number(fare2)).toFixed(2).toString() ));
-          }else if(this.paratransitItineraries.length == 1){
-            fare_info.mode_paratransit = freeFilter(currencyFilter( new Number(this.paratransitItineraries[0].cost).toFixed(2).toString() ));
+            fare1 = this.paratransitItineraries[0].cost || 0;
+            fare2 = this.paratransitItineraries[1].cost || 0;
+            fare_info.mode_paratransit = freeFilter(currencyFilter( (Number(fare1) + Number(fare2)).toFixed(2).toString() ));
+          } else if (this.paratransitItineraries.length === 1) {
+            fare_info.mode_paratransit = freeFilter(currencyFilter( Number(this.paratransitItineraries[0].cost).toFixed(2).toString() ));
           }
         } else {
           // TODO (Drew Teter, 09/22/2022) Fully Remove ability for guest login.
@@ -443,12 +443,12 @@ angular.module('applyMyRideApp')
           return;
         }
         this.fare_info = fare_info;
-      }
+      };
 
-      this.getLowestPricedParatransitTrip = function(paratransitTrips){
+      this.getLowestPricedParatransitTrip = function (paratransitTrips) {
         var lowestPricedParatransitTrip;
-        angular.forEach(paratransitTrips, function(paratransitTrip, index) {
-          if( isNaN( parseInt( paratransitTrip.cost )) ){
+        angular.forEach(paratransitTrips, function (paratransitTrip, index) {
+          if ( isNaN( parseInt( paratransitTrip.cost )) ) {
             paratransitTrip.cost = 0;
           }
           if (isNaN(parseInt(paratransitTrip.duration))) {
@@ -456,10 +456,10 @@ angular.module('applyMyRideApp')
           }
           if ((paratransitTrip.duration >= 0) && paratransitTrip.start_time && paratransitTrip.cost >= 0) {
             paratransitTrip.travelTime = humanizeDuration(paratransitTrip.duration * 1000, {
-              units: ["hours", "minutes"],
+              units: ['hours', 'minutes'],
               round: true
             });
-            paratransitTrip.startTime = moment(paratransitTrip.start_time).format('h:mm a')
+            paratransitTrip.startTime = moment(paratransitTrip.start_time).format('h:mm a');
             if (!lowestPricedParatransitTrip) {
               lowestPricedParatransitTrip = paratransitTrip;
             } else {
@@ -467,35 +467,35 @@ angular.module('applyMyRideApp')
                 lowestPricedParatransitTrip = paratransitTrip;
               }
             }
-            lowestPricedParatransitTrip.travelTime = humanizeDuration(paratransitTrip.duration * 1000,  { units: ["hours", "minutes"], round: true });
-            lowestPricedParatransitTrip.startTime = moment(paratransitTrip.start_time).format('h:mm a')
+            lowestPricedParatransitTrip.travelTime = humanizeDuration(paratransitTrip.duration * 1000,  { units: ['hours', 'minutes'], round: true });
+            lowestPricedParatransitTrip.startTime = moment(paratransitTrip.start_time).format('h:mm a');
           }
         });
         return lowestPricedParatransitTrip;
-      }
+      };
 
-      this.getItinerariesBySegmentAndMode = function(itineraries){
+      this.getItinerariesBySegmentAndMode = function (itineraries) {
         var itinerariesBySegmentThenMode = {};
         var that = this;
-        angular.forEach(itineraries, function(itinerary, index) {
+        angular.forEach(itineraries, function (itinerary, index) {
 
           that.prepareItinerary(itinerary);
           var mode = itinerary.returned_mode_code;
           var segment_index = itinerary.segment_index;
-          if (itinerariesBySegmentThenMode[segment_index] == undefined){
+          if (itinerariesBySegmentThenMode[segment_index] === undefined) {
             itinerariesBySegmentThenMode[segment_index] = {};
           }
-          if (itinerariesBySegmentThenMode[segment_index][mode] == undefined){
+          if (itinerariesBySegmentThenMode[segment_index][mode] === undefined) {
             itinerariesBySegmentThenMode[segment_index][mode] = [];
           }
           itinerariesBySegmentThenMode[segment_index][mode].push(itinerary);
         }, itinerariesBySegmentThenMode);
         return itinerariesBySegmentThenMode;
-      }
+      };
 
-      this.prepareTransitOptionsPage = function(transitItineraries){
+      this.prepareTransitOptionsPage = function (transitItineraries) {
         var transitInfos = [];
-        angular.forEach(transitItineraries, function(itinerary, index) {
+        angular.forEach(transitItineraries, function (itinerary, index) {
           var transitInfo = {};
           transitInfo.id = itinerary.id;
           transitInfo.cost = itinerary.cost;
@@ -505,8 +505,8 @@ angular.module('applyMyRideApp')
           transitInfo.travelTime = itinerary.travelTime;
           transitInfo.duration = itinerary.duration;
           var found = false;
-          angular.forEach(itinerary.json_legs, function(leg, index) {
-            if(!found && (leg.mode == 'BUS' || leg.mode == 'RAIL' || leg.mode == 'SUBWAY' || leg.mode == 'TRAM')){
+          angular.forEach(itinerary.json_legs, function (leg, index) {
+            if (!found && (leg.mode === 'BUS' || leg.mode === 'RAIL' || leg.mode === 'SUBWAY' || leg.mode === 'TRAM')) {
               transitInfo.mode = leg.mode;
               transitInfo.route = leg.routeShortName;
               found = true;
@@ -517,45 +517,45 @@ angular.module('applyMyRideApp')
           transitInfos.push(transitInfo);
         }, transitInfos);
 
-        angular.forEach(transitInfos, function(transitInfo, index) {
-          if(index == 0){
-            transitInfo.label = "Recommended"
+        angular.forEach(transitInfos, function (transitInfo, index) {
+          if (index === 0) {
+            transitInfo.label = 'Recommended';
             return;
           }
 
           var best = transitInfos[0];
-          if(transitInfo.cost < best.cost){
-            transitInfo.label = "Cheaper"
-          } else if (transitInfo.walkTimeInSecs < best.walkTimeInSecs / 2){
-            transitInfo.label = "Less Walking"
-          }else if (transitInfo.duration < best.duration){
-            transitInfo.label = "Faster"
-          } else if (transitInfo.walkTimeInSecs < best.walkTimeInSecs){
-            transitInfo.label = "Less Walking"
-          } else if(transitInfo.cost > best.cost){
-            transitInfo.label = "More Expensive"
-          } else if (transitInfo.startTime < best.startTime){
-            transitInfo.label = "Earlier"
-          } else if (transitInfo.startTime > best.startTime){
-            transitInfo.label = "Later"
-          }else{
-            transitInfo.label = "Similar"
+          if (transitInfo.cost < best.cost) {
+            transitInfo.label = 'Cheaper';
+          } else if (transitInfo.walkTimeInSecs < best.walkTimeInSecs / 2) {
+            transitInfo.label = 'Less Walking';
+          } else if (transitInfo.duration < best.duration) {
+            transitInfo.label = 'Faster';
+          } else if (transitInfo.walkTimeInSecs < best.walkTimeInSecs) {
+            transitInfo.label = 'Less Walking';
+          } else if (transitInfo.cost > best.cost) {
+            transitInfo.label = 'More Expensive';
+          } else if (transitInfo.startTime < best.startTime) {
+            transitInfo.label = 'Earlier';
+          } else if (transitInfo.startTime > best.startTime) {
+            transitInfo.label = 'Later';
+          } else {
+            transitInfo.label = 'Similar';
           }
         });
         return transitInfos;
-      }
+      };
 
-      this.prepareItinerary = function(itinerary){
+      this.prepareItinerary = function (itinerary) {
         this.setItineraryDescriptions(itinerary);
-        if(itinerary.cost){
+        if (itinerary.cost) {
           itinerary.cost = parseFloat(Math.round(itinerary.cost * 100) / 100).toFixed(2);
         }
-        if(itinerary.json_legs){
+        if (itinerary.json_legs) {
           var that = this;
-          angular.forEach(itinerary.json_legs, function(leg, index) {
+          angular.forEach(itinerary.json_legs, function (leg, index) {
             that.setItineraryLegDescriptions(leg);
-            if(leg.steps){
-              angular.forEach(leg.steps, function(step, index) {
+            if (leg.steps) {
+              angular.forEach(leg.steps, function (step, index) {
                 that.setWalkingDescriptions(step);
               });
             }
@@ -563,73 +563,73 @@ angular.module('applyMyRideApp')
           itinerary.destinationDesc = itinerary.json_legs[itinerary.json_legs.length - 1].to.name;
           itinerary.destinationTimeDesc = itinerary.json_legs[itinerary.json_legs.length - 1].endTimeDesc;
         }
-      }
+      };
 
       // Returns a string describing the distance in appropriate units (miles or feet)
-      this.getDistanceDescription = function(distance_in_meters) {
+      this.getDistanceDescription = function (distance_in_meters) {
         var distance_in_miles = distance_in_meters * 0.000621371;
-        if(distance_in_miles <= 0.189394) {
+        if (distance_in_miles <= 0.189394) {
           var distance_in_feet = Math.ceil(distance_in_miles * 5280);
-          return distance_in_feet + " feet";
+          return distance_in_feet + ' feet';
         } else {
-          return distance_in_miles.toFixed(2) + " miles";
+          return distance_in_miles.toFixed(2) + ' miles';
         }
-      }
+      };
 
-      this.setItineraryDescriptions = function(itinerary){
+      this.setItineraryDescriptions = function (itinerary) {
         var startTime = itinerary.wait_start || itinerary.departure || itinerary.start_time;
         itinerary.startDesc = this.getDateDescription(startTime);
-        itinerary.startDesc += " at " + moment.parseZone(startTime).format('h:mm a')
+        itinerary.startDesc += ' at ' + moment.parseZone(startTime).format('h:mm a');
         itinerary.endDesc = this.getDateDescription(itinerary.arrival);
-        itinerary.endDesc += " at " + moment(itinerary.arrival).format('h:mm a');
-        itinerary.travelTime = humanizeDuration(itinerary.duration * 1000,  { units: ["hours", "minutes"], round: true });
-        itinerary.walkTimeDesc = humanizeDuration(itinerary.walk_time * 1000,  { units: ["hours", "minutes"], round: true });
+        itinerary.endDesc += ' at ' + moment(itinerary.arrival).format('h:mm a');
+        itinerary.travelTime = humanizeDuration(itinerary.duration * 1000,  { units: ['hours', 'minutes'], round: true });
+        itinerary.walkTimeDesc = humanizeDuration(itinerary.walk_time * 1000,  { units: ['hours', 'minutes'], round: true });
         itinerary.dayAndDateDesc = moment(startTime).format('dddd, MMMM Do');
         itinerary.startTimeDesc = moment.parseZone(itinerary.wait_start || itinerary.departure).format('h:mm a');
-        itinerary.endTimeDesc = itinerary.arrival ? moment(itinerary.arrival).format('h:mm a') : "Arrive";
+        itinerary.endTimeDesc = itinerary.arrival ? moment(itinerary.arrival).format('h:mm a') : 'Arrive';
         itinerary.arrivalDesc = itinerary.arrival ? itinerary.endTimeDesc : moment(itinerary.end_time).format('h:mm a');
         itinerary.distanceDesc = this.getDistanceDescription(itinerary.distance);
         itinerary.walkDistanceDesc = this.getDistanceDescription(itinerary.walk_distance);
-      }
+      };
 
-      this.setItineraryLegDescriptions = function(itinerary){
+      this.setItineraryLegDescriptions = function (itinerary) {
         itinerary.startDateDesc = this.getDateDescription(itinerary.startTime);
-        itinerary.startTimeDesc = moment.parseZone(itinerary.startTime).format('h:mm a')
-        itinerary.startDesc = itinerary.startDateDesc + " at " + itinerary.startTimeDesc;
+        itinerary.startTimeDesc = moment.parseZone(itinerary.startTime).format('h:mm a');
+        itinerary.startDesc = itinerary.startDateDesc + ' at ' + itinerary.startTimeDesc;
         itinerary.endDateDesc = this.getDateDescription(itinerary.endTime);
         itinerary.endTimeDesc = moment(itinerary.endTime).format('h:mm a');
-        itinerary.endDesc = itinerary.endDateDesc + " at " + itinerary.endTimeDesc;
-        itinerary.travelTime = humanizeDuration(itinerary.duration * 1000,  { units: ["hours", "minutes"], round: true });
+        itinerary.endDesc = itinerary.endDateDesc + ' at ' + itinerary.endTimeDesc;
+        itinerary.travelTime = humanizeDuration(itinerary.duration * 1000,  { units: ['hours', 'minutes'], round: true });
         itinerary.distanceDesc = this.getDistanceDescription(itinerary.distance);
         itinerary.dayAndDateDesc = moment(itinerary.startTime).format('dddd, MMMM Do');
-      }
+      };
 
-      this.setWalkingDescriptions = function(step){
+      this.setWalkingDescriptions = function (step) {
         step.distanceDesc = this.getDistanceDescription(step.distance);
         step.arrow = 'straight';
 
-        if(step.relativeDirection.indexOf('RIGHT') > -1){
+        if (step.relativeDirection.indexOf('RIGHT') > -1) {
           step.arrow = 'right';
-        }else if(step.relativeDirection.indexOf('LEFT') > -1){
+        } else if (step.relativeDirection.indexOf('LEFT') > -1) {
           step.arrow = 'left';
         }
 
-        if(step.relativeDirection == 'DEPART'){
+        if (step.relativeDirection === 'DEPART') {
           step.description = 'Head ' + step.absoluteDirection.toLowerCase() + ' on ' + step.streetName;
-        }else{
+        } else {
           step.description = this.capitalizeFirstLetter(step.relativeDirection) + ' on ' + step.streetName;
         }
         step.description = step.description.replace(/_/g,' ');
-      }
+      };
 
-      this.capitalizeFirstLetter = function(string) {
-        return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase()
-      }
+      this.capitalizeFirstLetter = function (string) {
+        return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+      };
 
-      this.getAddressDescriptionFromLocation = function(location) {
+      this.getAddressDescriptionFromLocation = function (location) {
         var description = {};
         if (location.poi) {
-          description.line1 = location.poi.name
+          description.line1 = location.poi.name;
           description.line2 = location.formatted_address;
           if (description.line2.indexOf(description.line1) > -1) {
             description.line2 = description.line2.substr(description.line1.length + 2);
@@ -637,136 +637,138 @@ angular.module('applyMyRideApp')
         } else if (location.name) {
           description.line1 = location.name;
           description.line2 = location.formatted_address;
-          if(description.line2 && description.line2.indexOf(description.line1) > -1){
+          if (description.line2 && description.line2.indexOf(description.line1) > -1) {
             description.line2 = description.line2.substr(description.line1.length + 2);
           }
         } else {
-          angular.forEach(location.address_components, function(address_component, index) {
-            if(address_component.types.indexOf("street_address") > -1){
+          angular.forEach(location.address_components, function (address_component, index) {
+            if (address_component.types.indexOf('street_address') > -1) {
               description.line1 = address_component.long_name;
             }
           }, description.line1);
           description.line2 = location.formatted_address;
-          if(description.line2.indexOf(description.line1) > -1){
+          if (description.line2.indexOf(description.line1) > -1) {
             description.line2 = description.line2.substr(description.line1.length + 2);
           }
         }
         return description;
-      }
+      };
 
-      this.getDateDescription = function(date){
-        if(!date)
-          return null;
+      this.getDateDescription = function (date) {
+        if (!date) { return null; }
+
         var description;
         var now = moment().startOf('day');
         var then = moment(date).startOf('day');
         var dayDiff = now.diff(then, 'days');
-        if(dayDiff == 0) {
-          description = "Today";
-        }else if (dayDiff == -1) {
-          description = "Tomorrow";
-        }else if (dayDiff == 1) {
-          description = "Yesterday";
-        }else{
+        if (dayDiff === 0) {
+          description = 'Today';
+        } else if (dayDiff === -1) {
+          description = 'Tomorrow';
+        } else if (dayDiff === 1) {
+          description = 'Yesterday';
+        } else {
           description = moment(date).format('dddd MMM DD, YYYY');
         }
         return description;
-      }
+      };
 
-      this.getCurrentBalance = function($scope, $http, ipCookie) {
-        return $http.get(urlPrefix + 'api/v1/users/current_balance', this.getHeaders()).
-          success(function(data) {
-            if (data.current_balance != undefined){
-              if($scope) $scope.currentBalance = data.current_balance;
-              if(ipCookie) {ipCookie('currentBalance', data.current_balance);}
+      this.getCurrentBalance = function ($scope, $http, ipCookie) {
+        return $http.get(apiUrl('api/v1/users/current_balance').toString(), this.getHeaders()).
+          success(function (data) {
+            if (data.current_balance !== undefined) {
+              if ($scope) { $scope.currentBalance = data.current_balance; }
+              if (ipCookie) { ipCookie('currentBalance', data.current_balance); }
             }
           }).
-          error(function(data) {
+          error(function (data) {
             console.log(data);
           });
-      }
+      };
 
-      this.getTripPurposes = function($scope, $http) {
+      this.getTripPurposes = function ($scope, $http) {
         const that = this;
         // TODO: Look at this and see if it needs to be a post request
-        return $http.post(urlPrefix + 'api/v1/trip_purposes/list', this.fromDetails, this.getHeaders()).
-          success(function(data) {
+        return $http.post(apiUrl('api/v1/trip_purposes/list').toString(), this.fromDetails, this.getHeaders())
+          .success(function (data) {
             that.top_purposes = data.top_trip_purposes;
             data.trip_purposes = data.trip_purposes || [];
-            that.purposes = data.trip_purposes.filter(function(el){
-              for(let i = 0; i < that.top_purposes.length; i += 1){
-                if(el.code && that.top_purposes[i].code === el.code){
+            that.purposes = data.trip_purposes.filter(function (el) {
+              for(let i = 0; i < that.top_purposes.length; i += 1) {
+                if (el.code && that.top_purposes[i].code === el.code) {
                   return false;
                 }
               }
               return true;
             });
             // NOTE(wilsonj806) Is this dead code?
-            if (data.default_trip_purpose != undefined && $scope.email == undefined){
+            if (data.default_trip_purpose !== undefined && $scope.email === undefined) {
               $scope.default_trip_purpose = data.default_trip_purpose;
               $scope.showNext = true;
             }
-          }).
-          error(function(data) {
+          })
+          .error(function (data) {
             alert(data);
           });
-      }
+      };
 
-      this.selectItineraries = function($http, itineraryObject) {
-        return $http.post(urlPrefix + 'api/v1/itineraries/select', itineraryObject, this.getHeaders());
-      }
+      this.selectItineraries = function ($http, itineraryObject) {
+        return $http.post(apiUrl('api/v1/itineraries/select').toString(), itineraryObject, this.getHeaders());
+      };
 
-      this.checkServiceArea = function($http, place) {
-        return $http.post(urlPrefix + 'api/v1/places/within_area', place, this.getHeaders());
-      }
+      this.checkServiceArea = function ($http, place) {
+        return $http.post(apiUrl('api/v1/places/within_area').toString(), place, this.getHeaders());
+      };
 
-      this.postItineraryRequest = function($http) {
-        return $http.post(urlPrefix + 'api/v1/trips/', this.itineraryRequestObject, this.getHeaders());
-      }
+      this.postItineraryRequest = function ($http) {
+        return $http.post(apiUrl('api/v1/trips/').toString(), this.itineraryRequestObject, this.getHeaders());
+      };
 
-      this.postProfileUpdate = function($http) {
-        return $http.post(urlPrefix + 'api/v1/users/update', this.profileUpdateObject, this.getHeaders());
-      }
+      this.postProfileUpdate = function ($http) {
+        return $http.post(apiUrl('api/v1/users/update').toString(), this.profileUpdateObject, this.getHeaders());
+      };
 
-      this.getProfile = function($http) {
-        return $http.get(urlPrefix + 'api/v1/users/profile', this.getHeaders());
-      }
+      this.getProfile = function ($http) {
+        return $http.get(apiUrl('api/v1/users/profile').toString(), this.getHeaders());
+      };
 
-      this.getTravelPatterns = function($http, params={}) {
+      this.getTravelPatterns = function ($http, params={}) {
         let config = this.getHeaders();
-        return $http.get(urlPrefix + '/api/v2/travel_patterns?' + $.param(params), config);
-      }
+        let endpoint = apiUrl('/api/v2/travel_patterns');
+        // endpoint.search = new URLSearchParams(params);
+        return $http.get(endpoint.toString(), config);
+      };
 
       /**
        *** fixedRouteReminderPref format
       * @typedef {Object} NotificationPref
       *  @property {{reminders: Object[], disabled: boolean[]}} fixed_route
       */
-      this.getUserNotificationDefaults = function($http) {
-        const self = this
+      this.getUserNotificationDefaults = function ($http) {
+        const self = this;
         var profilePromise = this.getProfile($http);
-        return profilePromise.then(function(results){
-          const avalable_reminders = results.data.details.notification_preferences.fixed_route
-          const enabled = false
-          const reminders = avalable_reminders.reduce(function(acc, curr) {
-            acc[acc.length] = {'day': curr, enabled }
-            return acc
-          }, [])
+        return profilePromise.then(function (results) {
+          const avalable_reminders = results.data.details.notification_preferences.fixed_route;
+          const enabled = false;
+          const reminders = avalable_reminders.reduce(function (acc, curr) {
+            acc[acc.length] = {'day': curr, enabled };
+            return acc;
+          }, []);
 
           self.fixedRouteReminderPrefs = {
             reminders,
             disabled: self.buildDisableArray(reminders.length)
-          }
+          };
         });
-      }
+      };
 
-      this.buildDisableArray = function(num) {
-        const ar = []
+      this.buildDisableArray = function (num) {
+        const ar = [];
         for (let i = 0; i < num; i++) {
-          ar[i] = false
+          ar[i] = false;
         }
-        return ar
-      }
+        return ar;
+      };
 
       /**
       *** Function params
@@ -777,87 +779,87 @@ angular.module('applyMyRideApp')
       * @returns {NotificationPref} returns a NotificationPref object that's synced
       * ...between the front end User preferences and the backend Trip preference
       */
-      this.syncFixedRouteNotifications = function(notificationPrefs = null, tripDate = null) {
+      this.syncFixedRouteNotifications = function (notificationPrefs = null, tripDate = null) {
         // Using MomentJS for date parsing/ manipulation/ comparison
-        const tripMoment = moment(tripDate).set({hour:0,minute:0,second:0})
-        const today = moment().set({hour:0,minute:0,second:0})
+        const tripMoment = moment(tripDate).set({hour:0,minute:0,second:0});
+        const today = moment().set({hour:0,minute:0,second:0});
 
-        const fixedRoute = notificationPrefs !== null ? notificationPrefs.fixed_route : []
+        const fixedRoute = notificationPrefs !== null ? notificationPrefs.fixed_route : [];
         const final = {
           reminders: [],
           disabled: {}
-        }
+        };
         if (fixedRoute.length === 0) {
-          final.reminders = this.fixedRouteReminderPrefs.reminders
+          final.reminders = this.fixedRouteReminderPrefs.reminders;
           // Disable reminder preferences for reminder days that are in the past
           this.fixedRouteReminderPrefs.reminders.forEach(({day}) => {
             // if there's a tripDate fed in, then use that, otherwise, null
-            const reminderDate = tripDate && tripMoment.clone().subtract(day,'day')
+            const reminderDate = tripDate && tripMoment.clone().subtract(day,'day');
 
             // If the reminder date already passed then disable the checkbox
-            const isNotInPast = reminderDate && reminderDate.isAfter(today)
+            const isNotInPast = reminderDate && reminderDate.isAfter(today);
             if (!isNotInPast) {
-              final.disabled[day] = true
+              final.disabled[day] = true;
             } else {
-              final.disabled[day] = false
+              final.disabled[day] = false;
             }
-          })
+          });
         } else {
           this.fixedRouteReminderPrefs.reminders.forEach(({day, enabled}) => {
             // Finding Trip notification that matches the current user notification day
-            const notif = fixedRoute.find(entry => entry.day === day)
+            const notif = fixedRoute.find(entry => entry.day === day);
             // if there's a tripDate fed in, then use that, otherwise, null
-            const reminderDate = tripDate && tripMoment.clone().subtract(day,'day')
+            const reminderDate = tripDate && tripMoment.clone().subtract(day,'day');
 
             // If the reminder date already passed then disable the checkbox
-            const isNotInPast = reminderDate && reminderDate.isAfter(today)
+            const isNotInPast = reminderDate && reminderDate.isAfter(today);
             if (!isNotInPast) {
-              final.disabled[day] = true
-              final.reminders.push({day, enabled: notif.enabled})
+              final.disabled[day] = true;
+              final.reminders.push({day, enabled: notif.enabled});
             } else {
-              final.reminders.push({day, enabled: notif.enabled})
-              final.disabled[day] = false
+              final.reminders.push({day, enabled: notif.enabled});
+              final.disabled[day] = false;
             }
-          })
+          });
         }
 
-        return final
-      }
+        return final;
+      };
 
       // Book a shared ride
-      this.bookSharedRide = function($http) {
+      this.bookSharedRide = function ($http) {
         var requestHolder = {};
         requestHolder.booking_request = [];
         var that = this;
 
-        angular.forEach(this.paratransitItineraries, function(paratransitItinerary, index) {
+        angular.forEach(this.paratransitItineraries, function (paratransitItinerary, index) {
           var bookingRequest = {};
           bookingRequest.itinerary_id = paratransitItinerary.id;
 
-          if(that.hasEscort){
+          if (that.hasEscort) {
             bookingRequest.assistant = that.hasEscort;
           }
 
-          if(that.numberOfFamily){
+          if (that.numberOfFamily) {
             bookingRequest.family = that.numberOfFamily;
           }
 
-          if(that.numberOfCompanions){
+          if (that.numberOfCompanions) {
             bookingRequest.companions = that.numberOfCompanions;
           }
 
-          if(that.driverInstructions){
+          if (that.driverInstructions) {
             bookingRequest.note = that.driverInstructions;
           }
           requestHolder.booking_request.push(bookingRequest);
         });
 
         this.booking_request = requestHolder;
-        return $http.post(urlPrefix + 'api/v1/itineraries/book', requestHolder, this.getHeaders());
-      }
+        return $http.post(apiUrl('api/v1/itineraries/book').toString(), requestHolder, this.getHeaders());
+      };
 
       // Build an itinerary request object
-      this.createItineraryRequest = function() {
+      this.createItineraryRequest = function () {
         const ADMIN_AREA_3 = 'administrative_area_level_3';
         const PENN = 'Pennsylvania';
         let origin = this.fromDetails;
@@ -911,13 +913,13 @@ angular.module('applyMyRideApp')
           });
         });
 
-        outboundTrip.trip.origin_attributes['city'] = outboundTrip.trip.origin_attributes['city'] || outboundTrip.trip.origin_attributes['locality'] || outboundTrip.trip.origin_attributes[ADMIN_AREA_3];
-        if (outboundTrip.trip.origin_attributes['city'] === PENN) { delete outboundTrip.trip.origin_attributes['city']; }
+        outboundTrip.trip.origin_attributes.city = outboundTrip.trip.origin_attributes.city || outboundTrip.trip.origin_attributes.locality || outboundTrip.trip.origin_attributes[ADMIN_AREA_3];
+        if (outboundTrip.trip.origin_attributes.city === PENN) { delete outboundTrip.trip.origin_attributes.city; }
 
-        outboundTrip.trip.destination_attributes['city'] = outboundTrip.trip.destination_attributes['city'] || outboundTrip.trip.destination_attributes['locality'] || outboundTrip.trip.destination_attributes[ADMIN_AREA_3];
-        if (outboundTrip.trip.destination_attributes['city'] === PENN) { delete outboundTrip.trip.destination_attributes['city']; }
+        outboundTrip.trip.destination_attributes.city = outboundTrip.trip.destination_attributes.city || outboundTrip.trip.destination_attributes.locality || outboundTrip.trip.destination_attributes[ADMIN_AREA_3];
+        if (outboundTrip.trip.destination_attributes.city === PENN) { delete outboundTrip.trip.destination_attributes.city; }
 
-        request.trips.push(outboundTrip)
+        request.trips.push(outboundTrip);
 
         if (this.returnDate || this.returnTime) {
           let returnTrip = {
@@ -936,30 +938,30 @@ angular.module('applyMyRideApp')
         return request;
       };
 
-      this.updateTripDetails = function($http, updateTripRequest) {
-        return $http.put(urlPrefix + 'api/v1/itineraries/update_trip_details', updateTripRequest , this.getHeaders());
-      }
+      this.updateTripDetails = function ($http, updateTripRequest) {
+        return $http.put(apiUrl('api/v1/itineraries/update_trip_details').toString(), updateTripRequest , this.getHeaders());
+      };
 
       /**
        * Add city to the location object if a 'locality' type address component doesn't exist
        * @param {*} location : A location returned by the Google Place API
        */
-      this.addCityToLocation = function(location) {
-        const ADMIN_AREA_3 = 'administrative_area_level_3'
+      this.addCityToLocation = function (location) {
+        const ADMIN_AREA_3 = 'administrative_area_level_3';
         let cityAddressComponent;
-        const localityAvailable = location.address_components.find(function(component) {
-          return component.types.includes('locality') && (component.long_name !== null && component.long_name !== "")
-        })
+        const localityAvailable = location.address_components.find(function (component) {
+          return component.types.includes('locality') && (component.long_name !== null && component.long_name !== '');
+        });
 
         if (!localityAvailable) {
           // pull administrative locality level 3 instead if locality isn't present
-          cityAddressComponent = location.address_components.find(function(component) {
+          cityAddressComponent = location.address_components.find(function (component) {
             const includesAdmin3 = component.types.includes(ADMIN_AREA_3);
-            return includesAdmin3 && component.long_name !== 'Pennsylvania' && (component.long_name !== null && component.long_name !== "")
-          })
+            return includesAdmin3 && component.long_name !== 'Pennsylvania' && (component.long_name !== null && component.long_name !== '');
+          });
 
-          if (!cityAddressComponent || cityAddressComponent.long_name === null || cityAddressComponent.long_name === "") {
-            throw new Error(`The "${location.name}" address does not have a city. Please search again for an address with the city included.`)
+          if (!cityAddressComponent || cityAddressComponent.long_name === null || cityAddressComponent.long_name === '') {
+            throw new Error(`The "${location.name}" address does not have a city. Please search again for an address with the city included.`);
           }
           // Waypoint locality is interpreted as the city in OCC
           // Build new locality object with proper types
@@ -968,14 +970,14 @@ angular.module('applyMyRideApp')
             long_name: util.silentlyCorrectIncorrectTownship(cityAddressComponent.long_name),
             short_name: util.silentlyCorrectIncorrectTownship(cityAddressComponent.long_name),
             types: ['locality', 'political']
-          }
-          location.address_components.push(localityObject)
+          };
+          location.address_components.push(localityObject);
         }
-      }
+      };
 
-      this.fixLatLon = function(place) {
+      this.fixLatLon = function (place) {
         if (place && place.geometry && place.geometry.location) {
-          let location = place.geometry.location
+          let location = place.geometry.location;
 
           if (location.lat && typeof location.lat !== 'number') {
             location.lat = location.lat();
@@ -984,91 +986,93 @@ angular.module('applyMyRideApp')
             location.lng = location.lng();
           }
         }
-      }
+      };
 
-      this.getHeaders = function(){
+      this.getHeaders = function () {
         //return empty object if no email
-        if(!this.email){ return {}; }
-        var headers = {headers:  {
-          "X-User-Email" : this.email,
-          "X-User-Token" : this.authentication_token}
+        if (!this.email) { return {}; }
+        var headers = {
+          headers:  {
+            'X-User-Email' : this.email,
+            'X-User-Token' : this.authentication_token
+          }
         };
         return headers;
-      }
+      };
 
       // Returns true if itinerary is live
-      this.itinIsLive = function(i) {
-        return (i.status == "dispatch" || i.status == "active");
-      }
+      this.itinIsLive = function (i) {
+        return (i.status === 'dispatch' || i.status === 'active');
+      };
 
       // Returns true if a trip is live
-      this.tripIsLive = function(trip) {
-        if(!trip) {return false;} // Return false if no trip is passed
+      this.tripIsLive = function (trip) {
+        if (!trip) { return false; } // Return false if no trip is passed
         var planService = this;
         //var isSoon = planService.tripEta(trip, true) <= 180; // Is it arriving in less than 3 hours?
-        var isSharedRide = trip.mode == "mode_paratransit";
-        return trip.itineraries.some( function(i) {
+        var isSharedRide = trip.mode === 'mode_paratransit';
+        return trip.itineraries.some( function (i) {
           var isOnItsWay = planService.itinIsLive(i); // Is the trip on its way?
-          return isSharedRide && isOnItsWay //&& isSoon;
+          return isSharedRide && isOnItsWay; //&& isSoon;
         });
-      }
+      };
 
       // Finds an Live Trip from a list of Trips, or returns undefined if not there
-      this.findLiveTrip = function(trips) {
+      this.findLiveTrip = function (trips) {
         var planService = this;
-        return trips.find(function(trip) {
+        return trips.find(function (trip) {
           return planService.tripIsLive(trip);
         });
-      }
+      };
 
       // Returns the first itinerary that isn't past
-      this.getLiveItinerary = function(trip) {
+      this.getLiveItinerary = function (trip) {
         var planService = this;
-        return trip.itineraries.find(function(i) {
+        return trip.itineraries.find(function (i) {
           return planService.itinIsLive(i);
         });
-      }
+      };
 
       // returns eta of trip based on estimated pickup time, in minutes
-      this.tripEta = function(trip, raw) {
+      this.tripEta = function (trip, raw) {
         var planService = this;
-        var pickup_time = new Date(planService.getLiveItinerary(trip).estimated_pickup_time + "Z"); // Have to append Z to the end of the time string to get the same results in Chrome and Firefox
+        var pickup_time = new Date(planService.getLiveItinerary(trip).estimated_pickup_time + 'Z'); // Have to append Z to the end of the time string to get the same results in Chrome and Firefox
         pickup_time = moment(pickup_time).add(pickup_time.getTimezoneOffset(), 'minutes');
-        if(isNaN(pickup_time)) {return false;}
+        if (isNaN(pickup_time)) { return false; }
         var eta = (Math.floor(moment.duration(pickup_time - Date.now()).asMinutes()));
-        if(raw) {
+        if (raw) {
           return eta;
-        } else if(eta < 10) {
-          return "a few minutes";
+        } else if (eta < 10) {
+          return 'a few minutes';
         } else {
-          return "about " + $filter('minutes')(eta);
+          return 'about ' + $filter('minutes')(eta);
         }
-      }
+      };
 
       // returns true/false if ride is arrived
-      this.tripIsHere = function(trip) {
+      this.tripIsHere = function (trip) {
         var planService = this;
         var isLive = planService.tripIsLive(trip);
-        if(!trip) {return false;} // Return false if no trip is passed
-        return trip.itineraries.some( function(i) {
-          // return moment(Date.now()).minutes() % 2 == 0;
+        if (!trip) { return false; } // Return false if no trip is passed
+        return trip.itineraries.some( function (i) {
+          // return moment(Date.now()).minutes() % 2 === 0;
           return !!i.actual_pickup_time && isLive;
         });
-      }
+      };
 
       // Updates Live Trip info in the necessary places
-      this.updateLiveTrip = function(trip) {
+      this.updateLiveTrip = function (trip) {
         var planService = this;
-        if(trip) {
+        if (trip) {
           planService.selectedTrip = trip; // Find Live Trip and Select it
           trip.isLive = true;  // Set the liveTrip value in the appropriate trip
           trip.eta = planService.tripEta(trip); // Update Estimated Arrival Time
           trip.isHere = planService.tripIsHere(trip); // Is ride actually there?
         }
-      }
+      };
 
       // Process Future Trips Data and Updates Live Trip info. Returns Live Trip if it exists.
-      this.processFutureAndLiveTrips = function(data, $scope, ipCookie) {
+      this.processFutureAndLiveTrips = function (data, $scope, ipCookie) {
         var planService = this;
         var unpackedTrips = planService.unpackTrips(data.data.trips, 'future');
         planService.populateScopeWithTripsData($scope, unpackedTrips, 'future');
@@ -1076,14 +1080,14 @@ angular.module('applyMyRideApp')
 
         var liveTrip = (planService.tripIsLive($scope.trip) && $scope.trip) || (!!$scope.trips && planService.findLiveTrip($scope.trips.future));
         planService.updateLiveTrip(liveTrip);
-        if($scope) {$scope.liveTrip = liveTrip || null;} // Set $scope variable to liveTrip
-        if(ipCookie) {ipCookie('liveTrip', !!liveTrip);} // Set cookie to store liveTrip or lack thereof
+        if ($scope) {$scope.liveTrip = liveTrip || null;} // Set $scope variable to liveTrip
+        if (ipCookie) {ipCookie('liveTrip', !!liveTrip);} // Set cookie to store liveTrip or lack thereof
 
         return liveTrip;
-      }
+      };
 
       // Creates an eta checker object
-      this.createEtaChecker = function($scope, $http, ipCookie) {
+      this.createEtaChecker = function ($scope, $http, ipCookie) {
         var planService = this;
 
         // Stop the checker if it already exists.
@@ -1094,22 +1098,21 @@ angular.module('applyMyRideApp')
           // planService: this,
           intervalSeconds: 60,
           count: 120,
-          start: function(checkFunction) {
-            this.timer = $interval(function() {
-              planService.getFutureRides($http).then(function(data) {
-                var liveTrip =
-                planService.processFutureAndLiveTrips(data, $scope, ipCookie);
-                !liveTrip && planService.killEtaChecker();
+          start: function (checkFunction) {
+            this.timer = $interval(function () {
+              planService.getFutureRides($http).then(function (data) {
+                var liveTrip = planService.processFutureAndLiveTrips(data, $scope, ipCookie);
+                if (!liveTrip) { planService.killEtaChecker(); }
               });
             }, this.intervalSeconds * 1000, this.count);
           },
-          stop: function() {
+          stop: function () {
             $interval.cancel(this.timer);
           }
-        }
+        };
         // Start the checker.
         planService.etaChecker.start();
-      }
+      };
 
       this.killEtaChecker = function () {
         var planService = this;
@@ -1117,24 +1120,22 @@ angular.module('applyMyRideApp')
           planService.etaChecker.stop();
           planService.etaChecker = undefined;
         }
-      }
+      };
     }
   ]
 );
 
 angular.module('applyMyRideApp')
-  .service('LocationSearch', function($http, $q, localStorageService, $filter){
+  .service('LocationSearch', function ($http, $q, localStorageService, $filter) {
     var countryFilter = $filter('noCountry');
-    var urlPrefix = '//' + APIHOST + '/';
-
     var autocompleteService = new google.maps.places.AutocompleteService();
-
-    var LocationSearch = new Object();
+    var LocationSearch = {};
     var compositePromise = false;
-    LocationSearch.getLocations = function(text, config, includeRecentSearches) {
+
+    LocationSearch.getLocations = function (text, config, includeRecentSearches) {
 
       // setup compositePromise deferred object. but first, if compositePromise isn't false, reject the old promise
-      if(compositePromise !== false){
+      if (compositePromise !== false) {
         compositePromise.reject();
       }
       compositePromise = $q.defer();
@@ -1146,29 +1147,29 @@ angular.module('applyMyRideApp')
         ];
 
       // add the getRecentSearches if they are to be included
-      //if(includeRecentSearches == true){
+      //if(includeRecentSearches === true) {
       //  promises.push(LocationSearch.getRecentSearches(text) );
       //}
 
       // when all the promises are resolved, then resolve the compositePromise
-      $q.all(promises).then(function(results){
-        if(compositePromise !== false){
+      $q.all(promises).then(function (results) {
+        if (compositePromise !== false) {
           compositePromise.resolve(results);
         }
       });
 
       // reset compositePromise to false when its promise is finished
-      compositePromise.promise.then(function(){
+      compositePromise.promise.then(function () {
         compositePromise = false;
-      }).catch(function(){
+      }).catch(function () {
         compositePromise = false;
       });
 
       // compositePromise triggers when promises are finished
       return compositePromise.promise;
-    }
+    };
 
-    LocationSearch.getGooglePlaces = function(text) {
+    LocationSearch.getGooglePlaces = function (text) {
       var googlePlaceData = $q.defer();
       this.placeIds = [];
       this.results = [];
@@ -1182,13 +1183,13 @@ angular.module('applyMyRideApp')
                     new google.maps.LatLng(42.273734, -74.689502)
                   ),
           strictBounds: true
-        }, function(list, status) {
-          angular.forEach(list, function(value, index) {
+        }, function (list, status) {
+          angular.forEach(list, function (value, index) {
             var formatted_address;
             //verify the location has a street address
-            if( (that.results.length < 10) &&
-                value.terms.some(function(t) {
-                  return t.value === "PA";
+            if ( (that.results.length < 10) &&
+                value.terms.some(function (t) {
+                  return t.value === 'PA';
                 }) && // Filter out anything not in PA
                 ( (value.types.indexOf('route') > -1) ||
                   (value.types.indexOf('establishment') > -1) ||
@@ -1201,45 +1202,50 @@ angular.module('applyMyRideApp')
           });
           googlePlaceData.resolve({googleplaces:that.results, placeIds: that.placeIds});
         });
-      return googlePlaceData.promise
-    }
+      return googlePlaceData.promise;
+    };
 
-    LocationSearch.getRecentSearches = function(text) {
-
+    LocationSearch.getRecentSearches = function (text) {
       var recentSearchData = $q.defer();
       var recentSearches = localStorageService.get('recentSearches');
-      if(!recentSearches){
+      if (!recentSearches) {
         recentSearchData.resolve({recentsearches: [], placeIds: []});
-      }else{
+      } else {
         this.recentSearchResults = [];
         this.recentSearchPlaceIds = [];
         var that = this;
-        angular.forEach(Object.keys(recentSearches), function(key, index) {
-          if(that.recentSearchResults.length < 10 && key.toLowerCase().indexOf(text.toLowerCase()) > -1 && that.recentSearchResults.indexOf(key) < 0){
+        angular.forEach(Object.keys(recentSearches), function (key, index) {
+          if (that.recentSearchResults.length < 10 && key.toLowerCase().indexOf(text.toLowerCase()) > -1 && that.recentSearchResults.indexOf(key) < 0) {
             var location = recentSearches[key];
             that.recentSearchResults.push( countryFilter( key ) );
-            that.recentSearchPlaceIds.push(location.place_id)
+            that.recentSearchPlaceIds.push(location.place_id);
           }
         });
         recentSearchData.resolve({recentsearches: that.recentSearchResults, placeIds: that.recentSearchPlaceIds});
       }
       return recentSearchData.promise;
-    }
+    };
 
-    LocationSearch.getSavedPlaces = function(text, config) {
+    LocationSearch.getSavedPlaces = function (text, config) {
       var savedPlaceData = $q.defer();
       this.savedPlaceIds = [];
       this.savedPlaceAddresses = [];
       this.savedPlaceResults = [];
       this.poiData = [];
       var that = this;
-      $http.get(urlPrefix + 'api/v1/places/search?include_user_pois=true&search_string=%25' + text + '%25', config).
-        success(function(data) {
+      let endpoint = apiUrl('api/v1/places/search/');
+      endpoint.search = new URLSearchParams({
+        include_user_pois: 'true',
+        search_string: `%${text}%`
+      });
+
+      $http.get(endpoint.toString(), config).
+        success(function (data) {
           var locations = data.places_search_results.locations;
           var filter = /[^a-zA-Z0-9]/g;
-          angular.forEach(locations, function(value, index) {
+          angular.forEach(locations, function (value, index) {
             var address;
-            if(that.savedPlaceResults.length < 10){
+            if (that.savedPlaceResults.length < 10) {
               //use the formatted_address if the name is basically the same
               //compare by:
               // 1) Only looking at the name address up to the first column.
@@ -1250,10 +1256,10 @@ angular.module('applyMyRideApp')
               // 6) Only look at the first 10 characters.  This reduces the likelihood that a street abbreviation comes into play.
               var normalizedName = value.name.split(',')[0].toUpperCase().replace(filter, '').replace('NORTH', 'N').replace('SOUTH', 'S').replace('EAST','E').replace('WEST','W').replace('DRIVE','DR').replace('ROAD','RD').replace('STREET','ST').substring(0,10);
               var normalizedAddress = value.formatted_address.split(',')[0].toUpperCase().replace(filter, '').replace('NORTH', 'N').replace('SOUTH', 'S').replace('EAST','E').replace('WEST','W').replace('DRIVE','DR').replace('ROAD','RD').replace('STREET','ST').substring(0,10);
-              if(normalizedAddress === normalizedName){
+              if (normalizedAddress === normalizedName) {
                 //they're the same, just show one.
                 address = 'POI ' + value.formatted_address;
-              }else{
+              } else {
                 //they're different. show both
                 address = 'POI ' + value.name + ', ' + value.formatted_address;
               }
@@ -1266,7 +1272,7 @@ angular.module('applyMyRideApp')
           savedPlaceData.resolve({savedplaces:that.savedPlaceResults, placeIds: that.savedPlaceIds, savedplaceaddresses: that.savedPlaceAddresses, poiData: that.poiData});
         });
       return savedPlaceData.promise;
-    }
+    };
 
     return LocationSearch;
   });

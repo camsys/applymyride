@@ -1,6 +1,6 @@
 .container#transit{style: 'padding: 0;'}
   .buttonwrapper
-    .row{style: 'margin-top: 1em;', ng: {show: 'roundtrip == false || segmentid == 1'}}
+    .row{style: 'margin-top: 1em;', ng: {show: 'roundtrip === false || segmentid === 1'}}
       .col-md-4.col-md-offset-4.col-sm-6.col-sm-offset-3.col-xs-12.text-center
         %a.btn.btn-success.btn-block{href: "", ng: {click: 'selectTransitTrip(itinerary.id, segmentid)'}}
           Select this ride
@@ -21,14 +21,14 @@
     .col-xs-12.col-md-8.col-md-offset-2.transit-container
       .row.row-eq-height.transit-header
         .blah{ng: {repeat: 'leg in itinerary.json_legs track by $index'}}
-          %img{ng: {if: 'leg.mode == "WALK"', src: 'images/modes/walk.png'}}
-          %img{ng: {if: 'leg.mode == "BUS"', src: 'images/modes/transit.png'}}
-          %img{ng: {if: 'leg.mode == "RAIL"', src: 'images/modes/rail.png'}}
-          %img{ng: {if: 'leg.mode == "SUBWAY"', src: 'images/modes/subway.png'}}
-          %img{ng: {if: 'leg.mode == "TRAM"', src: 'images/modes/streetcar.png'}}
+          %img{ng: {if: 'leg.mode === "WALK"', src: 'images/modes/walk.png'}}
+          %img{ng: {if: 'leg.mode === "BUS"', src: 'images/modes/transit.png'}}
+          %img{ng: {if: 'leg.mode === "RAIL"', src: 'images/modes/rail.png'}}
+          %img{ng: {if: 'leg.mode === "SUBWAY"', src: 'images/modes/subway.png'}}
+          %img{ng: {if: 'leg.mode === "TRAM"', src: 'images/modes/streetcar.png'}}
           %i.fa.fa-lg.fa-chevron-right{ng: {if: '!$last'}}
     .col-xs-12.col-md-8.col-md-offset-2.transit-body
-      .border-between.timeline{'index' => '{{$index}}', ng: {click: 'show($event)', repeat: 'leg in itinerary.json_legs track by $index', class: '{"mode_bus": leg.mode == "BUS", "mode_rail": leg.mode == "RAIL", "mode_subway": leg.mode == "SUBWAY", "mode_tram": leg.mode == "TRAM", "mode_walk": leg.mode == "WALK"}'}}
+      .border-between.timeline{'index' => '{{$index}}', ng: {click: 'show($event)', repeat: 'leg in itinerary.json_legs track by $index', class: '{"mode_bus": leg.mode === "BUS", "mode_rail": leg.mode === "RAIL", "mode_subway": leg.mode === "SUBWAY", "mode_tram": leg.mode === "TRAM", "mode_walk": leg.mode === "WALK"}'}}
         .row.even-height-row
           .col-xs-2.right-side
             .row
@@ -40,7 +40,7 @@
           .col-xs-1.right-side
             %i.fa.fa-circle-o.fa-lg.waypoint
           .col-xs-9.leg-info.pull-left.left-side
-            .bus-info{ng: {show: 'leg.mode == "BUS"'}}
+            .bus-info{ng: {show: 'leg.mode === "BUS"'}}
               .row
                 .leg-info.col-xs-12.leg-header
                   %h5.text-muted Get on {{leg.serviceName}}
@@ -52,7 +52,7 @@
               .row
                 .leg-info.col-xs-12
                   %h5.text-muted {{leg.distanceDesc}} ({{leg.travelTime}})
-            .rail-info{ng: {show: 'leg.mode == "RAIL" || leg.mode == "SUBWAY" || leg.mode == "TRAM"'}}
+            .rail-info{ng: {show: 'leg.mode === "RAIL" || leg.mode === "SUBWAY" || leg.mode === "TRAM"'}}
               .row
                 .leg-info.col-xs-12.leg-header
                   %h5.text-muted Get on {{leg.serviceName}}
@@ -64,7 +64,7 @@
               .row
                 .leg-info.col-xs-12
                   %h5.text-muted {{leg.distanceDesc}} ({{leg.travelTime}})
-            .walk-info{ng: {show: 'leg.mode == "WALK"'}}
+            .walk-info{ng: {show: 'leg.mode === "WALK"'}}
               .row
                 .leg-info.col-xs-12.leg-header
                   %h5.text-muted{ng: {show: '!$first'}} Get off
@@ -75,8 +75,8 @@
                 .leg-info.col-xs-12
                   .row.even-height-row
                     .col-height-slave{style: 'width: 20px'}
-                      %i.fa.fa-chevron-down.fa-lg{style: 'color: grey', ng: {show: '!showDiv[$index] || showDiv[$index] == false'}}
-                      %i.fa.fa-chevron-up.fa-lg{style: 'color: grey', ng: {show: 'showDiv[$index] == true'}}
+                      %i.fa.fa-chevron-down.fa-lg{style: 'color: grey', ng: {show: '!showDiv[$index] || showDiv[$index] === false'}}
+                      %i.fa.fa-chevron-up.fa-lg{style: 'color: grey', ng: {show: 'showDiv[$index] === true'}}
                     .col-height-master
                       %h5.text-muted Walk
                       %h5.text-muted {{leg.distanceDesc}} ({{leg.travelTime}})
@@ -112,7 +112,7 @@
           %a.btn.btn-secondary{href: "", back: '', ng: {click: "back()"}}
             %span{ng: {include: "'views/button-chevron-left.html'"}}
             Back
-        .pull-right{ng: {show: 'roundtrip && segmentid == 0'}}
+        .pull-right{ng: {show: 'roundtrip && segmentid === 0'}}
           %a.btn.btn-primary{href: "", ng: {click: 'selectTransitTrip(tripid,segmentid)'}}
             %span Select and continue
             %span{ng: {include: "'views/button-chevron-right.html'"}}

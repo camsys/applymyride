@@ -1,23 +1,34 @@
 {
   "node": true,
   "browser": true,
-  "esnext": true,
   "bitwise": true,
-  "camelcase": true,
+  "camelcase": false,
   "curly": true,
   "eqeqeq": true,
+  "esversion": 9,
   "immed": true,
   "indent": 2,
-  "latedef": true,
+  "latedef": "nofunc",
+  "multistr": true,
   "newcap": true,
   "noarg": true,
   "quotmark": "single",
   "undef": true,
-  "unused": true,
+  "unused": false, // Turn back on
   "strict": true,
   "trailing": true,
   "smarttabs": true,
   "globals": {
-    "angular": false
+    // "$": false,
+    "alert": true,
+    "angular": false,
+    "APIHOST": true,
+    "apiUrl": true,
+    "bootbox": true,
+    "google": true,
+    "HOMEPAGE": true,
+    "humanizeDuration": true,
+    "moment": true,
+    "URLSearchParams": true
   }
 }

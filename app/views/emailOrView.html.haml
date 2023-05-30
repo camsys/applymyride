@@ -1,5 +1,5 @@
 .row.even-height-row
-  .button_wrapper{ng: {show: 'trip.mode != "mode_paratransit"'}}
+  .button_wrapper{ng: {show: 'trip.mode !== "mode_paratransit"'}}
     .col-xs-3.col-xs-offset-2{style: 'text-align: right;'}
       .row{ng: {click: 'toggleEmail($event)'}}
         %span.fa-stack
@@ -12,7 +12,7 @@
           %i.fa.fa-search.fa-stack-2x
         %a.blue-text{ng: {show: '!mobile'}}
           View
-  .button_wrapper{ng: {show: 'trip.mode == "mode_paratransit"'}}
+  .button_wrapper{ng: {show: 'trip.mode === "mode_paratransit"'}}
     .col-xs-3.col-xs-offset-2{style: 'text-align: right;'}
       .row{ng: {click: 'toggleEmail($event)'}}
         %span.fa-stack
@@ -40,6 +40,6 @@
         %i.fa.fa-envelope-o.fa-lg{style:'color: white;'}
           %span
             Send
-  .row{ng: {show: 'invalidEmail == true'}}
+  .row{ng: {show: 'invalidEmail === true'}}
     .col-xs-12.col-sm-8.col-sm-offset-2.text-left{style: 'color: red'}
       Please enter only valid email addresses
