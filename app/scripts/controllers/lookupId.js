@@ -56,7 +56,8 @@ angular.module('applyMyRideApp')
         });
         let promise = $http.get(requestUrl.toString());
 
-        promise.error(function (result) {
+        promise.error(function (err) {
+          console.log(err);
           $location.path('/lookupError');
         });
 

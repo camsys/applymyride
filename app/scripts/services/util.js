@@ -48,7 +48,7 @@ angular.module('applyMyRideApp')
     return BadCities[city] === null ? city : BadCities[city];
   };
 
-  // TODO (Drew) Remove functions?
+  // TODO (Drew) This should be turned into an API call with a configurable message.
   // see [PAMF-698]
   this.getCountiesInTransition = function (successCallback, errorCallback) {
     //simulate back-end response
@@ -86,6 +86,6 @@ angular.module('applyMyRideApp')
 // successCallback = function (r) {
 //   return r.data.service_ids;
 // },
-// errorCallback = function (e) {
-//   console.log(e);
+// errorCallback = function (err) {
+//   console.log(err);
 // }

@@ -19,7 +19,7 @@
   "trailing": true,
   "smarttabs": true,
   "globals": {
-    // "$": false,
+    "$": true,
     "alert": true,
     "angular": false,
     "APIHOST": true,

@@ -183,7 +183,8 @@ angular.module('applyMyRideApp')
         });
         
         var cancelPromise = planService.cancelTrip($http, cancel);
-        cancelPromise.error(function (data) {
+        cancelPromise.error(function (err) {
+          console.log(err);
           bootbox.alert('An error occurred, your trip was not cancelled.  Please call 1-844-PA4-RIDE for more information.');
         });
         

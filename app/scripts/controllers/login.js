@@ -15,7 +15,9 @@ angular.module('applyMyRideApp')
         'county', 
         'first_name', 
         'last_name', 
-        'email'
+        'email',
+        'last_origin',
+        'last_destination'
       ];
 
       // skip initializing this controller if we're not on the page
@@ -100,9 +102,8 @@ angular.module('applyMyRideApp')
           dob: {}
         };
 
-        // TODO (Drew) Remove || true
         // Only get counties if they haven't already been loaded
-        if (!existingServiceOptions || true) {
+        if (!existingServiceOptions) {
           util.getCounties(function (countyServices) {
             let options = countyServices.sort(function (a,b) { 
               return a.label > b.label ? 1 : -1;
@@ -154,6 +155,7 @@ angular.module('applyMyRideApp')
             $location.path('/registration/success');
           });
           registrationPromise.error((err) => {
+            console.log(err);
             $location.path('/registration/error');
           });
         };

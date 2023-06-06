@@ -681,8 +681,8 @@ angular.module('applyMyRideApp')
               if (ipCookie) { ipCookie('currentBalance', data.current_balance); }
             }
           }).
-          error(function (data) {
-            console.log(data);
+          error(function (err) {
+            console.log(err);
           });
       };
 
@@ -707,8 +707,9 @@ angular.module('applyMyRideApp')
               $scope.showNext = true;
             }
           })
-          .error(function (data) {
-            alert(data);
+          .error(function (err) {
+            console.log(err);
+            alert(err);
           });
       };
 

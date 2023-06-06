@@ -165,7 +165,7 @@ angular.module('applyMyRideApp', [
     const navigationFriendlyPages = [HOMEPAGE, '/profile', '/plan', '/plan/my_rides', '/login', '/login/error', '/registration', '/registration/error', '/about', '/about/sharedride', '/about/projecthistory'];
     const publicPages = ['/login', '/login/error', '/about', '/about/sharedride', '/about/projecthistory'];
     const protectedPages = ['/registration', '/registration/error', '/lookupIdForm', '/lookupError'];
-    const sessionKeys = ['jwt', 'refresh_token', 'account_type', 'authentication_token', 'sharedRideId', 'county', 'first_name', 'last_name', 'email'];
+    const sessionKeys = ['jwt', 'refresh_token', 'account_type', 'authentication_token', 'sharedRideId', 'county', 'first_name', 'last_name', 'email', 'last_origin', 'last_destination'];
 
     // Global event handlers
     window.$rootScope = $rootScope;
@@ -285,7 +285,6 @@ angular.module('applyMyRideApp', [
     }
 
     function authorizePage (event) {
-      console.log('authorize:', event);
       const path = $location.$$path;
       const loginState = getLoginState();
       const isPublic = publicPages.indexOf(path) > -1;

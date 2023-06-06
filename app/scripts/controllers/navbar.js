@@ -5,7 +5,6 @@ var app = angular.module('applyMyRideApp');
 angular.module('applyMyRideApp')
   .controller('NavbarController', ['$scope', '$rootScope', '$location', 'flash', 'planService', 'deviceDetector', 'ipCookie', '$window',
     function ($scope, $rootScope, $location, flash, planService, deviceDetector, ipCookie, $window) {
-      console.log("Test");
       var input = document.createElement('input');
       input.setAttribute('type','date');
       var notADateValue = 'not-a-date';

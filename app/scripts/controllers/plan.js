@@ -78,9 +78,10 @@ app.controller('PlanController', ['$rootScope', '$scope', '$http','$routeParams'
     $scope.loggedIn = !!planService.email;
     $scope.tripId = planService.tripId;
 
-    $scope.toDefault = countryFilter(localStorage.getItem('last_destination') || '');
+    // TODO (Drew) Fix initial origin
+    $scope.toDefault = countryFilter(($rootScope.userInfo.last_destination || {}).formatted_address || '');
     $scope.to = countryFilter(planService.to || '');
-    $scope.fromDefault = countryFilter(localStorage.getItem('last_origin') || '' );
+    $scope.fromDefault = countryFilter(($rootScope.userInfo.last_origin || {}).formatted_address || '' );
     $scope.from = countryFilter(planService.from || '');
     $scope.transitSaved = planService.transitSaved || false;
     $scope.transitCancelled = planService.transitCancelled || false;
@@ -208,7 +209,8 @@ app.controller('PlanController', ['$rootScope', '$scope', '$http','$routeParams'
         cancelRequest.bookingcancellation_request.push( leg2 );
       }
       var cancelPromise = planService.cancelTrip($http, cancelRequest);
-      cancelPromise.error(function (data) {
+      cancelPromise.error(function (err) {
+        console.log(err);
         bootbox.alert('An error occurred, your trip was not cancelled.  Please call 1-844-PA4-RIDE for more information.');
         usSpinnerService.stop('spinner-1');
       });
@@ -234,7 +236,8 @@ app.controller('PlanController', ['$rootScope', '$scope', '$http','$routeParams'
         cancelRequest.bookingcancellation_request.push( leg2 );
       }
       var cancelPromise = planService.cancelTrip($http, cancelRequest);
-      cancelPromise.error(function (data) {
+      cancelPromise.error(function (err) {
+        console.log(err);
         bootbox.alert('An error occurred, your trip was not cancelled.  Please call 1-844-PA4-RIDE for more information.');
         usSpinnerService.stop('spinner-1');
       });
@@ -334,7 +337,8 @@ app.controller('PlanController', ['$rootScope', '$scope', '$http','$routeParams'
       });
 
       var cancelPromise = planService.cancelTrip($http, cancel);
-      cancelPromise.error(function (data) {
+      cancelPromise.error(function (err) {
+        console.log(err);
         bootbox.alert('An error occurred, your trip was not cancelled.  Please call 1-844-PA4-RIDE for more information.');
       });
       cancelPromise.success(function (data) {
@@ -389,7 +393,8 @@ app.controller('PlanController', ['$rootScope', '$scope', '$http','$routeParams'
           emailRequest.trip_id = planService.tripId;
 
           var emailPromise = planService.emailItineraries($http, emailRequest);
-          emailPromise.error(function (data) {
+          emailPromise.error(function (err) {
+            console.log(err);
             bootbox.alert('An error occurred on the server, your email was not sent.');
           });
           bootbox.alert('Your email was sent');
@@ -579,6 +584,7 @@ app.controller('PlanController', ['$rootScope', '$scope', '$http','$routeParams'
           }).error((err, statusCode) => {
             // When the backend throws a 409: Conflict error, it's because there's a conflict with
             // an already booked trip.
+            console.log(err);
             if (statusCode === 409) {
               $location.path('/plan/overlapping_trip/error');
             } else {
@@ -790,6 +796,7 @@ app.controller('PlanController', ['$rootScope', '$scope', '$http','$routeParams'
           usSpinnerService.stop('spinner-1');
         })
         .error(function (err, statusCode) {
+          console.log(err);
           if (statusCode === 500) {
             bootbox.alert('An error occured on the server, please retry your search or try again later.');
           }
@@ -1759,10 +1766,11 @@ app.controller('PlanController', ['$rootScope', '$scope', '$http','$routeParams'
 
     //initialize this step's state
     if ($scope.loggedIn) {
-      planService.getCurrentBalance($scope, $http, ipCookie).then(function () {
-        // TODO (Drew)
-        // Service sets ipCookie with currentBalance
-      });
+      planService.getCurrentBalance($scope, $http, ipCookie);
+        // TODO (Drew) Do we need to do anything else?
+        // .then(function (response) {
+        //   console.log('balance: ', response.data);
+        // });
     }
 
     switch($routeParams.step) {

@@ -1,53 +1,77 @@
 -# TODO: Add padding so elements are centered inside their rows
 .profile
   .col-xs-12.col-md-6.col-md-offset-3
+    .row.alert
+      %h2 Work In Progress
     .row
-      %h5.text-muted
-        My Profile
-    .row
-      %h3
-        {{first_name}} {{last_name}}
-    .row{style: 'margin-top: 1em'}
       %h4.text-muted
-        Account
+        My Keystone Login
     .row{style: 'border: 1px solid grey;'}
       .row{style: 'margin: 0px;'}
         .col-xs-3.text-right.text-muted
           %h4
-            Ride ID:
+            Name:
         .col-xs-9
           %h4
-            {{sharedRideId}}
+            {{first_name}} {{last_name}}
       .row{style: 'border-top: 1px solid grey; margin: 0px;'}
-        .col-xs-3.text-right.text-muted
-          %h4
-            DOB:
-        .col-xs-9
-          %span
-            %i.fa.fa-circle
-            %i.fa.fa-circle
-            \/
-            %i.fa.fa-circle
-            %i.fa.fa-circle
-            \/
-            %i.fa.fa-circle
-            %i.fa.fa-circle
-            %i.fa.fa-circle
-            %i.fa.fa-circle
-      .row{style: 'border-top: 1px solid grey; margin: 0px;', ng: {show: 'email_editable === true'}}
         .col-xs-3.text-right.text-muted
           %h4
             Email:
         .col-xs-9
-          %h4{ng: {show: 'editable === false'}}
-            {{email}}
-          %input{type:'email',ng: {model: 'email', show: 'editable === true'}, style: 'width: 100%;'}
-      .row{ng: {show: 'invalidEmail === true'}}
-        .col-xs-12.col-sm-8.col-sm-offset-2.text-left{style: 'color: red'}
-          Please enter only valid email addresses
+          {{email}}
+
     .row{style: 'margin-top: 1em'}
-      .col-xs-12.col-md-6.col-md-offset-3
-        %a.btn.btn-primary.btn-block{href: '', ng: {click: 'toggleEdit()', show: '!editable'}}
-          Edit profile
-        %a.btn.btn-primary.btn-block{href: '', ng: {click: 'toggleEdit()', show: 'editable'}}
-          Save changes
+      %h4.text-muted
+        My Ecolane Profiles
+    .row{style: 'border: 1px solid grey;'}
+      %table.table
+        %thead
+          %tr
+            %th{scope: 'col'} Ride ID
+            %th{scope: 'col'} Agency
+            %th{scope: 'col'} County
+            %th{scope: 'col'} Active?
+            %th{scope: 'col'} Remove
+        %tbody
+          %tr{ng: {repeat: 'bookingProfile in bookingProfiles track by bookingProfile.key'}}
+            %td
+              {{ bookingProfile.sharedRideID }}
+            %td
+              {{ bookingProfile.agency }}
+            %td
+              {{ bookingProfile.county }}
+            %td
+              %input{type: 'radio', ng: {model: 'userInfo.activeBookingProfile', value: 'bookingProfile'}}
+            %td
+              %button{ng: {disabled: 'userBookingProfiles.length <= 1'}}
+                X
+
+    .row{style: 'margin-top: 1em', ng: {show: 'profileForm === true'}}
+      %h2 Add a New Ecolane Profile
+      %form(action='')
+        .col-xs-12
+          %label(for='') Shared Ride ID: 
+          %input{type: 'text'}
+        .col-xs-12
+          %label(for='') Agency: 
+          %input{type: 'text'}
+        .col-xs-12
+          %label(for='') Date of Birth: 
+          %input{type: 'text'} 
+
+    .row{style: 'margin-top: 1em', ng: {show: 'profileForm === true'}}
+      .col-xs-12.col-md-6
+        %a.btn.btn-primary.btn-block{href: '', ng: {click: 'submitNewProfile'}}
+          Submit
+      .col-xs-12.col-md-6
+        %a.btn.btn-secondary.btn-block{href: '', ng: {click: 'toggleProfileForm()'}}
+          Cancel
+
+    .row{style: 'margin-top: 1em', ng: {hide: "profileForm === true"}}
+      .col-xs-12.col-md-6
+        %a.btn.btn-secondary.btn-block{href: '', ng: {click: 'back()'}}
+          Back To Rides
+      .col-xs-12.col-md-6
+        %a.btn.btn-primary.btn-block{href: '', ng: {click: 'toggleProfileForm()'}}
+          Add a Profile

@@ -211,7 +211,8 @@ angular.module('applyMyRideApp')
           cancel.bookingcancellation_request.push(bookingCancellation);
         });
         var cancelPromise = planService.cancelTrip($http, cancel);
-        cancelPromise.error(function (data) {
+        cancelPromise.error(function (err) {
+          console.log(err);
           bootbox.alert('An error occurred, your trip was not cancelled.  Please call 1-844-PA4-RIDE for more information.');
         });
         cancelPromise.success(function (data) {
@@ -276,7 +277,8 @@ angular.module('applyMyRideApp')
             });
 
             var emailPromise = planService.emailItineraries($http, emailRequest);
-            emailPromise.error(function (data) {
+            emailPromise.error(function (err) {
+              console.log(err);
               bootbox.alert('An error occurred on the server, your email was not sent.');
             });
             bootbox.alert('Your email was sent');

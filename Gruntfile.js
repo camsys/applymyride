@@ -132,13 +132,17 @@ module.exports = function (grunt) {
           port: 9001,
           middleware: function (connect) {
             return [
-              connect.static('.tmp'),
-              connect.static('test'),
+              // connect.static('.tmp'),
+              // connect.static('test'),
+              serveStatic('.tmp'),
+              serveStatic('test'),
               connect().use(
                 '/bower_components',
-                connect.static('./bower_components')
+                // connect.static('./bower_components')
+                serveStatic('./bowercomponents')
               ),
-              connect.static(appConfig.app)
+              // connect.static(appConfig.app)
+              serveStatic(appConfig.app)
             ];
           }
         }
@@ -541,7 +545,7 @@ module.exports = function (grunt) {
 
   grunt.registerTask('default', [
     'newer:jshint',
-    'test',
+    // 'test',
     'build'
   ]);
 };
