@@ -50,7 +50,7 @@ angular.module('applyMyRideApp')
     // see [PAMF-698]
     this.getCountiesInTransition = function (successCallback, errorCallback) {
       //simulate back-end response
-      var response = { counties: ['Northumberland'] };
+      var response = { counties: ['Northumberland', 'Union', 'Snyder', 'Montour', 'Columbia'] };
       // Return an emtpy array to disable display of the transition messages.
       // var response = { };
       successCallback(response);
@@ -60,7 +60,7 @@ angular.module('applyMyRideApp')
     this.getTransitionMessages = function (successCallback, errorCallback) {
       var response = {
         countyInTransitionMessage:
-          'The online functionality to book a trip on FindMyRide will be unavailable through June 30, 2023.  We apologize for the inconvenience.',
+          'The online functionality to book a trip on FindMyRide will be unavailable through July 1, 2023.  We apologize for the inconvenience.',
         helpMessage:
           'Please call Customer Service at 1-800-632-9063 to schedule your trip.'
       };
