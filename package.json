@@ -1,6 +1,6 @@
 {
   "name": "findmyridepa",
-  "version": "2.0.1",
+  "version": "2.7.5",
   "dependencies": {
     "bootbox": "^5.3.4",
     "ng-device-detector": "^5.1.4"

@@ -15,6 +15,8 @@ module.exports = function (grunt) {
   // Time how long tasks take. Can help when optimizing build times
   require('time-grunt')(grunt);
 
+  const serveStatic = require('serve-static');
+
   // Configurable paths for the application
   var appConfig = {
     app: require('./bower.json').appPath || 'app',
@@ -39,10 +41,10 @@ module.exports = function (grunt) {
         files: ['<%= yeoman.app %>/views/{,*/}*.haml'],
         tasks: ['haml:watched']
       },
-      coffee: {
-        files: ['<%= yeoman.app %>/scripts/{,*/}*.coffee'],
-        tasks: ['coffee:watched']
-      },
+      // coffee: {
+      //   files: ['<%= yeoman.app %>/scripts/{,*/}*.coffee'],
+      //   tasks: ['coffee:watched']
+      // },
       bower: {
         files: ['bower.json'],
         tasks: ['wiredep']
@@ -94,12 +96,12 @@ module.exports = function (grunt) {
           open: true,
           middleware: function (connect) {
             return [
-              connect.static('.tmp'),
+              serveStatic('.tmp'),
               connect().use(
                 '/bower_components',
-                connect.static('./bower_components')
+                serveStatic('./bower_components')
               ),
-              connect.static(appConfig.app)
+              serveStatic(appConfig.app)
             ];
           }
         }
@@ -109,13 +111,13 @@ module.exports = function (grunt) {
           port: 9001,
           middleware: function (connect) {
             return [
-              connect.static('.tmp'),
-              connect.static('test'),
+              serveStatic('.tmp'),
+              serveStatic('test'),
               connect().use(
                 '/bower_components',
-                connect.static('./bower_components')
+                serveStatic('./bower_components')
               ),
-              connect.static(appConfig.app)
+              serveStatic(appConfig.app)
             ];
           }
         }
@@ -190,41 +192,41 @@ module.exports = function (grunt) {
       }
     },
 
-    coffee: {
-      watched: {
-        files: [
-          {
-            expand: true,
-            cwd: '<%= yeoman.app %>/scripts',
-            src: '{,*/}*.coffee',
-            dest: '.tmp/scripts',
-            ext: '.js'
-          }
-        ]
-      },
-      dist: {
-        files: [
-          {
-            expand: true,
-            cwd: '<%= yeoman.app %>/scripts',
-            src: '{,*/}*.coffee',
-            dest: 'dist/scripts',
-            ext: '.js'
-          }
-        ]
-      },
-      test: {
-        files: [
-          {
-            expand: true,
-            cwd: 'test/spec',
-            src: '{,*/}*.coffee',
-            dest: '.tmp/spec',
-            ext: '.js'
-          }
-        ]
-      }
-    },
+    // coffee: {
+    //   watched: {
+    //     files: [
+    //       {
+    //         expand: true,
+    //         cwd: '<%= yeoman.app %>/scripts',
+    //         src: '{,*/}*.coffee',
+    //         dest: '.tmp/scripts',
+    //         ext: '.js'
+    //       }
+    //     ]
+    //   },
+    //   dist: {
+    //     files: [
+    //       {
+    //         expand: true,
+    //         cwd: '<%= yeoman.app %>/scripts',
+    //         src: '{,*/}*.coffee',
+    //         dest: 'dist/scripts',
+    //         ext: '.js'
+    //       }
+    //     ]
+    //   },
+    //   test: {
+    //     files: [
+    //       {
+    //         expand: true,
+    //         cwd: 'test/spec',
+    //         src: '{,*/}*.coffee',
+    //         dest: '.tmp/spec',
+    //         ext: '.js'
+    //       }
+    //     ]
+    //   }
+    // },
     haml: {
       options: {
         language: 'ruby'
@@ -511,7 +513,7 @@ module.exports = function (grunt) {
       'clean:server',
       'wiredep',
       'concurrent:server',
-      'coffee:watched',
+      // 'coffee:watched',
       'haml:watched',
       'autoprefixer',
       'connect:livereload',
@@ -537,7 +539,7 @@ module.exports = function (grunt) {
     'build', [
     'clean:dist',
     'wiredep',
-    'coffee:dist',
+    // 'coffee:dist',
     'haml:dist',
     'useminPrepare',
     'concurrent:dist',
