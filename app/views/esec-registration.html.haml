@@ -58,6 +58,9 @@
 
         .row{style: 'font-size: 1.4em;'}
           %input#sharedRideIdInput.form-control.shared-ride-id{type:'text', style: 'font-size: .9em;', placeholder: '00000', ng: {model: 'registration.sharedRideId', disabled: 'registration.confirmationMethod !== "sharedRideId"', change: 'checkFormReady()'}}
+        
+        %p
+          If you have multiple Ecolane accounts, you only need to enter one of them here. Additional Id's can be added at any time under your User Profile.
 
         .row{style: 'margin-top: 2em; margin-bottom: 0.25em;'}
           %label{for: 'sharedRideIdInput', style: 'font-size: 1.4em;'}
