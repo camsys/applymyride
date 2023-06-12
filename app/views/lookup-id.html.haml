@@ -27,10 +27,10 @@
           %select{ng: {model: 'county', options: 'county for county in counties', enter: 'next()'}}
             %option{value: '', disabled: '', selected: ''}
               Select your county
-        .row.alert.alert-success{style: 'margin-top: 2em', ng:{if: 'isTransitionCounty(county)'}}
-          .col-md-2
+        .row.alert.alert-warning{style: 'margin-top: 2em', ng:{if: 'isTransitionCounty(county)'}}
+          .col-md-3
             .fa.fa-warning.fa-3x
-          .col-md-10.text-left
+          .col-md-12.text-left
             %h3 {{countyInTransitionMessage}}
             %br
             %h3 {{transitionHelpMessage}}

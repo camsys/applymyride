@@ -60,7 +60,7 @@ angular.module('applyMyRideApp')
     this.getTransitionMessages = function (successCallback, errorCallback) {
       var response = {
         countyInTransitionMessage:
-          'The online functionality to book a trip on FindMyRide will be unavailable through July 1, 2023.  We apologize for the inconvenience.',
+          'FindMyRide is unavailable for maintenance through July 1, 2023. To schedule or cancel your trip, please call Customer Service at 1-800-632-9063. As part of the scheduled maintenance, some riders may be assigned a new Shared Ride ID number.  On July 1st or after, if your ID number is not working to log in, use the Forgot your ID feature in the FindMyRide login section or call Customer Service.',
         helpMessage:
           'Please call Customer Service at 1-800-632-9063 to schedule your trip.'
       };

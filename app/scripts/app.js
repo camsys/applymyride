@@ -73,9 +73,8 @@ angular.module('applyMyRideApp', [
       })
       .when('/plan/:step', {
         templateUrl: 'views/plan.html',
-        controller: 'PlanController',
+        controller: 'PlanController'
       })
-      
       .when('/transit/:departid', {
         templateUrl: 'views/transit.html',
         controller: 'TransitController'
@@ -90,7 +89,7 @@ angular.module('applyMyRideApp', [
       })
       .when('/transitconfirm', {
         templateUrl: 'views/transitconfirm.html',
-        controller: 'TransitController'      
+        controller: 'TransitController'
       })
       .when('/transit/details/:tripid', {
         templateUrl: 'views/transitconfirm.html',
@@ -110,19 +109,19 @@ angular.module('applyMyRideApp', [
       })
       .when('/taxi', {
         templateUrl: 'views/taxi-detail.html',
-        controller: 'TaxiController',
+        controller: 'TaxiController'
       })
       .when('/uber', {
         templateUrl: 'views/uber-detail.html',
-        controller: 'UberController',
+        controller: 'UberController'
       })
       .when('/itinerary', {
         templateUrl: 'views/itinerary.html',
-        controller: 'ItineraryController',
+        controller: 'ItineraryController'
       })
       .when('/about', {
         templateUrl: 'views/about.html',
-        controller: 'AboutController',
+        controller: 'AboutController'
       })
       .when('/about/sharedride', {
         templateUrl: 'views/about.html',
@@ -134,7 +133,7 @@ angular.module('applyMyRideApp', [
       })
       .when('/profile', {
         templateUrl: 'views/profile.html',
-        controller: 'ProfileController',
+        controller: 'ProfileController'
       })
       // Add other routes here
       .otherwise({

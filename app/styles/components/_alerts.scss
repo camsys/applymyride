@@ -1,36 +1,41 @@
 .alert {
+  border: 1px solid transparent;
+
   &.alert-danger {
-      color: $white;
-      background-color: #d71a17;
-      .h3 {
-          color: $white
-      }
+    color: $body-font-color;
+    background-color: rgba($alert-color, 0.25);
+    border-color: rgba($alert-color, 0.5);
+    .h3 {
+      color: $body-font-color;
+    }
   }
   &.alert-success {
-      background-color: #029949;
+    background-color: rgba($success-color, 0.25);
+    border-color: rgba($success-color, 0.5);
+    color: $body-font-color;
+    .h3 {
       color: $body-font-color;
-      .h3 {
-          color: $body-font-color;
+    }
+    .close-button {
+      color: $body-font-color;
+      &:hover {
+        color: rgba($body-font-color, .5);
       }
-      .close-button {
-          color: $body-font-color;
-          &:hover {
-              color: rgba($body-font-color, .5);
-          }
-      }
+    }
   }
   &.alert-warning {
-      background-color: #e0ab06;
+    background-color: rgba($warning-color, 0.25);
+    border-color: rgba($warning-color, 0.5);
+    color: $body-font-color;
+    .h3 {
       color: $body-font-color;
-      .h3 {
-          color: $body-font-color;
+    }
+    .close-button {
+      color: $body-font-color;
+      &:hover {
+        color: rgba($body-font-color, .5);
       }
-      .close-button {
-          color: $body-font-color;
-          &:hover {
-              color: rgba($body-font-color, .5);
-          }
-      }
+    }
   }
   // Below styling is part of PA's design system, only commenting just in case we need it later
   // &.-small {
