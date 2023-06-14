@@ -39,25 +39,36 @@
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <base href="/">
     <script>
-      //initialize APIHOST by mapping from hostname
-      var APIHOST = (function( docHost )
-      {
-	// Assume localhost rails server is running on port 3000
-        var apiHostMapping = {
-	  'www.findmyridepa.org': 'occ-pa-prod.camsys-apps.com',
-	  'findmyridepa.org': 'occ-pa-prod.camsys-apps.com',
-	  'www.findmyridepa.com': 'occ-pa-prod.camsys-apps.com',
-	  'findmyridepa.com': 'occ-pa-prod.camsys-apps.com',
-    'www.findmyridepa.net': 'occ-pa-prod.camsys-apps.com',
-    'findmyridepa.net': 'occ-pa-prod.camsys-apps.com',
-	  'ui-pa-qa2.s3-website-us-east-1.amazonaws.com': 'occ-pa-qa2.herokuapp.com',
-	  'findmyridepa-qa2.camsys-apps.com': 'occ-pa-qa2.herokuapp.com',
-	  'oneclick-pa-qa.camsys-apps.com': 'occ-pa-qa.camsys-apps.com',
-	  'oneclick-pa-dev2.camsys-apps.com': 'occ-pa-dev.camsys-apps.com',
-	  'findmyridepa-dev2.camsys-apps.com': 'occ-pa-dev.herokuapp.com',
-	  '0.0.0.0': '0.0.0.0:3000',
-	  '127.0.0.1': '127.0.0.1:3000',
-	  'localhost': 'localhost:3000'
+      const HOMEPAGE = '/plan/my_rides';
+
+      // Initialize APIHOST by mapping from hostname
+      // Assume localhost rails server is running on port 3000
+      const APIHOST = (function( docHost ) {
+        const apiHostMapping = {
+          'www.findmyridepa.org': 'occ-pa-prod.camsys-apps.com',
+          'findmyridepa.org': 'occ-pa-prod.camsys-apps.com',
+          'www.findmyridepa.com': 'occ-pa-prod.camsys-apps.com',
+          'findmyridepa.com': 'occ-pa-prod.camsys-apps.com',
+          'www.findmyridepa.net': 'occ-pa-prod.camsys-apps.com',
+          'findmyridepa.net': 'occ-pa-prod.camsys-apps.com',
+
+          // 'ui-pa-qa2.s3-website-us-east-1.amazonaws.com': 'occ-pa-qa2.herokuapp.com',
+          // 'findmyridepa-qa2.camsys-apps.com': 'occ-pa-qa2.herokuapp.com',
+          // 'findmyridepa-dev2.camsys-apps.com': 'occ-pa-dev.herokuapp.com',
+
+          'oneclick-pa-qa.camsys-apps.com': 'occ-pa-qa.camsys-apps.com',
+          'ui-pa-qa-occ-ec2.s3.amazonaws.com': 'occ-pa-qa.camsys-apps.com',
+
+          'oneclick-pa-sandbox.camsys-apps.com' : 'occ-pa-qa.camsys-apps.com',
+          'ui-pa-sandbox.s3-website-us-east-1.amazonaws.com' : 'occ-pa-qa.camsys-apps.com',
+
+          'oneclick-pa-dev2.camsys-apps.com': 'occ-pa-dev.camsys-apps.com',
+          'ui-pa-dev-occ-ec2.s3.amazonaws.com' : 'occ-pa-dev.camsys-apps.com',
+          'ui-pa-dev-occ-ec2.s3.us-east-1.amazonaws.com': 'occ-pa-dev.camsys-apps.com',
+        
+          'localhost': 'localhost:3000',
+          '0.0.0.0': 'localhost:3000',
+          '127.0.0.1': 'localhost:3000'
         };
 	var apiHost = apiHostMapping[docHost];
         //use docHost by default if nothing else matches, could also be a specific fallback host
