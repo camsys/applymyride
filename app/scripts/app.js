@@ -200,6 +200,7 @@ angular.module('applyMyRideApp', [
         'profile': 'Profile',
         'about': 'About',
         'transitconfirm': 'Transit Confirmation',
+        'where': 'Trip Location',
       };
       var currentPath = $location.path();
       var currentStep = currentPath.split('/').pop();
