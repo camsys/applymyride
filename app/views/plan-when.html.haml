@@ -21,11 +21,12 @@
               %div{class: 'day month-heading'} Sat
             %div{ng: {repeat: 'week in month.weeks' }, class: 'week'}
               %div{ class: 'day', 
-                    tabindex:'{{day.tabindex}}',
+                    tabindex:'{{day.startTime || day.endTime ? "0" : "-1"}}',
                     ng: { repeat: 'day in week track by day.key', 
                           click:'selectDepartDate(day)',
                           disabled:'!(day.startTime || day.endTime)', 
-                          class:'{ disabled: !(day.startTime || day.endTime), selected: fromMoment.isSame(day.moment, "day")}' } }
+                          class:'{ disabled: !(day.startTime || day.endTime), selected: fromMoment.isSame(day.moment, "day")}',
+                          attr:{'aria-selected': '{{fromMoment.isSame(day.moment, "day") ? "true" : "false"}}'} } }
                 {{day.day}}
     .row{style:'padding:11px 0px;'}
       .col-lg-6.col-lg-offset-3.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1.col-xs-12

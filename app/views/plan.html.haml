@@ -29,10 +29,14 @@
                                               'attr-input-class' => 'whereToFrom',
                                               'on-type'=> 'getFromLocations',
                                               'on-focus'=> 'focusFrom',
-                                              'on-blur'=> 'mapFrom',
+                                              'on-blur'=>     'mapFrom',
                                               'on-select' => 'selectFrom',
                                               'autocomplete-required' => 'true',
-                                              ng: { model: 'from'} }
+                                              ng: { model: 'from'},
+                                              'aria-label' => 'Enter the starting location for your trip in this text box',
+                                              'aria-live' => 'polite' }
+
+
                   .alert.alert-danger{role:'alert', ng:{show:'errors.noResultsfrom'}}
                     Address is not recognized.  Try entering it another way.
                   .alert.alert-danger{role:'alert', ng:{show:'errors.rangeErrorfrom'}}
@@ -56,7 +60,8 @@
                                               'on-blur'=> 'mapTo',
                                               'on-select' => 'selectTo',
                                               'autocomplete-required' => 'true',
-                                              ng: { model: 'to'} }
+                                              ng: { model: 'to'},
+                                              'aria-label' => 'Enter the destination for your trip in this text box' }
 
                   .alert.alert-danger{role:'alert', ng:{show:'errors.noResultsto'}}
                     Address is not recognized.  Try entering it another way.
