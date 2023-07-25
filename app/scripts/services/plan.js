@@ -217,7 +217,7 @@ angular.module('applyMyRideApp')
         request.purpose = itineraryRequestObject.trips[0].trip.external_purpose
         request.when1 = this.getDateDescription(outboundTime);
         request.when2 = "Arrive by " + moment(outboundTime).format('h:mm a');
-        
+
         if (itineraryRequestObject.trips.length > 1) {
           request.roundtrip = true;
           var returnTime = itineraryRequestObject.trips[1].trip.trip_time;
@@ -303,7 +303,7 @@ angular.module('applyMyRideApp')
         if(itinerariesByModeOutbound){
           if(itinerariesByModeOutbound.mode_paratransit){
               var lowestPricedParatransitTrip = this.getLowestPricedParatransitTrip(itinerariesByModeOutbound.mode_paratransit);
-              
+
               if(!this.email){
                 // TODO (Drew Teter, 09/22/2022) Fully Remove ability for guest login.
                 // We plan on doing this in the future, but as no tickets have been created
@@ -1124,10 +1124,13 @@ angular.module('applyMyRideApp')
 
 angular.module('applyMyRideApp')
   .service('LocationSearch', function($http, $q, localStorageService, $filter){
+    const enableGooglePlaces = false;
+    const enableRecentSearches = false;
+
     var countryFilter = $filter('noCountry');
     var urlPrefix = '//' + APIHOST + '/';
 
-    var autocompleteService = new google.maps.places.AutocompleteService();
+    let autocompleteService = enableGooglePlaces ? new google.maps.places.AutocompleteService() : new Object();
 
     var LocationSearch = new Object();
     var compositePromise = false;
@@ -1140,15 +1143,18 @@ angular.module('applyMyRideApp')
       compositePromise = $q.defer();
 
       // setup all the individual promises that result in compositePromise resolving
-      var promises = [
-          LocationSearch.getGooglePlaces(text),
-          LocationSearch.getSavedPlaces(text, config)
-        ];
+      let promises = [];
+      if (enableGooglePlaces) {
+        promises.push(LocationSearch.getGooglePlaces(text));
+      } else {
+        promises.push(LocationSearch.getGooglePlacesDummy());
+      }
+      promises.push(LocationSearch.getSavedPlaces(text, config));
 
       // add the getRecentSearches if they are to be included
-      //if(includeRecentSearches == true){
-      //  promises.push(LocationSearch.getRecentSearches(text) );
-      //}
+      if(includeRecentSearches && enableRecentSearches){
+        promises.push(LocationSearch.getRecentSearches(text));
+      }
 
       // when all the promises are resolved, then resolve the compositePromise
       $q.all(promises).then(function(results){
@@ -1166,6 +1172,13 @@ angular.module('applyMyRideApp')
 
       // compositePromise triggers when promises are finished
       return compositePromise.promise;
+    }
+
+    // The plan controller getLocations function assumes Google places are in data slot 0
+    LocationSearch.getGooglePlacesDummy = function() {
+      let googlePlaceData = $q.defer();
+      googlePlaceData.resolve({googleplaces:[], placeIds:[]});
+      return googlePlaceData.promise;
     }
 
     LocationSearch.getGooglePlaces = function(text) {
