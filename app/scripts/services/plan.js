@@ -846,8 +846,12 @@ angular.module('applyMyRideApp')
             bookingRequest.companions = that.numberOfCompanions;
           }
 
-          if(that.driverInstructions){
+          if(that.driverInstructions && index === 0){
             bookingRequest.note = that.driverInstructions;
+          }
+          
+          if(that.driverInstructionsReturn && index === 1){
+              bookingRequest.note = that.driverInstructionsReturn;
           }
           requestHolder.booking_request.push(bookingRequest);
         });
