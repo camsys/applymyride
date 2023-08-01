@@ -397,21 +397,40 @@
         .form-group
           %h3
             %strong
-              Any requests for the driver?
+              Help our driver find you!
           %h4.text-muted
-            If you are visiting a doctor, please enter your doctor's name, suite number, and phone number.
+            Please provide specific location details below. (e.g. Suite F, Entrance G, etc.)
+
+        .row{style: 'margin-top: 30px'} 
+          %h4
+            %strong
+              Notes for outbound trip pickup:
+          %h5.text-muted{'ng-bind': 'planService.confirmRequest.fromLine2'}
+
         .row
           .form-group
-            %textarea{style:'width: 100%;',placeholder: 'Dear Driver, please...', rows: '5', ng: {model: 'driverInstructions'}}
+            %textarea{style:'width: 100%;',placeholder: 'Dear Driver, please...', rows: '5', maxlength: '75', ng: {model: 'planService.driverInstructions', keyup: 'updateCounter1()'}}
+            .char-counter {{75 - counter1}} characters remaining
+
+        .row{ng: {show: 'isRoundTrip'}, style: 'margin-top: 30px'}
+          %h4
+            %strong
+              Notes for return trip pickup:
+          %h5.text-muted{'ng-bind': 'planService.confirmRequest.toLine2'}
+
+          .form-group
+            %textarea{style:'width: 100%;',placeholder: 'Dear Driver, please...', rows: '5', maxlength: '75', ng: {model: 'planService.driverInstructionsReturn', keyup: 'updateCounter2()'}}
+            .char-counter {{75 - counter2}} characters remaining
+
         .row.unstuck-foot{style: 'margin-top: 30px'}
           .col-md-8.col-md-offset-2.col-xs-12{ style: 'padding:0px;' }
             %a.btn.btn-secondary{href: "", ng: {click: "back()"}}
               %span
                 Back
             %a.btn.btn-primary.pull-right{href: "", ng: {disabled: 'disableNext', click: 'next()'}}
-              %span{'ng-show'=>'driverInstructions'}
+              %span{'ng-show'=>'planService.driverInstructions'}
                 Book this Trip
-              %span{'ng-hide'=>'driverInstructions'}
+              %span{'ng-hide'=>'planService.driverInstructions'}
                 Skip and Book this Trip
 
     .discounts{ng: {show: 'step==="discounts"'}}
