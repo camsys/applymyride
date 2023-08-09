@@ -1253,7 +1253,7 @@ angular.module('applyMyRideApp')
           angular.forEach(locations, function(value, index) {
             var address;
             if(that.savedPlaceResults.length < 10){
-              //use the formatted_address if the name is basically the same
+              //use the formatted_address if the name is basically the same or empty
               //compare by:
               // 1) Only looking at the name address up to the first column.
               // 2) going to upper case
@@ -1261,14 +1261,18 @@ angular.module('applyMyRideApp')
               // 4) Replace Directions (NORTH/SOUTH/EAST/WEST) with (N/S/E/W)
               // 5) Replace Common Street Suffixes with Abbr. (ROAD/DRIVE/STREET) to (RD/DR/ST). This one might need to be extended from time to time
               // 6) Only look at the first 10 characters.  This reduces the likelihood that a street abbreviation comes into play.
-              var normalizedName = value.name.split(',')[0].toUpperCase().replace(filter, '').replace('NORTH', 'N').replace('SOUTH', 'S').replace('EAST','E').replace('WEST','W').replace('DRIVE','DR').replace('ROAD','RD').replace('STREET','ST').substring(0,10);
-              var normalizedAddress = value.formatted_address.split(',')[0].toUpperCase().replace(filter, '').replace('NORTH', 'N').replace('SOUTH', 'S').replace('EAST','E').replace('WEST','W').replace('DRIVE','DR').replace('ROAD','RD').replace('STREET','ST').substring(0,10);
-              if(normalizedAddress === normalizedName){
-                //they're the same, just show one.
-                address = 'POI ' + value.formatted_address;
-              }else{
+              let useName = false;
+              if (value.name.trim() !== "") {
+                let normalizedName = value.name.split(',')[0].toUpperCase().replace(filter, '').replace('NORTH', 'N').replace('SOUTH', 'S').replace('EAST', 'E').replace('WEST', 'W').replace('DRIVE', 'DR').replace('ROAD', 'RD').replace('STREET', 'ST').substring(0, 10);
+                let normalizedAddress = value.formatted_address.split(',')[0].toUpperCase().replace(filter, '').replace('NORTH', 'N').replace('SOUTH', 'S').replace('EAST', 'E').replace('WEST', 'W').replace('DRIVE', 'DR').replace('ROAD', 'RD').replace('STREET', 'ST').substring(0, 10);
+                useName = (normalizedAddress !== normalizedName)
+              }
+              if (useName) {
                 //they're different. show both
-                address = 'POI ' + value.name + ', ' + value.formatted_address;
+                address = value.name + ', ' + value.formatted_address;
+              } else {
+                // they're the same, just show one.
+                address = value.formatted_address;
               }
               that.savedPlaceResults.push(address);
               that.savedPlaceAddresses.push(value.formatted_address);

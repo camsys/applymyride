@@ -7,3 +7,8 @@ platforms
 www
 .DS_Store
 .tool-versions
+.idea
+*~
+
+localhost-key.pem
+localhost.pem
