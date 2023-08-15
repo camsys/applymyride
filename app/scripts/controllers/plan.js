@@ -581,7 +581,7 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
             } else {
               $location.path('/plan/when/error');
             }
-          });
+          });  
           break;
         case 'companions':
           // The Companions page doesn't use a "next" button
