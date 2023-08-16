@@ -600,7 +600,6 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
           $location.path('/plan/instructions_for_driver');
           break;
         case 'instructions_for_driver':
-          // Add watcher for "howLong"
           $scope.$watch('howLong', function(newVal) {
             // Show return leg note text box if selected howLong value is more than 0
             $scope.isRoundTrip = newVal && newVal.minutes > 0;
@@ -2097,7 +2096,7 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
         break;
 
       case 'instructions_for_driver':
-        // Add watcher for "howLong"
+        $scope.driverInstructions = planService.driverInstructions;
         $scope.$watch('howLong', function(newVal) {
           // Show return leg note text box if selected howLong value is more than 0
           $scope.isRoundTrip = newVal && newVal.minutes > 0;
@@ -2111,11 +2110,10 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
           $scope.counter2 = $scope.planService.driverInstructionsReturn ? $scope.planService.driverInstructionsReturn.length : 0;
         };
       
-        $scope.updateCounter1(); // Initialize counter1 immediately
-        $scope.updateCounter2(); // Initialize counter2 immediately
+        $scope.updateCounter1(); 
+        $scope.updateCounter2(); 
       
         break;
-        
       case 'rebook':
         $scope.minDate = new Date();
         $scope.trip = planService.rebookTrip;
