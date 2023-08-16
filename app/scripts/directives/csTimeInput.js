@@ -152,6 +152,15 @@ app.directive('csTimeInput', function() {
                 }
             }
 
+            scope.toggleAMPM = function(event) {
+                // Check if pressed key is Enter
+                if (event.keyCode === 13) {
+                    scope.isAM = !scope.isAM;
+                    scope.updateTime("ampm");
+                    event.preventDefault();
+                }
+            };                    
+
             element[0].addEventListener("keydown", function(e)
             {
                 var lvIndex = e.srcElement.classList.contains('cs-hour') ? 'hour' : 'minute';

@@ -31,8 +31,11 @@
                                               'on-focus'=> 'focusFrom',
                                               'on-blur'=> 'mapFrom',
                                               'on-select' => 'selectFrom',
+                                              'role' => 'combobox',
                                               'autocomplete-required' => 'true',
-                                              ng: { model: 'from'} }
+                                              'aria-label'=> 'Where are you starting?',
+                                              ng: { model: 'from', change: 'updateLabel(from)'} }
+
                   .alert.alert-danger{role:'alert', ng:{show:'errors.noResultsfrom'}}
                     Address is not recognized.  Try entering it another way.
                   .alert.alert-danger{role:'alert', ng:{show:'errors.rangeErrorfrom'}}
@@ -56,6 +59,8 @@
                                               'on-blur'=> 'mapTo',
                                               'on-select' => 'selectTo',
                                               'autocomplete-required' => 'true',
+                                              'aria-label'=> 'Where are you going?',
+                                              'aria-describedby'=> 'toInputHelp',
                                               ng: { model: 'to'} }
 
                   .alert.alert-danger{role:'alert', ng:{show:'errors.noResultsto'}}
@@ -70,10 +75,11 @@
 
               %div.map-canvas{'ui-map' => 'whereToMap', 'ui-options' => 'mapOptions', ng: {show: 'showMap'}}
 
+
           .row.unstuck-foot.btn-spacing
             .col-lg-6.col-lg-offset-3.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1.col-xs-12
               .pull-right
-                %a.btn.btn-primary{href: "", ng: {class:'{disabled: false==whereShowNext()}', click: 'next()'}}
+                %a.btn.btn-primary{href: "", ng: {class:'{disabled: false==whereShowNext()}', click: 'next()'}, 'aria-label' => 'Confirm locations and proceed'}
                   %span{ng:{show:'backToConfirm'}}
                     Back to confirm
                   %span{ng:{hide:'backToConfirm'}}
