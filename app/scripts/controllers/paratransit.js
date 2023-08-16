@@ -59,6 +59,7 @@ angular.module('applyMyRideApp')
         $scope.booking_results = planService.booking_results;
         $scope.paratransitItineraries = planService.paratransitItineraries;
         $scope.driverInstructions = planService.driverInstructions;
+        $scope.driverInstructions = planService.driverInstructionsReturn;
         if ($scope.driverInstructions == null) {
           $scope.driverInstructions = 'N/A';
         }

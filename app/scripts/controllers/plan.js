@@ -600,7 +600,22 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
           $location.path('/plan/instructions_for_driver');
           break;
         case 'instructions_for_driver':
-          planService.driverInstructions = $scope.driverInstructions;
+          $scope.$watch('howLong', function(newVal) {
+            // Show return leg note text box if selected howLong value is more than 0
+            $scope.isRoundTrip = newVal && newVal.minutes > 0;
+          });
+          
+          $scope.updateCounter1 = function() {
+            $scope.counter1 = $scope.planService.driverInstructions ? $scope.planService.driverInstructions.length : 0;
+          };
+        
+          $scope.updateCounter2 = function() {
+            $scope.counter2 = $scope.planService.driverInstructionsReturn ? $scope.planService.driverInstructionsReturn.length : 0;
+          };
+        
+          $scope.updateCounter1(); // Initialize counter1 immediately
+          $scope.updateCounter2(); // Initialize counter2 immediately
+        
           _bookTrip().success((sec) => {
             $scope.stopSpin();
             $scope.paratransitResult = planService.paratransitResult;
@@ -1645,7 +1660,7 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
         returnTrip.departure_type = trip.itineraries[1].requested_time_type;
         returnTrip.assistant = trip.itineraries[0].assistant;
         returnTrip.companions = trip.itineraries[0].companions;
-        returnTrip.note = trip.itineraries[0].note;
+        returnTrip.note = trip.itineraries[1].note;
         var returnTimeString = moment.utc(returnTime).format();
         returnTrip.trip_time = returnTimeString;
         request.itinerary_request.push(returnTrip);
@@ -1674,6 +1689,7 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
               planService.hasEscort = trip.itineraries[0].assistant;
               planService.numberOfCompanions = trip.itineraries[0].companions;
               planService.driverInstructions = trip.itineraries[0].note;
+              planService.driverInstructionsReturn = trip.itineraries[1].note;
               $location.path('/paratransit/confirm_shared_ride');
             });
           }
@@ -2078,8 +2094,25 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
 
         $scope.hasCompanions = $scope.numberOfCompanions > 0
         break;
+
       case 'instructions_for_driver':
         $scope.driverInstructions = planService.driverInstructions;
+        $scope.$watch('howLong', function(newVal) {
+          // Show return leg note text box if selected howLong value is more than 0
+          $scope.isRoundTrip = newVal && newVal.minutes > 0;
+        });
+        
+        $scope.updateCounter1 = function() {
+          $scope.counter1 = $scope.planService.driverInstructions ? $scope.planService.driverInstructions.length : 0;
+        };
+      
+        $scope.updateCounter2 = function() {
+          $scope.counter2 = $scope.planService.driverInstructionsReturn ? $scope.planService.driverInstructionsReturn.length : 0;
+        };
+      
+        $scope.updateCounter1(); 
+        $scope.updateCounter2(); 
+      
         break;
       case 'rebook':
         $scope.minDate = new Date();
