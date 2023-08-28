@@ -502,9 +502,16 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
           
           planService.getTravelPatterns($http, params)
                       .then((res) => {
-                        let travelPatterns = res.data.data;
-                        let dates = travelPatterns.map(pattern => Object.keys(pattern.to_calendar)).flat();
+                        let travelPatterns = res.data.data.flat();
+                        let dates = travelPatterns
+                        .filter(pattern => pattern.to_calendar)
+                        .map(pattern => Object.keys(pattern.to_calendar))
+                        .flat();
                         let sorted_dates = [...new Set(dates)].sort();
+                        if (sorted_dates.length === 0) {
+                          $location.path('/plan/when/error');
+                          return; 
+                        }
                         let lastDay = moment(sorted_dates[sorted_dates.length-1]);
                         let months = [];
                         let monthOffset = moment(sorted_dates[0], "YYYY-MM-DD").month();
