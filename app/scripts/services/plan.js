@@ -849,7 +849,7 @@ angular.module('applyMyRideApp')
           if(that.driverInstructions && index === 0){
             bookingRequest.note = that.driverInstructions;
           }
-          
+
           if(that.driverInstructionsReturn && index === 1){
               bookingRequest.note = that.driverInstructionsReturn;
           }
@@ -1250,7 +1250,7 @@ angular.module('applyMyRideApp')
       this.savedPlaceResults = [];
       this.poiData = [];
       var that = this;
-      $http.get(urlPrefix + 'api/v1/places/search?include_user_pois=true&search_string=%25' + text + '%25', config).
+      $http.get(urlPrefix + 'api/v1/places/search?include_user_pois=true&search_string=%25' + encodeURIComponent(text) + '%25', config).
         success(function(data) {
           var locations = data.places_search_results.locations;
           var filter = /[^a-zA-Z0-9]/g;
