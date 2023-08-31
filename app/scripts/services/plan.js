@@ -182,7 +182,9 @@ angular.module('applyMyRideApp')
             }
 
           }
-
+          trip[i].startDesc = that.getDateDescription(trip[i].wait_start || trip[i].departure);
+          trip[i].startDesc += " at " + moment.parseZone(trip[i].wait_start || trip[i].departure).format('h:mm a');
+  
           trip_with_itineraries.itineraries.push(trip[i]);
           i++;
         }

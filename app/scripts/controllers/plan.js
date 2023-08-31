@@ -350,9 +350,24 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
 
     $scope.selectTrip = function($event, tab, index) {
       $event.stopPropagation();
+    
       var trip = $scope.trips[tab][index];
       trip.tab = tab;
-      planService.selectedTrip = trip;
+    
+      var selectedItinerary;
+    
+      // If from_place and to_place match the original trip's values, it's the outbound trip, otherwise it's the return trip
+      if (trip.from_place === trip.original_from_place && trip.to_place === trip.original_to_place) {
+        selectedItinerary = trip.itineraries[0];
+      } else {
+        selectedItinerary = trip.itineraries[1];
+      }
+    
+      var singleLegTrip = Object.assign({}, trip);
+      singleLegTrip.itineraries = [selectedItinerary];
+    
+      planService.selectedTrip = singleLegTrip;
+    
       switch(trip.mode) {
         case 'mode_paratransit':
           break;
@@ -361,9 +376,11 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
         case 'mode_walk':
           break;
       }
+    
       $location.path('/itinerary');
-    };
-
+    };    
+     
+    
     $scope.toggleEmail = function($event) {
       $scope.invalidEmail = false;
       $scope.showEmail = !$scope.showEmail;
@@ -462,6 +479,48 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
       return fromDateString;
     }
 
+
+    $scope.splitTripsWithMultipleItineraries = function(trips) {
+      var expandedTrips = [];
+      
+      angular.forEach(trips, function(trip) {
+          // Add totalItineraries attribute to know the original count of itineraries
+          trip.totalItineraries = trip.itineraries.length;
+    
+          if (trip.itineraries.length > 1) {
+              angular.forEach(trip.itineraries, function(itinerary, index) {
+                  var newTrip = angular.copy(trip);
+                  newTrip.original_from_place = trip.from_place;
+                  newTrip.original_to_place = trip.to_place;
+        
+                  // Flip the from and to places if it's the second part of a round trip
+                  if (index === 0) {
+                      newTrip.from_place = trip.from_place;
+                      newTrip.to_place = trip.to_place;
+                  } else {
+                      newTrip.from_place = trip.to_place;
+                      newTrip.to_place = trip.from_place;
+                  }
+  
+                  // Make sure startDesc exists in itinerary
+                  if(itinerary.hasOwnProperty('startDesc')) {
+                    newTrip.startDesc = itinerary.startDesc;
+                } else if(trip.hasOwnProperty('startDesc')) { 
+                    newTrip.startDesc = trip.startDesc;
+                }
+  
+                  newTrip.itinerary = [itinerary];
+                  expandedTrips.push(newTrip);
+              });
+          } else {
+              expandedTrips.push(trip);
+          }
+      });
+      
+      return expandedTrips;
+  };
+  
+    
     $scope.next = function() {
       if($scope.disableNext){ return; }
       $scope.showNext = false;
@@ -713,7 +772,11 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
 
       var promise = planService.selectItineraries($http, selectedItineraries);
       promise.then(function(result) {
-        ipCookie('rideCount', ipCookie('rideCount') + 1);
+        if (isRoundTrip) {
+          ipCookie('rideCount', parseInt(ipCookie('rideCount')) + 2);
+        } else {
+            ipCookie('rideCount', parseInt(ipCookie('rideCount')) + 1);
+        }      
         $scope.rideCount = ipCookie('rideCount');
         $scope.transitSaved = true;
         planService.transitSaved = true;
@@ -2067,13 +2130,15 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
       case 'my_rides':
         planService.reset();
         planService.getPastRides($http).then(function(data) {
-          planService.populateScopeWithTripsData($scope, planService.unpackTrips(data.data.trips, 'past'), 'past');
+          var trips = planService.unpackTrips(data.data.trips, 'past');
+          trips = $scope.splitTripsWithMultipleItineraries(trips);
+          planService.populateScopeWithTripsData($scope, trips, 'past');
         });
+      
         planService.getFutureRides($http).then(function(data) {
-          var liveTrip = planService.processFutureAndLiveTrips(data, $scope, ipCookie);
-          if (liveTrip) { // If there's a live trip, check for realtime updates
-            planService.createEtaChecker($scope, $http, ipCookie);
-          }
+            var trips = planService.unpackTrips(data.data.trips, 'future');
+            trips = $scope.splitTripsWithMultipleItineraries(trips);
+            planService.populateScopeWithTripsData($scope, trips, 'future');
 
           var navbar = $routeParams.navbar;
           if(navbar){
