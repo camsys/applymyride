@@ -209,7 +209,7 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
         usSpinnerService.stop('spinner-1');
       });
       cancelPromise.success(function(data) {
-        bootbox.alert('Your trip has been cancelled');
+        bootbox.alert('Your trip has been canceled. Be sure to cancel any other relevant trips.');
         ipCookie('rideCount', ipCookie('rideCount') - 1);
         $scope.transitSaved = false;
         $scope.transitCancelled = true;
@@ -235,7 +235,7 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
         usSpinnerService.stop('spinner-1');
       });
       cancelPromise.success(function(data) {
-        bootbox.alert('Your trip has been cancelled');
+        bootbox.alert('Your trip has been canceled. Be sure to cancel any other relevant trips.');
         ipCookie('rideCount', ipCookie('rideCount') - 1);
         $scope.walkSaved = false;
         $scope.walkCancelled = true;
@@ -307,7 +307,7 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
       var successMessage;
       if(result == 'BOTH'){
         itinsToCancel = $scope.trip.itineraries;
-        successMessage = 'Your trip has been cancelled.';
+        successMessage = 'Your trip has been canceled. Be sure to cancel any other relevant trips.';
       }
       else if(result == 'OUTBOUND'){
         itinsToCancel = [$scope.trip.itineraries[0]];

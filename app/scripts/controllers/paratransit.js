@@ -88,7 +88,7 @@ angular.module('applyMyRideApp')
 
       $scope.cancelTrip = function(){
         var message = "Are you sure you want to cancel this ride?";
-        var successMessage = 'Your trip has been cancelled.'
+        var successMessage = 'Your trip has been canceled. Be sure to cancel any other relevant trips.'
 
         $scope.paratransitItineraries = planService.paratransitItineraries;
 
@@ -162,7 +162,7 @@ angular.module('applyMyRideApp')
         var successMessage;
         if(result == 'BOTH'){
           itinsToCancel = $scope.paratransitItineraries
-          successMessage = 'Your trip has been cancelled.';
+          successMessage = 'Your trip has been canceled. Be sure to cancel any other relevant trips.';
         }
         else if(result == 'OUTBOUND'){
           itinsToCancel = [$scope.paratransitItineraries[0]];

@@ -47,7 +47,7 @@ angular.module('applyMyRideApp')
           usSpinnerService.stop('spinner-1');
         });
         cancelPromise.success(function(data) {
-          bootbox.alert('Your trip has been cancelled');
+          bootbox.alert('Your trip has been canceled. Be sure to cancel any other relevant trips.');
           ipCookie('rideCount', ipCookie('rideCount') - 1);
           $scope.uberSaved = false;
           $scope.uberCancelled = true;
