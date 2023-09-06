@@ -32,8 +32,8 @@
                 .col-xs-8
                   %h5.blue-text {{trip.startDesc}}
                 .col-xs-4
-                  %h5.text-muted.text-right{ng: {show: 'trip.itineraries.length > 1'}} (round trip)
-                  %h5.text-muted.text-right{ng: {show: 'trip.itineraries.length == 1'}} (one way)
+                  %h5.text-muted.text-right{ng: {show: 'trip.itineraries.length > 1'}}
+                  %h5.text-muted.text-right{ng: {show: 'trip.itineraries.length == 1'}}
       %uib_tab{'heading' => 'History ({{trips.past.length}})', 'active' => 'tabPast'}
         .my-ride.card.card-thin{'index' => '{{$index}}', ng: {init: 'tab = "past"', click: 'selectTrip($event, tab, $index);', repeat: 'trip in trips.past'}}
           .row

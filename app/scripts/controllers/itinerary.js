@@ -190,7 +190,7 @@ angular.module('applyMyRideApp')
         var successMessage;
         if(result == 'BOTH'){
           itinsToCancel = $scope.trip.itineraries;
-          successMessage = 'Your trip has been cancelled.';
+          successMessage = 'Your trip has been canceled. Be sure to cancel any other relevant trips.';
         }
         else if(result == 'OUTBOUND'){
           itinsToCancel = [$scope.trip.itineraries[0]];
