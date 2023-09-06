@@ -2,10 +2,10 @@
   %div{ng:{show:'isMobile()'}}
     %input{type:'time', placeholder:'HH:mm:ss', required:'', ng:{model:'rideTime.value', focus:'inputFocused=true'}}
   %div{class:'cs-time-input {{class}}', id:'{{id}}', ng:{hide:'isMobile()'}}
-    %input{class:'cs-hour', type:'text', inputmode:'numeric', placeholder:'hh', pattern:'(0?[1-9]|1[0-2])', ng:{model:'hour', change:'updateTime("hour")', focus:'inputFocused=true'}, 'aria-label' => 'Hour', 'click-focus'=>'true'}
+    %input{class:'cs-hour', type:'tel', placeholder:'hh', 'aria-label' => 'Hour', ng:{model:'hour', change:'updateTime("hour")', focus:'inputFocused=true'}, 'click-focus'=>'true'}
     .seperator-hour-minute
       &#58;
-    %input{class:'cs-minute', type:'text', inputmode:'numeric', placeholder:'mm', ng:{model:'minute', change:'minute = (minute > 59 ? 59 : (minute < 0 ? 0 : minute))', focus:'inputFocused=true', blur:'blurMinute()'}, 'attr-placeholder'=>'00', 'aria-label' => 'Minute', 'click-focus'=>'true'}
-    %label{style:'margin-left: 8px;', for:'cs-ampm-input'}
+    %input{class:'cs-minute', type:'tel', placeholder:'mm', 'aria-label' => 'Minute', ng:{model:'minute', change:'updateTime("minute")', focus:'inputFocused=true', blur:'blurMinute()'}, 'attr-placeholder'=>'00', 'click-focus'=>'true'}
+    %label{style:'margin-left: 8px;',for:'cs-ampm-input'}
       %input{class:'cs-ampm', id:'cs-ampm-input', type:'checkbox', name:'cstimeisam', ng:{ model:'isAM', change:'updateTime("ampm")', keydown: 'toggleAMPM($event)' }, 'aria-label' => "{{isAM ? 'A.M.' : 'P.M.'}}"}
       %span{class:'cs-ampmspan'}
