@@ -80,10 +80,16 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
     $scope.loggedIn = !!planService.email;
     $scope.tripId = planService.tripId
 
-    $scope.toDefault = countryFilter( localStorage.getItem('last_destination') || '');
-    $scope.to = countryFilter( planService.to || '');
-    $scope.fromDefault = countryFilter( localStorage.getItem('last_origin') || '' );
-    $scope.from = countryFilter( planService.from || '' );
+    // $scope.toDefault = countryFilter( localStorage.getItem('last_destination') || '');
+    // $scope.to = countryFilter( planService.to || '');
+    // $scope.fromDefault = countryFilter( localStorage.getItem('last_origin') || '' );
+    // $scope.from = countryFilter( planService.from || '' );
+    // Leave to and from blank for now until we can figure out why the default places sometimes fail to book
+    $scope.toDefault = '';
+    $scope.to = '';
+    $scope.fromDefault = '';
+    $scope.from = '';
+
     $scope.transitSaved = planService.transitSaved || false;
     $scope.transitCancelled = planService.transitCancelled || false;
     $scope.walkSaved = planService.walkSaved || false;
@@ -303,7 +309,7 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
     }
 
     $scope.cancelCall = function(result){
-      var itinsToCancel; 
+      var itinsToCancel;
       var successMessage;
       if(result == 'BOTH'){
         itinsToCancel = $scope.trip.itineraries;
@@ -316,7 +322,7 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
         itinsToCancel = [$scope.trip.itineraries[$scope.trip.itineraries.length - 1]];
         successMessage = 'Your return trip has been cancelled.';
       }
-      
+
       var cancel = {};
 
       cancel.bookingcancellation_request = [];
@@ -433,7 +439,7 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
       }
 
       if (planService.hasCompanions) {
-        if (planService.numberOfCompanions === 1) { 
+        if (planService.numberOfCompanions === 1) {
           otherRiders.push(planService.numberOfCompanions + ' companion');
         } else {
           otherRiders.push(planService.numberOfCompanions + ' companions');
@@ -499,7 +505,7 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
         case 'purpose':
           delete params.date;
           delete params.start_time;
-          
+
           planService.getTravelPatterns($http, params)
                       .then((res) => {
                         let travelPatterns = res.data.data;
@@ -535,7 +541,7 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
                                 key: tempDate.format("YYYY-MM-DD"),
                                 day: tempDate.date()
                               };
-                            } 
+                            }
                           }
 
                           let week = month.weeks[weekIndex]
@@ -604,18 +610,18 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
             // Show return leg note text box if selected howLong value is more than 0
             $scope.isRoundTrip = newVal && newVal.minutes > 0;
           });
-          
+
           $scope.updateCounter1 = function() {
             $scope.counter1 = $scope.planService.driverInstructions ? $scope.planService.driverInstructions.length : 0;
           };
-        
+
           $scope.updateCounter2 = function() {
             $scope.counter2 = $scope.planService.driverInstructionsReturn ? $scope.planService.driverInstructionsReturn.length : 0;
           };
-        
+
           $scope.updateCounter1(); // Initialize counter1 immediately
           $scope.updateCounter2(); // Initialize counter2 immediately
-        
+
           _bookTrip().success((sec) => {
             $scope.stopSpin();
             $scope.paratransitResult = planService.paratransitResult;
@@ -768,7 +774,7 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
             result.itineraries[i].origin = planService.getAddressDescriptionFromLocation(result.itineraries[i].start_location);
             result.itineraries[i].destination = planService.getAddressDescriptionFromLocation(result.itineraries[i].end_location);
             if (result.itineraries[i].returned_mode_code == "mode_paratransit") {
-              // If the trip purpose is eligible based on the valid date range, allow booking a shared ride. 
+              // If the trip purpose is eligible based on the valid date range, allow booking a shared ride.
               // Otherwise, display no shared ride message.
               var allPurposes = [...planService.top_purposes || [], ...planService.purposes || []];
               var tripPurposesFiltered = allPurposes.filter(e => e.code == planService.itineraryRequestObject.trip_purpose);
@@ -859,7 +865,7 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
       if(typed){
         // The user has typed something, don't let the Next button activate until they have selected a location.
         $scope.locationClicked = false;
-        
+
         var config = planService.getHeaders();
         //if this is run before the last promise is resolved, abort the promise, start over.
         var getLocationsPromise = LocationSearch.getLocations(typed, config, planService.email != null);
@@ -876,7 +882,7 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
             choices.push({label: currentLocationLabel, option: true})
           }
 
-          // Saved Places: These are POIs from 1-Click 
+          // Saved Places: These are POIs from 1-Click
           var savedPlaceData = data[1].savedplaces;
           if(savedPlaceData && savedPlaceData.length > 0){
             choices.push({label:'Saved Places', option: false});
@@ -889,7 +895,7 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
             $scope.placeAddresses = $scope.placeAddresses.concat(data[1].savedplaceaddresses);
           }
 
-          // Recent Searches are stored locally.  
+          // Recent Searches are stored locally.
           if(data.length > 2){
             var recentSearchData = data[2].recentsearches;
             if(recentSearchData && recentSearchData.length > 0){
@@ -952,7 +958,7 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
       }else{
         $scope.showNext = false;
       }
-      lastMappedPlaces[toFrom] = place; 
+      lastMappedPlaces[toFrom] = place;
       setTimeout(function selectPlace(){
         //if $scope.to or $scope.from is different from place, the autocomplete input's select events are handling
         if(!defaulted && $scope[toFrom] !== place){
@@ -1044,8 +1050,8 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
       google.maps.event.trigger(map, 'resize');
 
       // Check if POI's have been selected, or if the location is in a format that isn't recognized by google maps
-      const toLatType = typeof toLocation.lat === 'number' || typeof toLocation.lat === 'string' 
-      const fromLatType = typeof fromLocation.lat === 'number' || typeof fromLocation.lat === 'string' 
+      const toLatType = typeof toLocation.lat === 'number' || typeof toLocation.lat === 'string'
+      const fromLatType = typeof fromLocation.lat === 'number' || typeof fromLocation.lat === 'string'
 
       const newFromLocation = toLatType ? new google.maps.LatLng(Number(toLocation.lat), Number(toLocation.lng)) : toLocation
       const newToLocation = fromLatType ? new google.maps.LatLng(Number(fromLocation.lat), Number(fromLocation.lng)) : fromLocation
@@ -1144,7 +1150,7 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
       var placeIdPromise = $q.defer();
       $scope.placeLabels = $scope.placeLabels || [];
 
-      // If we are on mobile, you can use the current location 
+      // If we are on mobile, you can use the current location
       if(toFrom == 'from' && util.isMobile()){
         $scope.placeLabels.push(currentLocationLabel);
         $scope.locationClicked = true;
@@ -1159,7 +1165,7 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
         return;
       }
       var selectedIndex = $scope.placeLabels.indexOf(place);
-      
+
       // The person selected the current location.
       if(-1 < selectedIndex && $scope.placeLabels[selectedIndex] == currentLocationLabel){
         $scope.getCurrentLocation(toFrom);
@@ -1293,7 +1299,7 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
                 return;
               }
 
-              // When we start typing we hide the Yes, looks good! button. 
+              // When we start typing we hide the Yes, looks good! button.
               // If we made it back here without selecting a place, then we shouldn't let the person continue.
               // When the page is first loaded, then this is used to populate the lat/lng for the previous locations, since the showButton is true by default, the button will be green assuming all other tests pass.
               if ($scope.locationClicked) {
@@ -1407,7 +1413,7 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
     // Take in a Google Place object and return the format that is shown
     // in the to/from fields in FMR
     $scope.getDisplayAddress = function(gPlace){
-      var name = gPlace['name'] 
+      var name = gPlace['name']
       var vicinity = gPlace['vicinity'];
       var formatted_address = gPlace['formatted_address']
       var city = null;
@@ -1752,7 +1758,7 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
 
         if (hrsDiff > 0) { name.push(hrsDiff, (hrsDiff === 1 ? 'Hour' : 'Hours')) }
         if (minDiff % 60 > 0) { name.push(minDiff % 60, (minDiff % 60 === 1 ? 'Minute' : 'Minutes')) }
-        
+
         $scope.howLongOptions.push({
           minutes: minDiff,
           name: name.join(' ')
@@ -1848,7 +1854,7 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
 
           _checkServiceHours = function(from, open, close, okNull) {
             var startMoment, endMoment;
-      
+
             if(from === null){
               if( okNull === true ){ return true; }
               return false; // if the day is null return false (unless null is ok)
@@ -2101,18 +2107,18 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
           // Show return leg note text box if selected howLong value is more than 0
           $scope.isRoundTrip = newVal && newVal.minutes > 0;
         });
-        
+
         $scope.updateCounter1 = function() {
           $scope.counter1 = $scope.planService.driverInstructions ? $scope.planService.driverInstructions.length : 0;
         };
-      
+
         $scope.updateCounter2 = function() {
           $scope.counter2 = $scope.planService.driverInstructionsReturn ? $scope.planService.driverInstructionsReturn.length : 0;
         };
-      
-        $scope.updateCounter1(); 
-        $scope.updateCounter2(); 
-      
+
+        $scope.updateCounter1();
+        $scope.updateCounter2();
+
         break;
       case 'rebook':
         $scope.minDate = new Date();
