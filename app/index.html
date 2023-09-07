@@ -40,26 +40,39 @@
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <base href="/">
     <script>
-      //initialize APIHOST by mapping from hostname
-      var APIHOST = (function( docHost )
-      {
-	// Assume localhost rails server is running on port 3000
-        var apiHostMapping = {
-	  'www.findmyridepa.org': 'occ-pa-prod.camsys-apps.com',
-	  'findmyridepa.org': 'occ-pa-prod.camsys-apps.com',
-	  'www.findmyridepa.com': 'occ-pa-prod.camsys-apps.com',
-	  'findmyridepa.com': 'occ-pa-prod.camsys-apps.com',
-    'www.findmyridepa.net': 'occ-pa-prod.camsys-apps.com',
-    'findmyridepa.net': 'occ-pa-prod.camsys-apps.com',
-	  'ui-pa-qa2.s3-website-us-east-1.amazonaws.com': 'occ-pa-qa2.herokuapp.com',
-	  'findmyridepa-qa2.camsys-apps.com': 'occ-pa-qa2.herokuapp.com',
-	  'oneclick-pa-qa.camsys-apps.com': 'occ-pa-qa.camsys-apps.com',
-	  'oneclick-pa-dev2.camsys-apps.com': 'occ-pa-dev.camsys-apps.com',
-	  'findmyridepa-dev2.camsys-apps.com': 'occ-pa-dev.herokuapp.com',
-	  '0.0.0.0': '0.0.0.0:3000',
-	  '127.0.0.1': '127.0.0.1:3000',
-	  'localhost': 'localhost:3000'
+      const HOMEPAGE = '/plan/my_rides';
+
+      // Initialize APIHOST by mapping from hostname
+      // Assume localhost rails server is running on port 3000
+      const APIHOST = (function( docHost ) {
+        const apiHostMapping = {
+          'www.findmyridepa.org': 'occ-pa-prod.camsys-apps.com',
+          'findmyridepa.org': 'occ-pa-prod.camsys-apps.com',
+          'www.findmyridepa.com': 'occ-pa-prod.camsys-apps.com',
+          'findmyridepa.com': 'occ-pa-prod.camsys-apps.com',
+          'www.findmyridepa.net': 'occ-pa-prod.camsys-apps.com',
+          'findmyridepa.net': 'occ-pa-prod.camsys-apps.com',
+
+          // 'ui-pa-qa2.s3-website-us-east-1.amazonaws.com': 'occ-pa-qa2.herokuapp.com',
+          // 'findmyridepa-qa2.camsys-apps.com': 'occ-pa-qa2.herokuapp.com',
+          // 'findmyridepa-dev2.camsys-apps.com': 'occ-pa-dev.herokuapp.com',
+
+          'oneclick-pa-qa.camsys-apps.com': 'occ-pa-qa.camsys-apps.com',
+          'ui-pa-qa-occ-ec2.s3.amazonaws.com': 'occ-pa-qa.camsys-apps.com',
+
+          'oneclick-pa-sandbox.camsys-apps.com' : 'occ-pa-qa.camsys-apps.com',
+          'ui-pa-sandbox.s3-website-us-east-1.amazonaws.com' : 'occ-pa-qa.camsys-apps.com',
+
+          'oneclick-pa-dev2.camsys-apps.com': 'occ-pa-dev.camsys-apps.com',
+          'ui-pa-dev-occ-ec2.s3.amazonaws.com' : 'occ-pa-dev.camsys-apps.com',
+          'ui-pa-dev-occ-ec2.s3.us-east-1.amazonaws.com': 'occ-pa-dev.camsys-apps.com',
+        
+          '0.0.0.0': '0.0.0.0:3000',
+          '127.0.0.1': '127.0.0.1:3000',
+          'localhost': 'localhost:3000'
         };
+
+        
 	var apiHost = apiHostMapping[docHost];
         //use docHost by default if nothing else matches, could also be a specific fallback host
 	if (!apiHost) apiHost = docHost;
@@ -68,7 +81,7 @@
     </script>
   </head>
   <body ng-app="applyMyRideApp" ng-controller="NavbarController">
-    <div style="position:absolute; bottom:1px;" ng-hide="true">v2.7.4</div>
+    <div style="position:absolute; bottom:1px;" ng-hide="true">v2.7.6</div>
 
     <!--[if lt IE 7]>
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
@@ -201,6 +214,26 @@
   $("#iewarn").removeAttr("ng-cloak");}
 </script>
 
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-LM8H8QGMSH"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-LM8H8QGMSH', { 'send_page_view': true });
+
+  // Define an AngularJS module and attach a routeChangeSuccess event listener
+  angular.module('applyMyRideApp')
+    .run(['$rootScope', '$location', function($rootScope, $location) {
+      $rootScope.$on('$routeChangeSuccess', function(event) {
+        // Log that a route change has occurred
+        console.log('Route changed');
+
+        // Send a pageview event to Google Analytics with the current page path
+        gtag('event', 'page_view', { 'page_path': $location.path() });
+      });
+    }]);
+</script>
 
 </body>
 </html>
