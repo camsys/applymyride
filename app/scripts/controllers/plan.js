@@ -2110,6 +2110,7 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
 
       case 'instructions_for_driver':
         $scope.driverInstructions = planService.driverInstructions;
+        $scope.driverInstructionsReturn = planService.driverInstructionsReturn;
         $scope.$watch('howLong', function(newVal) {
           // Show return leg note text box if selected howLong value is more than 0
           $scope.isRoundTrip = newVal && newVal.minutes > 0;
