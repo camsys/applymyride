@@ -1,5 +1,5 @@
 %div
-  %div{class:'cs-time-input {{class}}', id:'{{id}}', ng:{hide:'isMobile()'}}
+  %div{class:'cs-time-input {{class}}', id:'{{id}}'}
     %input{class:'cs-hour', type:'tel', placeholder:'hh', 'aria-label' => 'Hour', ng:{model:'hour', change:'updateTime("hour")', focus:'inputFocused=true'}, 'click-focus'=>'true'}
     .seperator-hour-minute
       &#58;
