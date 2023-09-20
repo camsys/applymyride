@@ -38,6 +38,10 @@ app.directive('autocomplete', function() {
         return $scope.selectedIndex;
       };
 
+      $scope.getActiveDescendant = function() {
+        return $scope.selectedIndex >= 0 ? 'option-' + $scope.selectedIndex : '';
+      };
+
       // watches if the parameter filter should be changed
       var watching = true;
 
@@ -274,9 +278,12 @@ app.directive('autocomplete', function() {
             id="{{ attrs.inputid }}"\
             autocomplete="off"\
             ng-model-options="{ debounce: 100 }"\
+            aria-activedescendant="{{ getActiveDescendant() }}"\
             ng-required="{{ autocompleteRequired }}" />\
-          <ul ng-show="completing && (suggestions | filter:searchFilter).length > 0">\
+            <ul id="suggestionList" role="listbox" ng-show="completing && (suggestions | filter:searchFilter).length > 0">\
             <li\
+              role="option"\
+              id="option-{{ $index }}"\
               suggestion\
               ng-repeat="suggestion in suggestions"\
               index="{{ $index }}"\
