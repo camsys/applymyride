@@ -11,7 +11,7 @@
             .col-lg-6.col-lg-offset-3.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1.col-xs-12
               .input-row--address
                 .col-lg-10.col-md-10.col-sm-10
-                  %label.h3.h3--address-label{for: 'fromInput'}
+                  %label.h3.h3--address-label{id: 'whereFromInputLabel', for: 'whereFromInput'}
                     %i{class:'cs-map-marker A'}
                     Where are you starting?
 
@@ -20,7 +20,7 @@
                                               'attr-autofocus' => 'true',
                                               'attr-clicktofocus' => 'true',
                                               class: 'autocompleteWrapper',
-                                              id: 'fromInput',
+                                              id: 'whereFromInput',
                                               tabindex: 'null',
                                               required: 'true',
                                               'inputclass' => 'clearable tripplanner__location form__input',
@@ -41,14 +41,14 @@
                   .alert.alert-danger{role:'alert', ng:{show:'errors.rangeErrorfrom'}}
                     The location you selected is outside the service area.
 
-                  %label.h3.h3--address-label{for: 'toInput'}
+                  %label.h3.h3--address-label{id: 'whereToInputLabel', for: 'whereToInput'}
                     %i{class:'cs-map-marker B'}
                     Where are you going?
                   %autocomplete{ 'attr-placeholder'=> '{{toDefault}}',
                                               'attr-input-id' => 'whereToInput',
                                               'attr-clicktofocus' => 'true',
                                               class: 'autocompleteWrapper',
-                                              id: 'toInput',
+                                              id: 'whereToInput',
                                               tabindex: 'null',
                                               required: 'true',
                                               'inputclass' => 'clearable tripplanner__location form__input',

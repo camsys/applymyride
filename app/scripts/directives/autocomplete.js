@@ -280,14 +280,14 @@ app.directive('autocomplete', function() {
             ng-model-options="{ debounce: 100 }"\
             role="combobox"\
             aria-expanded="{{ completing && (suggestions | filter:searchFilter).length > 0 ? \'true\' : \'false\' }}"\
-            aria-controls="suggestionList"\
+            aria-controls="{{ attrs.inputid }}SuggestionList"\
             aria-haspopup="listbox"\
             aria-autocomplete="list"\
             aria-required="{{ autocompleteRequired }}"\
             aria-label="{{ attrs.placeholder }}"\
             aria-labelledby="{{ attrs.inputid }}Label"\
-            aria-activedescendant="option-{{ selectedIndex }}" />\
-          <ul id="suggestionList" role="listbox" ng-show="completing && (suggestions | filter:searchFilter).length > 0">\
+            aria-activedescendant="{{ attrs.inputid }}-{{ selectedIndex }}" />\
+          <ul id="{{ attrs.inputid }}SuggestionList" role="listbox" ng-show="completing && (suggestions | filter:searchFilter).length > 0">\
             <li\
               role="option"\
               id="{{ attrs.inputid }}-{{ $index }}"\
