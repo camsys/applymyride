@@ -32,10 +32,6 @@
                                               'on-blur'=> 'mapFrom',
                                               'on-select' => 'selectFrom',
                                               'role' => 'combobox',
-                                              'aria-expanded' => '{{ completing && (suggestions | filter:searchFilter).length > 0 ? "true" : "false" }}',
-                                              'aria-controls' => 'suggestionList',
-                                              'aria-haspopup' => 'listbox',
-                                              'aria-autocomplete' => 'list',
                                               'autocomplete-required' => 'true',
                                               'aria-label'=> 'Where are you starting?',
                                               ng: { model: 'from', change: 'updateLabel(from)'} }
