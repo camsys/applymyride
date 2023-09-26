@@ -516,7 +516,7 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
                         let sorted_dates = [...new Set(dates)].sort();
                         if (sorted_dates.length === 0) {
                           $location.path('/plan/when/error');
-                          return; 
+                          return;
                         }
                         let lastDay = moment(sorted_dates[sorted_dates.length-1]);
                         let months = [];
@@ -885,14 +885,9 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
 
           var choices = [];
 
-          if(addCurrentLocation && util.isMobile()){
-            choices.push({label: currentLocationLabel, option: true})
-          }
-
           // Saved Places: These are POIs from 1-Click
           var savedPlaceData = data[1].savedplaces;
           if(savedPlaceData && savedPlaceData.length > 0){
-            choices.push({label:'Saved Places', option: false});
             angular.forEach(savedPlaceData, function(savedPlace, index) {
               choices.push({label:savedPlace, option: true});
             }, choices);
@@ -1157,12 +1152,6 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
       var placeIdPromise = $q.defer();
       $scope.placeLabels = $scope.placeLabels || [];
 
-      // If we are on mobile, you can use the current location
-      if(toFrom == 'from' && util.isMobile()){
-        $scope.placeLabels.push(currentLocationLabel);
-        $scope.locationClicked = true;
-      }
-
       $scope.errors['noResults'+toFrom] = false;
       if($scope.toFromMarkers[toFrom]){
         $scope.toFromMarkers[toFrom].setMap(null);
@@ -1171,8 +1160,8 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
         checkShowMap();
         return;
       }
-      var selectedIndex = $scope.placeLabels.indexOf(place);
 
+      var selectedIndex = $scope.placeLabels.indexOf(place);
       // The person selected the current location.
       if(-1 < selectedIndex && $scope.placeLabels[selectedIndex] == currentLocationLabel){
         $scope.getCurrentLocation(toFrom);
