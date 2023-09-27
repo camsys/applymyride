@@ -36,11 +36,6 @@
                                               'aria-label'=> 'Where are you starting?',
                                               ng: { model: 'from', change: 'updateLabel(from)'} }
 
-                  .alert.alert-danger{role:'alert', ng:{show:'errors.noResultsfrom'}}
-                    Address is not recognized.  Try entering it another way.
-                  .alert.alert-danger{role:'alert', ng:{show:'errors.rangeErrorfrom'}}
-                    The location you selected is outside the service area.
-
                   %label.h3.h3--address-label{id: 'whereToInputLabel', for: 'whereToInput'}
                     %i{class:'cs-map-marker B'}
                     Where are you going?
@@ -63,12 +58,8 @@
                                               'aria-label'=> 'Where are you going?',
                                               'aria-describedby'=> 'toInputHelp',
                                               ng: { model: 'to'} }
+                                              
 
-                  .alert.alert-danger{role:'alert', ng:{show:'errors.noResultsto'}}
-                    Address is not recognized.  Try entering it another way.
-
-                  .alert.alert-danger{role:'alert', ng:{show:'errors.rangeErrorto'}}
-                    The location you selected is outside the service area.
                 .col-lg-2.col-md-2.col-sm-2.container__swap-btn
                   -# %button.btn.btn--no-outline{type:'button', aria: {label: 'Swap Address Inputs'},ng: {click: 'debouncedSwapAddressInputs()', disabled: 'disableSwapAddressButton == true'}}
                   %button.btn.btn-icon.btn--lg-text{type:'button', aria: {label: 'Swap Address Inputs'},ng: {click: 'debouncedSwapAddressInputs()', disabled: 'disableSwapAddressButton == true'}}
@@ -80,7 +71,7 @@
           .row.unstuck-foot.btn-spacing
             .col-lg-6.col-lg-offset-3.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1.col-xs-12
               .pull-right
-                %a.btn.btn-primary{href: "", ng: {class:'{disabled: false==whereShowNext()}', click: 'next()'}, 'aria-label' => 'Confirm locations and proceed'}
+                %a.btn.btn-primary{href: "", ng: {click: 'validateAndProceed()'}, 'aria-label' => 'Confirm locations and proceed'}
                   %span{ng:{show:'backToConfirm'}}
                     Back to confirm
                   %span{ng:{hide:'backToConfirm'}}

@@ -468,6 +468,17 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
       return fromDateString;
     }
 
+    $scope.validateAndProceed = function() {
+      if (!$scope.whereShowNext()) {
+          bootbox.alert("Please select a location from the dropdown list to continue. If the address you entered does not appear in the drop-down, it is currently unavailable in Find My Ride. It may still be possible to book this trip by calling your local transit agency for assistance.", function() {
+              $scope.disableSwapAddressButton = true;
+          });
+          return;
+      }
+  
+      $scope.next();
+     };
+
     $scope.next = function() {
       if($scope.disableNext){ return; }
       $scope.showNext = false;
@@ -502,6 +513,7 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
                         $location.path('/plan/where/error');
                       });
           break;
+          
         case 'purpose':
           delete params.date;
           delete params.start_time;
@@ -1263,9 +1275,7 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
                 if(datatypes.indexOf('route') < 0){
                   $scope.toFromMarkers[toFrom].setMap(null);
                   checkShowMap();
-                  bootbox.alert("The location you selected does not have have a street associated with it, please select another location.", function() {
-                    $scope.disableSwapAddressButton = true
-                  });
+
                   return;
                 }else if(datatypes.indexOf('street_number') < 0){
                   var streetNameIndex = place.indexOf(route);
@@ -1282,16 +1292,12 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
                     if($scope.toFromMarkers[toFrom]){
                       $scope.toFromMarkers[toFrom].setMap(null);
                     }
-                    checkShowMap();
-                    bootbox.alert("The location you selected does not have a street number associated, please select another location.", function() {
-                      $scope.disableSwapAddressButton = true
-                    });
+
                     return;
                   }
                 }
               } else if (datatypes.indexOf('locality') < 0 && datatypes.indexOf('administrative_area_level_3') < 0) {
-                checkShowMap();
-                bootbox.alert("The location you selected does not have a city associated to it, please select another location.");
+
                 return;
               }
 
@@ -1301,11 +1307,6 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
               if ($scope.locationClicked) {
                 $scope.checkServiceArea(result, place, toFrom);
                 $scope.disableSwapAddressButton = false;
-                return;
-              } else {
-                bootbox.alert("Please select a location from the dropdown to continue.", function() {
-                  $scope.disableSwapAddressButton = true
-                });
                 return;
               }
 
@@ -1368,9 +1369,7 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
           if(datatypes.indexOf('street_number') < 0 || datatypes.indexOf('route') < 0){
             if(datatypes.indexOf('route') < 0){
               $scope.toFromMarkers[toFrom].setMap(null);
-              bootbox.alert("The location you selected does not have have a street associated with it, please select another location.", function() {
-                $scope.disableSwapAddressButton = true
-              });
+
               $scope.stopSpin();
               return;
             }
