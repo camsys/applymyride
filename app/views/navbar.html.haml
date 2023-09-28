@@ -26,19 +26,23 @@
             %a.navbar-icon{href:'#/plan/my_rides?navbar:true', style:'margin-top: .5em;'}
               My Rides
               %div.badge.alert-success{ng:{class:'{"live-trip": liveTrip}'}}
+              %span.badge{ng: {class:'{"alert-danger": (currentBalance < 0),"alert-success": (currentBalance >= 0)}'}}
+              %span
                 {{rideCount}}
+          %li{ng: {show:'email'}}
+            %a.navbar-icon{ng: {click:'reset()'}, style:'cursor: pointer; margin-top: .5em;', href:''}
+              New trip
           %li{ng:{show:'email'}}
             %a.navbar-icon{ href:'#/profile', style:'margin-top: .5em;'}
               {{ full_name }}
           %li{ng:{show:'email'}}
             %a.navbar-icon{ng: {click:'logout()'}, href:'', style:'margin-top: .5em;'}
               Sign out
-          %li{ng: {show:'!email'}}
-            %a.navbar-icon{href:'#/login',style:'margin-top: .5em;'}
-              Sign in
-          %li{ng: {show:'email'}}
-            %a.navbar-icon{ng: {click:'reset()'}, style:'cursor: pointer; margin-top: .5em;', href:''}
-              New trip
           %li
-            %a.navbar-icon{href:'#/about',style:'margin-top: .5em;'}
-              About
+            %a.navbar-icon{href:'https://findmyride.penndot.pa.gov/fmr-edu/home/contact', style:'margin-top: .5em;', target: '_blank'}
+              Contact Us
+              %i.fa.fa-external-link.navbar-icon{style: 'margin-left: 5px; font-size: 1.2em; color: #002469;'}
+          %li
+            %a.navbar-icon{href:'https://findmyride.penndot.pa.gov/fmr-edu/home', style:'margin-top: .5em;', target: '_blank'}
+              FMR Education
+              %i.fa.fa-external-link.navbar-icon{style: 'margin-left: 5px; font-size: 1.2em; color: #002469;'}

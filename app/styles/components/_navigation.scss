@@ -73,6 +73,11 @@ ul.dropdown.navbar-right {
 }
 }
 
+ul.dropdown.navbar-right > li > a:hover .navbar-icon.fa,
+ul.dropdown.navbar-right > li > a.-hover .navbar-icon.fa {
+    color: #FFFFFF !important;
+}
+
 .dropdown {
   &.menu {
       > li {
