@@ -420,9 +420,9 @@
               %span
                 Back
             %a.btn.btn-primary.pull-right{href: "", ng: {disabled: 'disableNext', click: 'next()'}}
-              %span{'ng-show'=>'planService.driverInstructions'}
+              %span{'ng-show'=>'planService.driverInstructions || planService.driverInstructionsReturn'}
                 Book this Trip
-              %span{'ng-hide'=>'planService.driverInstructions'}
+              %span{'ng-hide'=>'planService.driverInstructions || planService.driverInstructionsReturn'}
                 Skip and Book this Trip
 
     .discounts{ng: {show: 'step==="discounts"'}}
