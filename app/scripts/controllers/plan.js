@@ -21,7 +21,7 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
     eightAm.setHours(8);
     eightAm.setDate( eightAm.getDate() - 1 );
     $scope.minReturnDate = new Date();
-    $scope.locationClicked = true;
+    $scope.locationClicked = false;
     $scope.marker = null;
     $scope.toFromMarkers = {};
     $scope.toFromIcons={'to' : '//maps.google.com/mapfiles/markerB.png',
@@ -475,7 +475,7 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
           });
           return;
       }
-  
+
       $scope.next();
      };
 
@@ -513,7 +513,7 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
                         $location.path('/plan/where/error');
                       });
           break;
-          
+
         case 'purpose':
           delete params.date;
           delete params.start_time;
@@ -881,10 +881,10 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
     }
 
     $scope.getLocations = function(typed, addCurrentLocation, toFrom){
-      if(typed){
-        // The user has typed something, don't let the Next button activate until they have selected a location.
-        $scope.locationClicked = false;
+      // The user has typed something, don't let the Next button activate until they have selected a location.
+      $scope.locationClicked = false;
 
+      if(typed){
         var config = planService.getHeaders();
         //if this is run before the last promise is resolved, abort the promise, start over.
         var getLocationsPromise = LocationSearch.getLocations(typed, config, planService.email != null);
@@ -1106,16 +1106,14 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
      * ...operation for a bit to prevent from repeated calls within a short amount of time
      */
     $scope.debouncedSwapAddressInputs = async function() {
-      // NOTE: DISABLE "Yes Looks Good" BUTTON
-      $scope.locationClicked = false
-      if ($scope.disableSwapAddressButton) {
+      if ($scope.disableSwapAddressButton || !$scope.locationClicked) {
         bootbox.alert("At least one address in the origin/ destination fields is invalid. Please search for another address and be sure to select one from the suggestions list.")
+        $scope.locationClicked = false
         return
       }
       $scope.disableSwapAddressButton = true
       await debounce(swapMapMarkers, 450)().then(function() {
         $scope.disableSwapAddressButton = false
-        $scope.locationClicked = true
       })
     }
 
