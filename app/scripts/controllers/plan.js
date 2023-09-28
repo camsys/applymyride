@@ -211,11 +211,11 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
       }
       var cancelPromise = planService.cancelTrip($http, cancelRequest)
       cancelPromise.error(function(data) {
-        bootbox.alert("An error occurred, your trip was not cancelled.  Please call 1-844-PA4-RIDE for more information.");
+        bootbox.alert("An error occurred, your trip was not cancelled. Please contact your local transit authority for more information.");
         usSpinnerService.stop('spinner-1');
       });
       cancelPromise.success(function(data) {
-        bootbox.alert('Your trip has been canceled. Be sure to cancel any other relevant trips.');
+        bootbox.alert('Your one-way trip cancellation was successful. Any related trips need to be canceled separately.');
         ipCookie('rideCount', ipCookie('rideCount') - 1);
         $scope.transitSaved = false;
         $scope.transitCancelled = true;
@@ -237,11 +237,11 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
       }
       var cancelPromise = planService.cancelTrip($http, cancelRequest)
       cancelPromise.error(function(data) {
-        bootbox.alert("An error occurred, your trip was not cancelled.  Please call 1-844-PA4-RIDE for more information.");
+        bootbox.alert("An error occurred, your trip was not cancelled.  Please contact your local transit authority for more information.");
         usSpinnerService.stop('spinner-1');
       });
       cancelPromise.success(function(data) {
-        bootbox.alert('Your trip has been canceled. Be sure to cancel any other relevant trips.');
+        bootbox.alert('Your one-way trip cancellation was successful. Any related trips need to be canceled separately.');
         ipCookie('rideCount', ipCookie('rideCount') - 1);
         $scope.walkSaved = false;
         $scope.walkCancelled = true;
@@ -313,7 +313,7 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
       var successMessage;
       if(result == 'BOTH'){
         itinsToCancel = $scope.trip.itineraries;
-        successMessage = 'Your trip has been canceled. Be sure to cancel any other relevant trips.';
+        successMessage = 'Your one-way trip cancellation was successful. Any related trips need to be canceled separately.';
       }
       else if(result == 'OUTBOUND'){
         itinsToCancel = [$scope.trip.itineraries[0]];
@@ -338,7 +338,7 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
       });
       var cancelPromise = planService.cancelTrip($http, cancel)
       cancelPromise.error(function(data) {
-        bootbox.alert("An error occurred, your trip was not cancelled.  Please call 1-844-PA4-RIDE for more information.");
+        bootbox.alert("An error occurred, your trip was not cancelled.  Please contact your local transit authority for more information.");
       });
       cancelPromise.success(function(data) {
         bootbox.alert(successMessage);
@@ -1678,7 +1678,7 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
             }
           }, paratransitItineraries);
           if(paratransitItineraries.length != trip.itineraries.length){
-            bootbox.alert("No shared ride is available for your request. Please call 1-844-PA4-RIDE for more information.");
+            bootbox.alert("No shared ride is available for your request. Please contact your local transit authority for more information.");
             usSpinnerService.stop('spinner-1');
           }else{
             planService.paratransitItineraries = paratransitItineraries;

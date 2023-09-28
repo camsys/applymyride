@@ -88,7 +88,7 @@ angular.module('applyMyRideApp')
 
       $scope.cancelTrip = function(){
         var message = "Are you sure you want to cancel this ride?";
-        var successMessage = 'Your trip has been canceled. Be sure to cancel any other relevant trips.'
+        var successMessage = 'Your one-way trip cancellation was successful. Any related trips need to be canceled separately.'
 
         $scope.paratransitItineraries = planService.paratransitItineraries;
 
@@ -162,7 +162,7 @@ angular.module('applyMyRideApp')
         var successMessage;
         if(result == 'BOTH'){
           itinsToCancel = $scope.paratransitItineraries
-          successMessage = 'Your trip has been canceled. Be sure to cancel any other relevant trips.';
+          successMessage = 'Your one-way trip cancellation was successful. Any related trips need to be canceled separately.';
         }
         else if(result == 'OUTBOUND'){
           itinsToCancel = [$scope.paratransitItineraries[0]];
@@ -190,7 +190,7 @@ angular.module('applyMyRideApp')
         
         var cancelPromise = planService.cancelTrip($http, cancel)
         cancelPromise.error(function(data) {
-          bootbox.alert("An error occurred, your trip was not cancelled.  Please call 1-844-PA4-RIDE for more information.");
+          bootbox.alert("An error occurred, your trip was not cancelled.  Please contact your local transit authority for more information.");
         });
         
         cancelPromise.success(function(data) {
