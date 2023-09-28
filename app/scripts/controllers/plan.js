@@ -470,14 +470,16 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
 
     $scope.validateAndProceed = function() {
       if (!$scope.whereShowNext()) {
-          bootbox.alert("Please select a location from the dropdown list to continue. If the address you entered does not appear in the drop-down, it is currently unavailable in Find My Ride. It may still be possible to book this trip by calling your local transit agency for assistance.", function() {
-              $scope.disableSwapAddressButton = true;
-          });
-          return;
+        bootbox.alert("Please select a location from the dropdown list to continue. If the address you entered does not appear in the drop-down, it is currently unavailable in Find My Ride. It may still be possible to book this trip by calling your local transit agency for assistance.", function () {
+          $scope.disableSwapAddressButton = true;
+        });
+        return;
+      } else if ($scope.from === $scope.to) {
+        bootbox.alert("Please select different locations for the origin and destination to proceed.");
+        return;
       }
-
       $scope.next();
-     };
+    }
 
     $scope.next = function() {
       if($scope.disableNext){ return; }
