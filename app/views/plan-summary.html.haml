@@ -15,7 +15,7 @@
       %label{for: 'fromInput'}
         From:
       .input-group
-        %input#from.form-control{disabled: true, style: 'width: 100%;', ng: {value: 'planService.confirmRequest.fromLine2'}}
+        %input#from.form-control{disabled: true, style: 'width: 100%;', ng: {value: 'planService.confirmRequest.fromLine1 + ", " + planService.confirmRequest.fromLine2'}}
         %button.input-group-addon{'aria-label'=> 'Edit Starting Address', ng: {click: 'back("where")'}, style: 'width: fit-content; height: 34px; background-color: white;'}
           %i.glyphicon.glyphicon-edit{style: 'margin-top: 2px;'}
 
@@ -24,7 +24,7 @@
       %label{for: 'toInput'}
         To:
       .input-group
-        %input#to.form-control{disabled: true, style: 'width: 100%;', ng: {value: 'planService.confirmRequest.toLine2'}}
+        %input#to.form-control{disabled: true, style: 'width: 100%;', ng: {value: 'planService.confirmRequest.toLine1 + ", " + planService.confirmRequest.toLine2'}}
         %button.input-group-addon{'aria-label'=> 'Edit Destination Address', ng: {click: 'back("where")'}, style: 'width: fit-content; height: 34px; background-color: white;'}
           %i.glyphicon.glyphicon-edit{style: 'margin-top: 2px;'}
 
