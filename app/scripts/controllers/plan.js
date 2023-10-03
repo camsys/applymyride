@@ -103,6 +103,16 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
       })
     }
 
+    $scope.fetchAgencyCode = function() {
+      planService.getAgencyCode($http)
+        .then(function(response) {
+          localStorageService.set("agencyCode", response.data.agency_code);
+        })
+        .catch(function(error) {
+          console.error('Error fetching agency code:', error);
+        });
+    }
+
     $scope.reset = function() {
       planService.reset();
       $location.path("/plan/where");
@@ -1792,6 +1802,8 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
     if ($scope.loggedIn) {
       planService.getCurrentBalance($scope, $http, ipCookie).then(function(){
         // Service sets ipCookie with currentBalance
+      });
+      planService.getAgencyCode($scope, $http, ipCookie).then(function(){
       });
     }
 

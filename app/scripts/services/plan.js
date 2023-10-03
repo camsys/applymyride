@@ -686,6 +686,19 @@ angular.module('applyMyRideApp')
           });
       }
 
+      this.getAgencyCode = function($scope, $http, ipCookie) {
+        return $http.get(urlPrefix + 'api/v1/users/agency_code', this.getHeaders()).
+          success(function(data) {
+            if (data.agency_code != undefined){
+              if($scope) $scope.agencyCode = data.agency_code;
+              if(ipCookie) {ipCookie('agencyCode', data.agency_code);}
+            }
+          }).
+          error(function(data) {
+            console.log(data);
+          });
+      }
+      
       this.getTripPurposes = function($scope, $http) {
         const that = this;
         // TODO: Look at this and see if it needs to be a post request
@@ -736,7 +749,7 @@ angular.module('applyMyRideApp')
         let config = this.getHeaders();
         return $http.get(urlPrefix + '/api/v2/travel_patterns?' + $.param(params), config);
       }
-
+      
       /**
        *** fixedRouteReminderPref format
       * @typedef {Object} NotificationPref
