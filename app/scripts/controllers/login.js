@@ -32,6 +32,7 @@ angular.module('applyMyRideApp')
       $scope.disableNext = true;
       $scope.counties = localStorageService.get("counties") || [];
       $scope.sharedRideId = localStorageService.get("customer_number") || ipCookie('sharedRideId');
+      $scope.agencyCode = localStorageService.get("agencyCode") || ipCookie('agencyCode');
       $scope.county = localStorageService.get("county") || ipCookie('county');
       $scope.dateofbirth = sessionStorage.getItem('dateofbirth') || false;
       $scope.dob = localStorageService.get("dob") || {month:'', day:'', year:''};
@@ -105,6 +106,7 @@ angular.module('applyMyRideApp')
         var path = $location.path();
         planService.sharedRideId = $scope.sharedRideId;
         planService.county = $scope.county;
+        planService.getAgencyCode = $scope.agencyCode;
         planService.dateofbirth = $scope.dateofbirth;
         $scope.authenticate();
         $scope.disableNext=true;
@@ -166,6 +168,7 @@ angular.module('applyMyRideApp')
           planService.email = result.data.email;
           planService.first_name = result.data.first_name;
           planService.last_name = result.data.last_name;
+          planService.getAgencyCode = result.data.agency_code;
           planService.getPastRides($http).then(function(data) {
             planService.populateScopeWithTripsData($scope, planService.unpackTrips(data.data.trips, 'past'), 'past');
           });
