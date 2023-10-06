@@ -103,7 +103,7 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
       })
     }
 
-    $scope.fetchAgencyCode = function() {
+    $scope.getAgencyCode = function() {
       planService.getAgencyCode($http)
         .then(function(response) {
           localStorageService.set("agencyCode", response.data.agency_code);
@@ -1452,7 +1452,7 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
         return "undefined"
       }
     }
-
+    
     $scope.checkServiceArea = function (result, place, toFrom, updateInput) {
       updateInput = util.assignDefaultValueIfEmpty(updateInput, false);
       if (result.formatted_address === undefined) { result.formatted_address = place; }
