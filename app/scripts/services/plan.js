@@ -1304,3 +1304,14 @@ angular.module('applyMyRideApp')
 
     return LocationSearch;
   });
+
+  angular.module('applyMyRideApp').filter('cleanLocationName', function() {
+    return function(input) {
+        // Logic to remove text after '|' and before address
+        var parts = input.split('|');
+        if(parts.length > 1){
+            return parts[0].trim() + ', ' + parts[1].split(',').slice(1).join(',').trim();
+        }
+        return input;
+    };
+});

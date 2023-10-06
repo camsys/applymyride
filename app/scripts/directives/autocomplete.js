@@ -298,7 +298,7 @@ app.directive('autocomplete', function() {
               ng-class="{ active: ($index === selectedIndex && suggestion.option), selectable: (suggestion.option) }"\
               ng-click="!suggestion.option || select(suggestion.label)"\
               ng-mousedown="ignoreBlur()"\
-              ng-bind-html="suggestion.label"\
+              ng-bind-html="suggestion.label | cleanLocationName" \
               aria-selected="{{ $index === selectedIndex && suggestion.option ? \'true\' : \'false\' }}">\
             </li>\
           </ul>\
