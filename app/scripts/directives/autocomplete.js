@@ -242,28 +242,7 @@ app.directive('autocomplete', function() {
             return;
         }
       }, true)
-
-      element[0].addEventListener("blur", function(e){
-        //run callback provided in view if the event target is this input's id
-        if(scope.onBlur && e.target.id === scope.attrs.inputid){
-          scope.onBlur( scope.searchParam );
-        }
-        // disable suggestions on blur
-        // we do a timeout to prevent hiding it before a click event is registered
-        setTimeout(function() {
-          if(scope.blurWait == true){return;}
-          scope.select();
-          scope.setIndex(-1);
-          scope.$apply();
-        }, 750);
-
-      }, true);
-
-      element[0].addEventListener("focus", function (e){
-        if(scope.onFocus){
-          scope.onFocus(e, scope);
-        }
-      }, true);
+      
 
     },
     template: '\
