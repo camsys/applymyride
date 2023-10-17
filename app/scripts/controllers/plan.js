@@ -118,6 +118,10 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
       $location.path("/plan/where");
     };
 
+    $scope.$watch('howLong', function(newVal) {
+      $scope.isRoundTrip = newVal && newVal.minutes > 0;
+    });
+    
     $scope.goPlanWhere = function(){
       planService.backToConfirm = true;
       $location.path('/plan/where');
@@ -510,7 +514,7 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
       // When
       if ($scope.fromMoment) params.date = $scope.fromMoment.format('dddd-MM-D');
       if ($scope.fromTimeUpdated) params.start_time = $scope.fromMoment.format('h:mm:ss');
-
+      
       switch($scope.step) {
         case 'where':
           // delete params.purpose;
@@ -671,6 +675,8 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
           res.success((result) => {
             $scope.stopSpin();
             $location.path('/plan/my_rides');
+            planService.driverInstructions = '';
+            planService.driverInstructionsReturn = '';
           }).error((err) => {
             $scope.stopSpin();
             console.log(err);
@@ -702,6 +708,8 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
             break;
           case 'summary':
             step = 'instructions_for_driver';
+            $scope.driverInstructions = planService.driverInstructions;
+            $scope.driverInstructionsReturn = planService.driverInstructionsReturn;
             break;
         }
       }
@@ -726,6 +734,8 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
         case 'assistant':
         case 'instructions_for_driver':
         case 'summary':
+          $scope.driverInstructions = planService.driverInstructions;
+          $scope.driverInstructionsReturn = planService.driverInstructionsReturn;
           break;
       }
 
@@ -2110,7 +2120,7 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
 
       case 'instructions_for_driver':
         $scope.driverInstructions = planService.driverInstructions;
-        planService.driverInstructionsReturn = '';
+        $scope.driverInstructions = planService.driverInstructionsReturn;
         $scope.$watch('howLong', function(newVal) {
           // Show return leg note text box if selected howLong value is more than 0
           $scope.isRoundTrip = newVal && newVal.minutes > 0;
