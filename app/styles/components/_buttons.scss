@@ -57,6 +57,26 @@
       }
   }
 
+  &.btn-custom {
+    color: black;
+    background: #d3d3d3;
+    border: 1px solid blue;
+    margin-top: 10px;
+
+    @include focus {
+        background: $secondary-color;
+        border-color: $secondary-color;
+        position: relative;
+    }
+
+    @include hover {
+        color: $off-white;
+        background: $secondary-color;
+        border-color: $secondary-color;
+    }
+
+  }
+
   &.btn-danger {
       color: $off-white;
       background: #cc2121;
