@@ -74,10 +74,13 @@
             .pull-right{ng:{hide: 'isTransitionCounty(county)'}}
               %a.btn.btn-primary{href: "", ng: {disabled: 'disableNext', click: 'next()'}, role: 'button'}
                 Next
-        .row.text-center{style:'margin: 30px -50px 10px -50px;'}
+        .row.text-center{style:'margin: 30px 0px 10px 0px;'}
           Need Help? Please contact your Local Transit Agency 
           %a{href: "https://www.findmyride.penndot.pa.gov/fmr-edu/home/contact", target: "_blank", rel: "noopener noreferrer"} 
             %span.glyphicon.glyphicon-new-window
+        .row{style: 'margin-top: 1em;'}
+          .alert.alert-info
+            %p If your county is not listed in the drop-down, please contact your Local Transit Agency using the "Contact Us" link above to schedule your ride.
 
     %div{ng: {show: "location == '/authenticateSharedRideId'"}}
       .row

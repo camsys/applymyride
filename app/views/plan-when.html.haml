@@ -2,10 +2,10 @@
   .form-group
     .row
       .col-lg-6.col-lg-offset-3.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1.col-xs-12
-        %h3
+        %h3#arrival-header
           %strong
             When do you want to arrive?
-    .row
+    .row{ 'aria-labelledby': 'arrival-header' }
       .col-lg-6.col-lg-offset-3.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1.col-xs-12
         .cs-two-week-date-picker
           %div{ng: {repeat: 'month in planService.months track by month.key' }, class: 'month'}
@@ -21,7 +21,8 @@
               %div{class: 'day month-heading'} Sat
             %div{ng: {repeat: 'week in month.weeks' }, class: 'week'}
               %div{ class: 'day', 
-                    tabindex:'{{day.tabindex}}',
+                    tabindex:'{{(day.startTime || day.endTime) ? 0 : -1}}', 
+                    'aria-label' => '{{day.day}} {{month.name}}', 
                     ng: { repeat: 'day in week track by day.key', 
                           click:'selectDepartDate(day)',
                           disabled:'!(day.startTime || day.endTime)', 
@@ -37,9 +38,10 @@
     .row{ng: {show: 'fromMoment.isAfter()'}}
       .col-lg-6.col-lg-offset-3.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1.col-xs-12
         %div{'ng-class' =>'{"bg-danger": fromTimeUpdated && !whenShowNext()}'}
-          %h3 What time do you want to arrive?
+          %h3#time-header
+            What time do you want to arrive?
           -# TODO: Refactor this so this uses the native %input{type: 'time'} element
-          %cs-time-input{ng:{model:'fromMoment', focused:'backToConfirm'}}
+          %cs-time-input{ng:{model:'fromMoment', focused:'backToConfirm'}, 'aria-labelledby': 'time-header'}
     .row{ng:{show:'planService.serviceOpen'}}
       .col-lg-6.col-lg-offset-3.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1.col-xs-12
         .text-muted{'ng-class' =>'{"text-danger": fromTimeUpdated && !whenShowNext()}'}
@@ -51,10 +53,11 @@
     .return-trip-option{ng:{show:'fromTimeUpdated && whenShowNext()'}}
       .row
         .col-lg-6.col-lg-offset-3.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1.col-xs-12
-          %h3 How long do you want to stay?
+          %h3#stay-duration-header
+            How long do you want to stay?
       .row
         .col-lg-6.col-lg-offset-3.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1.col-xs-12
-          %select{required:'true', ng:{model:'$parent.howLong', options:'option.name for option in howLongOptions', change:'updateReturnTime(howLong)', class:'{disabled:!fromMoment.isAfter(moment()) }'}}
+          %select{required:'true', ng:{model:'$parent.howLong', options:'option.name for option in howLongOptions', change:'updateReturnTime(howLong)', class:'{disabled:!fromMoment.isAfter(moment()) }'}, 'aria-labelledby': 'stay-duration-header'}
       .row{'ng-show'=>'returnMoment'}
         .col-lg-6.col-lg-offset-3.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1.col-xs-12
           Return at {{returnMoment | momentHMA}}

@@ -21,7 +21,7 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
     eightAm.setHours(8);
     eightAm.setDate( eightAm.getDate() - 1 );
     $scope.minReturnDate = new Date();
-    $scope.locationClicked = true;
+    $scope.locationClicked = false;
     $scope.marker = null;
     $scope.toFromMarkers = {};
     $scope.toFromIcons={'to' : '//maps.google.com/mapfiles/markerB.png',
@@ -80,10 +80,16 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
     $scope.loggedIn = !!planService.email;
     $scope.tripId = planService.tripId
 
-    $scope.toDefault = countryFilter( localStorage.getItem('last_destination') || '');
-    $scope.to = countryFilter( planService.to || '');
-    $scope.fromDefault = countryFilter( localStorage.getItem('last_origin') || '' );
-    $scope.from = countryFilter( planService.from || '' );
+    // $scope.toDefault = countryFilter( localStorage.getItem('last_destination') || '');
+    // $scope.to = countryFilter( planService.to || '');
+    // $scope.fromDefault = countryFilter( localStorage.getItem('last_origin') || '' );
+    // $scope.from = countryFilter( planService.from || '' );
+    // Leave to and from blank for now until we can figure out why the default places sometimes fail to book
+    $scope.toDefault = '';
+    $scope.to = '';
+    $scope.fromDefault = '';
+    $scope.from = '';
+
     $scope.transitSaved = planService.transitSaved || false;
     $scope.transitCancelled = planService.transitCancelled || false;
     $scope.walkSaved = planService.walkSaved || false;
@@ -97,11 +103,25 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
       })
     }
 
+    $scope.getAgencyCode = function() {
+      planService.getAgencyCode($http)
+        .then(function(response) {
+          localStorageService.set("agencyCode", response.data.agency_code);
+        })
+        .catch(function(error) {
+          console.error('Error fetching agency code:', error);
+        });
+    }
+
     $scope.reset = function() {
       planService.reset();
       $location.path("/plan/where");
     };
 
+    $scope.$watch('howLong', function(newVal) {
+      $scope.isRoundTrip = newVal && newVal.minutes > 0;
+    });
+    
     $scope.goPlanWhere = function(){
       planService.backToConfirm = true;
       $location.path('/plan/where');
@@ -205,11 +225,11 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
       }
       var cancelPromise = planService.cancelTrip($http, cancelRequest)
       cancelPromise.error(function(data) {
-        bootbox.alert("An error occurred, your trip was not cancelled.  Please call 1-844-PA4-RIDE for more information.");
+        bootbox.alert("An error occurred, your trip was not cancelled. Please contact your local transit authority for more information.");
         usSpinnerService.stop('spinner-1');
       });
       cancelPromise.success(function(data) {
-        bootbox.alert('Your trip has been cancelled');
+        bootbox.alert('Your one-way trip cancellation was successful. Any related trips need to be canceled separately.');
         ipCookie('rideCount', ipCookie('rideCount') - 1);
         $scope.transitSaved = false;
         $scope.transitCancelled = true;
@@ -231,11 +251,11 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
       }
       var cancelPromise = planService.cancelTrip($http, cancelRequest)
       cancelPromise.error(function(data) {
-        bootbox.alert("An error occurred, your trip was not cancelled.  Please call 1-844-PA4-RIDE for more information.");
+        bootbox.alert("An error occurred, your trip was not cancelled.  Please contact your local transit authority for more information.");
         usSpinnerService.stop('spinner-1');
       });
       cancelPromise.success(function(data) {
-        bootbox.alert('Your trip has been cancelled');
+        bootbox.alert('Your one-way trip cancellation was successful. Any related trips need to be canceled separately.');
         ipCookie('rideCount', ipCookie('rideCount') - 1);
         $scope.walkSaved = false;
         $scope.walkCancelled = true;
@@ -303,11 +323,11 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
     }
 
     $scope.cancelCall = function(result){
-      var itinsToCancel; 
+      var itinsToCancel;
       var successMessage;
       if(result == 'BOTH'){
         itinsToCancel = $scope.trip.itineraries;
-        successMessage = 'Your trip has been cancelled.';
+        successMessage = 'Your one-way trip cancellation was successful. Any related trips need to be canceled separately.';
       }
       else if(result == 'OUTBOUND'){
         itinsToCancel = [$scope.trip.itineraries[0]];
@@ -316,7 +336,7 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
         itinsToCancel = [$scope.trip.itineraries[$scope.trip.itineraries.length - 1]];
         successMessage = 'Your return trip has been cancelled.';
       }
-      
+
       var cancel = {};
 
       cancel.bookingcancellation_request = [];
@@ -332,7 +352,7 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
       });
       var cancelPromise = planService.cancelTrip($http, cancel)
       cancelPromise.error(function(data) {
-        bootbox.alert("An error occurred, your trip was not cancelled.  Please call 1-844-PA4-RIDE for more information.");
+        bootbox.alert("An error occurred, your trip was not cancelled.  Please contact your local transit authority for more information.");
       });
       cancelPromise.success(function(data) {
         bootbox.alert(successMessage);
@@ -433,7 +453,7 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
       }
 
       if (planService.hasCompanions) {
-        if (planService.numberOfCompanions === 1) { 
+        if (planService.numberOfCompanions === 1) {
           otherRiders.push(planService.numberOfCompanions + ' companion');
         } else {
           otherRiders.push(planService.numberOfCompanions + ' companions');
@@ -462,6 +482,19 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
       return fromDateString;
     }
 
+    $scope.validateAndProceed = function() {
+      if (!$scope.whereShowNext()) {
+        bootbox.alert("Please select a location from the dropdown list to continue. If the address you entered does not appear in the drop-down, it is currently unavailable in Find My Ride. It may still be possible to book this trip by calling your local transit agency for assistance.", function () {
+          $scope.disableSwapAddressButton = true;
+        });
+        return;
+      } else if ($scope.from === $scope.to) {
+        bootbox.alert("Please select different locations for the origin and destination to proceed.");
+        return;
+      }
+      $scope.next();
+    }
+
     $scope.next = function() {
       if($scope.disableNext){ return; }
       $scope.showNext = false;
@@ -481,7 +514,7 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
       // When
       if ($scope.fromMoment) params.date = $scope.fromMoment.format('dddd-MM-D');
       if ($scope.fromTimeUpdated) params.start_time = $scope.fromMoment.format('h:mm:ss');
-
+      
       switch($scope.step) {
         case 'where':
           // delete params.purpose;
@@ -496,15 +529,23 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
                         $location.path('/plan/where/error');
                       });
           break;
+
         case 'purpose':
           delete params.date;
           delete params.start_time;
-          
+
           planService.getTravelPatterns($http, params)
                       .then((res) => {
-                        let travelPatterns = res.data.data;
-                        let dates = travelPatterns.map(pattern => Object.keys(pattern.to_calendar)).flat();
+                        let travelPatterns = res.data.data.flat();
+                        let dates = travelPatterns
+                        .filter(pattern => pattern.to_calendar)
+                        .map(pattern => Object.keys(pattern.to_calendar))
+                        .flat();
                         let sorted_dates = [...new Set(dates)].sort();
+                        if (sorted_dates.length === 0) {
+                          $location.path('/plan/when/error');
+                          return;
+                        }
                         let lastDay = moment(sorted_dates[sorted_dates.length-1]);
                         let months = [];
                         let monthOffset = moment(sorted_dates[0], "YYYY-MM-DD").month();
@@ -535,7 +576,7 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
                                 key: tempDate.format("YYYY-MM-DD"),
                                 day: tempDate.date()
                               };
-                            } 
+                            }
                           }
 
                           let week = month.weeks[weekIndex]
@@ -600,7 +641,22 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
           $location.path('/plan/instructions_for_driver');
           break;
         case 'instructions_for_driver':
-          planService.driverInstructions = $scope.driverInstructions;
+          $scope.$watch('howLong', function(newVal) {
+            // Show return leg note text box if selected howLong value is more than 0
+            $scope.isRoundTrip = newVal && newVal.minutes > 0;
+          });
+
+          $scope.updateCounter1 = function() {
+            $scope.counter1 = $scope.planService.driverInstructions ? $scope.planService.driverInstructions.length : 0;
+          };
+
+          $scope.updateCounter2 = function() {
+            $scope.counter2 = $scope.planService.driverInstructionsReturn ? $scope.planService.driverInstructionsReturn.length : 0;
+          };
+
+          $scope.updateCounter1(); // Initialize counter1 immediately
+          $scope.updateCounter2(); // Initialize counter2 immediately
+
           _bookTrip().success((sec) => {
             $scope.stopSpin();
             $scope.paratransitResult = planService.paratransitResult;
@@ -619,6 +675,8 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
           res.success((result) => {
             $scope.stopSpin();
             $location.path('/plan/my_rides');
+            planService.driverInstructions = '';
+            planService.driverInstructionsReturn = '';
           }).error((err) => {
             $scope.stopSpin();
             console.log(err);
@@ -650,6 +708,8 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
             break;
           case 'summary':
             step = 'instructions_for_driver';
+            $scope.driverInstructions = planService.driverInstructions;
+            $scope.driverInstructionsReturn = planService.driverInstructionsReturn;
             break;
         }
       }
@@ -674,6 +734,8 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
         case 'assistant':
         case 'instructions_for_driver':
         case 'summary':
+          $scope.driverInstructions = planService.driverInstructions;
+          $scope.driverInstructionsReturn = planService.driverInstructionsReturn;
           break;
       }
 
@@ -753,7 +815,7 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
             result.itineraries[i].origin = planService.getAddressDescriptionFromLocation(result.itineraries[i].start_location);
             result.itineraries[i].destination = planService.getAddressDescriptionFromLocation(result.itineraries[i].end_location);
             if (result.itineraries[i].returned_mode_code == "mode_paratransit") {
-              // If the trip purpose is eligible based on the valid date range, allow booking a shared ride. 
+              // If the trip purpose is eligible based on the valid date range, allow booking a shared ride.
               // Otherwise, display no shared ride message.
               var allPurposes = [...planService.top_purposes || [], ...planService.purposes || []];
               var tripPurposesFiltered = allPurposes.filter(e => e.code == planService.itineraryRequestObject.trip_purpose);
@@ -841,10 +903,10 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
     }
 
     $scope.getLocations = function(typed, addCurrentLocation, toFrom){
+      // The user has typed something, don't let the Next button activate until they have selected a location.
+      $scope.locationClicked = false;
+
       if(typed){
-        // The user has typed something, don't let the Next button activate until they have selected a location.
-        $scope.locationClicked = false;
-        
         var config = planService.getHeaders();
         //if this is run before the last promise is resolved, abort the promise, start over.
         var getLocationsPromise = LocationSearch.getLocations(typed, config, planService.email != null);
@@ -857,14 +919,9 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
 
           var choices = [];
 
-          if(addCurrentLocation && util.isMobile()){
-            choices.push({label: currentLocationLabel, option: true})
-          }
-
-          // Saved Places: These are POIs from 1-Click 
+          // Saved Places: These are POIs from 1-Click
           var savedPlaceData = data[1].savedplaces;
           if(savedPlaceData && savedPlaceData.length > 0){
-            choices.push({label:'Saved Places', option: false});
             angular.forEach(savedPlaceData, function(savedPlace, index) {
               choices.push({label:savedPlace, option: true});
             }, choices);
@@ -874,7 +931,7 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
             $scope.placeAddresses = $scope.placeAddresses.concat(data[1].savedplaceaddresses);
           }
 
-          // Recent Searches are stored locally.  
+          // Recent Searches are stored locally.
           if(data.length > 2){
             var recentSearchData = data[2].recentsearches;
             if(recentSearchData && recentSearchData.length > 0){
@@ -937,7 +994,7 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
       }else{
         $scope.showNext = false;
       }
-      lastMappedPlaces[toFrom] = place; 
+      lastMappedPlaces[toFrom] = place;
       setTimeout(function selectPlace(){
         //if $scope.to or $scope.from is different from place, the autocomplete input's select events are handling
         if(!defaulted && $scope[toFrom] !== place){
@@ -1029,8 +1086,8 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
       google.maps.event.trigger(map, 'resize');
 
       // Check if POI's have been selected, or if the location is in a format that isn't recognized by google maps
-      const toLatType = typeof toLocation.lat === 'number' || typeof toLocation.lat === 'string' 
-      const fromLatType = typeof fromLocation.lat === 'number' || typeof fromLocation.lat === 'string' 
+      const toLatType = typeof toLocation.lat === 'number' || typeof toLocation.lat === 'string'
+      const fromLatType = typeof fromLocation.lat === 'number' || typeof fromLocation.lat === 'string'
 
       const newFromLocation = toLatType ? new google.maps.LatLng(Number(toLocation.lat), Number(toLocation.lng)) : toLocation
       const newToLocation = fromLatType ? new google.maps.LatLng(Number(fromLocation.lat), Number(fromLocation.lng)) : fromLocation
@@ -1071,16 +1128,14 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
      * ...operation for a bit to prevent from repeated calls within a short amount of time
      */
     $scope.debouncedSwapAddressInputs = async function() {
-      // NOTE: DISABLE "Yes Looks Good" BUTTON
-      $scope.locationClicked = false
-      if ($scope.disableSwapAddressButton) {
+      if ($scope.disableSwapAddressButton || !$scope.locationClicked) {
         bootbox.alert("At least one address in the origin/ destination fields is invalid. Please search for another address and be sure to select one from the suggestions list.")
+        $scope.locationClicked = false
         return
       }
       $scope.disableSwapAddressButton = true
       await debounce(swapMapMarkers, 450)().then(function() {
         $scope.disableSwapAddressButton = false
-        $scope.locationClicked = true
       })
     }
 
@@ -1129,12 +1184,6 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
       var placeIdPromise = $q.defer();
       $scope.placeLabels = $scope.placeLabels || [];
 
-      // If we are on mobile, you can use the current location 
-      if(toFrom == 'from' && util.isMobile()){
-        $scope.placeLabels.push(currentLocationLabel);
-        $scope.locationClicked = true;
-      }
-
       $scope.errors['noResults'+toFrom] = false;
       if($scope.toFromMarkers[toFrom]){
         $scope.toFromMarkers[toFrom].setMap(null);
@@ -1143,8 +1192,8 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
         checkShowMap();
         return;
       }
+
       var selectedIndex = $scope.placeLabels.indexOf(place);
-      
       // The person selected the current location.
       if(-1 < selectedIndex && $scope.placeLabels[selectedIndex] == currentLocationLabel){
         $scope.getCurrentLocation(toFrom);
@@ -1246,9 +1295,7 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
                 if(datatypes.indexOf('route') < 0){
                   $scope.toFromMarkers[toFrom].setMap(null);
                   checkShowMap();
-                  bootbox.alert("The location you selected does not have have a street associated with it, please select another location.", function() {
-                    $scope.disableSwapAddressButton = true
-                  });
+
                   return;
                 }else if(datatypes.indexOf('street_number') < 0){
                   var streetNameIndex = place.indexOf(route);
@@ -1265,30 +1312,21 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
                     if($scope.toFromMarkers[toFrom]){
                       $scope.toFromMarkers[toFrom].setMap(null);
                     }
-                    checkShowMap();
-                    bootbox.alert("The location you selected does not have a street number associated, please select another location.", function() {
-                      $scope.disableSwapAddressButton = true
-                    });
+
                     return;
                   }
                 }
               } else if (datatypes.indexOf('locality') < 0 && datatypes.indexOf('administrative_area_level_3') < 0) {
-                checkShowMap();
-                bootbox.alert("The location you selected does not have a city associated to it, please select another location.");
+
                 return;
               }
 
-              // When we start typing we hide the Yes, looks good! button. 
+              // When we start typing we hide the Yes, looks good! button.
               // If we made it back here without selecting a place, then we shouldn't let the person continue.
               // When the page is first loaded, then this is used to populate the lat/lng for the previous locations, since the showButton is true by default, the button will be green assuming all other tests pass.
               if ($scope.locationClicked) {
                 $scope.checkServiceArea(result, place, toFrom);
                 $scope.disableSwapAddressButton = false;
-                return;
-              } else {
-                bootbox.alert("Please select a location from the dropdown to continue.", function() {
-                  $scope.disableSwapAddressButton = true
-                });
                 return;
               }
 
@@ -1351,9 +1389,7 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
           if(datatypes.indexOf('street_number') < 0 || datatypes.indexOf('route') < 0){
             if(datatypes.indexOf('route') < 0){
               $scope.toFromMarkers[toFrom].setMap(null);
-              bootbox.alert("The location you selected does not have have a street associated with it, please select another location.", function() {
-                $scope.disableSwapAddressButton = true
-              });
+
               $scope.stopSpin();
               return;
             }
@@ -1392,7 +1428,7 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
     // Take in a Google Place object and return the format that is shown
     // in the to/from fields in FMR
     $scope.getDisplayAddress = function(gPlace){
-      var name = gPlace['name'] 
+      var name = gPlace['name']
       var vicinity = gPlace['vicinity'];
       var formatted_address = gPlace['formatted_address']
       var city = null;
@@ -1426,7 +1462,7 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
         return "undefined"
       }
     }
-
+    
     $scope.checkServiceArea = function (result, place, toFrom, updateInput) {
       updateInput = util.assignDefaultValueIfEmpty(updateInput, false);
       if (result.formatted_address === undefined) { result.formatted_address = place; }
@@ -1645,7 +1681,7 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
         returnTrip.departure_type = trip.itineraries[1].requested_time_type;
         returnTrip.assistant = trip.itineraries[0].assistant;
         returnTrip.companions = trip.itineraries[0].companions;
-        returnTrip.note = trip.itineraries[0].note;
+        returnTrip.note = trip.itineraries[1].note;
         var returnTimeString = moment.utc(returnTime).format();
         returnTrip.trip_time = returnTimeString;
         request.itinerary_request.push(returnTrip);
@@ -1664,7 +1700,7 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
             }
           }, paratransitItineraries);
           if(paratransitItineraries.length != trip.itineraries.length){
-            bootbox.alert("No shared ride is available for your request. Please call 1-844-PA4-RIDE for more information.");
+            bootbox.alert("No shared ride is available for your request. Please contact your local transit authority for more information.");
             usSpinnerService.stop('spinner-1');
           }else{
             planService.paratransitItineraries = paratransitItineraries;
@@ -1674,6 +1710,7 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
               planService.hasEscort = trip.itineraries[0].assistant;
               planService.numberOfCompanions = trip.itineraries[0].companions;
               planService.driverInstructions = trip.itineraries[0].note;
+              planService.driverInstructionsReturn = trip.itineraries[1].note;
               $location.path('/paratransit/confirm_shared_ride');
             });
           }
@@ -1736,7 +1773,7 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
 
         if (hrsDiff > 0) { name.push(hrsDiff, (hrsDiff === 1 ? 'Hour' : 'Hours')) }
         if (minDiff % 60 > 0) { name.push(minDiff % 60, (minDiff % 60 === 1 ? 'Minute' : 'Minutes')) }
-        
+
         $scope.howLongOptions.push({
           minutes: minDiff,
           name: name.join(' ')
@@ -1763,6 +1800,8 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
     if ($scope.loggedIn) {
       planService.getCurrentBalance($scope, $http, ipCookie).then(function(){
         // Service sets ipCookie with currentBalance
+      });
+      planService.getAgencyCode($scope, $http, ipCookie).then(function(){
       });
     }
 
@@ -1832,7 +1871,7 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
 
           _checkServiceHours = function(from, open, close, okNull) {
             var startMoment, endMoment;
-      
+
             if(from === null){
               if( okNull === true ){ return true; }
               return false; // if the day is null return false (unless null is ok)
@@ -2078,8 +2117,26 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
 
         $scope.hasCompanions = $scope.numberOfCompanions > 0
         break;
+
       case 'instructions_for_driver':
         $scope.driverInstructions = planService.driverInstructions;
+        $scope.driverInstructions = planService.driverInstructionsReturn;
+        $scope.$watch('howLong', function(newVal) {
+          // Show return leg note text box if selected howLong value is more than 0
+          $scope.isRoundTrip = newVal && newVal.minutes > 0;
+        });
+
+        $scope.updateCounter1 = function() {
+          $scope.counter1 = $scope.planService.driverInstructions ? $scope.planService.driverInstructions.length : 0;
+        };
+
+        $scope.updateCounter2 = function() {
+          $scope.counter2 = $scope.planService.driverInstructionsReturn ? $scope.planService.driverInstructionsReturn.length : 0;
+        };
+
+        $scope.updateCounter1();
+        $scope.updateCounter2();
+
         break;
       case 'rebook':
         $scope.minDate = new Date();

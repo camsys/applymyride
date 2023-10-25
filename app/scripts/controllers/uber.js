@@ -43,11 +43,11 @@ angular.module('applyMyRideApp')
         }
         var cancelPromise = planService.cancelTrip($http, cancelRequest)
         cancelPromise.error(function(data) {
-          bootbox.alert("An error occurred, your trip was not cancelled.  Please call 1-844-PA4-RIDE for more information.");
+          bootbox.alert("An error occurred, your trip was not cancelled.  Please contact your local transit authority for more information.");
           usSpinnerService.stop('spinner-1');
         });
         cancelPromise.success(function(data) {
-          bootbox.alert('Your trip has been cancelled');
+          bootbox.alert('Your one-way trip cancellation was successful. Any related trips need to be canceled separately.');
           ipCookie('rideCount', ipCookie('rideCount') - 1);
           $scope.uberSaved = false;
           $scope.uberCancelled = true;

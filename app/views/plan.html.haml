@@ -11,7 +11,7 @@
             .col-lg-6.col-lg-offset-3.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1.col-xs-12
               .input-row--address
                 .col-lg-10.col-md-10.col-sm-10
-                  %label.h3.h3--address-label{for: 'fromInput'}
+                  %label.h3.h3--address-label{id: 'whereFromInputLabel', for: 'whereFromInput'}
                     %i{class:'cs-map-marker A'}
                     Where are you starting?
 
@@ -20,7 +20,7 @@
                                               'attr-autofocus' => 'true',
                                               'attr-clicktofocus' => 'true',
                                               class: 'autocompleteWrapper',
-                                              id: 'fromInput',
+                                              id: 'whereFromInput',
                                               tabindex: 'null',
                                               required: 'true',
                                               'inputclass' => 'clearable tripplanner__location form__input',
@@ -31,21 +31,19 @@
                                               'on-focus'=> 'focusFrom',
                                               'on-blur'=> 'mapFrom',
                                               'on-select' => 'selectFrom',
+                                              'role' => 'combobox',
                                               'autocomplete-required' => 'true',
-                                              ng: { model: 'from'} }
-                  .alert.alert-danger{role:'alert', ng:{show:'errors.noResultsfrom'}}
-                    Address is not recognized.  Try entering it another way.
-                  .alert.alert-danger{role:'alert', ng:{show:'errors.rangeErrorfrom'}}
-                    The location you selected is outside the service area.
+                                              'aria-label'=> 'Where are you starting?',
+                                              ng: { model: 'from', change: 'updateLabel(from)'} }
 
-                  %label.h3.h3--address-label{for: 'toInput'}
+                  %label.h3.h3--address-label{id: 'whereToInputLabel', for: 'whereToInput'}
                     %i{class:'cs-map-marker B'}
                     Where are you going?
                   %autocomplete{ 'attr-placeholder'=> '{{toDefault}}',
                                               'attr-input-id' => 'whereToInput',
                                               'attr-clicktofocus' => 'true',
                                               class: 'autocompleteWrapper',
-                                              id: 'toInput',
+                                              id: 'whereToInput',
                                               tabindex: 'null',
                                               required: 'true',
                                               'inputclass' => 'clearable tripplanner__location form__input',
@@ -55,14 +53,13 @@
                                               'on-focus'=> 'focusTo',
                                               'on-blur'=> 'mapTo',
                                               'on-select' => 'selectTo',
+                                              'role' => 'combobox',
                                               'autocomplete-required' => 'true',
+                                              'aria-label'=> 'Where are you going?',
+                                              'aria-describedby'=> 'toInputHelp',
                                               ng: { model: 'to'} }
+                                              
 
-                  .alert.alert-danger{role:'alert', ng:{show:'errors.noResultsto'}}
-                    Address is not recognized.  Try entering it another way.
-
-                  .alert.alert-danger{role:'alert', ng:{show:'errors.rangeErrorto'}}
-                    The location you selected is outside the service area.
                 .col-lg-2.col-md-2.col-sm-2.container__swap-btn
                   -# %button.btn.btn--no-outline{type:'button', aria: {label: 'Swap Address Inputs'},ng: {click: 'debouncedSwapAddressInputs()', disabled: 'disableSwapAddressButton == true'}}
                   %button.btn.btn-icon.btn--lg-text{type:'button', aria: {label: 'Swap Address Inputs'},ng: {click: 'debouncedSwapAddressInputs()', disabled: 'disableSwapAddressButton == true'}}
@@ -70,10 +67,11 @@
 
               %div.map-canvas{'ui-map' => 'whereToMap', 'ui-options' => 'mapOptions', ng: {show: 'showMap'}}
 
+
           .row.unstuck-foot.btn-spacing
             .col-lg-6.col-lg-offset-3.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1.col-xs-12
               .pull-right
-                %a.btn.btn-primary{href: "", ng: {class:'{disabled: false==whereShowNext()}', click: 'next()'}}
+                %a.btn.btn-primary{href: "", ng: {click: 'validateAndProceed()'}, 'aria-label' => 'Confirm locations and proceed'}
                   %span{ng:{show:'backToConfirm'}}
                     Back to confirm
                   %span{ng:{hide:'backToConfirm'}}
@@ -391,21 +389,40 @@
         .form-group
           %h3
             %strong
-              Any requests for the driver?
+              Help our driver find you!
           %h4.text-muted
-            If you are visiting a doctor, please enter your doctor's name, suite number, and phone number.
+            Please provide specific location details below. (e.g. Suite F, Entrance G, etc.)
+
+        .row{style: 'margin-top: 30px'} 
+          %h4
+            %strong
+              Notes for outbound trip pickup:
+          %h5.text-muted{'ng-bind': 'planService.confirmRequest.fromLine2'}
+
         .row
           .form-group
-            %textarea{style:'width: 100%;',placeholder: 'Dear Driver, please...', rows: '5', ng: {model: 'driverInstructions'}}
+            %textarea{style:'width: 100%;',placeholder: 'Dear Driver, please...', rows: '5', maxlength: '75', ng: {model: 'planService.driverInstructions', keyup: 'updateCounter1()'}}
+            .char-counter {{75 - counter1}} characters remaining
+
+        .row{ng: {show: 'isRoundTrip'}, style: 'margin-top: 30px'}
+          %h4
+            %strong
+              Notes for return trip pickup:
+          %h5.text-muted{'ng-bind': 'planService.confirmRequest.toLine2'}
+
+          .form-group
+            %textarea{style:'width: 100%;',placeholder: 'Dear Driver, please...', rows: '5', maxlength: '75', ng: {model: 'planService.driverInstructionsReturn', keyup: 'updateCounter2()'}}
+            .char-counter {{75 - counter2}} characters remaining
+
         .row.unstuck-foot{style: 'margin-top: 30px'}
           .col-md-8.col-md-offset-2.col-xs-12{ style: 'padding:0px;' }
             %a.btn.btn-secondary{href: "", ng: {click: "back()"}}
               %span
                 Back
             %a.btn.btn-primary.pull-right{href: "", ng: {disabled: 'disableNext', click: 'next()'}}
-              %span{'ng-show'=>'driverInstructions'}
+              %span{'ng-show'=>'planService.driverInstructions || planService.driverInstructionsReturn'}
                 Book this Trip
-              %span{'ng-hide'=>'driverInstructions'}
+              %span{'ng-hide'=>'planService.driverInstructions || planService.driverInstructionsReturn'}
                 Skip and Book this Trip
 
     .discounts{ng: {show: 'step==="discounts"'}}
@@ -526,3 +543,7 @@
     Need Help? Please contact your Local Transit Agency 
     %a{href: "https://www.findmyride.penndot.pa.gov/fmr-edu/home/contact", target: "_blank", rel: "noopener noreferrer"} 
       %span.glyphicon.glyphicon-new-window
+    .col-lg-6.col-lg-offset-3.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1.col-xs-12
+      .row
+        %a.btn.btn-primary{href: "https://online2.snapsurveys.com/FMR-Schedule?&H1={{agencyCode}}&H2={{sharedRideId}}", target: "_blank", 'aria-label' => 'Share your experience - take our survey!'}
+          Share your experience - take our survey!

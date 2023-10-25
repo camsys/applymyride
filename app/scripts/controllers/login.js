@@ -32,6 +32,7 @@ angular.module('applyMyRideApp')
       $scope.disableNext = true;
       $scope.counties = localStorageService.get("counties") || [];
       $scope.sharedRideId = localStorageService.get("customer_number") || ipCookie('sharedRideId');
+      $scope.agencyCode = localStorageService.get("agencyCode") || ipCookie('agencyCode');
       $scope.county = localStorageService.get("county") || ipCookie('county');
       $scope.dateofbirth = sessionStorage.getItem('dateofbirth') || false;
       $scope.dob = localStorageService.get("dob") || {month:'', day:'', year:''};

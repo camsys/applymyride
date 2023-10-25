@@ -38,6 +38,10 @@ app.directive('autocomplete', function() {
         return $scope.selectedIndex;
       };
 
+      $scope.getActiveDescendant = function() {
+        return $scope.selectedIndex >= 0 ? 'option-' + $scope.selectedIndex : '';
+      };
+
       // watches if the parameter filter should be changed
       var watching = true;
 
@@ -238,28 +242,7 @@ app.directive('autocomplete', function() {
             return;
         }
       }, true)
-
-      element[0].addEventListener("blur", function(e){
-        //run callback provided in view if the event target is this input's id
-        if(scope.onBlur && e.target.id === scope.attrs.inputid){
-          scope.onBlur( scope.searchParam );
-        }
-        // disable suggestions on blur
-        // we do a timeout to prevent hiding it before a click event is registered
-        setTimeout(function() {
-          if(scope.blurWait == true){return;}
-          scope.select();
-          scope.setIndex(-1);
-          scope.$apply();
-        }, 750);
-
-      }, true);
-
-      element[0].addEventListener("focus", function (e){
-        if(scope.onFocus){
-          scope.onFocus(e, scope);
-        }
-      }, true);
+      
 
     },
     template: '\
@@ -274,17 +257,29 @@ app.directive('autocomplete', function() {
             id="{{ attrs.inputid }}"\
             autocomplete="off"\
             ng-model-options="{ debounce: 100 }"\
-            ng-required="{{ autocompleteRequired }}" />\
-          <ul ng-show="completing && (suggestions | filter:searchFilter).length > 0">\
+            role="combobox"\
+            aria-expanded="{{ completing && (suggestions | filter:searchFilter).length > 0 ? \'true\' : \'false\' }}"\
+            aria-controls="{{ attrs.inputid }}SuggestionList"\
+            aria-haspopup="listbox"\
+            aria-autocomplete="list"\
+            aria-required="{{ autocompleteRequired }}"\
+            aria-label="{{ attrs.placeholder }}"\
+            aria-labelledby="{{ attrs.inputid }}Label"\
+            aria-activedescendant="{{ attrs.inputid }}-{{ selectedIndex }}" />\
+          <ul id="{{ attrs.inputid }}SuggestionList" role="listbox" ng-show="completing && (suggestions | filter:searchFilter).length > 0">\
             <li\
+              role="option"\
+              id="{{ attrs.inputid }}-{{ $index }}"\
               suggestion\
-              ng-repeat="suggestion in suggestions"\
+              ng-repeat="suggestion in suggestions | filter:searchFilter | orderBy:\'option\' track by $index"\
               index="{{ $index }}"\
               val="{{ suggestion.label }}"\
               ng-class="{ active: ($index === selectedIndex && suggestion.option), selectable: (suggestion.option) }"\
               ng-click="!suggestion.option || select(suggestion.label)"\
               ng-mousedown="ignoreBlur()"\
-              ng-bind-html="suggestion.label"></li>\
+              ng-bind-html="suggestion.label"\
+              aria-selected="{{ $index === selectedIndex && suggestion.option ? \'true\' : \'false\' }}">\
+            </li>\
           </ul>\
         </div>'
   };
