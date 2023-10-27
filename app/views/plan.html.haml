@@ -397,7 +397,7 @@
           %h4
             %strong
               Notes for outbound trip pickup:
-          %h5.text-muted{'ng-bind': 'planService.confirmRequest.fromLine2'}
+          %h5.text-muted{'ng-bind': 'planService.confirmRequest.fromLine1 + ", " + planService.confirmRequest.fromLine2'}
 
         .row
           .form-group
@@ -408,7 +408,7 @@
           %h4
             %strong
               Notes for return trip pickup:
-          %h5.text-muted{'ng-bind': 'planService.confirmRequest.toLine2'}
+          %h5.text-muted{'ng-bind': 'planService.confirmRequest.toLine1 + ", " + planService.confirmRequest.toLine2'}
 
           .form-group
             %textarea{style:'width: 100%;',placeholder: 'Dear Driver, please...', rows: '5', maxlength: '75', ng: {model: 'planService.driverInstructionsReturn', keyup: 'updateCounter2()'}}
