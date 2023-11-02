@@ -176,6 +176,9 @@ angular.module('applyMyRideApp')
                 $scope.cancelCall('BOTH')
               }
             }
+            $scope.$apply(function() {
+              $scope.viewMyRides();
+            });
           }
         })
       }

@@ -211,7 +211,7 @@ angular.module('applyMyRideApp')
             if(planService.to && planService.from && planService.fromDate){
                 $location.path('/plan/purpose');
             }else{
-                $location.path('/plan/where');
+                $location.path('/plan/my_rides');
             }
           });
           Idle.watch();
