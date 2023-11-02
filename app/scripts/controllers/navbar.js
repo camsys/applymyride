@@ -27,9 +27,13 @@ angular.module('applyMyRideApp')
       });
 
       $scope.reset = function() {
-        planService.reset();
-        $location.path("/plan/where");
-      };
+        if ($location.path() === "/plan/where") {
+          location.reload();
+        } else {
+          planService.reset();
+          $location.path("/plan/where");
+        }
+      };      
 
       $scope.showNavbar = function() {
         that.$scope.email = ipCookie('email');
