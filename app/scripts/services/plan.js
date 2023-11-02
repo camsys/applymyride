@@ -42,6 +42,7 @@ angular.module('applyMyRideApp')
 
       this.resetOther = function () {
         delete this.driverInstructions;
+        delete this.driverInstructionsReturn;
         delete this.transitSaved;
         delete this.transitCancelled;
         delete this.taxiSaved;
