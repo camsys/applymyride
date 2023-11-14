@@ -415,7 +415,7 @@
           %h5.text-muted{'ng-bind': 'planService.confirmRequest.toLine1 ? planService.confirmRequest.toLine1 + ", " + planService.confirmRequest.toLine2 : planService.confirmRequest.toLine2'}
 
           .form-group
-            %textarea{style:'width: 100%;',placeholder: 'Dear Driver, please...', rows: '5', maxlength: '75', ng: {model: 'planService.driverInstructionsReturn', keyup: 'updateCounter2()'}}
+            %textarea{style:'width: 100%;',placeholder: 'Enter driver notes here...', rows: '5', maxlength: '75', ng: {model: 'planService.driverInstructionsReturn', keyup: 'updateCounter2()'}}
             .char-counter {{75 - counter2}} characters remaining
 
         .row.unstuck-foot{style: 'margin-top: 30px'}
