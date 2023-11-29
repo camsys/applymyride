@@ -151,6 +151,8 @@ angular.module('applyMyRideApp')
             trip_with_itineraries.mode = trip[i].mode;
             trip_with_itineraries.startDesc = that.getDateDescription(trip[i].wait_start || trip[i].departure);
             trip_with_itineraries.startDesc += " at " + moment.parseZone(trip[i].wait_start || trip[i].departure).format('h:mm a');
+            trip_with_itineraries.from_place_display = trip[0].origin.name;
+            trip_with_itineraries.to_place_display = trip[0].destination.name;
 
             var origin_addresses = trip[0].origin.address_components;
             for(var n = 0; n < origin_addresses.length; n++){
@@ -161,8 +163,8 @@ angular.module('applyMyRideApp')
               }
             }
 
-            if(!trip_with_itineraries.from_place && trip[0].origin.name){
-              trip_with_itineraries.from_place = trip[0].origin.name;
+            if(!trip_with_itineraries.from_place && trip[0].origin.original_name){
+              trip_with_itineraries.from_place = trip[0].origin.original_name;
             } else if (!trip_with_itineraries.from_place && trip[0].origin.formatted_address) {
               trip_with_itineraries.from_place = trip[0].origin.formatted_address;
             }
@@ -176,8 +178,8 @@ angular.module('applyMyRideApp')
               }
             }
 
-            if(!trip_with_itineraries.to_place && trip[0].destination.name){
-              trip_with_itineraries.to_place = trip[0].destination.name;
+            if(!trip_with_itineraries.to_place && trip[0].destination.original_name){
+              trip_with_itineraries.to_place = trip[0].destination.original_name;
             } else if(!trip_with_itineraries.to_place && trip[0].destination.formatted_address){
               trip_with_itineraries.to_place = trip[0].destination.formatted_address;
             }
@@ -186,6 +188,7 @@ angular.module('applyMyRideApp')
 
           trip_with_itineraries.itineraries.push(trip[i]);
           i++;
+          console.log(trip);
         }
 
         trip_with_itineraries.roundTrip = typeof trip[1] !== 'undefined' ? true : false;
@@ -911,10 +914,19 @@ angular.module('applyMyRideApp')
           google_place_attributes: destination
         };
 
-        if (origin.poi) { outboundTrip.trip.origin_attributes.name = origin.poi.name; }
-        if (origin.name) { outboundTrip.trip.origin_attributes.name = origin.name; }
-        if (destination.poi) { outboundTrip.trip.destination_attributes.name = destination.poi.name; }
-        if (destination.name) { outboundTrip.trip.destination_attributes.name = destination.name; }
+      if (origin.poi) {
+          outboundTrip.trip.origin_attributes.original_name = origin.poi.name;
+          outboundTrip.trip.origin_attributes.name = origin.poi.name;}
+      if (origin.name) {
+          outboundTrip.trip.origin_attributes.original_name = origin.name;
+          outboundTrip.trip.origin_attributes.name = origin.name;}
+      if (destination.poi) {
+          outboundTrip.trip.destination_attributes.original_name = destination.poi.name;
+          outboundTrip.trip.destination_attributes.name = destination.poi.name;}
+      if (destination.name) {
+          outboundTrip.trip.destination_attributes.original_name = destination.name;
+          outboundTrip.trip.destination_attributes.name = destination.name;}
+      
 
         origin.address_components.forEach((component) => {
           component.types.forEach((type) => {
