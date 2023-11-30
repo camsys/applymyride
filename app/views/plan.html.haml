@@ -65,7 +65,7 @@
                   %button.btn.btn-icon.btn--lg-text{type:'button', aria: {label: 'Swap Address Inputs'},ng: {click: 'debouncedSwapAddressInputs()', disabled: 'disableSwapAddressButton == true'}}
                     %i.glyphicon.glyphicon-sort
 
-              %div.map-canvas{'ui-map' => 'whereToMap', 'ui-options' => 'mapOptions', ng: {show: 'showMap'}}
+              %div.map-canvas{'ui-map' => 'whereToMap', 'ui-options' => 'mapOptions', ng: {show: 'showMap'}, 'aria-hidden' => 'true', tabindex: '-1'}
 
 
           .row.unstuck-foot.btn-spacing
@@ -76,6 +76,8 @@
                     Back to confirm
                   %span{ng:{hide:'backToConfirm'}}
                     Yes, looks good!
+
+            %div#aria-live-region{ 'aria-live': 'assertive', style: 'position: absolute; height: 1px; width: 1px; margin: -1px; overflow: hidden; clip: rect(1px, 1px, 1px, 1px)' }
 
     .purpose{ng: {show: 'step==="purpose"'}}
       .text-center

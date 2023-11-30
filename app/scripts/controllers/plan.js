@@ -483,17 +483,29 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
     }
 
     $scope.validateAndProceed = function() {
+      var errorMessage = "";
+  
       if (!$scope.whereShowNext()) {
-        bootbox.alert("Please select a location from the dropdown list to continue. If the address you entered does not appear in the drop-down, it is currently unavailable in Find My Ride. It may still be possible to book this trip by calling your local transit agency for assistance.", function () {
-          $scope.disableSwapAddressButton = true;
-        });
-        return;
+          errorMessage = "Please select a location from the dropdown list to continue. If the address you entered does not appear in the drop-down, it is currently unavailable in Find My Ride. It may still be possible to book this trip by calling your local transit agency for assistance.";
       } else if ($scope.from === $scope.to) {
-        bootbox.alert("Please select different locations for the origin and destination to proceed.");
-        return;
+          errorMessage = "Please select different locations for the origin and destination to proceed.";
+      }
+      // Removes the auto-focus on the OK button so that the screen reader can read the alert message
+      if (errorMessage) {
+          angular.element(document.getElementById('aria-live-region')).text(errorMessage);
+          bootbox.alert({
+              message: errorMessage,
+              onShown: function() {
+                  document.activeElement.blur();
+                  setTimeout(function() {
+                      this.find('.bootbox-accept').focus();
+                  }.bind(this), 1000);
+              }
+          });
+          return;
       }
       $scope.next();
-    }
+    };  
 
     $scope.next = function() {
       if($scope.disableNext){ return; }
@@ -782,19 +794,53 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
       });
     }
 
-    // Rebuild and recenter the map
-    function rebuildRecenterMap() {
-      const map = $scope.whereToMap
-      const bounds = new google.maps.LatLngBounds();
-      Object.values($scope.toFromMarkers).forEach(function(marker) {
-        bounds.extend(marker.position);
-      })
-      map.setCenter(bounds.getCenter());
-      map.fitBounds(bounds);
-      if(Object.keys($scope.toFromMarkers).length === 1 ){
-        map.setZoom(15);
-      }
+    $scope.setAccessibilityAttributes = function(element) {
+      element.setAttribute('tabindex', '-1');
+      element.setAttribute('aria-hidden', 'true');
+  
+      Array.from(element.children).forEach(child => {
+          $scope.setAccessibilityAttributes(child);
+      });
+    };
+  
+    function setupAccessibilityObserver() {
+        var mapCanvas = document.querySelector('.map-canvas');
+        if (!mapCanvas) return;
+    
+        var observer = new MutationObserver(function(mutations) {
+            mutations.forEach(function(mutation) {
+                mutation.addedNodes.forEach(function(node) {
+                    if (node.nodeType === 1) { 
+                        $scope.setAccessibilityAttributes(node);
+                    }
+                });
+            });
+        });
+    
+        var config = { childList: true, subtree: true };
+        observer.observe(mapCanvas, config);
     }
+  
+    function rebuildRecenterMap() {
+        const map = $scope.whereToMap
+        const bounds = new google.maps.LatLngBounds();
+        Object.values($scope.toFromMarkers).forEach(function(marker) {
+            bounds.extend(marker.position);
+        })
+        map.setCenter(bounds.getCenter());
+        map.fitBounds(bounds);
+        if(Object.keys($scope.toFromMarkers).length === 1 ){
+            map.setZoom(15);
+        }
+    
+        // Accessibility adjustments
+        var mapCanvas = document.querySelector('.map-canvas');
+        if (mapCanvas) {
+            $scope.setAccessibilityAttributes(mapCanvas);
+            setupAccessibilityObserver();
+        }
+    }
+  
 
     function _bookTrip () {
       try {
