@@ -1508,7 +1508,19 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
         return "undefined"
       }
     }
+
+    // Make sure the locations aren't returning addresses as doubled up names if no name exists in Ecolane
+    $scope.formatAddress = function(line1, line2) {
+      if (!line1 && !line2) return '';
+      if (!line1) return line2;
+      if (!line2) return line1;
     
+      if (line2.startsWith(line1)) {
+        return line2;
+      }
+      return line1 + ', ' + line2;
+    };
+
     $scope.checkServiceArea = function (result, place, toFrom, updateInput) {
       updateInput = util.assignDefaultValueIfEmpty(updateInput, false);
       if (result.formatted_address === undefined) { result.formatted_address = place; }
