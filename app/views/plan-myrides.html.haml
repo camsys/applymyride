@@ -21,7 +21,7 @@
             .col-xs-10.col-height-master{style: 'width: 60em !important;'}
               .row
                 .col-xs-8
-                  %h4 {{trip.from_place}} to {{trip.to_place}}
+                  %h4 {{trip.from_place_display}} to {{trip.to_place_display}}
                 .col-xs-4{ng: {show: 'trip.isLive'}}
                   %h4.text-right{ng: {hide: 'trip.isHere'}}
                     ETA:
@@ -46,7 +46,7 @@
             .col-xs-10.col-height-master{style: 'width: 60em !important;'}
               .row
                 .col-xs-12
-                  %h4 {{trip.from_place}} to {{trip.to_place}}
+                  %h4 {{trip.from_place_display}} to {{trip.to_place_display}}
               .row
                 .col-xs-8
                   %h5.blue-text {{trip.startDesc}}
