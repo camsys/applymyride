@@ -250,6 +250,10 @@ angular.module('applyMyRideApp')
             }
           }
         })
+
+        $scope.$apply(function() {
+          $scope.viewMyRides();
+        });
       }
 
       $scope.show = function(event){
