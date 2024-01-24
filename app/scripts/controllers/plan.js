@@ -1908,6 +1908,11 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
         }else if($scope.fromDefault){
           $scope.selectPlace($scope.fromDefault, 'from', true);
         }
+        $scope.onInputChange = function() {
+          // Logic to remove the map pin and handle state change when the user deletes from the input field
+          $scope.mapPinExists = false; 
+        };
+        
         break;
       case 'purpose':
         planService.getTripPurposes($scope, $http).then(function(){

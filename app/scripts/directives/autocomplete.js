@@ -70,6 +70,10 @@ app.directive('autocomplete', function() {
         if($scope.onType && wasTyped){
           $scope.onType($scope.searchParam);
         }
+
+        if (scope.selectedLocation && newVal !== scope.selectedLocation.label) {
+          scope.onInputChange();
+        }
         wasTyped = false;
       });
 
@@ -153,7 +157,7 @@ app.directive('autocomplete', function() {
         };
       }
 
-      var key = {left: 37, up: 38, right: 39, down: 40 , enter: 13, esc: 27, tab: 9};
+      var key = {left: 37, up: 38, right: 39, down: 40 , enter: 13, esc: 27, tab: 9, space: 32};
 
       element[0].addEventListener("keydown", function(e){
         var keycode = e.keyCode || e.which;
@@ -208,6 +212,11 @@ app.directive('autocomplete', function() {
               scope.preSelect(angular.element(angular.element(this).find('li')[index]).text());
 
             break;
+          case key.space:
+            if (scope.lastKeyCode === key.tab || (scope.lastKeyCode >= key.left && scope.lastKeyCode <= key.down)) {
+              e.preventDefault(); // Prevent the default space key action
+            }
+            break;
           case key.left:
             break;
           case key.right:
@@ -237,10 +246,12 @@ app.directive('autocomplete', function() {
             scope.$apply();
             e.preventDefault();
             break;
+            
           default:
             wasTyped = true;
             return;
         }
+        scope.lastKeyCode = keycode;
       }, true)
 
 
