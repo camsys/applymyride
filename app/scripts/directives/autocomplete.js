@@ -71,9 +71,10 @@ app.directive('autocomplete', function() {
           $scope.onType($scope.searchParam);
         }
 
-        if (scope.selectedLocation && newVal !== scope.selectedLocation.label) {
-          scope.onInputChange();
+        if ($scope.selectedLocation && newValue !== $scope.selectedLocation.label) {
+          $scope.onInputChange();
         }
+
         wasTyped = false;
       });
 
@@ -213,8 +214,14 @@ app.directive('autocomplete', function() {
 
             break;
           case key.space:
-            if (scope.lastKeyCode === key.tab || (scope.lastKeyCode >= key.left && scope.lastKeyCode <= key.down)) {
-              e.preventDefault(); // Prevent the default space key action
+            if(scope.completing && l > 0) {
+              var index = scope.getIndex();
+              if(index !== -1 && scope.suggestions[index].option) {
+                e.preventDefault(); // Prevent the default space key action
+                scope.select(angular.element(angular.element(this).find('li')[index]).text());
+                scope.setIndex(-1);
+                scope.$apply();
+              }
             }
             break;
           case key.left:
@@ -247,15 +254,15 @@ app.directive('autocomplete', function() {
             e.preventDefault();
             break;
             
-          default:
-            wasTyped = true;
-            return;
+            default:
+              wasTyped = true;
+              return;
+          }
+          scope.lastKeyCode = keycode;
         }
-        scope.lastKeyCode = keycode;
-      }, true)
-
-
+      )
     },
+
     template: '\
         <div class="autocomplete {{ attrs.class }}" id="{{ attrs.id }}">\
           <input\
