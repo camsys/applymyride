@@ -2,7 +2,7 @@
 
 var app = angular.module('applyMyRideApp');
 
-app.controller('PlanController', ['$scope', '$http','$routeParams', '$location', 'planService', 'util', 'flash', 'usSpinnerService', 'debounce', '$q', 'LocationSearch', 'localStorageService', 'ipCookie', '$timeout', '$window', '$filter',
+app.controller('PlanController', ['$scope', '$http', '$routeParams', '$location', 'planService', 'util', 'flash', 'usSpinnerService', 'debounce', '$q', 'LocationSearch', 'localStorageService', 'ipCookie', '$timeout', '$window', '$filter', 
   function($scope, $http, $routeParams, $location, planService, util, flash, usSpinnerService, debounce, $q, LocationSearch, localStorageService, ipCookie, $timeout, $window, $filter) {
     // This variable exists to track whether or not we're still on initial focus with a default input
     let isOnInitFocus = true
@@ -1105,11 +1105,55 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
       $scope.disableSwapAddressButton = false
     }
 
+    $scope.ignoreChanges = {
+      from: false,
+      to: false
+    };
+
+    // Function to remove the 'from' map pin when the input changes
+    $scope.removeFromPin = function() {
+      if ($scope.toFromMarkers.from) {
+        $scope.toFromMarkers.from.setMap(null);
+      }
+    };
+
+    // Function to remove the 'to' map pin when the input changes
+    $scope.removeToPin = function() {
+      if ($scope.toFromMarkers.to) {
+        $scope.toFromMarkers.to.setMap(null);
+      }
+    };
+
+    // Watch the 'from' ngModel
+    $scope.$watch('from', function(newValue, oldValue) {
+      if (newValue !== oldValue) {
+        if (!$scope.ignoreChanges.from) {
+          $scope.removeFromPin();
+        } else {
+          // Reset the flag immediately after ignoring the change
+          $scope.ignoreChanges.from = false;
+        }
+      }
+    });
+
+    $scope.$watch('to', function(newValue, oldValue) {
+      if (newValue !== oldValue) {
+        if (!$scope.ignoreChanges.to) {
+          $scope.removeToPin();
+        } else {
+          // Reset the flag immediately after ignoring the change
+          $scope.ignoreChanges.to = false;
+        }
+      }
+    });
+
     /**
      * NOTE: implementation is similar to how $scope.checkServiceArea is implemented
      * ... only it's fully synchronous whereas checkServiceArea performs at least one asynchronous action
      */
     function swapMapMarkers() {
+      $scope.ignoreChanges.from = true;
+      $scope.ignoreChanges.to = true;
       const tempToDetails = {...planService.toDetails}
       const tempToName = planService.to
       const tempToDisplay = $scope.to !== '' ? $scope.to : $scope.toDefault
