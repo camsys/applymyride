@@ -188,9 +188,6 @@ angular.module('applyMyRideApp')
                 $scope.cancelCall('BOTH')
               }
             }
-            $scope.$apply(function() {
-              $scope.viewMyRides();
-            });
           }
         })
       }
@@ -200,7 +197,7 @@ angular.module('applyMyRideApp')
         if(result != 'BOTH' && result != 'OUTBOUND' && result != 'RETURN'){
           return;
         }
-
+      
         var itinsToCancel; 
         var successMessage;
         if(result == 'BOTH'){
@@ -216,7 +213,6 @@ angular.module('applyMyRideApp')
         }
         
         var cancel = {};
-
         cancel.bookingcancellation_request = [];
         angular.forEach(itinsToCancel, function(itinerary, index) {
           var bookingCancellation = {};
@@ -228,31 +224,16 @@ angular.module('applyMyRideApp')
           }
           cancel.bookingcancellation_request.push(bookingCancellation);
         });
-        var cancelPromise = planService.cancelTrip($http, cancel)
-        cancelPromise.error(function(data) {
-          bootbox.alert("An error occurred, your trip was not cancelled. Please contact your local transit authority for more information.");
-        });
-        cancelPromise.success(function(data) {
-          bootbox.alert(successMessage);
-          if(result == 'BOTH'){
-            $scope.tripCancelled = true;
-            ipCookie('rideCount', ipCookie('rideCount') - 1);
-          }
-          else if(result == 'OUTBOUND'){
-            $scope.outboundCancelled = true;
-            if($scope.returnCancelled){
-              ipCookie('rideCount', ipCookie('rideCount') - 1);
-            }
-          }else if(result == 'RETURN'){
-            $scope.returnCancelled = true;
-            if($scope.outboundCancelled){
-              ipCookie('rideCount', ipCookie('rideCount') - 1);
-            }
-          }
-        })
-
+      
+        var cancelPromise = planService.cancelTrip($http, cancel);
+        cancelPromise.then(function(data) {
+          bootbox.alert(successMessage, function() {
         $scope.$apply(function() {
           $scope.viewMyRides();
+            });
+          });
+        }, function(error) {
+          bootbox.alert("An error occurred, your trip was not cancelled. Please contact your local transit authority for more information.");
         });
       }
 

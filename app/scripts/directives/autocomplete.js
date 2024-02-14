@@ -158,11 +158,15 @@ app.directive('autocomplete', function() {
         };
       }
 
-      var key = {left: 37, up: 38, right: 39, down: 40 , enter: 13, esc: 27, tab: 9, space: 32};
+      var key = {left: 37, up: 38, right: 39, down: 40 , enter: 13, esc: 27, tab: 9, space: 32, shift: 16};
 
       element[0].addEventListener("keydown", function(e){
         var keycode = e.keyCode || e.which;
         var l = angular.element(this).find('li').length;
+
+        if (keycode === key.shift) {
+          return; // Prevent interference with normal Shift + Tab behavior
+        }
 
         // this allows submitting forms by pressing Enter in the autocompleted field
         //if(!scope.completing || l == 0) return;

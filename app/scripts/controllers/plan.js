@@ -507,6 +507,39 @@ app.controller('PlanController', ['$scope', '$http', '$routeParams', '$location'
       $scope.next();
     };  
 
+    $scope.validatePurposeBeforeNext = function() {
+      var errorMessage = "";
+    
+      if (!planService.purpose) {
+        errorMessage = "You need to select a purpose before moving to the next screen.";
+      }
+    
+      if (errorMessage) {
+        var dialog = bootbox.alert({
+          message: errorMessage,
+          buttons: {
+            ok: {
+              label: 'OK',
+              className: 'bootbox-accept'
+            }
+          },
+          onShown: function(e) {
+            var okButton = angular.element(document).find('.bootbox-accept');
+            okButton.attr('aria-label', errorMessage);
+            
+            document.activeElement.blur();
+            setTimeout(function() {
+              okButton.focus();
+            }, 500); 
+          }
+        });
+    
+        return; 
+      }
+    
+      $scope.next();
+    };
+    
     $scope.next = function() {
       if($scope.disableNext){ return; }
       $scope.showNext = false;
@@ -1152,6 +1185,11 @@ app.controller('PlanController', ['$scope', '$http', '$routeParams', '$location'
      * ... only it's fully synchronous whereas checkServiceArea performs at least one asynchronous action
      */
     function swapMapMarkers() {
+      if (!$scope.from || !$scope.to) {
+        bootbox.alert('One or more address inputs is empty. Please ensure both inputs have a valid address selected.');
+        // Do not proceed with swap, and importantly, do not remove any pins.
+        return;
+      }
       $scope.ignoreChanges.from = true;
       $scope.ignoreChanges.to = true;
       const tempToDetails = {...planService.toDetails}
