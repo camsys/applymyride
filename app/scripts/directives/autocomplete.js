@@ -70,6 +70,11 @@ app.directive('autocomplete', function() {
         if($scope.onType && wasTyped){
           $scope.onType($scope.searchParam);
         }
+
+        if ($scope.selectedLocation && newValue !== $scope.selectedLocation.label) {
+          $scope.onInputChange();
+        }
+
         wasTyped = false;
       });
 
@@ -153,11 +158,15 @@ app.directive('autocomplete', function() {
         };
       }
 
-      var key = {left: 37, up: 38, right: 39, down: 40 , enter: 13, esc: 27, tab: 9};
+      var key = {left: 37, up: 38, right: 39, down: 40 , enter: 13, esc: 27, tab: 9, space: 32, shift: 16};
 
       element[0].addEventListener("keydown", function(e){
         var keycode = e.keyCode || e.which;
         var l = angular.element(this).find('li').length;
+
+        if (keycode === key.shift) {
+          return; // Prevent interference with normal Shift + Tab behavior
+        }
 
         // this allows submitting forms by pressing Enter in the autocompleted field
         //if(!scope.completing || l == 0) return;
@@ -208,6 +217,17 @@ app.directive('autocomplete', function() {
               scope.preSelect(angular.element(angular.element(this).find('li')[index]).text());
 
             break;
+          case key.space:
+            if(scope.completing && l > 0) {
+              var index = scope.getIndex();
+              if(index !== -1 && scope.suggestions[index].option) {
+                e.preventDefault(); // Prevent the default space key action
+                scope.select(angular.element(angular.element(this).find('li')[index]).text());
+                scope.setIndex(-1);
+                scope.$apply();
+              }
+            }
+            break;
           case key.left:
             break;
           case key.right:
@@ -237,14 +257,16 @@ app.directive('autocomplete', function() {
             scope.$apply();
             e.preventDefault();
             break;
-          default:
-            wasTyped = true;
-            return;
+            
+            default:
+              wasTyped = true;
+              return;
+          }
+          scope.lastKeyCode = keycode;
         }
-      }, true)
-
-
+      )
     },
+
     template: '\
         <div class="autocomplete {{ attrs.class }}" id="{{ attrs.id }}">\
           <input\

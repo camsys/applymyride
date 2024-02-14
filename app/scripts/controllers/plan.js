@@ -2,7 +2,7 @@
 
 var app = angular.module('applyMyRideApp');
 
-app.controller('PlanController', ['$scope', '$http','$routeParams', '$location', 'planService', 'util', 'flash', 'usSpinnerService', 'debounce', '$q', 'LocationSearch', 'localStorageService', 'ipCookie', '$timeout', '$window', '$filter',
+app.controller('PlanController', ['$scope', '$http', '$routeParams', '$location', 'planService', 'util', 'flash', 'usSpinnerService', 'debounce', '$q', 'LocationSearch', 'localStorageService', 'ipCookie', '$timeout', '$window', '$filter', 
   function($scope, $http, $routeParams, $location, planService, util, flash, usSpinnerService, debounce, $q, LocationSearch, localStorageService, ipCookie, $timeout, $window, $filter) {
     // This variable exists to track whether or not we're still on initial focus with a default input
     let isOnInitFocus = true
@@ -507,6 +507,39 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
       $scope.next();
     };  
 
+    $scope.validatePurposeBeforeNext = function() {
+      var errorMessage = "";
+    
+      if (!planService.purpose) {
+        errorMessage = "You need to select a purpose before moving to the next screen.";
+      }
+    
+      if (errorMessage) {
+        var dialog = bootbox.alert({
+          message: errorMessage,
+          buttons: {
+            ok: {
+              label: 'OK',
+              className: 'bootbox-accept'
+            }
+          },
+          onShown: function(e) {
+            var okButton = angular.element(document).find('.bootbox-accept');
+            okButton.attr('aria-label', errorMessage);
+            
+            document.activeElement.blur();
+            setTimeout(function() {
+              okButton.focus();
+            }, 500); 
+          }
+        });
+    
+        return; 
+      }
+    
+      $scope.next();
+    };
+    
     $scope.next = function() {
       if($scope.disableNext){ return; }
       $scope.showNext = false;
@@ -1105,11 +1138,60 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
       $scope.disableSwapAddressButton = false
     }
 
+    $scope.ignoreChanges = {
+      from: false,
+      to: false
+    };
+
+    // Function to remove the 'from' map pin when the input changes
+    $scope.removeFromPin = function() {
+      if ($scope.toFromMarkers.from) {
+        $scope.toFromMarkers.from.setMap(null);
+      }
+    };
+
+    // Function to remove the 'to' map pin when the input changes
+    $scope.removeToPin = function() {
+      if ($scope.toFromMarkers.to) {
+        $scope.toFromMarkers.to.setMap(null);
+      }
+    };
+
+    // Watch the 'from' ngModel
+    $scope.$watch('from', function(newValue, oldValue) {
+      if (newValue !== oldValue) {
+        if (!$scope.ignoreChanges.from) {
+          $scope.removeFromPin();
+        } else {
+          // Reset the flag immediately after ignoring the change
+          $scope.ignoreChanges.from = false;
+        }
+      }
+    });
+
+    $scope.$watch('to', function(newValue, oldValue) {
+      if (newValue !== oldValue) {
+        if (!$scope.ignoreChanges.to) {
+          $scope.removeToPin();
+        } else {
+          // Reset the flag immediately after ignoring the change
+          $scope.ignoreChanges.to = false;
+        }
+      }
+    });
+
     /**
      * NOTE: implementation is similar to how $scope.checkServiceArea is implemented
      * ... only it's fully synchronous whereas checkServiceArea performs at least one asynchronous action
      */
     function swapMapMarkers() {
+      if (!$scope.from || !$scope.to) {
+        bootbox.alert('One or more address inputs is empty. Please ensure both inputs have a valid address selected.');
+        // Do not proceed with swap, and importantly, do not remove any pins.
+        return;
+      }
+      $scope.ignoreChanges.from = true;
+      $scope.ignoreChanges.to = true;
       const tempToDetails = {...planService.toDetails}
       const tempToName = planService.to
       const tempToDisplay = $scope.to !== '' ? $scope.to : $scope.toDefault
@@ -1908,6 +1990,11 @@ app.controller('PlanController', ['$scope', '$http','$routeParams', '$location',
         }else if($scope.fromDefault){
           $scope.selectPlace($scope.fromDefault, 'from', true);
         }
+        $scope.onInputChange = function() {
+          // Logic to remove the map pin and handle state change when the user deletes from the input field
+          $scope.mapPinExists = false; 
+        };
+        
         break;
       case 'purpose':
         planService.getTripPurposes($scope, $http).then(function(){
