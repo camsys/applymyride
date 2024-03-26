@@ -25,8 +25,8 @@
                     'aria-label' => '{{day.day}} {{month.name}}', 
                     ng: { repeat: 'day in week track by day.key', 
                           click:'selectDepartDate(day)',
-                          disabled:'!(day.startTime || day.endTime)', 
-                          class:'{ disabled: !(day.startTime || day.endTime), selected: fromMoment.isSame(day.moment, "day")}' } }
+                          disabled:'!(day.timeWindows && day.timeWindows.length > 0)', 
+                          class:'{ disabled: !(day.timeWindows && day.timeWindows.length > 0), selected: fromMoment.isSame(day.moment, "day")}' }}
                 {{day.day}}
     .row{style:'padding:11px 0px;'}
       .col-lg-6.col-lg-offset-3.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1.col-xs-12
@@ -42,13 +42,13 @@
             What time do you want to arrive?
           -# TODO: Refactor this so this uses the native %input{type: 'time'} element
           %cs-time-input{ng:{model:'fromMoment', focused:'backToConfirm'}, 'aria-labelledby': 'time-header'}
-    .row{ng:{show:'planService.serviceOpen'}}
+    .row{'ng-show' => 'planService.formattedServiceWindows'}
       .col-lg-6.col-lg-offset-3.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1.col-xs-12
-        .text-muted{'ng-class' =>'{"text-danger": fromTimeUpdated && !whenShowNext()}'}
+        .text-muted{'ng-class' => '{"text-danger": fromTimeUpdated && !whenShowNext()}'}
           %p
             Please select from available service hours on this day:
           %p
-            %strong {{planService.serviceOpen | momentFormat: 'h:mm a'}} to {{planService.serviceClose | momentFormat: 'h:mm a'}}
+            %strong {{ planService.formattedServiceWindows }}
 
     .return-trip-option{ng:{show:'fromTimeUpdated && whenShowNext()'}}
       .row

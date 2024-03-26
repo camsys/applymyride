@@ -583,10 +583,21 @@ app.controller('PlanController', ['$scope', '$http', '$routeParams', '$location'
                       .then((res) => {
                         let travelPatterns = res.data.data.flat();
                         let dates = travelPatterns
-                        .filter(pattern => pattern.to_calendar)
-                        .map(pattern => Object.keys(pattern.to_calendar))
-                        .flat();
-                        let sorted_dates = [...new Set(dates)].sort();
+                          .filter(pattern => pattern.to_calendar)
+                          .map(pattern => {
+                            // Map each pattern to its dates, preserving the time ranges
+                            return Object.entries(pattern.to_calendar).map(([date, times]) => {
+                              return {
+                                date,
+                                timeRanges: times.map(time => ({
+                                  startTime: time.start_time,
+                                  endTime: time.end_time
+                                }))
+                              };
+                            });
+                          })
+                          .flat();
+                        let sorted_dates = [...new Set(dates.map(d => d.date))].sort();
                         if (sorted_dates.length === 0) {
                           $location.path('/plan/when/error');
                           return;
@@ -624,15 +635,22 @@ app.controller('PlanController', ['$scope', '$http', '$routeParams', '$location'
                             }
                           }
 
+                          let timeWindows = travelPatterns
+                          .flatMap(pattern => pattern.to_calendar[dateString] || [])
+                          .map(range => {
+                              return {
+                                  startTime: range.start_time,
+                                  endTime: range.end_time
+                              };
+                          });
                           let week = month.weeks[weekIndex]
-                          week[weekday] = {
-                            key: date.format("YYYY-MM-DD"),
-                            day: day,
-                            moment: date,
-                            startTime: Math.min(...travelPatterns.map(pattern => pattern.to_calendar[dateString].start_time)),
-                            endTime: Math.max(...travelPatterns.map(pattern => pattern.to_calendar[dateString].end_time))
-                          }
 
+                          week[weekday] = {
+                              key: date.format("YYYY-MM-DD"),
+                              day: day,
+                              moment: date,
+                              timeWindows: timeWindows
+                          };
                           if (day == date.daysInMonth() || date.isSame(lastDay)) {
                             for(let i=weekday+1; i<7; i++) {
                               let tempDate = date.clone().add(i-weekday, "Days");
@@ -1857,79 +1875,114 @@ app.controller('PlanController', ['$scope', '$http', '$routeParams', '$location'
         })
     }
 
-    $scope.selectDepartDate = function(day){
-      if(!(day.startTime || day.startTime == 0)) { return; } // Return if the start time doesn't exist
-      if(!(day.endTime > 0)) { return; } // Return if the end time doesn't exist
-
-      let hour, minute;
-      let serviceOpen = {hour: day.startTime / 3600, minute: (day.startTime % 3600) / 60};
-      let serviceClose = {hour: day.endTime / 3600, minute: (day.startTime % 3600) / 60};
-
-      //try to re-use the selected time if there is one, otherwise use the start time as a default
-      if($scope.fromMoment && !$scope.fromMoment.isSame( moment(), 'day' )) {
-        minute = $scope.fromMoment.minute();
-        hour = $scope.fromMoment.hour();
-      } else {
-        hour = serviceOpen.hour;
-        minute = serviceOpen.close;
+    $scope.selectDepartDate = function(day) {
+      if (!day.timeWindows || day.timeWindows.length === 0) {
+        console.log("No service times available for this day.");
+        return;
       }
 
-      planService.serviceOpen = day.moment.clone().set(serviceOpen)
-      planService.serviceClose = day.moment.clone().set(serviceClose)
-      $scope.fromMoment = day.moment.clone();
-      $scope.fromMoment.hour( hour ).minute( minute ).seconds(0);
+      let sortedWindows = day.timeWindows.sort((a, b) => a.startTime - b.startTime);
 
-      setTimeout(function(){
-        $('input.cs-hour').select();
-      }, 100);
-    }
+      let mergedWindows = sortedWindows.reduce((acc, window) => {
+        if (acc.length === 0) {
+          acc.push(window);
+        } else {
+          let lastWindow = acc[acc.length - 1];
+          if (window.startTime <= lastWindow.endTime) { // Check for overlap or adjacent
+            // Merge windows by extending the end time of the last window
+            lastWindow.endTime = Math.max(lastWindow.endTime, window.endTime);
+          } else {
+            acc.push(window);
+          }
+        }
+        return acc;
+      }, []);
+    
+      planService.serviceWindows = mergedWindows.map(window => ({
+        start: day.moment.clone().startOf('day').add(window.startTime, 'seconds'),
+        end: day.moment.clone().startOf('day').add(window.endTime, 'seconds')
+      }));
+    
+    
+      // Assume first window is selected by default
+      if (planService.serviceWindows.length > 0) {
+        let firstWindow = planService.serviceWindows[0];
+        $scope.fromMoment = firstWindow.start;
+        planService.serviceOpen = firstWindow.start,
+        planService.serviceClose = firstWindow.end;
+      }
 
-    function _setupHowLongOptions(){
-      var time, startingTime, endOfDay, beginOfDay, minDiff, hrsDiff, name, selectedIndex;
-      //can only setup howlong if fromMoment is within service hours
-      if(!$scope.fromMoment || !planService.serviceOpen || !planService.serviceClose) { return; }
+      planService.formattedServiceWindows = planService.serviceWindows.map(window => {
+        let startFormat = window.start.format('h:mm a');
+        let endFormat = window.end.format('h:mm a');
+        return startFormat === endFormat ? startFormat : `${startFormat} to ${endFormat}`;
+    }).join(', ');
+    
+    };
+    
+  
 
+    function _setupHowLongOptions() {
+      if (!$scope.fromMoment || !planService.serviceWindows || planService.serviceWindows.length === 0) { return; }
+    
       $scope.howLongOptions = [{
           minutes: 0,
           name: 'No return trip'
-        }];
-
-      time = $scope.fromMoment.clone();
-      endOfDay = planService.serviceClose.clone()
-      beginOfDay = planService.serviceOpen.clone()
-
-      if(time.isBefore(beginOfDay)) {
-        startingTime = beginOfDay;
-        time = beginOfDay.clone()
-      } else {
-        startingTime = time.clone()
-      }
-
-      time.add(60, 'm')
-      while (time.isBefore(endOfDay) || time.isSame(endOfDay)) {
-        name = [];
-        minDiff = time.diff(startingTime, 'minutes');
-        hrsDiff = time.diff(startingTime, 'hours');
-
-        if (hrsDiff > 0) { name.push(hrsDiff, (hrsDiff === 1 ? 'Hour' : 'Hours')) }
-        if (minDiff % 60 > 0) { name.push(minDiff % 60, (minDiff % 60 === 1 ? 'Minute' : 'Minutes')) }
-
-        $scope.howLongOptions.push({
-          minutes: minDiff,
-          name: name.join(' ')
-        });
-
-        if($scope.howLong && minDiff == $scope.howLong.minutes){
-          selectedIndex = $scope.howLongOptions.length-1;
+      }];
+    
+      let time = $scope.fromMoment.clone();
+      
+      // Assuming serviceWindows are sorted; if not, sort them as needed
+      let foundContinuous = false;
+      planService.serviceWindows.forEach(window => {
+        let windowStart = window.start.clone();
+        let windowEnd = window.end.clone();
+    
+        // Check if within a continuous service window
+        if (!windowStart.isSame(windowEnd) && time.isBetween(windowStart, windowEnd, null, '[]')) {
+          foundContinuous = true;
+          while (time.isBefore(windowEnd)) {
+            let minDiff = time.diff($scope.fromMoment, 'minutes');
+            if (minDiff > 0) { // Meaningful difference indicates a valid return option
+              $scope.howLongOptions.push({
+                minutes: minDiff,
+                name: generateOptionName(minDiff)
+              });
+            }
+            time.add(15, 'minutes'); // Check for next return option within window
+          }
         }
-
-        time.add(15, 'm');
+      });
+    
+      // If not within a continuous window, or for additional options beyond it
+      if (!foundContinuous || planService.serviceWindows.some(window => window.start.isAfter($scope.fromMoment))) {
+        planService.serviceWindows.forEach(window => {
+          let windowStart = window.start.clone();
+          // Distinct time or any window starting after current selection
+          if (windowStart.isAfter($scope.fromMoment)) {
+            let minDiff = windowStart.diff($scope.fromMoment, 'minutes');
+            $scope.howLongOptions.push({
+              minutes: minDiff,
+              name: generateOptionName(minDiff)
+            });
+          }
+        });
       }
-
-      selectedIndex = selectedIndex || 0;
-      $scope.howLong = $scope.howLongOptions[ selectedIndex ];
+    
+      function generateOptionName(minutes) {
+        let hrs = Math.floor(minutes / 60);
+        let mins = minutes % 60;
+        let parts = [];
+        if (hrs > 0) parts.push(`${hrs} Hour${hrs > 1 ? 's' : ''}`);
+        if (mins > 0) parts.push(`${mins} Minute${mins > 1 ? 's' : ''}`);
+        return parts.join(', ');
+      }
+    
+      // Default to the first option or previously selected option
+      $scope.howLong = $scope.howLongOptions[0];
       $scope.updateReturnTime($scope.howLong);
     }
+    
 
     $scope.toggleShowBusRides = function(){
       $scope.showBusRides =! $scope.showBusRides;
@@ -2010,32 +2063,31 @@ app.controller('PlanController', ['$scope', '$http', '$routeParams', '$location'
         break;
       case 'when':
         $scope.showNext = false;
-        $scope.whenShowNext = function(){
-          //true to show next
-          var fromOK, returnOK,
-
-          _checkServiceHours = function(from, open, close, okNull) {
-            var startMoment, endMoment;
-
-            if(from === null){
-              if( okNull === true ){ return true; }
-              return false; // if the day is null return false (unless null is ok)
-            }
-            if( !(open && close) ){ return false; } //return false if selected day does not have service hours
-
-            //return false if time not within the service hours
-            startMoment = open.clone().subtract(1, 'seconds');
-            endMoment = close.clone().add(1, 'seconds');
-            if( !from.isBetween(startMoment, endMoment) ){ return false; } // help
-
-            //make sure day is in the future
-            if( moment().isAfter(from) ){ return false; } // help
-
-            //passed all checks, ok to show next
-            return true;
-          };// end _checkServiceHours
-          fromOK = _checkServiceHours( $scope.fromMoment, planService.serviceOpen, planService.serviceClose );
-          returnOK = _checkServiceHours( $scope.returnMoment, planService.serviceOpen, planService.serviceClose, true);
+        $scope.whenShowNext = function() {
+          var fromOK = false, // Initially false, only set to true if a matching window is found
+              returnOK = false, // Same for the return time
+              checkServiceHours = function(from, windows, okNull) {
+                if(from === null){
+                  return okNull === true;
+                }
+        
+                for (let i = 0; i < windows.length; i++) {
+                  let window = windows[i];
+                  let startMoment = window.start.clone().subtract(1, 'seconds');
+                  let endMoment = window.end.clone().add(1, 'seconds');
+                  if(from.isBetween(startMoment, endMoment)) {
+                    if(moment().isAfter(from)) {
+                      return false; // Time is in the past, not OK
+                    }
+                    return true; // Time is within this window and not in the past, OK
+                  }
+                }
+                return false; // No windows matched
+              };
+        
+          // Check all windows for both from and return times
+          fromOK = checkServiceHours($scope.fromMoment, planService.serviceWindows);
+          returnOK = checkServiceHours($scope.returnMoment, planService.serviceWindows, true);
           return fromOK && returnOK && $scope.fromTimeUpdated;
         }
 
