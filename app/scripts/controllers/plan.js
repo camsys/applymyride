@@ -1926,48 +1926,57 @@ app.controller('PlanController', ['$scope', '$http', '$routeParams', '$location'
       if (!$scope.fromMoment || !planService.serviceWindows || planService.serviceWindows.length === 0) { return; }
     
       $scope.howLongOptions = [{
-          minutes: 0,
-          name: 'No return trip'
+        minutes: 0,
+        name: 'No return trip'
       }];
     
-      let time = $scope.fromMoment.clone();
-      
-      // Assuming serviceWindows are sorted; if not, sort them as needed
-      let foundContinuous = false;
-      planService.serviceWindows.forEach(window => {
-        let windowStart = window.start.clone();
-        let windowEnd = window.end.clone();
+      let selectedTime = $scope.fromMoment.clone();
+      let optionsAdded = new Set(); // Keep track of added options to avoid duplicates
     
-        // Check if within a continuous service window
-        if (!windowStart.isSame(windowEnd) && time.isBetween(windowStart, windowEnd, null, '[]')) {
-          foundContinuous = true;
-          while (time.isBefore(windowEnd)) {
-            let minDiff = time.diff($scope.fromMoment, 'minutes');
-            if (minDiff > 0) { // Meaningful difference indicates a valid return option
-              $scope.howLongOptions.push({
-                minutes: minDiff,
-                name: generateOptionName(minDiff)
-              });
+      // Function to add options, avoiding duplicates
+      function addOption(minDiff) {
+        if (!optionsAdded.has(minDiff)) {
+          $scope.howLongOptions.push({
+            minutes: minDiff,
+            name: generateOptionName(minDiff)
+          });
+          optionsAdded.add(minDiff);
+        }
+      }
+    
+      planService.serviceWindows.forEach((window, index) => {
+        let start = window.start.clone();
+        let end = window.end.clone();
+    
+        // Add distinct future times as options
+        if (start.isSame(end) && start.isAfter(selectedTime)) {
+          addOption(start.diff(selectedTime, 'minutes'));
+        }
+    
+        // Continuous windows: Generate options within and consider subsequent windows
+        if (!start.isSame(end)) {
+          // Immediate window or future windows
+          if (selectedTime.isBetween(start, end, null, '[]') || selectedTime.isBefore(start)) {
+            let timeIter = selectedTime.isBefore(start) ? start.clone() : selectedTime.clone();
+    
+            while (timeIter.isBefore(end)) {
+              addOption(timeIter.diff(selectedTime, 'minutes'));
+              timeIter.add(15, 'minutes'); // Next option within or after this window
             }
-            time.add(15, 'minutes'); // Check for next return option within window
+          }
+    
+          // Check for additional options in subsequent windows if the current window is before the last
+          if (index < planService.serviceWindows.length - 1) {
+            let nextWindowStart = planService.serviceWindows[index + 1].start.clone();
+            // If the next window is a distinct time or starts after the current window
+            if (nextWindowStart.isAfter(end)) {
+              addOption(nextWindowStart.diff(selectedTime, 'minutes'));
+            }
           }
         }
       });
     
-      // If not within a continuous window, or for additional options beyond it
-      if (!foundContinuous || planService.serviceWindows.some(window => window.start.isAfter($scope.fromMoment))) {
-        planService.serviceWindows.forEach(window => {
-          let windowStart = window.start.clone();
-          // Distinct time or any window starting after current selection
-          if (windowStart.isAfter($scope.fromMoment)) {
-            let minDiff = windowStart.diff($scope.fromMoment, 'minutes');
-            $scope.howLongOptions.push({
-              minutes: minDiff,
-              name: generateOptionName(minDiff)
-            });
-          }
-        });
-      }
+      $scope.howLongOptions.sort((a, b) => a.minutes - b.minutes); // Ensure options are sorted
     
       function generateOptionName(minutes) {
         let hrs = Math.floor(minutes / 60);
@@ -1978,7 +1987,7 @@ app.controller('PlanController', ['$scope', '$http', '$routeParams', '$location'
         return parts.join(', ');
       }
     
-      // Default to the first option or previously selected option
+      // Set the first option as the default
       $scope.howLong = $scope.howLongOptions[0];
       $scope.updateReturnTime($scope.howLong);
     }
