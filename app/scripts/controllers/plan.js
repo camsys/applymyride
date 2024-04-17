@@ -1935,7 +1935,7 @@ app.controller('PlanController', ['$scope', '$http', '$routeParams', '$location'
     
       // Function to add options, avoiding duplicates
       function addOption(minDiff) {
-        if (!optionsAdded.has(minDiff)) {
+        if (!optionsAdded.has(minDiff) && minDiff >= 60) {
           $scope.howLongOptions.push({
             minutes: minDiff,
             name: generateOptionName(minDiff)
@@ -1956,10 +1956,10 @@ app.controller('PlanController', ['$scope', '$http', '$routeParams', '$location'
         // Continuous windows: Generate options within and consider subsequent windows
         if (!start.isSame(end)) {
           // Immediate window or future windows
-          if (selectedTime.isBetween(start, end, null, '[]') || selectedTime.isBefore(start)) {
+          if (selectedTime.isSame(start) || selectedTime.isBetween(start, end, null, '[]') || selectedTime.isBefore(start)) {
             let timeIter = selectedTime.isBefore(start) ? start.clone() : selectedTime.clone();
     
-            while (timeIter.isBefore(end)) {
+            while (timeIter.isBefore(end) || timeIter.isSame(end)) {
               addOption(timeIter.diff(selectedTime, 'minutes'));
               timeIter.add(15, 'minutes'); // Next option within or after this window
             }
@@ -1967,10 +1967,13 @@ app.controller('PlanController', ['$scope', '$http', '$routeParams', '$location'
     
           // Check for additional options in subsequent windows if the current window is before the last
           if (index < planService.serviceWindows.length - 1) {
-            let nextWindowStart = planService.serviceWindows[index + 1].start.clone();
-            // If the next window is a distinct time or starts after the current window
-            if (nextWindowStart.isAfter(end)) {
-              addOption(nextWindowStart.diff(selectedTime, 'minutes'));
+            for (let i = index + 1; i < planService.serviceWindows.length; i++) {
+              let futureWindowStart = planService.serviceWindows[i].start.clone();
+              // Only consider windows that start after the current window ends
+              if (futureWindowStart.isAfter(end)) {
+                let minDiff = futureWindowStart.diff(selectedTime, 'minutes');
+                addOption(minDiff);
+              }
             }
           }
         }
@@ -2076,7 +2079,7 @@ app.controller('PlanController', ['$scope', '$http', '$routeParams', '$location'
           var fromOK = false, // Initially false, only set to true if a matching window is found
               returnOK = false, // Same for the return time
               checkServiceHours = function(from, windows, okNull) {
-                if(from === null){
+                if (!windows || from === null) {
                   return okNull === true;
                 }
         
