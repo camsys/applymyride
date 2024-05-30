@@ -115,59 +115,23 @@ angular.module('applyMyRideApp')
           })
       }
 
-      $scope.cancelTrip = function(){
-
+      $scope.cancelTrip = function() {
         var currentTime = new Date();
         var firstItinerary = $scope.trip.itineraries[0];
-        var startTime = moment.parseZone(firstItinerary.wait_start).toDate(); 
-    
+        var startTime = moment.parseZone(firstItinerary.wait_start).toDate();
+      
         var timeDiff = startTime - currentTime;
         var oneHour = 60 * 60 * 1000;
-    
+      
         if (timeDiff < oneHour) {
-            bootbox.alert("Your trip is within the one-hour cancellation window and cannot be cancelled through FMR Schedule.  Please call your local transit agency for trip cancellation options.");
-            return;
+          bootbox.alert("Your trip is within the one-hour cancellation window and cannot be cancelled through FMR Schedule. Please call your local transit agency for trip cancellation options.");
+          return;
         }
-
+      
         $scope.trip = planService.selectedTrip;
         var message = "Are you sure you want to cancel this ride?";
-
-        if($scope.trip.itineraries.length > 1 &&  !$scope.outboundCancelled &&  !$scope.returnCancelled){
-          
-          // DEAL WITH Round Trips
-          bootbox.prompt({
-              title: message,
-              message: '<p>Please select an option below:</p>',
-              inputType: 'radio',
-              inputOptions: [
-              {
-                  text: 'Cancel Entire Trip',
-                  value: 'BOTH',
-              },
-              {
-                  text: 'Cancel Outbound Trip Only',
-                  value: 'OUTBOUND',
-              },
-              {
-                  text: 'Cancel Return Trip Only',
-                  value: 'RETURN',
-              }
-              ],
-              buttons: {
-                  'cancel': {
-                    label: 'Keep Ride'
-                  },
-                  'confirm': {
-                    label: 'Cancel Ride'
-                  }
-              },
-              callback: function(result){
-                $scope.cancelCall(result);
-              }
-          });
-        }else{
-
-        // DEAL WITH 1 Way Trips
+      
+        // Show confirmation for canceling the current itinerary leg
         bootbox.confirm({
           message: message,
           buttons: {
@@ -178,20 +142,24 @@ angular.module('applyMyRideApp')
               label: 'Cancel Ride'
             }
           },
-          callback: function(result){
-            if(result){
-              if($scope.outboundCancelled){
-                 $scope.cancelCall('RETURN')
-              } else if($scope.returnCancelled){
-                 $scope.cancelCall('OUTBOUND')
+          callback: function(result) {
+            if (result) {
+              if ($scope.trip.itineraries.length > 1) {
+                if ($scope.outboundCancelled) {
+                  $scope.cancelCall('RETURN'); // Cancel the return trip
+                } else if ($scope.returnCancelled) {
+                  $scope.cancelCall('OUTBOUND'); // Cancel the outbound trip
+                } else {
+                  $scope.cancelCall('OUTBOUND'); // Default to canceling the current leg
+                }
               } else {
-                $scope.cancelCall('BOTH')
+                $scope.cancelCall('BOTH'); // Cancel the single leg
               }
             }
           }
-        })
+        });
       }
-      }
+      
 
       $scope.cancelCall = function(result){
         if(result != 'BOTH' && result != 'OUTBOUND' && result != 'RETURN'){

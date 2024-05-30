@@ -18,7 +18,7 @@ app.directive('autocomplete', function() {
       autocompleteRequired: '=',
       disableFilter: '=disableFilter'
     },
-    controller: ['$scope', function($scope){
+    controller: ['$scope', '$timeout', function($scope, $timeout){
       // the index of the suggestions that's currently selected
       $scope.selectedIndex = -1;
 
@@ -49,34 +49,36 @@ app.directive('autocomplete', function() {
       $scope.completing = false;
 
       // starts autocompleting on typing in something
-      $scope.$watch('searchParam', function(newValue, oldValue){
-
-        if(newValue == ''){
-          $scope.select();
-          $scope.setIndex(-1);
+      $scope.$watch('searchParam', function(newValue, oldValue) {
+        // Cancel the previous timeout, if any
+        if ($scope.typingTimeout) {
+            $timeout.cancel($scope.typingTimeout);
         }
-
-        if (oldValue === newValue || (!oldValue && $scope.initLock)) {
-          return;
-        }
-
-        if(watching && typeof $scope.searchParam !== 'undefined' && $scope.searchParam !== null) {
-          $scope.completing = true;
-          $scope.searchFilter = $scope.disableFilter ? '' : $scope.searchParam;
-          $scope.selectedIndex = -1;
-        }
-
-        // function thats passed to on-type attribute gets executed
-        if($scope.onType && wasTyped){
-          $scope.onType($scope.searchParam);
-        }
-
-        if ($scope.selectedLocation && newValue !== $scope.selectedLocation.label) {
-          $scope.onInputChange();
-        }
-
-        wasTyped = false;
+    
+        $scope.typingTimeout = $timeout(function() {
+            if (newValue == '') {
+                $scope.select();
+                $scope.setIndex(-1);
+            }
+    
+            if (watching && typeof $scope.searchParam !== 'undefined' && $scope.searchParam !== null) {
+                $scope.completing = true;
+                $scope.searchFilter = $scope.disableFilter ? '' : $scope.searchParam;
+                $scope.selectedIndex = -1;
+            }
+    
+            if ($scope.onType && wasTyped) {
+                $scope.onType($scope.searchParam);
+            }
+    
+            if ($scope.selectedLocation && newValue !== $scope.selectedLocation.label) {
+                $scope.onInputChange();
+            }
+    
+            wasTyped = false;
+        }, 1500); 
       });
+    
 
       // for hovering over suggestions
       this.preSelect = function(suggestion){
