@@ -6,13 +6,44 @@ angular.module('applyMyRideApp')
       //skip initializing this controller if we're not on the page
       if( ['/','/loginError'].indexOf( $location.path() ) == -1){ return; }
 
-      util.getCounties(
-        function(response) {
-          var counties = response.data.service_ids;
-          $scope.counties = counties;
-          localStorageService.set("counties", counties);
+      util.getCounties(function(response) {
+        console.log("Raw response data:", response.data);  // Inspect the raw response
+        $scope.countiesWithServices = response.data.county_services;
+        console.log("Processed counties with services:", $scope.countiesWithServices);
+        $scope.counties = Object.keys($scope.countiesWithServices);
+        console.log("List of counties:", $scope.counties);  // Verify the counties are listed correctly
+        initializeSelectedCountyAndService();
+      });
+    
+      
+      function initializeSelectedCountyAndService() {
+        if ($scope.county && $scope.countiesWithServices[$scope.county]) {
+          $scope.selectedCountyChanged();
         }
-      );
+      }
+
+      $scope.selectedCountyChanged = function() {
+        if ($scope.county && $scope.countiesWithServices[$scope.county]) {
+            $scope.servicesForSelectedCounty = $scope.countiesWithServices[$scope.county];
+            $scope.requireServiceSelection = $scope.servicesForSelectedCounty.length > 1;
+
+            if ($scope.servicesForSelectedCounty.length === 1) {
+                $scope.selectedService = $scope.servicesForSelectedCounty[0].serviceId;
+            }
+        } else {
+            $scope.servicesForSelectedCounty = [];
+            $scope.selectedService = null;
+        }
+      };
+    
+  
+
+      if(!$scope.$$phase) {
+        $scope.$apply(function() {
+          $scope.selectedCountyChanged();
+        });
+      };
+    
 
       util.getCountiesInTransition(
         function (response) {
@@ -34,6 +65,7 @@ angular.module('applyMyRideApp')
       $scope.sharedRideId = localStorageService.get("customer_number") || ipCookie('sharedRideId');
       $scope.agencyCode = localStorageService.get("agencyCode") || ipCookie('agencyCode');
       $scope.county = localStorageService.get("county") || ipCookie('county');
+      $scope.selectedService = localStorageService.get("selectedService") || ipCookie('selectedService');
       $scope.dateofbirth = sessionStorage.getItem('dateofbirth') || false;
       $scope.dob = localStorageService.get("dob") || {month:'', day:'', year:''};
       if($scope.dateofbirth){
@@ -103,8 +135,13 @@ angular.module('applyMyRideApp')
       $scope.next = function(){
         if($scope.disableNext)
           return;
+          console.log("Attempting to log in with:");
+          console.log("Service ID: " + $scope.selectedService);  // Log the selected service ID
+          console.log("County: " + $scope.county);
+          console.log("Date of Birth: " + moment($scope.dateofbirth).format('M/D/YYYY'));
         var path = $location.path();
         planService.sharedRideId = $scope.sharedRideId;
+        planService.service_id = $scope.selectedService;
         planService.county = $scope.county;
         planService.dateofbirth = $scope.dateofbirth;
         $scope.authenticate();
@@ -151,8 +188,18 @@ angular.module('applyMyRideApp')
         var login = {};
         login.session = {};
         login.session.ecolane_id = planService.sharedRideId.toString();
+        login.session.service_id =  $scope.selectedService;
         login.session.county = planService.county;
         login.session.dob = moment($scope.dateofbirth).format('M/D/YYYY');
+
+        var loginData = {
+          ecolane_id: $scope.sharedRideId.toString(),
+          service_id: $scope.selectedService,
+          county: $scope.county,
+          dob: moment($scope.dateofbirth).format('M/D/YYYY')
+      };
+  
+      console.log("Login Data:", loginData); 
 
         ipCookie('sharedRideId', login.session.ecolane_id, {expires: 7, expirationUnit: 'days'});
         ipCookie('county', login.session.county, {expires: 7, expirationUnit: 'days'});

@@ -31,12 +31,14 @@ angular.module('applyMyRideApp')
       $scope.lastName = localStorageService.get("lastName") || null;
       $scope.errors = {dob:false};
       $scope.dob = localStorageService.get("dob") || {month:'', day:'', year:''};
+      $scope.service_id = localStorageService.get("service_id") || ipCookie('service_ids');
 
       // Look Up User Ecolane ID
       $scope.lookupId = function() {
         localStorageService.set("county", $scope.county);
         localStorageService.set("lastName", $scope.lastName);
         localStorageService.set("dob", $scope.dob);
+        localStorageService.set("service_id", $scope.service_id);
 
         var promise = $http.get('//' + APIHOST +
           '/api/v1/users/lookup?booking_agency=ecolane&last_name=' + $scope.lastName +

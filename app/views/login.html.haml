@@ -32,9 +32,12 @@
           .row{style: 'margin-top: 1em'}
             %h3 Your county
           .row
-            %select{ng: {model: 'county', change: 'checkId()', options: 'county for county in counties'}}
+            %select{ng_model: 'county', ng_options: 'county as county for county in counties', ng_change: 'selectedCountyChanged()'}
               %option{value: '', disabled: 'true'}
                 Select your county
+          .row{ng: {show: 'requireServiceSelection'}}
+            %select{ng_model: 'selectedService', ng_options: 'service.serviceId as service.label for service in servicesForSelectedCounty', ng_change: 'selectedServiceChanged()', style: 'margin-top: 1em'}
+              %option{value: '', disabled: 'true'} Select your service
           .row.alert.alert-success{style: 'margin-top: 2em', ng:{if: 'isTransitionCounty(county)'}}
             .col-md-2
               .fa.fa-warning.fa-3x
