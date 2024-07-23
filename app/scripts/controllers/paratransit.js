@@ -166,10 +166,10 @@ angular.module('applyMyRideApp')
         }
         else if(result == 'OUTBOUND'){
           itinsToCancel = [$scope.paratransitItineraries[0]];
-          successMessage = 'Your outbound trip has been cancelled.';
+          successMessage = 'Your one-way trip cancellation was successful. Any related trips need to be canceled separately.';
         } else if(result == 'RETURN'){
           itinsToCancel = [$scope.paratransitItineraries[$scope.paratransitItineraries.length - 1]];
-          successMessage = 'Your return trip has been cancelled.';
+          successMessage = 'Your one-way trip cancellation was successful. Any related trips need to be canceled separately.';
         }
         
         var cancel = {};

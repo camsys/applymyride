@@ -331,10 +331,10 @@ app.controller('PlanController', ['$scope', '$http', '$routeParams', '$location'
       }
       else if(result == 'OUTBOUND'){
         itinsToCancel = [$scope.trip.itineraries[0]];
-        successMessage = 'Your outbound trip has been cancelled.';
+        successMessage = 'Your one-way trip cancellation was successful. Any related trips need to be canceled separately.';
       } else if(result == 'RETURN'){
         itinsToCancel = [$scope.trip.itineraries[$scope.trip.itineraries.length - 1]];
-        successMessage = 'Your return trip has been cancelled.';
+        successMessage = 'Your one-way trip cancellation was successful. Any related trips need to be canceled separately.';
       }
 
       var cancel = {};
