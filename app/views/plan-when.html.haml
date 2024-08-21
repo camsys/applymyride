@@ -21,7 +21,7 @@
               %div{class: 'day month-heading'} Sat
             %div{ng: {repeat: 'week in month.weeks' }, class: 'week'}
               %div{ class: 'day', 
-                    tabindex:'{{(day.startTime || day.endTime) ? 0 : -1}}', 
+                    tabindex:'{{(day.startTime || day.endTime || (day.timeWindows && day.timeWindows.length > 0)) ? 0 : -1}}',
                     'aria-label' => '{{day.day}} {{month.name}}', 
                     ng: { repeat: 'day in week track by day.key', 
                           click:'selectDepartDate(day)',
