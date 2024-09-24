@@ -1918,6 +1918,13 @@ app.controller('PlanController', ['$scope', '$http', '$routeParams', '$location'
         return startFormat === endFormat ? startFormat : `${startFormat} to ${endFormat}`;
     }).join(', ');
     
+      // Focus the first time input after selecting the date
+      setTimeout(function() {
+        const timeInput = document.querySelector('input.cs-hour');
+        if (timeInput) {
+          timeInput.focus();
+        }
+      }, 100);
     };
     
   

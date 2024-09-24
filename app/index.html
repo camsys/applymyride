@@ -2,7 +2,6 @@
 <html class="no-js">
   <head>
     <meta charset="utf-8">
-    <title>FMR Schedule</title>
     <script type="application/ld+json">
       {
         "@context": "https://schema.org/",
@@ -72,8 +71,8 @@
           'localhost': 'localhost:3000'
         };
 
-        
-	var apiHost = apiHostMapping[docHost];
+  
+      var apiHost = apiHostMapping[docHost];
         //use docHost by default if nothing else matches, could also be a specific fallback host
 	if (!apiHost) apiHost = docHost;
         return apiHost;
@@ -81,7 +80,7 @@
     </script>
   </head>
   <body ng-app="applyMyRideApp" ng-controller="NavbarController">
-    <div style="position:absolute; bottom:1px;" ng-hide="true">v2.9.7</div>
+    <div style="position:absolute; bottom:1px;" ng-hide="true">v2.9.8rc1</div>
 
     <!--[if lt IE 7]>
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
@@ -200,27 +199,18 @@
 
         <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDdpyfym0ylu7GMq6_dTWpEA2u8lmuvnfY&libraries=places"></script>
 
-<script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 
-  ga('create', 'UA-77824843-3', 'auto');
-  ga('send', 'pageview');
-
-</script>
 <script> if (window.navigator.userAgent.match(/MSIE|Trident/)) {
   $("#iewarn").removeAttr("ng-cloak");}
 </script>
 
 <!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-LM8H8QGMSH"></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-XYY211X4FG"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-  gtag('config', 'G-LM8H8QGMSH', { 'send_page_view': true });
+  gtag('config', 'G-XYY211X4FG', { 'send_page_view': true });
 
   // Define an AngularJS module and attach a routeChangeSuccess event listener
   angular.module('applyMyRideApp')

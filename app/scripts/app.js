@@ -73,8 +73,9 @@ angular.module('applyMyRideApp', [
       })
       .when('/plan/:step', {
         templateUrl: 'views/plan.html',
-        controller: 'PlanController'
+        controller: 'PlanController',
       })
+      
       .when('/transit/:departid', {
         templateUrl: 'views/transit.html',
         controller: 'TransitController'
@@ -89,7 +90,7 @@ angular.module('applyMyRideApp', [
       })
       .when('/transitconfirm', {
         templateUrl: 'views/transitconfirm.html',
-        controller: 'TransitController'
+        controller: 'TransitController'      
       })
       .when('/transit/details/:tripid', {
         templateUrl: 'views/transitconfirm.html',
@@ -109,19 +110,19 @@ angular.module('applyMyRideApp', [
       })
       .when('/taxi', {
         templateUrl: 'views/taxi-detail.html',
-        controller: 'TaxiController'
+        controller: 'TaxiController',
       })
       .when('/uber', {
         templateUrl: 'views/uber-detail.html',
-        controller: 'UberController'
+        controller: 'UberController',
       })
       .when('/itinerary', {
         templateUrl: 'views/itinerary.html',
-        controller: 'ItineraryController'
+        controller: 'ItineraryController',
       })
       .when('/about', {
         templateUrl: 'views/about.html',
-        controller: 'AboutController'
+        controller: 'AboutController',
       })
       .when('/about/sharedride', {
         templateUrl: 'views/about.html',
@@ -133,43 +134,77 @@ angular.module('applyMyRideApp', [
       })
       .when('/profile', {
         templateUrl: 'views/profile.html',
-        controller: 'ProfileController'
+        controller: 'ProfileController',
       })
+      // Add other routes here
       .otherwise({
-        redirectTo: '/'
+        redirectTo: '/' // redirect to the root path if no other routes match
       });
 
   })  //global event handler
-  .run(function($rootScope, $window, $location, ipCookie) {
-    //Hamburger menu toggle
-    $(".navbar-nav li a").click(function (event) {
+  .run(function($rootScope, $window, $location, ipCookie, $route) {
+    // Hamburger menu toggle
+    $(".navbar-nav li a").click(function(event) {
       // check if window is small enough so dropdown is created
       var toggle = $(".navbar-toggle").is(":visible");
       if (toggle) {
-        $(".navbar-collapse").collapse('hide');
+        $(".navbar-collapse").collapse("hide");
       }
     });
-
+  
     $window.$rootScope = $rootScope;
-    var exceptions = ["/plan/my_rides", "/about", "/about/sharedride", "/about/projecthistory"];
-    $rootScope.$on('$routeChangeStart', function (event) {
+    var exceptions = [
+      "/plan/my_rides",
+      "/about",
+      "/about/sharedride",
+      "/about/projecthistory"
+    ];
+    $rootScope.$on("$routeChangeStart", function(event) {
       if (!$window.visited) {
         if (exceptions.indexOf($location.$$path) < 0) {
-          $location.path('/');
+          $location.path("/");
         }
       }
-
+  
       // TODO (Drew Teter, 09/22/2022) Fully Remove ability for guest login.
       // We plan on doing this in the future. But, as no tickets have been created
       // for this task yet, I'm just putting a redirect here as a temporary fix.
-
-      var publicPages = ['/', '/loginError', "/about", "/about/sharedride", "/about/projecthistory", "/lookupIdForm", "/lookupError"];
-      var notLoggedIn = !ipCookie('authentication_token');
-
+  
+      var publicPages = [
+        "/",
+        "/loginError",
+        "/about",
+        "/about/sharedride",
+        "/about/projecthistory",
+        "/lookupIdForm",
+        "/lookupError"
+      ];
+      var notLoggedIn = !ipCookie("authentication_token");
+  
       if (notLoggedIn && publicPages.indexOf($location.$$path) === -1) {
         event.preventDefault();
-        $location.path('/');
+        $location.path("/");
         return false;
       }
+    });
+  
+    $rootScope.$on("$routeChangeSuccess", function() {
+      var titleMap = {
+        'purpose': 'Trip Purpose',
+        'when': 'Trip Schedule',
+        'companions': 'Trip Companions',
+        'instructions_for_driver': 'Driver Instructions',
+        'summary': 'Trip Summary',
+        'my_rides': 'My Rides',
+        'itinerary': 'Itinerary',
+        'profile': 'Profile',
+        'about': 'About',
+        'transitconfirm': 'Transit Confirmation',
+        'where': 'Trip Location',
+      };
+      var currentPath = $location.path();
+      var currentStep = currentPath.split('/').pop();
+      var title = titleMap[currentStep] || "FMR Schedule";
+      document.title = title;
     });
   });
