@@ -77,6 +77,18 @@
         %a.btn.btn-secondary{href: "", ng: {click: "back()", hide:'backToConfirm'}}
           Back
       .pull-right
-        %a.btn.btn-primary{href: "", ng: {click: 'next()'}}
+        %a.btn.btn-primary{href: "", ng: {click: 'next(); disableButton=true', disabled: 'disableButton'}}
           Book This Trip
 
+
+:javascript
+  document.addEventListener('DOMContentLoaded', function() {
+    var bookButton = document.querySelector('.btn-primary.pull-right');
+
+    if (bookButton) {
+      bookButton.addEventListener('click', function(event) {
+        // Disable the button to prevent double-clicks
+        bookButton.setAttribute('disabled', 'disabled');
+      });
+    }
+  });
