@@ -732,16 +732,22 @@ app.controller('PlanController', ['$scope', '$http', '$routeParams', '$location'
           });
           break;
         case 'summary':
-          let res = planService.bookSharedRide($http);
+          if ($scope.isBooking) return; 
+        
+          $scope.isBooking = true;
           $scope.startSpin();
+        
+          let res = planService.bookSharedRide($http);
 
           res.success((result) => {
             $scope.stopSpin();
+            $scope.isBooking = false; 
             $location.path('/plan/my_rides');
             planService.driverInstructions = '';
             planService.driverInstructionsReturn = '';
           }).error((err) => {
             $scope.stopSpin();
+            $scope.isBooking = false;
             console.log(err);
             $location.path('/plan/summary/error');
           });

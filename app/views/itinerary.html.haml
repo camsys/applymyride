@@ -196,7 +196,7 @@
                     %h5.text-muted WAIT for Shared Ride
                 .row
                   .leg-info.col-xs-12
-                    %h4.text-muted {{itinerary.origin.formatted_address.startsWith(itinerary.origin.name) ? itinerary.origin.formatted_address : itinerary.origin.name + ', ' + itinerary.origin.formatted_address}}
+                    %h4.text-muted {{ itinerary.origin.formatted_address }}
         .border-between.timeline.mode_paratransit
           .row.even-height-row
             .col-xs-2.right-side
@@ -223,7 +223,7 @@
                 .row
                   .leg-info.col-xs-12.leg-header
                     %h5.text-muted ARRIVE
-                    %h4.text-muted {{itinerary.destination.formatted_address.startsWith(itinerary.destination.name) ? itinerary.destination.formatted_address : itinerary.destination.name + ', ' + itinerary.destination.formatted_address}}
+                    %h4.text-muted {{ itinerary.destination.formatted_address }}
 
 
   .walkitinerary#walk{style: 'padding: 0;', ng: {show: 'mode==="mode_walk"', repeat: 'itinerary in walkItineraries | limitTo: 1'}}

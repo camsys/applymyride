@@ -74,21 +74,12 @@
   .row.unstuck-foot.btn-spacing
     .col-lg-6.col-lg-offset-3.col-md-8.col-md-offset-2.col-sm-10.col-sm-offset-1.col-xs-12
       .pull-left
-        %a.btn.btn-secondary{href: "", ng: {click: "back()", hide:'backToConfirm'}}
+        %a.btn.btn-secondary{href: "", ng: {click: "back()", hide: 'backToConfirm'}}
           Back
       .pull-right
-        %a.btn.btn-primary{href: "", ng: {click: 'next(); disableButton=true', disabled: 'disableButton'}}
+        %a.btn.btn-primary{ng: {click: 'next()', show: '!isBooking'}}
           Book This Trip
-
-
-:javascript
-  document.addEventListener('DOMContentLoaded', function() {
-    var bookButton = document.querySelector('.btn-primary.pull-right');
-
-    if (bookButton) {
-      bookButton.addEventListener('click', function(event) {
-        // Disable the button to prevent double-clicks
-        bookButton.setAttribute('disabled', 'disabled');
-      });
-    }
-  });
+      .pull-right
+        %span{ng: {show: 'isBooking'}}
+          %i.glyphicon.glyphicon-refresh.glyphicon-spin
+          Please wait...
