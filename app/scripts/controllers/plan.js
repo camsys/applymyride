@@ -732,6 +732,12 @@ app.controller('PlanController', ['$scope', '$http', '$routeParams', '$location'
           });
           break;
         case 'summary':
+          $scope.handleKeyPress = function(event) {
+            if (event.keyCode === 13 && !$scope.isBooking) {
+              $scope.next(); 
+            }
+          };
+          
           if ($scope.isBooking) return; 
         
           $scope.isBooking = true;

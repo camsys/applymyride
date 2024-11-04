@@ -77,9 +77,8 @@
         %a.btn.btn-secondary{href: "", ng: {click: "back()", hide: 'backToConfirm'}}
           Back
       .pull-right
-        %a.btn.btn-primary{ng: {click: 'next()', show: '!isBooking'}}
+        %button.btn.btn-primary{ 'ng-click': 'next()', 'ng-show': '!isBooking', tabindex: "0" }
           Book This Trip
-      .pull-right
         %span{ng: {show: 'isBooking'}}
           %i.glyphicon.glyphicon-refresh.glyphicon-spin
           Please wait...
