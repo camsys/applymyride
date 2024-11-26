@@ -7,10 +7,10 @@
   .col-md-8.col-md-offset-2.col-xs-12
     %uib_tabset
       %uib_tab{'heading' => 'Upcoming ({{trips.future.length}})', 'active' => 'tabFuture'}
-        .my-ride.card.card-thin{'index' => '{{$index}}', ng: {init: 'tab = "future"',
-                                              click: 'selectTrip($event, tab, $index)',
-                                              repeat: 'trip in trips.future',
-                                              class: '{"live-trip": trip.isLive}'}}
+        .my-ride.card.card-thin{'index' => '{{$index}}', 
+                                ng: {repeat: 'trip in trips.future', 
+                                     click: 'selectTrip($event, "future", $index)', 
+                                     class: '{"live-trip": trip.isLive}'}}
           .row
             .col-xs-2.col-height-slave
               %img.img-responsive{ng: {src: 'images/modes/paratransit.png', show: 'trip.mode == "mode_paratransit"'}}
@@ -22,11 +22,11 @@
               .row
                 .col-xs-8
                   %h4 {{trip.from_place_display}} to {{trip.to_place_display}}
-                .col-xs-4{ng: {show: 'trip.isLive'}}
-                  %h4.text-right{ng: {hide: 'trip.isHere'}}
+                .col-xs-4
+                  %h4.text-right{ng: {show: 'trip.isLive'}}
                     ETA:
                     %b {{ trip.eta }}
-                  %h4.text-right{ng: {show: 'trip.isHere'}}
+                  %h4.text-right{ng: {hide: '!trip.isLive || trip.eta'}}
                     %b Your ride is here!
               .row
                 .col-xs-8
@@ -35,7 +35,10 @@
                   %h5.text-muted.text-right{ng: {show: 'trip.itineraries.length > 1'}}
                   %h5.text-muted.text-right{ng: {show: 'trip.itineraries.length == 1'}}
       %uib_tab{'heading' => 'History ({{trips.past.length}})', 'active' => 'tabPast'}
-        .my-ride.card.card-thin{'index' => '{{$index}}', ng: {init: 'tab = "past"', click: 'selectTrip($event, tab, $index);', repeat: 'trip in trips.past'}}
+        .my-ride.card.card-thin{'index' => '{{$index}}', 
+                                ng: {init: 'tab = "past"', 
+                                     click: 'selectTrip($event, "past", $index)', 
+                                     repeat: 'trip in trips.past'}}
           .row
             .col-xs-2.col-height-slave
               %img.img-responsive{ng: {src: 'images/modes/paratransit.png', show: 'trip.mode == "mode_paratransit"'}}
@@ -53,7 +56,6 @@
                 .col-xs-4
                   %h5.text-muted.text-right{ng: {show: 'trip.itineraries.length > 1'}}
                   %h5.text-muted.text-right{ng: {show: 'trip.itineraries.length == 1'}}
-
     .row.btn-spacing
       .col-md-4.col-md-offset-4.col-xs-12.text-center
         %a.btn.btn-primary.btn-block{href: '', ng: {click: 'reset()'}}
