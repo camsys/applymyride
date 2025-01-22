@@ -319,7 +319,7 @@
     .row
       %form.input-group
         %input{type:'text', ng: {model: 'emailString'}}
-        %a.btn.btn-primary{ng: {click: 'sendEmail($event)'}}>
+        %button.btn.btn-primary{type: 'button', ng: {click: 'sendEmail($event)'}}
           %i.fa.fa-envelope-o{style:'color: white;'}
             %span
               Send

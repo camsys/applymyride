@@ -822,3 +822,13 @@ and (max-device-width : 480px) {
 .autocomplete {
   line-height: 2.2em;
 }
+
+.cs-time-input input.cs-ampm:focus + .cs-ampmspan::after {
+  border-color: #3366FF !important;
+  box-shadow: 0 0 5px #99CCFF !important;
+}
+
+.cs-time-input input.cs-ampm:hover + .cs-ampmspan::after {
+  color: #F5F5F5 !important; 
+  background: #0000FF !important;
+}
