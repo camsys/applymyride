@@ -218,6 +218,12 @@ angular.module('applyMyRideApp')
         $scope.invalidEmail = false;
         $scope.showEmail = !$scope.showEmail;
         $event.stopPropagation();
+
+        if ($scope.showEmail) {
+          setTimeout(function() {
+            document.getElementById('emailInput').focus();
+          }, 0);
+        }
       };
 
       $scope.sendEmail = function($event) {
