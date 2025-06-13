@@ -5,4 +5,3 @@ aws configure set preview.cloudfront true
 aws cloudfront create-invalidation \
     --distribution-id E2PQ7QYDXFVJR4 \
     --paths '/*'
-
